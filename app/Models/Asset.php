@@ -12,10 +12,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Asset extends Model
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
+    use HasUuids, HasFactory, SoftDeletes, GetsTableName, LogsActivity;
 
     public $incrementing = false;
 
