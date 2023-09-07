@@ -3,18 +3,16 @@
 namespace App\Http\Controllers\v2;
 
 use App\Http\Controllers\Controller;
-use App\Services\v2\UserService;
+use App\Repositories\Contracts\UserRepositoryInterface;
 
 class UserController extends Controller
 {
-    private UserService $userService;
-
     /**
-     * @param UserService $userService
+     * @param UserRepositoryInterface $userRepositoryInterface
      */
-    public function __construct(UserService $userService)
+    public function __construct(private readonly UserRepositoryInterface $userRepositoryInterface)
     {
-        $this->userService = $userService;
+        
     }
     
     public function register()

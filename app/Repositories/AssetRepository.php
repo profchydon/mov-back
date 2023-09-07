@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Asset;
+use App\Repositories\Contracts\AssetRepositoryInterface;
 
 class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 {
@@ -11,12 +12,12 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return Asset::class;
     }
 
-    public function checkouts()
+    public function getCheckouts()
     {
         //TODO: write the logic to return all asset checkouts
     }
 
-    public function archived()
+    public function getArchived()
     {
         //TODO: write the logic to return all archived assets
     }
