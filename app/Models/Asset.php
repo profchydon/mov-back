@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use App\Domains\Enum\Asset\AssetStatusEnum;
-use App\Events\AssetStatusUpdatedEvent;
-use Ramsey\Uuid\Uuid;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Model;
 use App\Domains\Constant\AssetConstant;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Events\AssetStatusUpdatedEvent;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Ramsey\Uuid\Uuid;
 
 class Asset extends Model
 {
@@ -28,13 +27,12 @@ class Asset extends Model
      *
      * @var array<int, string>
      */
-
     protected $guarded = [
-        AssetConstant::ID
+        AssetConstant::ID,
     ];
 
     /**
-     * Get the asset images that belongs to the asset
+     * Get the asset images that belongs to the asset.
      */
     public function assetImages()
     {
@@ -57,7 +55,7 @@ class Asset extends Model
      */
     public function newUniqueId()
     {
-        return (string)Uuid::uuid4();
+        return (string) Uuid::uuid4();
     }
 
     /**
@@ -76,7 +74,6 @@ class Asset extends Model
 
 
         self::created(function ($asset) {
-
         });
 
         self::updated(function (self $asset) {

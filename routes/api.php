@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,5 +13,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 $router->group(['prefix' => 'v2'], function () {
-    require __DIR__.'/v2/index.php';
+    require __DIR__ . '/v2/index.php';
 });
