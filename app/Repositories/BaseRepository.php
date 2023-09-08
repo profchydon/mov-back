@@ -1,12 +1,6 @@
 <?php
 
-
 namespace App\Repositories;
-
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 abstract class BaseRepository
 {
@@ -78,7 +72,6 @@ abstract class BaseRepository
     public function firstWithRelation($column, $data, $model1 = [], $model2 = [])
     {
         return $this->model->where($column, $data)->with($model1)->with($model2)->first();
-
     }
 
     public function getWithRelation($column, $data, $model1 = [], $model2 = [], $chronological = false)
@@ -90,7 +83,6 @@ abstract class BaseRepository
         }
 
         return $query->paginate();
-
     }
 
     public function getMany($column, array $data)
@@ -111,6 +103,7 @@ abstract class BaseRepository
     public function deleteById($id)
     {
         $model = $this->model::find($id);
+
         return $model->delete();
     }
 
@@ -119,7 +112,7 @@ abstract class BaseRepository
         return $this->model->where($column, $value)->update($data);
     }
 
-    public function updateOrCreate($condition = [], $data)
+    public function updateOrCreate($condition, $data)
     {
         return $this->model->updateOrCreate($condition, $data);
     }
@@ -138,17 +131,16 @@ abstract class BaseRepository
         $model = $this->model::where([$this->uuidColumn => $uuid])->first();
 
         if ($model) {
-
             $model->update($updateData);
 
             return $model;
-
         }
+
         return false;
     }
 
     public function toArray($data)
     {
-        return (array)$data;
+        return (array) $data;
     }
 }
