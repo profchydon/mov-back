@@ -9,6 +9,4 @@ enum AssetStatusEnum: string
     use ListsEnumValues;
 
     case TRANSFERRED = 'TRANSFERRED';
-
-
 }
