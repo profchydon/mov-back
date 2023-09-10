@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
 class Company extends Model
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
+    use HasUuids, HasFactory, SoftDeletes, GetsTableName, LogsActivity;
 
     public $incrementing = false;
 
