@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Domains\Auth\PermissionTypes;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 
@@ -27,7 +26,7 @@ class PermissionSeeder extends Seeder
             ['name' => PermissionTypes::ACCOUNT_READ_ACCESS, 'display' => 'Permission to Read Accounts'],
         ]);
 
-        $permissions->each(function($permission){
+        $permissions->each(function ($permission) {
             Permission::firstOrCreate(['name' => $permission['name']->value, 'display' => $permission['display']]);
         });
     }

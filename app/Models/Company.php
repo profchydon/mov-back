@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
+use App\Domains\Constant\AssetConstant;
 use App\Domains\Enum\Asset\AssetAuctionStatusEnum;
 use App\Events\AssetStatusUpdatedEvent;
-use Ramsey\Uuid\Uuid;
 use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Model;
-use App\Domains\Constant\AssetConstant;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Ramsey\Uuid\Uuid;
 
 class Company extends Model
 {
@@ -29,13 +29,12 @@ class Company extends Model
      *
      * @var array<int, string>
      */
-
     protected $guarded = [
-        AssetConstant::ID
+        AssetConstant::ID,
     ];
 
     /**
-     * Get the asset images that belongs to the asset
+     * Get the asset images that belongs to the asset.
      */
     public function assetImages()
     {
@@ -43,7 +42,7 @@ class Company extends Model
     }
 
     /**
-     * Get the auction that owns the asset
+     * Get the auction that owns the asset.
      */
     public function auction()
     {
@@ -58,7 +57,7 @@ class Company extends Model
     protected $casts = [
         AssetConstant::ID => 'string',
         AssetConstant::COMPANY_ID => 'string',
-        AssetConstant::STATUS => AssetAuctionStatusEnum::class
+        AssetConstant::STATUS => AssetAuctionStatusEnum::class,
     ];
 
     /**
@@ -68,7 +67,7 @@ class Company extends Model
      */
     public function newUniqueId()
     {
-        return (string)Uuid::uuid4();
+        return (string) Uuid::uuid4();
     }
 
     /**

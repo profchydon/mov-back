@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Auth\PermissionTypes;
 use App\Domains\Auth\RoleTypes;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
@@ -21,13 +19,13 @@ class RoleSeeder extends Seeder
             RoleTypes::ASSET_MANAGER,
             RoleTypes::TECHNICIAN,
             RoleTypes::FINANCE,
-            RoleTypes::VIEWER
+            RoleTypes::VIEWER,
         ]);
 
-        $roles->each(function($role){
+        $roles->each(function ($role) {
             $dbRole = Role::firstOrCreate(['name' => $role->value]);
 
-            if($role == RoleTypes::ADMINISTRATOR){
+            if ($role == RoleTypes::ADMINISTRATOR) {
                 $permissions = Permission::all();
 
                 $dbRole->syncPermissions($permissions);
