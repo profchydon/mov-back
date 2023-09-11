@@ -69,14 +69,14 @@ abstract class BaseRepository
         return $query->get($fieldsToFetch);
     }
 
-    public function firstWithRelation($column, $data, $model1 = [], $model2 = [])
+    public function firstWithRelation($column, $data, $models = [])
     {
-        return $this->model->where($column, $data)->with($model1)->with($model2)->first();
+        return $this->model->where($column, $data)->with($models)->first();
     }
 
-    public function getWithRelation($column, $data, $model1 = [], $model2 = [], $chronological = false)
+    public function getWithRelation($column, $data, $models = [], $chronological = false)
     {
-        $query = $this->model->where($column, $data)->with($model1)->with($model2);
+        $query = $this->model->where($column, $data)->with($models);
 
         if ($chronological) {
             $query = $query->orderBy('created_at', 'desc');
