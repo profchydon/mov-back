@@ -1,0 +1,279 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table roles {
+  id varchar [primary key]
+  name varchar
+  display varchar
+  guard_name varchar
+}
+
+Table permissions {
+  id varchar [primary key]
+  name varchar
+  guard_name varchar
+}
+
+Table role_has_permissions {
+  id varchar [primary key]
+  name varchar
+}
+
+Table tenants {
+  id varchar [primary key]
+  name varchar
+  sub_domain varchar
+  status varchar
+}
+
+Table companies {
+  id varchar [primary key]
+  tenant_id varchar
+  name varchar
+  size varchar
+  phone varchar
+  industry varchar
+  logo varchar
+  country varchar
+  status varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table offices {
+  id varchar [primary key]
+  tenant_id varchar
+  company_id varchar
+  name varchar
+  address varchar
+  country varchar
+  state varchar
+  latitude varchar [null]
+  longitude varchar [null]
+  currency_id varchar
+  status varchar
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table users {
+  id varchar [primary key]
+  tenant_id varchar
+  company_id varchar
+  first_name varchar
+  last_name varchar
+  email varchar
+  phone varchar
+  stage varchar
+  status varchar
+  last_login timestamp
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table user_offices {
+  id varchar [primary key]
+  tenant_id varchar
+  user_id varchar
+  office_id varchar
+  status varchar
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table office_admins {
+  id varchar [primary key]
+  user_id varchar
+  office_id varchar
+}
+
+Table assets {
+  id varchar [primary key]
+  tenant_id varchar
+  company_id varchar
+  office_id varchar
+  image varchar
+  asset_id varchar
+  serial_number varchar
+  asset_make_id varchar
+  asset_model_id varchar
+  purchase_price int
+  purchase_date date
+  currency_id varchar
+  vendor_id varchar
+  maintenance_frequency varchar
+  next_maintenance_date date
+  is_insured boolean
+  is_archived boolean
+  is_retired boolean
+  condition varchar
+  status varchar
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table asset_makes {
+  id varchar [primary key]
+  tenant_id varchar
+  company_id varchar
+  name varchar
+  is_active boolean
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table asset_models {
+  id varchar [primary key]
+  tenant_id varchar
+  asset_make_id varchar
+  name varchar
+  is_active boolean
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table currencies {
+  id varchar [primary key]
+  name varchar
+  iso varchar
+  symbol varchar
+  is_active boolean
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table vendors {
+  id varchar [primary key]
+  tenant_id varchar
+  company_id varchar
+  name varchar
+  address varchar [null]
+  email varchar [null]
+  telephone varchar [null]
+  status varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table tags{
+  id varchar [primary key]
+  tenant_id varchar
+  company_id varchar
+  name varchar
+  status varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table taggables{
+  id varchar [primary key]
+  tag_id varchar
+  status varchar
+  taggable_type varchar
+  taggable_id varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table personnels{
+  id varchar [primary key]
+  tenant_id varchar
+  company_id varchar
+  user_id varchar [null]
+  first_name varchar
+  last_name varchar
+  email varchar
+  telephone varchar
+  office_id varchar
+  line_manager varchar
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table company_access{
+  id varchar [primary key]
+  company_id varchar
+  user_id varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table asset_checkouts{
+  id varchar [primary key]
+  tenant_id varchar
+  company_id varchar
+  checked_out_by varchar
+  receiver_type varchar
+  receiver_id varchar
+  status varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table asset_checkout_items{
+  id varchar [primary key]
+  asset_checkout_id varchar
+  asset_id varchar
+  reason varchar
+  comment varchar [null]
+  status varchar
+}
+
+Ref: "tenants"."id" < "users"."tenant_id"
+
+Ref: "tenants"."id" < "companies"."tenant_id"
+
+Ref: "tenants"."id" < "assets"."tenant_id"
+
+Ref: "companies"."id" < "assets"."company_id"
+
+Ref: "tenants"."id" < "offices"."tenant_id"
+
+Ref: "companies"."id" < "offices"."company_id"
+
+Ref: "offices"."id" < "assets"."office_id"
+
+Ref: "asset_makes"."id" < "assets"."asset_make_id"
+
+Ref: "tenants"."id" < "asset_makes"."tenant_id"
+
+Ref: "companies"."id" < "asset_makes"."company_id"
+
+Ref: "tenants"."id" < "asset_models"."tenant_id"
+
+Ref: "asset_models"."id" < "assets"."asset_model_id"
+
+Ref: "asset_makes"."id" < "asset_models"."asset_make_id"
+
+Ref: "currencies"."id" < "assets"."currency_id"
+
+Ref: "tenants"."id" < "vendors"."tenant_id"
+
+Ref: "companies"."id" < "vendors"."company_id"
+
+Ref: "vendors"."id" < "assets"."vendor_id"
+
+Ref: "tenants"."id" < "tags"."tenant_id"
+
+Ref: "companies"."id" < "tags"."company_id"
+
+Ref: "tags"."id" < "taggables"."tag_id"
+
+Ref: "tenants"."id" < "personnels"."tenant_id"
+
+Ref: "companies"."id" < "personnels"."company_id"
+
+Ref: "users"."id" < "personnels"."user_id"
+
+Ref: "users"."id" < "personnels"."line_manager"
+
+Ref: "companies"."id" < "company_access"."company_id"
+
+Ref: "users"."id" < "company_access"."user_id"
