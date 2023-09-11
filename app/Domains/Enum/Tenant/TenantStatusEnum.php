@@ -10,7 +10,4 @@ enum TenantStatusEnum: string
 
     case ACTIVE = 'ACTIVE';
     case INACTIVE = 'INACTIVE';
-
-
 }
-

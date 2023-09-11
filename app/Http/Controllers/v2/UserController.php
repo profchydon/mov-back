@@ -12,9 +12,8 @@ class UserController extends Controller
      */
     public function __construct(private readonly UserRepositoryInterface $userRepositoryInterface)
     {
-        
     }
-    
+
     public function register()
     {
         return 'create a user';

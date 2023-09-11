@@ -9,7 +9,6 @@ use App\Domains\Enum\User\UserStatusEnum;
  */
 class UserConstant
 {
-
     public const USER = 'user';
     public const ID = 'id';
     public const FIRST_NAME = 'first_name';
@@ -32,8 +31,6 @@ class UserConstant
 
     public const STATUS_ENUM = [
         UserStatusEnum::ACTIVE,
-        UserStatusEnum::INACTIVE
+        UserStatusEnum::INACTIVE,
     ];
-
-
 }

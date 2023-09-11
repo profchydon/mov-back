@@ -16,7 +16,7 @@ enum PermissionTypes: string
     case BILLING_CREATE_ACCESS = 'BillingCreateAccess';
 
     // Account
-    case ACCOUNT_FULL_ACCESS =  'AccountFullAccess';
+    case ACCOUNT_FULL_ACCESS = 'AccountFullAccess';
     case ACCOUNT_READ_ACCESS = 'AccountReadAccess';
     case ACCOUNT_CREATE_ACCESS = 'AccountCreateAccess';
 }
