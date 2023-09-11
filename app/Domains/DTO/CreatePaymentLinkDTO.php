@@ -15,12 +15,10 @@ final class CreatePaymentLinkDTO
 
     public function __construct()
     {
-        $this->currency = "NGN";
+        $this->currency = 'NGN';
         $this->tx_ref = uniqid('tx_ref_');
         $this->redirect_url = route('flutterwave.callback');
-
     }
-
 
     public function toArray(): array
     {
@@ -31,7 +29,6 @@ final class CreatePaymentLinkDTO
 
         return $values;
     }
-
 
     public function getTxRef(): string
     {
@@ -72,6 +69,7 @@ final class CreatePaymentLinkDTO
         if (!empty($currency)) {
             $this->currency = $currency;
         }
+
         return $this;
     }
 
@@ -85,15 +83,14 @@ final class CreatePaymentLinkDTO
         if (!empty($redirect_url)) {
             $this->redirect_url = $redirect_url;
         }
+
         return $this;
     }
-
 
     public function getMeta(): array
     {
         return $this->meta;
     }
-
 
     public function setMeta(array $meta): self
     {
@@ -102,22 +99,19 @@ final class CreatePaymentLinkDTO
         return $this;
     }
 
-
     public function getCustomer(): array
     {
         return $this->customer;
     }
-
 
     public function setCustomer(User $customer): self
     {
         $this->customer = [
             'email' => $customer->email,
             'phoneNumber' => $customer->phone,
-            'name' => "{$customer->first_name} {$customer->last_name}"
+            'name' => "{$customer->first_name} {$customer->last_name}",
         ];
 
         return $this;
     }
-
 }
