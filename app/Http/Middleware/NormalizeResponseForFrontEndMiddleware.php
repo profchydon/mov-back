@@ -3,16 +3,12 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class NormalizeResponseForFrontEndMiddleware
 {
-
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
@@ -20,7 +16,6 @@ class NormalizeResponseForFrontEndMiddleware
         $responseInCamelCase = $this->keysToCamelCase($response->getData(true));
 
         return $response->setData($responseInCamelCase);
-
     }
 
     private function keysToCamelCase($data)
@@ -33,6 +28,7 @@ class NormalizeResponseForFrontEndMiddleware
             $newKey = Str::camel($key);
             $result[$newKey] = $this->keysToCamelCase($value); // Recursively convert nested arrays
         }
+
         return $result;
     }
 }
