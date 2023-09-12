@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\Traits\CausesActivity;
+use App\Events\UserCreatedEvent;
+use App\Events\UserDeactivatedEvent;
+use App\Domains\Enum\UserStatusEnum;
 
 class User extends Authenticatable
 {
@@ -43,4 +46,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function booted()
+    {
+        static::created(function(self $model){
+            UserCreatedEvent::dispatch($model);
+        });
+
+        static::updated(function(self $model){
+            if($model->status == UserStatusEnum::DEACTIVATED){
+                UserDeactivatedEvent::dispatch($model);
+            }
+        });
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
 }

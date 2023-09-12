@@ -12,16 +12,18 @@ class EventTrackerService
 
     public function __construct()
     {
-        // class_alias('Segment', 'Analytics');
         Segment::init(env('SEGMENT_KEY'));
     }
 
 
-    public static function identify($user)
+    public static function identify(string $userId, array $traits)
     {
         Segment::init(env('SEGMENT_KEY'));
         Log::info("Dispatch Identify Event.");
-        Segment::identify($user);
+        Segment::identify(array(
+            "userId" => $userId,
+            "traits" => $traits
+          ));
     }
 
     public static function track(?string $user_id, ?string $event, ?array $properties)

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Enum\User;
+namespace App\Domains\Enum;
 
 use App\Traits\ListsEnumValues;
 
@@ -10,4 +10,5 @@ enum UserStatusEnum: string
 
     case ACTIVE = 'ACTIVE';
     case INACTIVE = 'INACTIVE';
+    case DEACTIVATED = 'DEACTIVATED';
 }
