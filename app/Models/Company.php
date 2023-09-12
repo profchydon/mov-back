@@ -2,27 +2,24 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\AssetConstant;
-use App\Domains\Enum\Asset\AssetAuctionStatusEnum;
-use App\Events\AssetStatusUpdatedEvent;
+use Ramsey\Uuid\Uuid;
 use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Domains\Constant\CompanyConstant;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ramsey\Uuid\Uuid;
+use App\Domains\Enum\Company\CompanyStatusEnum;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Company extends Model
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName, LogsActivity;
+    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
 
     public $incrementing = false;
 
     protected $keyType = 'string';
-
-    protected $with = ['image'];
 
     /**
      * The attributes that are mass assignable.
@@ -30,23 +27,15 @@ class Company extends Model
      * @var array<int, string>
      */
     protected $guarded = [
-        AssetConstant::ID,
+        CompanyConstant::ID,
     ];
-
-    /**
-     * Get the asset images that belongs to the asset.
-     */
-    public function assetImages()
-    {
-        return $this->hasMany(AssetImage::class);
-    }
 
     /**
      * Get the auction that owns the asset.
      */
-    public function auction()
+    public function tenant()
     {
-        return $this->belongsTo(Auction::class, AssetConstant::AUCTION_ID);
+        return $this->belongsTo(Tenant::class, CompanyConstant::TENANT_ID);
     }
 
     /**
@@ -55,9 +44,9 @@ class Company extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        AssetConstant::ID => 'string',
-        AssetConstant::COMPANY_ID => 'string',
-        AssetConstant::STATUS => AssetAuctionStatusEnum::class,
+        CompanyConstant::ID => 'string',
+        CompanyConstant::COMPANY_ID => 'string',
+        CompanyConstant::STATUS => CompanyStatusEnum::class,
     ];
 
     /**
@@ -78,41 +67,5 @@ class Company extends Model
     public function uniqueIds()
     {
         return ['id'];
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-        self::deleting(function ($asset) {
-            $asset->assetImages()->each(function ($asset_image) {
-                $asset_image->delete();
-            });
-        });
-
-        self::updated(function (self $asset) {
-            if ($asset->isDirty(AssetConstant::AUCTION_STATUS)) {
-                AssetStatusUpdatedEvent::dispatch($asset);
-            }
-        });
-    }
-
-    public function image()
-    {
-        return $this->morphMany(FileUpload::class, 'uploadable');
-    }
-
-    public function bids()
-    {
-        return $this->hasMany(Bid::class, 'asset_id');
-    }
-
-    public function highestBid(): HasOne
-    {
-        return $this->hasOne(Bid::class, 'asset_id')->orderBy('price', 'DESC');
-    }
-
-    public function available()
-    {
-        return $this->auction_status == AssetAuctionStatusEnum::NOT_SOLD->value;
     }
 }

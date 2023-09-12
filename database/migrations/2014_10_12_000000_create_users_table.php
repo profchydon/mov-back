@@ -3,6 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Domains\Constant\UserConstant;
+use App\Domains\Constant\TenantConstant;
+use App\Domains\Enum\User\UserStatusEnum;
+use App\Models\Tenant;
 
 return new class extends Migration {
     /**
@@ -11,13 +15,21 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->uuid(UserConstant::ID)->unique()->primary();
+            $table->string(UserConstant::FIRST_NAME);
+            $table->string(UserConstant::LAST_NAME);
+            $table->string(UserConstant::EMAIL)->unique();
+            $table->string(UserConstant::PASSWORD);
+            $table->string(UserConstant::PHONE)->nullable();
+            $table->string(UserConstant::TENANT_ID)->references(TenantConstant::ID)->on(Tenant::getTableName());
+            $table->string(UserConstant::COUNTRY_ID)->nullable();
+            $table->string(UserConstant::STAGE)->nullable();
+            $table->enum(UserConstant::STATUS, UserStatusEnum::values())->default(UserStatusEnum::ACTIVE->value);
+            $table->dateTimeTz(UserConstant::LAST_LOGIN)->nullable();
+            $table->dateTimeTz(UserConstant::EMAIL_VERIFIED_AT)->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

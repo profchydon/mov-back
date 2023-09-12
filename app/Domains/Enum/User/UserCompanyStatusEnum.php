@@ -4,7 +4,7 @@ namespace App\Domains\Enum\User;
 
 use App\Traits\ListsEnumValues;
 
-enum UserStatusEnum: string
+enum UserCompanyStatusEnum: string
 {
     use ListsEnumValues;
 
