@@ -6,6 +6,7 @@ use App\Domains\DTO\CreateCompanyDTO;
 use App\Domains\DTO\CreateTenantDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCompanyRequest;
+use App\Http\Requests\InviteUserRequest;
 use App\Http\Resources\CompanyResource;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
@@ -33,5 +34,10 @@ class CompanyController extends Controller
             'You have successfully created a company',
             new CompanyResource($company)
         );
+    }
+
+    public function inviteUsers(InviteUserRequest $request)
+    {
+        
     }
 }
