@@ -9,7 +9,8 @@ use App\Http\Requests\CreateCompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class CompanyController extends Controller
 {
@@ -17,7 +18,7 @@ class CompanyController extends Controller
     { 
     }
 
-    public function create(CreateCompanyRequest $request): CompanyResource
+    public function create(CreateCompanyRequest $request): JsonResponse
     {
         $tenantDto = new CreateTenantDTO($request->validated('name'));
         $tenant = $this->tenantRepositoryInterface->create($tenantDto);
@@ -27,6 +28,10 @@ class CompanyController extends Controller
 
         $company = $this->companyRepositoryInterface->create($companyDto);
 
-        return new CompanyResource($company);
+        return $this->response(
+            Response::HTTP_CREATED,
+            'You have successfully created a company',
+            new CompanyResource($company)
+        );
     }
 }
