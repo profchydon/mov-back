@@ -7,6 +7,7 @@ use App\Domains\Constant\UserConstant;
 use App\Domains\Constant\TenantConstant;
 use App\Domains\Enum\User\UserStatusEnum;
 use App\Models\Tenant;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration {
     /**
@@ -31,6 +32,15 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
         });
+
+
+        // Turn on RLS
+        // DB::statement('ALTER TABLE users ENABLE ROW LEVEL SECURITY;');
+
+        // // Restrict read and write actions so tenants can only see their rows
+        // // Cast the UUID value in tenant_id to match the type current_user returns
+        // // This policy implies a WITH CHECK that matches the USING clause
+        // DB::statement('CREATE POLICY tenant_user_isolation_policy ON users USING (tenant_id::TEXT = current_user);');
     }
 
     /**
