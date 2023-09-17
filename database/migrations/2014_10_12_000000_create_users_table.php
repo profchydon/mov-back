@@ -1,11 +1,14 @@
 <?php
 
+use App\Domains\Constant\CommonConstant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Domains\Constant\UserConstant;
 use App\Domains\Constant\TenantConstant;
+use App\Domains\Enum\User\UserStageEnum;
 use App\Domains\Enum\User\UserStatusEnum;
+use App\Models\Country;
 use App\Models\Tenant;
 use Illuminate\Support\Facades\DB;
 
@@ -20,11 +23,10 @@ return new class extends Migration {
             $table->string(UserConstant::FIRST_NAME);
             $table->string(UserConstant::LAST_NAME);
             $table->string(UserConstant::EMAIL)->unique();
-            $table->string(UserConstant::PASSWORD);
             $table->string(UserConstant::PHONE)->nullable();
             $table->string(UserConstant::TENANT_ID)->references(TenantConstant::ID)->on(Tenant::getTableName());
-            $table->string(UserConstant::COUNTRY_ID)->nullable();
-            $table->string(UserConstant::STAGE)->nullable();
+            $table->foreignIdFor(Country::class, UserConstant::COUNTRY_ID);
+            $table->enum(UserConstant::STAGE, UserStageEnum::values())->default(UserStageEnum::START->value);
             $table->enum(UserConstant::STATUS, UserStatusEnum::values())->default(UserStatusEnum::ACTIVE->value);
             $table->dateTimeTz(UserConstant::LAST_LOGIN)->nullable();
             $table->dateTimeTz(UserConstant::EMAIL_VERIFIED_AT)->nullable();

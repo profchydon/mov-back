@@ -2,6 +2,7 @@
 
 namespace App\Domains\Constant;
 
+use App\Domains\Enum\User\UserStageEnum;
 use App\Domains\Enum\User\UserStatusEnum;
 
 /**
@@ -35,5 +36,11 @@ class UserConstant
         UserStatusEnum::ACTIVE,
         UserStatusEnum::INACTIVE,
         UserStatusEnum::DEACTIVATED,
+    ];
+
+    public const STAGE_ENUM = [
+        UserStageEnum::START,
+        UserStageEnum::ASSET,
+        UserStageEnum::USER,
     ];
 }
