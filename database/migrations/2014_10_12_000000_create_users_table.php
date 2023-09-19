@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->string(UserConstant::FIRST_NAME);
             $table->string(UserConstant::LAST_NAME);
             $table->string(UserConstant::EMAIL)->unique();
-            $table->string(UserConstant::PASSWORD);
             $table->string(UserConstant::PHONE_CODE)->nullable();
             $table->string(UserConstant::PHONE)->nullable();
             $table->string(UserConstant::COUNTRY_ID)->nullable();

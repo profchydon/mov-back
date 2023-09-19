@@ -33,11 +33,11 @@ class UserController extends Controller
         }
 
         $user = $this->userRepositoryInterface->create($userDTO);
-
+        
         return $this->response(
             Response::HTTP_CREATED,
             'Account created successfully',
-            new UserResource($user->fresh()),
+            new UserResource($user),
         );
     }
 }
