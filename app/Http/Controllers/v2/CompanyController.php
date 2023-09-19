@@ -23,7 +23,7 @@ class CompanyController extends Controller
     {
         $tenantDto = new CreateTenantDTO($request->validated('name'));
         $tenant = $this->tenantRepositoryInterface->create($tenantDto);
-
+        
         $data = array_merge($request->all(), ['tenant_id' => $tenant->id]);
         $companyDto = CreateCompanyDTO::fromArray($data);
 
