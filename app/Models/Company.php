@@ -9,6 +9,7 @@ use App\Domains\Constant\CompanyConstant;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Domains\Enum\Company\CompanyStatusEnum;
+use App\Events\Company\CompanyCreatedEvent;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -67,5 +68,12 @@ class Company extends Model
     public function uniqueIds()
     {
         return ['id'];
+    }
+
+    protected static function booted()
+    {
+        static::created(function(self $model){
+            CompanyCreatedEvent::dispatch($model);
+        });
     }
 }
