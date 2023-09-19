@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Enum\Bid;
+namespace App\Domains\Enum\Company;
 
 use App\Traits\ListsEnumValues;
 
@@ -8,7 +8,6 @@ enum CompanyStatusEnum: string
 {
     use ListsEnumValues;
 
-    case ACCEPTED = 'accepted';
-    case WON = 'won';
-    case FORFEITED = 'forfeited';
+    case ACTIVE = 'ACTIVE';
+    case INACTIVE = 'INACTIVE';
 }
