@@ -9,6 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Events\UserDeactivatedEvent;
 use Illuminate\Notifications\Notifiable;
 use App\Domains\Enum\User\UserStatusEnum;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +18,7 @@ use Ramsey\Uuid\Uuid;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, GetsTableName;
+    use HasUuids, HasApiTokens, HasFactory, Notifiable, GetsTableName;
 
     /**
      * The attributes that are mass assignable.
@@ -46,10 +47,28 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Generate a new UUID for the model.
+     *
+     * @return string
+     */
+    public function newUniqueId()
+    {
+        return (string) Uuid::uuid4();
+    }
+
+    /**
+     * Get the columns that should receive a unique identifier.
+     *
+     * @return array
+     */
+    public function uniqueIds()
+    {
+        return ['id'];
+    }
+    
     protected static function booted()
     {
-        parent::boot();
-
         static::created(function(self $model){
             // UserCreatedEvent::dispatch($model);
         });
@@ -58,10 +77,6 @@ class User extends Authenticatable
             if($model->status == UserStatusEnum::DEACTIVATED){
                 // UserDeactivatedEvent::dispatch($model);
             }
-        });
-
-        self::creating(function ($model) {
-            $model->id = (string) Uuid::uuid4();
         });
     }
 

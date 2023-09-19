@@ -9,6 +9,8 @@ class CreateCompanyDTO
         public readonly string $size,
         public readonly string $industry,
         public readonly string $address,
+        public readonly string $country,
+        public readonly string $state,
         public readonly string $tenant_id,
     )
     {}
@@ -20,6 +22,8 @@ class CreateCompanyDTO
             $data['size'],
             $data['industry'],
             $data['address'],
+            $data['country'],
+            $data['state'],
             $data['tenant_id']
         );
     }

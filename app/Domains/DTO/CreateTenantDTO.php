@@ -6,8 +6,8 @@ use App\Domains\Enum\Tenant\TenantStatusEnum;
 class CreateTenantDTO
 {
     public function __construct(
-        public readonly $name,
-        public readonly $status = TenantStatusEnum::ACTIVE->value
+        public readonly string $name,
+        public readonly string $status = TenantStatusEnum::ACTIVE->value
     )
     { 
     }

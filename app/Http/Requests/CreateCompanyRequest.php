@@ -26,6 +26,8 @@ class CreateCompanyRequest extends FormRequest
             'size' => 'required|string',
             'industry' => 'required|string',
             'address' => 'required|string',
+            'country' => 'required|string',
+            'state' => 'required|string',
         ];
     }
 }

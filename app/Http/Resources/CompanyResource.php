@@ -25,6 +25,8 @@ class CompanyResource extends JsonResource
             'name' => $company->name,
             'size' => $company->size,
             'address' => $company->address,
+            'country' => $company->country,
+            'state' => $company->state,
             'tenant' => new TenantResource($this->whenLoaded('tenant')),
         ];
     }

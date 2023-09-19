@@ -21,7 +21,7 @@ class CompanyController extends Controller
 
     public function create(CreateCompanyRequest $request): JsonResponse
     {
-        $tenantDto = new CreateTenantDTO($request->validated('name'));
+        $tenantDto = new CreateTenantDTO($request->name);
         $tenant = $this->tenantRepositoryInterface->create($tenantDto);
 
         $data = array_merge($request->all(), ['tenant_id' => $tenant->id]);
