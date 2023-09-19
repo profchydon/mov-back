@@ -35,7 +35,7 @@ class SubscriptionActivatedListener
         // $add_ons = $subscription->addOns()->get();
 
         //Send email
-        // Mail::to('chidi.nkwocha@rayda.co')->queue(new SubscriptionActivationMail($subscription));
+        Mail::to('chidi.nkwocha@rayda.co')->queue(new SubscriptionActivationMail($subscription));
 
         $data = [
             'company' => $company,
