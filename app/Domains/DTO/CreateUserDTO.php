@@ -2,6 +2,8 @@
 
 namespace App\Domains\DTO;
 
+use App\Domains\Enum\User\UserAccountStageEnum;
+
 class CreateUserDTO
 {
     public function __construct(
@@ -11,6 +13,7 @@ class CreateUserDTO
         public readonly string $phone_code,
         public readonly string $phone,
         public readonly string $password,
+        public readonly string $stage = UserAccountStageEnum::VERIFICATION
     )
     {  
     }

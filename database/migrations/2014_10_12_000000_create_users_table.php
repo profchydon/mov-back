@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string(UserConstant::LAST_NAME);
             $table->string(UserConstant::EMAIL)->unique();
             $table->string(UserConstant::PASSWORD);
+            $table->string(UserConstant::PHONE_CODE)->nullable();
             $table->string(UserConstant::PHONE)->nullable();
             $table->string(UserConstant::TENANT_ID)->references(TenantConstant::ID)->on(Tenant::getTableName());
             $table->string(UserConstant::COUNTRY_ID)->nullable();
