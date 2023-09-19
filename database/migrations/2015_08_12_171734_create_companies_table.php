@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string(CompanyConstant::SIZE);
             $table->string(CompanyConstant::PHONE)->nullable();
             $table->string(CompanyConstant::INDUSTRY);
+            $table->string(CompanyConstant::ADDRESS);
             $table->string(CompanyConstant::COUNTRY);
             $table->string(CompanyConstant::STATE);
             $table->string(CompanyConstant::TENANT_ID)->unique()->references(TenantConstant::ID)->on(Tenant::getTableName());
