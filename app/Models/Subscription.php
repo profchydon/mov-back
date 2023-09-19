@@ -7,10 +7,13 @@ use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Model;
 use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
+use App\Events\Subscription\SubscriptionActivatedEvent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Subscription extends Model
 {
@@ -40,6 +43,30 @@ class Subscription extends Model
     ];
 
     /**
+     * Get the plan of this subscription
+     */
+    public function plan(): BelongsTo
+    {
+        return $this->belongsTo(Plan::class, SubscriptionConstant::PLAN_ID);
+    }
+
+     /**
+     * Get the company that owns this subscription
+     */
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, SubscriptionConstant::COMPANY_ID);
+    }
+
+    /**
+     * Get the addons for this subscription
+     */
+    public function addOns(): HasMany
+    {
+        return $this->hasMany(SubscriptionAddOn::class);
+    }
+
+    /**
      * Generate a new UUID for the model.
      *
      * @return string
@@ -59,9 +86,10 @@ class Subscription extends Model
         return ['id'];
     }
 
-    public static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
+        static::created(function(self $model){
+            SubscriptionActivatedEvent::dispatch($model);
+        });
     }
 }

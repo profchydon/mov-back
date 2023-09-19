@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\user;
+namespace App\Listeners\Subscription;
 
 use App\Mail\UserCreatedMail;
 use Illuminate\Support\Facades\Log;
@@ -9,7 +9,8 @@ use App\Services\v2\EventTrackerService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Domains\Enum\EventTrack\EventTrackEnum;
-use App\Events\SubscriptionActivatedEvent;
+use App\Events\Subscription\SubscriptionActivatedEvent;
+use App\Mail\SubscriptionActivationMail;
 
 class SubscriptionActivatedListener
 {
@@ -29,14 +30,23 @@ class SubscriptionActivatedListener
     {
 
         $subscription = $event->subscription;
+        $company = $subscription->company()->first();
+        $plan = $subscription->plan()->first();
+        // $add_ons = $subscription->addOns()->get();
 
-        //Send Welcome email
-        Mail::to($user->email)->queue(new UserCreatedMail($user));
+        //Send email
+        // Mail::to('chidi.nkwocha@rayda.co')->queue(new SubscriptionActivationMail($subscription));
+
+        $data = [
+            'company' => $company,
+            'plan' => $plan,
+            // 'add_ons' => $add_ons
+        ];
 
         //Trigger user created event
-        EventTrackerService::track($user->email, EventTrackEnum::USER_CREATED->value, (array) $user);
+        EventTrackerService::track('chidi.nkwocha@rayda.co', EventTrackEnum::SUBSCRIPTION_ACTIVATED->value, (array) $data);
 
-        Log::info("Info: User Account Created {$user}");
+        Log::info("Info: Subscription Activated {$subscription}");
 
         return true;
     }

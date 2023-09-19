@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Company;
+use App\Domains\Constant\PlanConstant;
+use App\Domains\Enum\Plan\PlanStatusEnum;
+use App\Models\Plan;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,17 +16,10 @@ class PlanSeeder extends Seeder
     public function run(): void
     {
 
-
-        $tenant = Company::limit(1)->get();
-
-        Company::create([
-            'name' => 'Rayda',
-            'size' => '1 - 10',
-            'phone' => '+234700000000',
-            'industry' => 'Financial technology',
-            'country' => 150,
-            'tenant_id' => $tenant[0]->id,
-            'status' => 'ACTIVE'
+        Plan::create([
+            PlanConstant::NAME => 'Premium Plan',
+            PlanConstant::TYPE => 'PAID',
+            PlanConstant::STATUS => PlanStatusEnum::ACTIVE->value,
         ]);
     }
 }

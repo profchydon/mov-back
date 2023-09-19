@@ -13,6 +13,7 @@ use App\Events\Company\CompanyCreatedEvent;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Company extends Model
 {
@@ -49,6 +50,14 @@ class Company extends Model
         CompanyConstant::COMPANY_ID => 'string',
         CompanyConstant::STATUS => CompanyStatusEnum::class,
     ];
+
+     /**
+     * Get the subscriptions for this company
+     */
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
 
     /**
      * Generate a new UUID for the model.

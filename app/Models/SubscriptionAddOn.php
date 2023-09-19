@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SubscriptionAddOn extends Model
 {
@@ -38,6 +40,22 @@ class SubscriptionAddOn extends Model
         SubscriptionAddOnConstant::ID => 'string',
         SubscriptionAddOnConstant::STATUS => SubscriptionAddOnStatusEnum::class,
     ];
+
+    /**
+     * Get the subscription tied to this add on
+     */
+    public function subscription(): BelongsTo
+    {
+        return $this->belongsTo(Subscription::class, SubscriptionAddOnConstant::SUBSCRIPTION_ID);
+    }
+
+    /**
+     * Get the feature tied to this add on
+     */
+    public function feature(): BelongsTo
+    {
+        return $this->belongsTo(Feature::class, SubscriptionAddOnConstant::FEATURE_ID);
+    }
 
     /**
      * Generate a new UUID for the model.

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Domains\Constant\TenantConstant;
+use App\Domains\Enum\Tenant\TenantStatusEnum;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Tenant;
@@ -15,9 +17,9 @@ class TenantSeeder extends Seeder
     {
         //
         Tenant::create([
-            'name' => 'Rayda',
-            'sub_domain' => 'rayda',
-            'status' => 'ACTIVE',
+            TenantConstant::NAME => 'Rayda',
+            TenantConstant::SUB_DOMAIN => 'rayda',
+            TenantConstant::STATUS => TenantStatusEnum::ACTIVE->value,
         ]);
     }
 }

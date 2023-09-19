@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Domains\Constant\CompanyConstant;
+use App\Domains\Enum\Company\CompanyStatusEnum;
 use App\Models\Company;
 use App\Models\Tenant;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -18,13 +20,13 @@ class CompanySeeder extends Seeder
         $tenant = Tenant::limit(1)->get();
 
         Company::create([
-            'name' => 'Rayda',
-            'size' => '1 - 10',
-            'phone' => '+234700000000',
-            'industry' => 'Financial technology',
-            'country' => 150,
-            'tenant_id' => $tenant[0]->id,
-            'status' => 'ACTIVE'
+            CompanyConstant::NAME => 'Rayda',
+            CompanyConstant::SIZE => '1 - 10',
+            CompanyConstant::PHONE => '+234700000000',
+            CompanyConstant::INDUSTRY => 'Financial technology',
+            CompanyConstant::COUNTRY => 150,
+            CompanyConstant::TENANT_ID => $tenant[0]->id,
+            CompanyConstant::STATUS => CompanyStatusEnum::ACTIVE->value
         ]);
     }
 }

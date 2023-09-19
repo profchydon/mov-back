@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace App\Events\Subscription;
 
 use App\Models\Subscription;
 use Illuminate\Broadcasting\Channel;

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Plan extends Model
 {
@@ -38,6 +39,14 @@ class Plan extends Model
         PlanConstant::ID => 'string',
         PlanConstant::STATUS => PlanStatusEnum::class,
     ];
+
+    /**
+     * Get the subscriptions for this plan
+     */
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
 
     /**
      * Generate a new UUID for the model.
