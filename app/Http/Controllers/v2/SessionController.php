@@ -32,7 +32,7 @@ class SessionController extends Controller
             $response["verifier"]
         );
 
-        return response(['redirect_url' => $redirectURI]);
+        return response()->json(['redirect_url' => $redirectURI]);
     }
 
     public function confirmation(Request $request)
@@ -46,6 +46,6 @@ class SessionController extends Controller
 
         $response = Http::get($confirmationUrl);
 
-        return response($response);
+        return response()->json($response);
     }
 }
