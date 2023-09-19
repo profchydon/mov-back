@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use App\Domains\Enum\Asset\AssetAuctionStatusEnum;
-use App\Events\AssetStatusUpdatedEvent;
 use Ramsey\Uuid\Uuid;
 use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\Constant\AssetConstant;
+use App\Domains\Constant\TenantConstant;
+use App\Domains\Enum\Tenant\TenantStatusEnum;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Tenant extends Model
 {
@@ -26,26 +25,9 @@ class Tenant extends Model
      *
      * @var array<int, string>
      */
-
     protected $guarded = [
-        AssetConstant::ID
+        TenantConstant::ID,
     ];
-
-    /**
-     * Get the asset images that belongs to the asset
-     */
-    public function assetImages()
-    {
-        return $this->hasMany(AssetImage::class);
-    }
-
-    /**
-     * Get the auction that owns the asset
-     */
-    public function auction()
-    {
-        return $this->belongsTo(Auction::class, AssetConstant::AUCTION_ID);
-    }
 
     /**
      * The attributes that should be cast.
@@ -53,9 +35,8 @@ class Tenant extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        AssetConstant::ID => 'string',
-        AssetConstant::COMPANY_ID => 'string',
-        AssetConstant::STATUS => AssetAuctionStatusEnum::class
+        TenantConstant::ID => 'string',
+        TenantConstant::STATUS => TenantStatusEnum::class,
     ];
 
     /**
@@ -65,7 +46,7 @@ class Tenant extends Model
      */
     public function newUniqueId()
     {
-        return (string)Uuid::uuid4();
+        return (string) Uuid::uuid4();
     }
 
     /**
@@ -81,36 +62,6 @@ class Tenant extends Model
     public static function boot()
     {
         parent::boot();
-        self::deleting(function ($asset) {
-            $asset->assetImages()->each(function ($asset_image) {
-                $asset_image->delete();
-            });
-        });
 
-        self::updated(function (self $asset) {
-            if ($asset->isDirty(AssetConstant::AUCTION_STATUS)) {
-                AssetStatusUpdatedEvent::dispatch($asset);
-            }
-        });
-    }
-
-    public function image()
-    {
-        return $this->morphMany(FileUpload::class, 'uploadable');
-    }
-
-    public function bids()
-    {
-        return $this->hasMany(Bid::class, 'asset_id');
-    }
-
-    public function highestBid(): HasOne
-    {
-        return $this->hasOne(Bid::class, 'asset_id')->orderBy('price', 'DESC');
-    }
-
-    public function available()
-    {
-        return $this->auction_status == AssetAuctionStatusEnum::NOT_SOLD->value;
     }
 }

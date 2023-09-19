@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use App\Domains\Constant\UserCompanyConstant;
+use App\Domains\Enum\User\UserCompanyStatusEnum;
+use App\Models\Company;
+use App\Models\Tenant;
+use App\Models\User;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('user_companies', function (Blueprint $table) {
+            $table->uuid(UserCompanyConstant::ID)->unique()->primary();
+            $table->string(UserCompanyConstant::TENANT_ID)->references(UserCompanyConstant::ID)->on(Tenant::getTableName());
+            $table->string(UserCompanyConstant::COMPANY_ID)->references(UserCompanyConstant::ID)->on(Company::getTableName())->onDelete('cascade');
+            $table->string(UserCompanyConstant::USER_ID)->references(UserCompanyConstant::ID)->on(User::getTableName())->onDelete('cascade');
+            $table->enum(UserCompanyConstant::STATUS, UserCompanyStatusEnum::values())->default(UserCompanyStatusEnum::ACTIVE->value);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('user_companies');
+    }
+};
