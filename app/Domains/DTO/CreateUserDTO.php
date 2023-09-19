@@ -13,7 +13,7 @@ class CreateUserDTO
         public readonly string $phone_code,
         public readonly string $phone,
         public readonly string $password,
-        public readonly string $stage = UserAccountStageEnum::VERIFICATION
+        public readonly string $stage = UserAccountStageEnum::VERIFICATION->value
     )
     {  
     }

@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Repositories\AssetRepository;
-use App\Repositories\AssetRepositoryInterface;
+use App\Repositories\Contracts\AssetRepositoryInterface;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\UserRepository;
-use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

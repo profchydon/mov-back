@@ -22,7 +22,6 @@ return new class extends Migration {
             $table->string(UserConstant::PASSWORD);
             $table->string(UserConstant::PHONE_CODE)->nullable();
             $table->string(UserConstant::PHONE)->nullable();
-            $table->string(UserConstant::TENANT_ID)->references(TenantConstant::ID)->on(Tenant::getTableName());
             $table->string(UserConstant::COUNTRY_ID)->nullable();
             $table->string(UserConstant::STAGE)->nullable();
             $table->enum(UserConstant::STATUS, UserStatusEnum::values())->default(UserStatusEnum::ACTIVE->value);

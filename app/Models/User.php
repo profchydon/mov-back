@@ -13,6 +13,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Ramsey\Uuid\Uuid;
 
 class User extends Authenticatable
 {
@@ -47,14 +48,20 @@ class User extends Authenticatable
 
     protected static function booted()
     {
+        parent::boot();
+
         static::created(function(self $model){
-            UserCreatedEvent::dispatch($model);
+            // UserCreatedEvent::dispatch($model);
         });
 
         static::updated(function(self $model){
             if($model->status == UserStatusEnum::DEACTIVATED){
-                UserDeactivatedEvent::dispatch($model);
+                // UserDeactivatedEvent::dispatch($model);
             }
+        });
+
+        self::creating(function ($model) {
+            $model->id = (string) Uuid::uuid4();
         });
     }
 
