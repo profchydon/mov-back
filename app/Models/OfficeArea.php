@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Office extends Model
+class OfficeArea extends Model
 {
     use HasUuids, HasFactory, SoftDeletes, GetsTableName;
 

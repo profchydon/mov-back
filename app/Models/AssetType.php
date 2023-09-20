@@ -5,14 +5,14 @@ namespace App\Models;
 use Ramsey\Uuid\Uuid;
 use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\Constant\OfficeConstant;
-use App\Domains\Enum\Office\OfficeStatusEnum;
+use App\Domains\Constant\AssetConstant;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Office extends Model
+class AssetType extends Model
 {
     use HasUuids, HasFactory, SoftDeletes, GetsTableName;
 
@@ -26,7 +26,7 @@ class Office extends Model
      * @var array<int, string>
      */
     protected $guarded = [
-        OfficeConstant::ID,
+        AssetConstant::ID,
     ];
 
     /**
@@ -35,8 +35,8 @@ class Office extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        OfficeConstant::ID => 'string',
-        OfficeConstant::STATUS => OfficeStatusEnum::class,
+        AssetConstant::ID => 'string',
+        AssetConstant::STATUS => AssetStatusEnum::class,
     ];
 
     /**

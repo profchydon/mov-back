@@ -2,7 +2,7 @@
 
 namespace App\Domains\Constant;
 
-use App\Domains\Enum\Company\OfficeStatusEnum;
+use App\Domains\Enum\Office\OfficeStatusEnum;
 
 class OfficeConstant
 {

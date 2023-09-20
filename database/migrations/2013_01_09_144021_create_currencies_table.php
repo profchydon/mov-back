@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create('currencies', function (Blueprint $table) {
             $table->bigIncrements(CurrencyConstant::ID)->unique();
             $table->string(CurrencyConstant::NAME);
-            $table->string(CurrencyConstant::CODE);
+            $table->string(CurrencyConstant::CODE)->unique();
             $table->string(CurrencyConstant::SYMBOL);
             $table->enum(CurrencyConstant::STATUS, CurrencyStatusEnum::values())->default(CurrencyStatusEnum::INACTIVE->value);
             $table->timestamps();
