@@ -3,6 +3,7 @@
 namespace App\Domains\Constant;
 
 use App\Domains\Enum\User\UserAccountStageEnum;
+use App\Domains\Enum\User\UserStageEnum;
 use App\Domains\Enum\User\UserStatusEnum;
 
 /**

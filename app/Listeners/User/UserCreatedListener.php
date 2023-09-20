@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\user;
 
 use App\Events\UserCreatedEvent;
 use App\Mail\UserCreatedMail;
@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Domains\Enum\EventTrack\EventTrackEnum;
 
-class UserDeactivatedListener
+class UserCreatedListener
 {
 
     /**
@@ -34,9 +34,9 @@ class UserDeactivatedListener
         Mail::to($user->email)->queue(new UserCreatedMail($user));
 
         //Trigger user created event
-        // EventTrackerService::track($user->email, EventTrackEnum::USER_CREATED->value, (array) $user);
+        EventTrackerService::track($user->email, EventTrackEnum::USER_CREATED->value, (array) $user);
 
-        Log::info("Info: User Account Deactivated {$user}");
+        Log::info("Info: User Account Created {$user}");
 
         return true;
     }

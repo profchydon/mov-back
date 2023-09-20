@@ -21,7 +21,7 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->uuid(CompanyConstant::ID)->unique()->primary();
             $table->string(CompanyConstant::NAME);
-            $table->string(CompanyConstant::SIZE);
+            $table->string(CompanyConstant::SIZE)->nullable();
             $table->string(CompanyConstant::PHONE)->nullable();
             $table->string(CompanyConstant::INDUSTRY);
             $table->string(CompanyConstant::ADDRESS);
