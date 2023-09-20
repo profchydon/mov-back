@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCompanyRequest;
 use App\Http\Requests\InviteUserRequest;
 use App\Http\Resources\CompanyResource;
-use App\Models\User;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
