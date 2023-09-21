@@ -1,0 +1,25 @@
+name: Essential
+description: Advanced managing of personnel and vendors
+preceding_plan_name: Free
+offers:
+  - Up to 1000 assets
+  - Up to 2 insurance policies
+  - Manage Personnel
+  - Workflow Builder
+  - Up to 3 users
+  - Manage vendor
+  - API Access
+  - Personalized Service
+prices:
+  - currency_code: NGN
+    billing_cycle: monthly
+    amount: 8000
+  - currency_code: USD
+    billing_cycle: monthly
+    amount: 8
+  - currency: NGN
+    billing_cycle: yearly
+    amount: 50000
+  - currency: USD
+    billing_cycle: yearly
+    amount: 500

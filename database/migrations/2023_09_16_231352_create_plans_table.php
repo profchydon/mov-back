@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->uuid(PlanConstant::ID)->unique()->primary();
             $table->string(PlanConstant::NAME)->unique();
-            $table->string(PlanConstant::TYPE);
+            $table->string(PlanConstant::DESCRIPTION);
+            $table->string(PlanConstant::PRECEDING_PLAN_NAME)->index()->nullable();
+            $table->json(PlanConstant::OFFERS);
             $table->enum(PlanConstant::STATUS, PlanStatusEnum::values())->default(PlanStatusEnum::ACTIVE->value);
             $table->timestamps();
             $table->softDeletes();
