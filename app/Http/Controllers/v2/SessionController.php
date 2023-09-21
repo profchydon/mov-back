@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\v2;
+namespace App\Http\Controllers\V2;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,7 +10,7 @@ class SessionController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     public function authorization()
@@ -21,9 +21,9 @@ class SessionController extends Controller
         $redirectUrl = getenv("REDIRECT_URL");
 
         $authorizationUrl = sprintf("%s/s/authorization?client_id=%s&client_secret=%s", $ssoUrl, $clientId, $clientSecret);
-                    
+
         $response = Http::get($authorizationUrl);
-                    
+
         $redirectURI = sprintf(
             "%s/login?authorization_token=%s&callback_url=%s&client_id=%s",
             $ssoUrl,

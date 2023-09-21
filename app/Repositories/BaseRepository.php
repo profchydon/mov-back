@@ -2,8 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Traits\DTOToArray;
+
 abstract class BaseRepository
 {
+    use DTOToArray;
+
     protected $model;
     /**
      * @var array

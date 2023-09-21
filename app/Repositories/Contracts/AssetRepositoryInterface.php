@@ -2,9 +2,12 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Models\Company;
+use App\Models\CompanyUser;
+use App\Models\Asset;
+
 interface AssetRepositoryInterface extends BaseRepositoryInterface
 {
-    function getCheckouts();
+    public function create($data): Asset;
 
-    function getArchived();
 }
