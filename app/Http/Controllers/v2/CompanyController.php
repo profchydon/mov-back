@@ -20,45 +20,45 @@ use Illuminate\Http\Response;
 class CompanyController extends Controller
 {
     public function __construct(
-        private readonly TenantRepositoryInterface $tenantRepositoryInterface, 
-        private readonly CompanyRepositoryInterface $companyRepositoryInterface,
-        private readonly UserRepositoryInterface $userRepositoryInterface,
-        private readonly UserCompanyRepositoryInterface $userCompanyRepositoryInterface
+        private readonly TenantRepositoryInterface $tenantRepository, 
+        private readonly CompanyRepositoryInterface $companyRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserCompanyRepositoryInterface $userCompanyRepository
     )
     { 
     }
 
     public function create(CreateCompanyRequest $request): JsonResponse
     {
-        $user = $this->userRepositoryInterface->first('id', '84b1e376-209b-4040-9be1-b41938ee1cb4'); //this is only temporary till we finish up auth
+        $user = $this->userRepository->first('id', '9a2fc736-acf2-483c-9eeb-b4c0725da1aa'); //this is only temporary till we finish up auth
 
         if($user->stage != UserAccountStageEnum::COMPANY_DETAILS->value){
             return $this->error(Response::HTTP_BAD_REQUEST, 'Make sure you complete previous steps');
         }
 
         $tenantDto = new CreateTenantDTO($request->name);
-        $tenant = $this->tenantRepositoryInterface->create($tenantDto);
+        $tenant = $this->tenantRepository->create($tenantDto);
 
         $data = array_merge($request->all(), ['tenant_id' => $tenant->id]);
         $companyDto = CreateCompanyDTO::fromArray($data);
         
-        $company = $this->companyRepositoryInterface->create($companyDto);
+        $company = $this->companyRepository->create($companyDto);
 
-        $this->userCompanyRepositoryInterface->create([
+        $this->userCompanyRepository->create([
             'tenant_id' => $tenant->id,
             'company_id' => $company->id,
             'user_id' => $user->id,
             'status' => UserCompanyStatusEnum::ACTIVE->value
         ]);
 
-        $this->userRepositoryInterface->updateById($user->id, [
+        $this->userRepository->updateById($user->id, [
             'stage' => UserAccountStageEnum::SUBSCRIPTION_PLAN->value
             ]);
 
         return $this->response(
             Response::HTTP_CREATED,
             'You have successfully created a company',
-            new CompanyResource($company)
+            $company
         );
     }
 

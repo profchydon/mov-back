@@ -2,9 +2,10 @@
 namespace App\Services\v2;
 
 use App\Domains\DTO\CreateUserDTO;
+use App\Services\Contracts\SsoServiceInterface;
 use Illuminate\Support\Facades\Http;
 
-class SsoService
+class SsoService implements SsoServiceInterface
 {
 
     public function createUser(CreateUserDTO $createUserDTO)
