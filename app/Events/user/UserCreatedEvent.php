@@ -25,6 +25,6 @@ class UserCreatedEvent implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new PrivateChannel('user');
+        return new PrivateChannel('channel-name');
     }
 }
