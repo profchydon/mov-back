@@ -1,7 +1,10 @@
 <?php
 
+use App\Domains\Constant\CommonConstant;
 use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\Enum\User\UserInvitationStatusEnum;
+use App\Models\Company;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,8 +19,10 @@ return new class extends Migration
         Schema::create('user_invitations', function (Blueprint $table) {
             $table->uuid(UserInvitationConstant::ID)->unique()->primary();
             $table->string(UserInvitationConstant::EMAIL);
-            $table->bigInteger(UserInvitationConstant::ROLE)->references('id')->on('roles');;
+            $table->bigInteger(UserInvitationConstant::ROLE_ID)->references('id')->on('roles');;
             $table->string(UserInvitationConstant::CODE);
+            $table->string(UserInvitationConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName())->onDelete('cascade');
+            $table->string(UserInvitationConstant::INVITED_BY)->references(CommonConstant::ID)->on(User::getTableName())->onDelete('cascade');
             $table->string(UserInvitationConstant::STATUS)->default(UserInvitationStatusEnum::PENDING->value);
             $table->timestamps();
         });

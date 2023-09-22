@@ -7,9 +7,11 @@ use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCompanyRequest;
 use App\Http\Requests\InviteUserRequest;
+use App\Models\Company;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
+use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -20,14 +22,15 @@ class CompanyController extends Controller
         private readonly TenantRepositoryInterface $tenantRepository, 
         private readonly CompanyRepositoryInterface $companyRepository,
         private readonly UserRepositoryInterface $userRepository,
-        private readonly UserCompanyRepositoryInterface $userCompanyRepository
+        private readonly UserCompanyRepositoryInterface $userCompanyRepository,
+        private readonly UserInvitationRepositoryInterface $userInvitationRepository
     )
     { 
     }
 
     public function create(CreateCompanyRequest $request): JsonResponse
     {
-        $user = $this->userRepository->first('id', '9a2fc736-acf2-483c-9eeb-b4c0725da1aa'); //this is only temporary till we finish up auth
+        $user = $this->userRepository->first('id', '9a320b0d-cb24-4cf9-b6de-f77407fde3ae'); //this is only temporary till we finish up auth
 
         if($user->stage != UserStageEnum::COMPANY_DETAILS->value){
             return $this->error(Response::HTTP_BAD_REQUEST, 'Make sure you complete previous steps');
@@ -47,7 +50,7 @@ class CompanyController extends Controller
         ]);
 
         $this->userRepository->updateById($user->id, [
-            'stage' => UserStageEnum::SUBSCRIPTION_PLAN->value
+            'stage' => UserStageEnum::USERS->value
             ]);
 
         return $this->response(
@@ -57,8 +60,20 @@ class CompanyController extends Controller
         );
     }
 
-    public function inviteUsers(InviteUserRequest $request)
+    public function inviteCompanyUsers(InviteUserRequest $request, Company $company)
     {
-        
+        $user = $this->userRepository->first('id', '9a320b0d-cb24-4cf9-b6de-f77407fde3ae'); //this is only temporary till we finish up auth
+
+        if($user->stage != UserStageEnum::USERS->value){
+            return $this->error(Response::HTTP_BAD_REQUEST, 'Make sure you complete previous steps');
+        }
+
+        $DTOs = $request->getInvitationData($company->id, $user->id);
+        $this->userInvitationRepository->inviteCompanyUsers($DTOs);
+
+        return $this->response(
+            Response::HTTP_CREATED,
+            'You have successfully invited users',
+        );
     }
 }
