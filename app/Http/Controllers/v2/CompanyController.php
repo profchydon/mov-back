@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\v2;
 
-use App\Domains\Enum\User\UserAccountStageEnum;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
+use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCompanyRequest;
 use App\Http\Requests\InviteUserRequest;
@@ -29,7 +29,7 @@ class CompanyController extends Controller
     {
         $user = $this->userRepository->first('id', '9a2fc736-acf2-483c-9eeb-b4c0725da1aa'); //this is only temporary till we finish up auth
 
-        if($user->stage != UserAccountStageEnum::COMPANY_DETAILS->value){
+        if($user->stage != UserStageEnum::COMPANY_DETAILS->value){
             return $this->error(Response::HTTP_BAD_REQUEST, 'Make sure you complete previous steps');
         }
 
@@ -47,7 +47,7 @@ class CompanyController extends Controller
         ]);
 
         $this->userRepository->updateById($user->id, [
-            'stage' => UserAccountStageEnum::SUBSCRIPTION_PLAN->value
+            'stage' => UserStageEnum::SUBSCRIPTION_PLAN->value
             ]);
 
         return $this->response(

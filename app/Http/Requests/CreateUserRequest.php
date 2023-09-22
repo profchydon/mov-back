@@ -27,8 +27,8 @@ class CreateUserRequest extends FormRequest
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email',
-            'phone_code' => 'required|string',
             'phone' => 'required|string',
+            'country_id' => 'required|string',
             'password' => Password::min(8)->letters()->mixedCase()->numbers()->symbols(),
         ];
     }
@@ -39,7 +39,7 @@ class CreateUserRequest extends FormRequest
         $dto->setFirstName($this->first_name)
             ->setLastName($this->last_name)
             ->setEmail($this->email)
-            ->setPhoneCode($this->phone_code)
+            ->setCountryId($this->country_id)
             ->setPhone($this->phone)
             ->setPassword($this->password);
 

@@ -2,7 +2,7 @@
 
 namespace App\Domains\DTO;
 
-use App\Domains\Enum\User\UserAccountStageEnum;
+use App\Domains\Enum\User\UserStageEnum;
 use App\Traits\DTOToArray;
 
 class CreateUserDTO
@@ -12,10 +12,10 @@ class CreateUserDTO
     private string $first_name;
     private string $last_name;
     private string $email;
-    private string $phone_code;
     private string $phone;
+    private string $country_id;
     private string $password;
-    private string $stage = UserAccountStageEnum::VERIFICATION->value;
+    private string $stage = UserStageEnum::VERIFICATION->value;
 
     public function setFirstName(string $first_name){
         $this->first_name = $first_name;
@@ -44,13 +44,13 @@ class CreateUserDTO
         return $this->email;
     }
 
-    public function setPhoneCode(string $phone_code){
-        $this->phone_code = $phone_code;
+    public function setCountryId(string $country_id){
+        $this->country_id = $country_id;
         return $this;
     }
 
-    public function getPhoneCode(){
-        return $this->phone_code;
+    public function getCountryId(){
+        return $this->country_id;
     }
 
     public function setPhone(string $phone){
