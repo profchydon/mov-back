@@ -10,7 +10,7 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 
 # Install php extensions
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions mbstring pdo_psql pdo_mysql zip exif pcntl gd memcached
+    install-php-extensions mbstring pdo_mysql zip exif pcntl gd memcached
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -26,7 +26,10 @@ RUN apt-get update && apt-get install -y \
     curl \
     lua-zlib-dev \
     libmemcached-dev \
-    nginx
+    nginx \
+    php8.1-pgsql php8.1-sqlite3 php8.1-gd \
+    php8.1-curl \
+    php-pgsql
 
 # Install supervisor
 RUN apt-get install -y supervisor
