@@ -27,8 +27,6 @@ RUN apt-get update && apt-get install -y \
     lua-zlib-dev \
     libmemcached-dev \
     nginx \
-    php8.1-pgsql php8.1-sqlite3 php8.1-gd \
-    php8.1-curl \
     php-pgsql
 
 # Install supervisor
