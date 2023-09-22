@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Domains\DTO\CreateUserDTO;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
@@ -30,5 +31,18 @@ class CreateUserRequest extends FormRequest
             'phone' => 'required|string',
             'password' => Password::min(8)->letters()->mixedCase()->numbers()->symbols(),
         ];
+    }
+
+    public function getUserDTO(): CreateUserDTO
+    {
+        $dto = new CreateUserDTO();
+        $dto->setFirstName($this->first_name)
+            ->setLastName($this->last_name)
+            ->setEmail($this->email)
+            ->setPhoneCode($this->phone_code)
+            ->setPhone($this->phone)
+            ->setPassword($this->password);
+
+        return $dto;
     }
 }

@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\v2;
 
-use App\Domains\DTO\CreateCompanyDTO;
-use App\Domains\DTO\CreateTenantDTO;
 use App\Domains\Enum\User\UserAccountStageEnum;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCompanyRequest;
 use App\Http\Requests\InviteUserRequest;
-use App\Http\Resources\CompanyResource;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
@@ -36,13 +33,11 @@ class CompanyController extends Controller
             return $this->error(Response::HTTP_BAD_REQUEST, 'Make sure you complete previous steps');
         }
 
-        $tenantDto = new CreateTenantDTO($request->name);
-        $tenant = $this->tenantRepository->create($tenantDto);
+        $tenant = $this->tenantRepository->create($request->getTenantDTO()->toArray());
 
-        $data = array_merge($request->all(), ['tenant_id' => $tenant->id]);
-        $companyDto = CreateCompanyDTO::fromArray($data);
+        $companyDto = $request->getCompanyDTO()->setTenantId($tenant->id);
         
-        $company = $this->companyRepository->create($companyDto);
+        $company = $this->companyRepository->create($companyDto->toArray());
 
         $this->userCompanyRepository->create([
             'tenant_id' => $tenant->id,

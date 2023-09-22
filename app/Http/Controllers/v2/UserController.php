@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\v2;
 
-use App\Domains\DTO\CreateUserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
-use App\Http\Resources\UserResource;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Contracts\SsoServiceInterface;
 use Illuminate\Http\Response;
@@ -24,7 +22,7 @@ class UserController extends Controller
 
     public function register(CreateUserRequest $request)
     {
-        $userDTO = CreateUserDTO::fromArray($request->all());
+        $userDTO = $request->getUserDTO();
 
         $resp = $this->ssoService->createUser($userDTO);
 
@@ -32,7 +30,7 @@ class UserController extends Controller
             return $this->error(Response::HTTP_BAD_REQUEST, $resp->json()['message']);
         }
 
-        $user = $this->userRepository->create($userDTO);
+        $user = $this->userRepository->create($userDTO->toArray());
         
         return $this->response(
             Response::HTTP_CREATED,

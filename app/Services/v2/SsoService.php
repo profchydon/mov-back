@@ -10,17 +10,17 @@ class SsoService implements SsoServiceInterface
 
     public function createUser(CreateUserDTO $createUserDTO)
     {
-        $url = sprintf('%s/v1/sessions/register', env('SSO_URL'));
+        $url = sprintf('%s/api/oauth/register', env('SSO_URL'));
 
         $resp = Http::post($url, [
             'user' =>[
-                "first_name" => $createUserDTO->first_name,
-                "last_name" => $createUserDTO->last_name,
-                "email" => $createUserDTO->email,
-                "password" => $createUserDTO->password
+                "first_name" => $createUserDTO->getFirstName(),
+                "last_name" => $createUserDTO->getLastName(),
+                "email" => $createUserDTO->getEmail(),
+                "password" => $createUserDTO->getPassword()
             ],
             'business' => [
-                'phone_number' => $createUserDTO->phone
+                'phone_number' => $createUserDTO->getPhone()
             ]
         ]);
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Domains\DTO\CreateCompanyDTO;
+use App\Domains\DTO\CreateTenantDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateCompanyRequest extends FormRequest
@@ -29,5 +31,26 @@ class CreateCompanyRequest extends FormRequest
             'country' => 'required|string',
             'state' => 'required|string',
         ];
+    }
+
+    public function getCompanyDTO(): CreateCompanyDTO
+    {
+        $dto = new CreateCompanyDTO();
+        $dto->setName($this->name)
+            ->setSize($this->size)
+            ->setIndustry($this->industry)
+            ->setAddress($this->address)
+            ->setCountry($this->country)
+            ->setState($this->state);
+
+        return $dto;
+    }
+
+    public function getTenantDTO(): CreateTenantDTO
+    {
+        $dto = new CreateTenantDTO();
+        $dto->setName($this->name);
+
+        return $dto;
     }
 }
