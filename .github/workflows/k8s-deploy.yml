@@ -42,7 +42,39 @@ jobs:
       #   if: always() # Pick up events even if the job fails or is canceled.
 
   
-  # deploy-to-dev:
+  deploy-to-dev:
+    name: Update the Deployment dev
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-push-to-dev
+    steps:
+      - name: Checkout the Deployment Repository
+        run: |
+          git clone https://chidichukwuma:$GIT_PAT@github.com/RaydaHQ/rayda-deployment.git deployment
+
+      - name: Install Kustomize
+        uses: imranismail/setup-kustomize@v2
+        
+      - name: Set latest images in the kustomize deployment
+        working-directory: deployment
+        run: |
+          cd rayda/corebackendv2/dev
+          kustomize edit set image 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8}
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Update corebackendv2 dev docker images to ${GIT_SHA::8}"
+          git push https://chidichukwuma:$GIT_PAT@github.com/RaydaHQ/rayda-deployment.git
+
+  #     - uses: 8398a7/action-slack@v3
+  #       with:
+  #         status: ${{ job.status }}
+  #         fields: repo,message,commit,author,action,eventName,ref,workflow,job,took # selectable (default: repo,message)
+  #       env:
+  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+  #       if: always() # Pick up events even if the job fails or is canceled.
+
+  # deploy-to-staging:
   #   name: Update the Deployment dev
   #   runs-on: ubuntu-latest
   #   needs:
@@ -72,7 +104,7 @@ jobs:
   #         fields: repo,message,commit,author,action,eventName,ref,workflow,job,took # selectable (default: repo,message)
   #       env:
   #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-  #       if: always() # Pick up events even if the job fails or is canceled.
+  #       if: always() # Pick up events even if the job fails or is canceled. 
 
 
   # build-and-push-for-main:
