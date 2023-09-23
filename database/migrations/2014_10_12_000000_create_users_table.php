@@ -24,9 +24,9 @@ return new class extends Migration {
             $table->string(UserConstant::LAST_NAME);
             $table->string(UserConstant::EMAIL)->unique();
             $table->string(UserConstant::PHONE)->nullable();
-            $table->string(UserConstant::TENANT_ID)->references(TenantConstant::ID)->on(Tenant::getTableName());
+            $table->string(UserConstant::TENANT_ID)->references(TenantConstant::ID)->on(Tenant::getTableName())->nullable();
             $table->foreignIdFor(Country::class, UserConstant::COUNTRY_ID);
-            $table->enum(UserConstant::STAGE, UserStageEnum::values())->default(UserStageEnum::START->value);
+            $table->enum(UserConstant::STAGE, UserStageEnum::values())->default(UserStageEnum::VERIFICATION->value);
             $table->enum(UserConstant::STATUS, UserStatusEnum::values())->default(UserStatusEnum::ACTIVE->value);
             $table->dateTimeTz(UserConstant::LAST_LOGIN)->nullable();
             $table->dateTimeTz(UserConstant::EMAIL_VERIFIED_AT)->nullable();

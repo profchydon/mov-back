@@ -23,8 +23,10 @@ return new class extends Migration
             $table->string(CompanyConstant::NAME);
             $table->string(CompanyConstant::SIZE)->nullable();
             $table->string(CompanyConstant::PHONE)->nullable();
-            $table->string(CompanyConstant::INDUSTRY)->nullable();
-            $table->string(CompanyConstant::COUNTRY)->nullable();
+            $table->string(CompanyConstant::INDUSTRY);
+            $table->string(CompanyConstant::ADDRESS);
+            $table->string(CompanyConstant::COUNTRY);
+            $table->string(CompanyConstant::STATE);
             $table->string(CompanyConstant::TENANT_ID)->unique()->references(TenantConstant::ID)->on(Tenant::getTableName());
             $table->enum(CompanyConstant::STATUS, CompanyStatusEnum::values())->default(CompanyStatusEnum::ACTIVE->value);
             $table->timestamps();

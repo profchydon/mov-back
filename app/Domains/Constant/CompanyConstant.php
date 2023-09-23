@@ -16,7 +16,9 @@ class CompanyConstant
     public const SIZE = 'size';
     public const PHONE = 'phone';
     public const INDUSTRY = 'industry';
+    public const ADDRESS = 'address';
     public const COUNTRY = 'country';
+    public const STATE = 'state';
     public const STATUS = 'status';
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';
