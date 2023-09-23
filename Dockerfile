@@ -26,8 +26,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     lua-zlib-dev \
     libmemcached-dev \
-    nginx \
-    php-pgsql
+    nginx
 
 # Install supervisor
 RUN apt-get install -y supervisor
