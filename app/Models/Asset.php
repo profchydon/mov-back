@@ -15,7 +15,7 @@ use Ramsey\Uuid\Uuid;
 
 class Asset extends Model
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName, LogsActivity;
+    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
 
     public $incrementing = false;
 
@@ -78,7 +78,7 @@ class Asset extends Model
         });
 
         self::updated(function (self $asset) {
-            if ($asset->isDirty(AssetConstant::AUCTION_STATUS)) {
+            if ($asset->isDirty(AssetConstant::STATUS)) {
                 AssetStatusUpdatedEvent::dispatch($asset);
             }
         });
@@ -89,13 +89,4 @@ class Asset extends Model
         return $this->morphMany(FileUpload::class, 'uploadable');
     }
 
-    public function highestBid(): HasOne
-    {
-        return $this->hasOne(Bid::class, 'asset_id')->orderBy('price', 'DESC');
-    }
-
-    public function available()
-    {
-        return $this->auction_status == AssetAuctionStatusEnum::NOT_SOLD->value;
-    }
 }

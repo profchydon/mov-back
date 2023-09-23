@@ -12,14 +12,14 @@ offers:
   - Personalized Service
 prices:
   - currency_code: NGN
-    billing_cycle: monthly
+    billing_cycle: MONTHLY
     amount: 8000
   - currency_code: USD
-    billing_cycle: monthly
+    billing_cycle: MONTHLY
     amount: 8
-  - currency: NGN
-    billing_cycle: yearly
+  - currency_code: NGN
+    billing_cycle: YEARLY
     amount: 50000
-  - currency: USD
-    billing_cycle: yearly
+  - currency_code: USD
+    billing_cycle: YEARLY
     amount: 500

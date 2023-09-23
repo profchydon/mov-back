@@ -10,15 +10,15 @@ offers:
   - Purchase Insurance
   - Audit Log and notes
 prices:
-  - currency: NGN
-    billing_cycle: monthly
+  - currency_code: NGN
+    billing_cycle: MONTHLY
     amount: 0
-  - currency: USD
-    billing_cycle: monthly
+  - currency_code: USD
+    billing_cycle: MONTHLY
     amount: 0
-  - currency: NGN
-    billing_cycle: yearly
+  - currency_code: NGN
+    billing_cycle: YEARLY
     amount: 0
-  - currency: USD
-    billing_cycle: yearly
+  - currency_code: USD
+    billing_cycle: YEARLY
     amount: 0

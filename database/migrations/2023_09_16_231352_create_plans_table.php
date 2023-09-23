@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string(PlanConstant::NAME)->unique();
             $table->string(PlanConstant::DESCRIPTION);
             $table->string(PlanConstant::PRECEDING_PLAN_NAME)->index()->nullable();
-            $table->json(PlanConstant::OFFERS);
+            $table->json(PlanConstant::OFFERS)->nullable();
             $table->enum(PlanConstant::STATUS, PlanStatusEnum::values())->default(PlanStatusEnum::ACTIVE->value);
             $table->timestamps();
             $table->softDeletes();
