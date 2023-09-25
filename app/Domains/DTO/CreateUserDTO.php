@@ -15,6 +15,7 @@ class CreateUserDTO
     private string $phone;
     private string $country_id;
     private string $password;
+    private string $tenant_id;
     private string $stage = UserStageEnum::VERIFICATION->value;
 
     public function setFirstName(string $first_name){
@@ -78,5 +79,16 @@ class CreateUserDTO
 
     public function getStage(){
         return $this->stage;
+    }
+
+    public function setTenantId(string $tenant_id)
+    {
+        $this->tenant_id = $tenant_id;
+        return $this;
+    }
+
+    public function getTenantId()
+    {
+        return $this->tenant_id;
     }
 }

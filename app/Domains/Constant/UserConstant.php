@@ -23,6 +23,7 @@ class UserConstant
     public const PHONE = 'phone';
     public const COMPANY_ID = 'company_id';
     public const COUNTRY_ID = 'country_id';
+    public const SSO_ID = 'sso_id';
     public const STATUS = 'status';
     public const STAGE = 'stage';
     public const LAST_LOGIN = 'last_login';

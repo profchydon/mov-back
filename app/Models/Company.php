@@ -32,6 +32,15 @@ class Company extends Model
     ];
 
     /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        CompanyConstant::TENANT_ID
+    ];
+
+    /**
      * Get the auction that owns the asset.
      */
     public function tenant()

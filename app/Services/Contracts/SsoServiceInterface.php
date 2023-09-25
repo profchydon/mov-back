@@ -2,9 +2,10 @@
 
 namespace App\Services\Contracts;
 
-use App\Domains\DTO\CreateUserDTO;
+use App\Domains\DTO\CreateSSOCompanyDTO;
 
-interface SsoServiceInterface
+interface SSOServiceInterface
 {
-    public function createUser(CreateUserDTO $createUserDTO);
+    public function createSSOCompany(CreateSSOCompanyDTO $createSSOCompanyDTO);
+
 }

@@ -20,12 +20,13 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid(UserConstant::ID)->unique()->primary();
-            $table->string(UserConstant::FIRST_NAME);
-            $table->string(UserConstant::LAST_NAME);
+            $table->string(UserConstant::FIRST_NAME)->nullable();
+            $table->string(UserConstant::LAST_NAME)->nullable();
             $table->string(UserConstant::EMAIL)->unique();
             $table->string(UserConstant::PHONE)->nullable();
+            $table->string(UserConstant::SSO_ID)->nullable();
             $table->string(UserConstant::TENANT_ID)->references(TenantConstant::ID)->on(Tenant::getTableName())->nullable();
-            $table->foreignIdFor(Country::class, UserConstant::COUNTRY_ID);
+            $table->foreignIdFor(Country::class, UserConstant::COUNTRY_ID)->nullable();
             $table->enum(UserConstant::STAGE, UserStageEnum::values())->default(UserStageEnum::VERIFICATION->value);
             $table->enum(UserConstant::STATUS, UserStatusEnum::values())->default(UserStatusEnum::ACTIVE->value);
             $table->dateTimeTz(UserConstant::LAST_LOGIN)->nullable();

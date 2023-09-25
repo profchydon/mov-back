@@ -7,13 +7,15 @@ use App\Traits\DTOToArray;
 class CreateCompanyDTO
 {
     use DTOToArray;
-    
+
     private string $name;
-    private string $size;
-    private string $industry;
-    private string $address;
-    private string $country;
-    private string $state;
+    private string $email;
+    private ?string $phone;
+    private ?string $size;
+    private ?string $industry;
+    private ?string $address;
+    private ?string $country;
+    private ?string $state;
     private string $tenant_id;
 
     public function setName(string $name)
@@ -27,7 +29,29 @@ class CreateCompanyDTO
         return $this->name;
     }
 
-    public function setSize(string $size)
+    public function setEmail(string $email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setPhone(string $phone)
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    public function setSize(?string $size)
     {
         $this->size = $size;
         return $this;
@@ -38,7 +62,7 @@ class CreateCompanyDTO
         return $this->size;
     }
 
-    public function setIndustry(string $industry)
+    public function setIndustry(?string $industry)
     {
         $this->industry = $industry;
         return $this;
@@ -49,7 +73,7 @@ class CreateCompanyDTO
         return $this->industry;
     }
 
-    public function setAddress(string $address)
+    public function setAddress(?string $address)
     {
         $this->address = $address;
         return $this;
@@ -60,7 +84,7 @@ class CreateCompanyDTO
         return $this->address;
     }
 
-    public function setCountry(string $country)
+    public function setCountry(?string $country)
     {
         $this->country = $country;
         return $this;
@@ -71,7 +95,7 @@ class CreateCompanyDTO
         return $this->country;
     }
 
-    public function setState(string $state)
+    public function setState(?string $state)
     {
         $this->state = $state;
         return $this;
@@ -82,9 +106,9 @@ class CreateCompanyDTO
         return $this->state;
     }
 
-    public function setTenantId(string $tenantId)
+    public function setTenantId(string $tenant_id)
     {
-        $this->tenant_id = $tenantId;
+        $this->tenant_id = $tenant_id;
         return $this;
     }
 

@@ -1,34 +1,26 @@
 <?php
+
 namespace App\Services\v2;
 
-use App\Domains\DTO\CreateUserDTO;
-use App\Services\Contracts\SsoServiceInterface;
+use App\Domains\DTO\CreateSSOCompanyDTO;
+use App\Services\Contracts\SSOServiceInterface;
 use Illuminate\Support\Facades\Http;
 
-class SsoService implements SsoServiceInterface
+class SSOService implements SSOServiceInterface
 {
 
-    public function createUser(CreateUserDTO $createUserDTO)
+    public function createSSOCompany(CreateSSOCompanyDTO $createSSOCompanyDTO)
     {
         $url = sprintf('%s/api/oauth/register', env('SSO_URL'));
 
-        $resp = Http::withHeaders(['Accept' => 'application/json'])
-            ->post(
-                $url, 
-                [
-                    'user' =>[
-                        "first_name" => $createUserDTO->getFirstName(),
-                        "last_name" => $createUserDTO->getLastName(),
-                        "email" => $createUserDTO->getEmail(),
-                        "phone" => $createUserDTO->getPhone(),
-                        "password" => $createUserDTO->getPassword()
-                    ],
-                    'company' => [
-                        'name' => "test",
-                        'email' => $createUserDTO->getEmail(),
-                    ]
-                ]
-            );
+        $data = array(
+            'company' => $createSSOCompanyDTO->getCompany(),
+            'user' => $createSSOCompanyDTO->getUser(),
+        );
+
+        $body = json_encode($data);
+
+        $resp = Http::acceptJson()->post($url, $body);
 
         return $resp;
     }

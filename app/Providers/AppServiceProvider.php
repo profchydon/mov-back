@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Services\Contracts\SsoServiceInterface;
-use App\Services\v2\SsoService;
+use App\Services\Contracts\SSOServiceInterface;
+use App\Services\v2\SSOService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->singleton(SsoServiceInterface::class, SsoService::class);
+        $this->app->singleton(SSOServiceInterface::class, SSOService::class);
     }
 }

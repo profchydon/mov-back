@@ -10,8 +10,8 @@ class PlanPriceConstant
 {
     public const ID = 'id';
     public const PLAN_ID = 'plan_id';
-    public const CURRENCY_ID = 'currency_id';
-    public const PRICE = 'price';
+    public const CURRENCY_CODE = 'currency_code';
+    public const AMOUNT = 'amount';
     public const BILLING_CYCLE = 'billing_cycle';
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';
