@@ -16,5 +16,7 @@ return [
     'record-deleted' => 'Record successfully deleted',
     'account-created' => 'Account successfully created',
     'email-exist' => 'Email address exist already',
-    'error-encountered' => 'Error encountered'
+    'error-encountered' => 'Error encountered',
+    'email-not-found' => 'No account found with the email',
+    'otp-resent' => 'The OTP has been resent to your email',
 ];

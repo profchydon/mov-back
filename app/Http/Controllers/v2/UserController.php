@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\v2;
 
+use App\Domains\Constant\UserConstant;
+use App\Exceptions\User\UserEmailNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\ResendOTPRequest;
 use App\Repositories\Contracts\UserRepositoryInterface;
-use App\Services\Contracts\SsoServiceInterface;
+use App\Services\Contracts\SSOServiceInterface;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
@@ -15,28 +17,21 @@ class UserController extends Controller
      */
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
-        private readonly SsoServiceInterface $ssoService
+        private readonly SSOServiceInterface $ssoService
     )
     {
     }
 
-    public function register(CreateUserRequest $request)
+    public function sendOTP(ResendOTPRequest $request)
     {
-        $userDTO = $request->getUserDTO();
+        $userExist = $this->userRepository->exist(UserConstant::EMAIL, $request->email);
 
-        $resp = $this->ssoService->createUser($userDTO);
-
-        return $this->response(200, $resp->body());
-        if($resp->status() != Response::HTTP_CREATED){
-            return $this->error(Response::HTTP_BAD_REQUEST, $resp->json()['message']);
+        if(!$userExist){
+            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.email-not-found'));
         }
 
-        $user = $this->userRepository->create($userDTO->toArray());
-        
-        return $this->response(
-            Response::HTTP_CREATED,
-            'Account created successfully',
-            $user,
-        );
+        $this->ssoService->sendEmailOTP($request->email);
+
+        return $this->response(Response::HTTP_CREATED, __('messages.otp-resent'));
     }
 }
