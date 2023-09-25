@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\v2;
+namespace App\Http\Controllers\V2;
 
 use App\Domains\Constant\UserConstant;
 use App\Http\Controllers\Controller;
@@ -43,7 +43,7 @@ class UserController extends Controller
     public function verifyAccount(VerifyOTPRequest $request)
     {
         $isVerified = $this->ssoService->verifyOTP($request->getDTO());
-        
+
         if($isVerified){
             return $this->response(Response::HTTP_OK, __('messages.otp-validated'));
         }else{

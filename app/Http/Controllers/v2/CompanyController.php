@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\v2;
+namespace App\Http\Controllers\V2;
 
 use Exception;
 use App\Models\Company;
@@ -23,6 +23,7 @@ use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
 use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Facades\Log;
 
 class CompanyController extends Controller
 {
@@ -38,6 +39,8 @@ class CompanyController extends Controller
 
     public function create(CreateCompanyRequest $request): JsonResponse
     {
+
+        Log::info('Company Registration Request Received', $request->all());
 
         try {
 
@@ -89,7 +92,7 @@ class CompanyController extends Controller
             $this->ssoService->createEmailOTP($dbData['user']->email);
 
             return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $dbData);
-            
+
         } catch (CompanyAlreadyExistException $exception) {
 
             return $exception->message();

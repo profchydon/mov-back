@@ -53,8 +53,17 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'logtail'],
             'ignore_exceptions' => false,
+        ],
+
+        'logtail' => [
+            'driver' => 'monolog',
+            'level' => env('LOG_LEVEL', 'debug'),
+            'handler' => Logtail\Monolog\LogtailHandler::class,
+            'with' => [
+                'sourceToken' => env('LOGTAIL_SOURCE_TOKEN')
+            ],
         ],
 
         'single' => [
