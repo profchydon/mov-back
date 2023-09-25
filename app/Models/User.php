@@ -9,6 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Events\UserDeactivatedEvent;
 use Illuminate\Notifications\Notifiable;
 use App\Domains\Enum\User\UserStatusEnum;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +17,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, GetsTableName;
+    use HasUuids, HasApiTokens, HasFactory, Notifiable, GetsTableName;
 
     /**
      * The attributes that are mass assignable.
@@ -33,7 +34,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        UserConstant::PASSWORD,
+        
     ];
 
     /**
@@ -44,16 +45,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+    
     protected static function booted()
     {
         static::created(function(self $model){
-            UserCreatedEvent::dispatch($model);
+            // UserCreatedEvent::dispatch($model);
         });
 
         static::updated(function(self $model){
             if($model->status == UserStatusEnum::DEACTIVATED){
-                UserDeactivatedEvent::dispatch($model);
+                // UserDeactivatedEvent::dispatch($model);
             }
         });
     }

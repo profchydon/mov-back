@@ -14,5 +14,7 @@ return [
     'unauthenticated' => 'Authentication Failed',
     'action-not-allowed' => 'You are not allowed to perform this action',
     'record-deleted' => 'Record successfully deleted',
-    'account-created' => "Account successfully created"
+    'account-created' => 'Account successfully created',
+    'email-exist' => 'Email address exist already',
+    'error-encountered' => 'Error encountered'
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Domains\Constant;
 
+use App\Domains\Enum\User\UserAccountStageEnum;
 use App\Domains\Enum\User\UserStageEnum;
 use App\Domains\Enum\User\UserStatusEnum;
 
@@ -18,6 +19,7 @@ class UserConstant
     public const LAST_NAME = 'last_name';
     public const EMAIL = 'email';
     public const PASSWORD = 'password';
+    public const PHONE_CODE = 'phone_code';
     public const PHONE = 'phone';
     public const COMPANY_ID = 'company_id';
     public const COUNTRY_ID = 'country_id';
@@ -39,8 +41,10 @@ class UserConstant
     ];
 
     public const STAGE_ENUM = [
-        UserStageEnum::START,
-        UserStageEnum::ASSET,
-        UserStageEnum::USER,
+        UserAccountStageEnum::VERIFICATION,
+        UserAccountStageEnum::COMPANY_DETAILS,
+        UserAccountStageEnum::SUBSCRIPTION_PLAN,
+        UserAccountStageEnum::ADD_USERS,
+        UserAccountStageEnum::COMPLETED
     ];
 }

@@ -3,19 +3,39 @@
 namespace App\Http\Controllers\v2;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateUserRequest;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Services\Contracts\SsoServiceInterface;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
     /**
      * @param UserRepositoryInterface $userRepositoryInterface
      */
-    public function __construct(private readonly UserRepositoryInterface $userRepositoryInterface)
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly SsoServiceInterface $ssoService
+    )
     {
     }
 
-    public function register()
+    public function register(CreateUserRequest $request)
     {
-        return 'create a user';
+        $userDTO = $request->getUserDTO();
+
+        $resp = $this->ssoService->createUser($userDTO);
+
+        if($resp->status() != Response::HTTP_CREATED){
+            return $this->error(Response::HTTP_BAD_REQUEST, $resp->json()['message']);
+        }
+
+        $user = $this->userRepository->create($userDTO->toArray());
+        
+        return $this->response(
+            Response::HTTP_CREATED,
+            'Account created successfully',
+            $user,
+        );
     }
 }

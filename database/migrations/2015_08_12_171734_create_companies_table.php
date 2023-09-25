@@ -21,10 +21,13 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->uuid(CompanyConstant::ID)->unique()->primary();
             $table->string(CompanyConstant::NAME);
+            $table->string(CompanyConstant::EMAIL)->unique();
             $table->string(CompanyConstant::SIZE)->nullable();
             $table->string(CompanyConstant::PHONE)->nullable();
             $table->string(CompanyConstant::INDUSTRY)->nullable();
+            $table->string(CompanyConstant::ADDRESS)->nullable();
             $table->string(CompanyConstant::COUNTRY)->nullable();
+            $table->string(CompanyConstant::STATE)->nullable();
             $table->string(CompanyConstant::TENANT_ID)->unique()->references(TenantConstant::ID)->on(Tenant::getTableName());
             $table->enum(CompanyConstant::STATUS, CompanyStatusEnum::values())->default(CompanyStatusEnum::ACTIVE->value);
             $table->timestamps();

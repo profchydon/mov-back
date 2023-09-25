@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ramsey\Uuid\Uuid;
 
 class Asset extends Model
 {
@@ -48,26 +47,6 @@ class Asset extends Model
     protected $casts = [
         AssetConstant::ID => 'string',
     ];
-
-    /**
-     * Generate a new UUID for the model.
-     *
-     * @return string
-     */
-    public function newUniqueId()
-    {
-        return (string) Uuid::uuid4();
-    }
-
-    /**
-     * Get the columns that should receive a unique identifier.
-     *
-     * @return array
-     */
-    public function uniqueIds()
-    {
-        return ['id'];
-    }
 
     public static function boot()
     {

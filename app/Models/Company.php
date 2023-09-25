@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Ramsey\Uuid\Uuid;
 use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Model;
 use App\Domains\Constant\CompanyConstant;
@@ -33,6 +32,15 @@ class Company extends Model
     ];
 
     /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        CompanyConstant::TENANT_ID
+    ];
+
+    /**
      * Get the auction that owns the asset.
      */
     public function tenant()
@@ -59,30 +67,11 @@ class Company extends Model
         return $this->hasMany(Subscription::class);
     }
 
-    /**
-     * Generate a new UUID for the model.
-     *
-     * @return string
-     */
-    public function newUniqueId()
-    {
-        return (string) Uuid::uuid4();
-    }
-
-    /**
-     * Get the columns that should receive a unique identifier.
-     *
-     * @return array
-     */
-    public function uniqueIds()
-    {
-        return ['id'];
-    }
-
     protected static function booted()
     {
         static::created(function(self $model){
             CompanyCreatedEvent::dispatch($model);
         });
     }
+
 }
