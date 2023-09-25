@@ -11,6 +11,7 @@ class TenantConstant
 {
     public const ID = 'id';
     public const NAME = 'name';
+    public const EMAIL = 'email';
     public const SUB_DOMAIN = 'sub_domain';
     public const STATUS = 'status';
 

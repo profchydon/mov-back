@@ -8,7 +8,9 @@ class CreateTenantDTO
 {
     use DTOToArray;
 
-    private string $name;
+    private ?string $name = null;
+    private string $email;
+    private ?string $sub_domain = null;
     private string $status = TenantStatusEnum::ACTIVE->value;
 
     public function setName(string $name){
@@ -27,5 +29,23 @@ class CreateTenantDTO
 
     public function getStatus(){
         return $this->status;
+    }
+
+    public function setEmail(?string $email){
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getEmail(){
+        return $this->email;
+    }
+
+    public function setSubdomain(?string $sub_domain){
+        $this->sub_domain = $sub_domain;
+        return $this;
+    }
+
+    public function getSubdomain(){
+        return $this->sub_domain;
     }
 }
