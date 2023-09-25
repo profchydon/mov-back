@@ -22,6 +22,7 @@ use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
+use PhpParser\Node\Stmt\TryCatch;
 
 class CompanyController extends Controller
 {
@@ -51,58 +52,53 @@ class CompanyController extends Controller
             //Create Company on SSO
             $createSSOCompany = $this->ssoService->createSSOCompany($request->getSSODTO());
 
-            if($createSSOCompany->status() != Response::HTTP_CREATED){
+            if ($createSSOCompany->status() != Response::HTTP_CREATED) {
                 return $this->error(Response::HTTP_BAD_REQUEST, $createSSOCompany->json()['message']);
             }
 
-            $company = DB::transaction(function () use ($request) {
 
-                $user = $this->userRepository->first(UserConstant::EMAIL, $request->getUserDTO()->getEmail());
+            try {
+                $dbData =  DB::transaction(function () use ($request, $createSSOCompany) {
+                    $tenant = $this->tenantRepository->create($request->getTenantDTO()->toArray());
 
-                if ($user && $user->stage != UserStageEnum::COMPANY_DETAILS->value) {
-                    return $this->error(Response::HTTP_BAD_REQUEST, 'Make sure you complete previous steps');
-                }
+                    $ssoData = $createSSOCompany->json()['data'];
 
-                $tenant = $this->tenantRepository->create($request->getTenantDTO()->toArray());
-                $companyDto = $request->getCompanyDTO()->setTenantId($tenant->id);
-                $userDto = $request->getUserDTO()->setTenantId($tenant->id);
-                $company = $this->companyRepository->create($companyDto->toArray());
-                $user = $this->userRepository->create($userDto->toArray());
+                    $companyDto = $request->getCompanyDTO()->setTenantId($tenant->id)->setSsoId($ssoData['id']);
+                    $userDto = $request->getUserDTO()->setTenantId($tenant->id);
+                    $company = $this->companyRepository->create($companyDto->toArray());
+                    $user = $this->userRepository->create($userDto->toArray());
 
-                // If successful, call OTP endpoint
+                    $this->userCompanyRepository->create([
+                        'tenant_id' => $tenant->id,
+                        'company_id' => $company->id,
+                        'user_id' => $user->id,
+                        'status' => UserCompanyStatusEnum::ACTIVE->value
+                    ]);
 
+                    return [
+                        'user' => $user,
+                        'company' => $company,
+                    ];
+                });
+            } catch (Exception $exception) {
+                //operation failed on core, notify sso
 
-                // If not successful, 
+                return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
+            }
 
+            $this->ssoService->sendEmailOTP($dbData['user']->email);
 
-                $this->userCompanyRepository->create([
-                    'tenant_id' => $tenant->id,
-                    'company_id' => $company->id,
-                    'user_id' => $user->id,
-                    'status' => UserCompanyStatusEnum::ACTIVE->value
-                ]);
-
-                $this->userRepository->updateById($user->id, [
-                    'stage' => UserStageEnum::USERS->value
-                ]);
-
-                return $company;
-            });
-
-            return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $company);
-
+            return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $dbData);
+            
         } catch (CompanyAlreadyExistException $exception) {
 
             return $exception->message();
-
         } catch (UserAlreadyExistException $exception) {
 
             return $exception->message();
-
         } catch (\ErrorException $exception) {
 
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __($exception->getMessage()));
-
         } catch (Exception $exception) {
 
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
@@ -122,7 +118,7 @@ class CompanyController extends Controller
 
         $this->userRepository->updateById($user->id, [
             'stage' => UserStageEnum::COMPLETED->value
-            ]);
+        ]);
 
         return $this->response(
             Response::HTTP_CREATED,

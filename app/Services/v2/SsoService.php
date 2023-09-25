@@ -14,14 +14,25 @@ class SSOService implements SSOServiceInterface
         $url = sprintf('%s/api/oauth/register', env('SSO_URL'));
 
         $data = array(
-            'company' => $createSSOCompanyDTO->getCompany(),
-            'user' => $createSSOCompanyDTO->getUser(),
+            'company' => $createSSOCompanyDTO->getCompany()->toArray(),
+            'user' => $createSSOCompanyDTO->getUser()->toArray(),
         );
 
-        $body = json_encode($data);
+        $resp = Http::acceptJson()->post($url, $data);
 
-        $resp = Http::acceptJson()->post($url, $body);
+        return $resp;
+    }
 
+    public function sendEmailOTP(string $email)
+    {
+        $url = sprintf('%s/api/v1/otp', env('SSO_URL'));
+
+        $data = [
+            "type" => "email",
+            "info" => $email
+        ];
+        
+        $resp = Http::acceptJson()->post($url, $data);
         return $resp;
     }
 }
