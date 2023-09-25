@@ -20,10 +20,11 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->uuid(CompanyConstant::ID)->unique()->primary();
-            $table->string(CompanyConstant::NAME);
+            $table->string(CompanyConstant::NAME)->nullable();
             $table->string(CompanyConstant::EMAIL)->unique();
             $table->string(CompanyConstant::SIZE)->nullable();
             $table->string(CompanyConstant::PHONE)->nullable();
+            $table->string(CompanyConstant::SSO_ID)->nullable();
             $table->string(CompanyConstant::INDUSTRY)->nullable();
             $table->string(CompanyConstant::ADDRESS)->nullable();
             $table->string(CompanyConstant::COUNTRY)->nullable();

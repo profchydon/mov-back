@@ -23,6 +23,6 @@ class SSOService implements SSOServiceInterface
 
         $resp = Http::acceptJson()->post($url, $body);
 
-        return $$url;
+        return $resp;
     }
 }

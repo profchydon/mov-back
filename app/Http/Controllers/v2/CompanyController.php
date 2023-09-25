@@ -51,6 +51,10 @@ class CompanyController extends Controller
             //Create Company on SSO
             $createSSOCompany = $this->ssoService->createSSOCompany($request->getSSODTO());
 
+            if($createSSOCompany->status() != Response::HTTP_CREATED){
+                return $this->error(Response::HTTP_BAD_REQUEST, $createSSOCompany->json()['message']);
+            }
+
             $company = DB::transaction(function () use ($request) {
 
                 $user = $this->userRepository->first(UserConstant::EMAIL, $request->getUserDTO()->getEmail());
@@ -64,6 +68,12 @@ class CompanyController extends Controller
                 $userDto = $request->getUserDTO()->setTenantId($tenant->id);
                 $company = $this->companyRepository->create($companyDto->toArray());
                 $user = $this->userRepository->create($userDto->toArray());
+
+                // If successful, call OTP endpoint
+
+
+                // If not successful, 
+
 
                 $this->userCompanyRepository->create([
                     'tenant_id' => $tenant->id,

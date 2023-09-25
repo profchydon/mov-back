@@ -23,7 +23,6 @@ class CreateCompanyRequest extends FormRequest
     {
         return [
             'company' => 'required|array',
-            'company.name' => 'required|string',
             'company.email' => 'required|email|unique:companies,email',
             'user' => 'required|array',
             'user.email' => 'required|email|unique:users,email',
@@ -47,8 +46,7 @@ class CreateCompanyRequest extends FormRequest
     public function getCompanyDTO(): CreateCompanyDTO
     {
         $dto = new CreateCompanyDTO();
-        $dto->setName($this->input('company.name', ''))
-            ->setEmail($this->input('company.email', ''))
+        $dto->setEmail($this->input('company.email', ''))
             ->setPhone($this->input('company.phone', ''))
             ->setIndustry('Health'); //Please remove this line later
 

@@ -20,6 +20,7 @@ class CompanyConstant
     public const ADDRESS = 'address';
     public const COUNTRY = 'country';
     public const STATE = 'state';
+    public const SSO_ID = 'sso_id';
     public const STATUS = 'status';
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';
