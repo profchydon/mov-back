@@ -10,6 +10,7 @@ class CreateCompanyDTO
 
     private string $name;
     private string $email;
+    private ?string $phone;
     private ?string $size;
     private ?string $industry;
     private ?string $address;
@@ -37,6 +38,17 @@ class CreateCompanyDTO
     public function getEmail()
     {
         return $this->email;
+    }
+
+    public function setPhone(string $phone)
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
+    public function getPhone()
+    {
+        return $this->phone;
     }
 
     public function setSize(?string $size)

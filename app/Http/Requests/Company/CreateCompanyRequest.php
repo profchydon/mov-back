@@ -48,7 +48,10 @@ class CreateCompanyRequest extends FormRequest
     {
         $dto = new CreateCompanyDTO();
         $dto->setName($this->input('company.name', ''))
-            ->setEmail($this->input('company.email', ''));
+            ->setEmail($this->input('company.email', ''))
+            ->setPhone($this->input('company.phone', ''))
+            ->setIndustry('Health'); //Please remove this line later
+
 
         return $dto;
     }
