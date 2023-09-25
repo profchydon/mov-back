@@ -52,7 +52,6 @@ class CreateCompanyRequest extends FormRequest
             ->setPhone($this->input('company.phone', ''))
             ->setIndustry('Health'); //Please remove this line later
 
-
         return $dto;
     }
 
