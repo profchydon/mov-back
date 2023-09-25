@@ -13,6 +13,7 @@ class CompanyConstant
     public const COMPANY_ID = 'company_id';
     public const TENANT_ID = 'tenant_id';
     public const NAME = 'name';
+    public const EMAIL = 'email';
     public const SIZE = 'size';
     public const PHONE = 'phone';
     public const INDUSTRY = 'industry';
