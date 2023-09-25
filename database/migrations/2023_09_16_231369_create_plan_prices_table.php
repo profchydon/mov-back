@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Constant\CommonConstant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,8 +20,8 @@ return new class extends Migration
         Schema::create('plan_prices', function (Blueprint $table) {
             $table->uuid(PlanPriceConstant::ID)->unique()->primary();
             $table->uuid(PlanPriceConstant::PLAN_ID)->references(PlanConstant::ID)->on(Plan::getTableName());
-            $table->foreignIdFor(Currency::class, PlanPriceConstant::CURRENCY_ID);
-            $table->double(PlanPriceConstant::PRICE);
+            $table->string(PlanPriceConstant::CURRENCY_CODE)->references(CommonConstant::CODE)->on(Currency::getTableName());
+            $table->double(PlanPriceConstant::AMOUNT);
             $table->enum(PlanPriceConstant::BILLING_CYCLE, BillingCycleEnum::values());
             $table->timestamps();
             $table->softDeletes();

@@ -22,6 +22,7 @@ class CompanySeeder extends Seeder
         Company::create([
             CompanyConstant::NAME => 'Rayda',
             CompanyConstant::SIZE => '1 - 10',
+            CompanyConstant::EMAIL => 'admin@admin.com',
             CompanyConstant::PHONE => '+234700000000',
             CompanyConstant::INDUSTRY => 'Financial technology',
             CompanyConstant::COUNTRY => 150,

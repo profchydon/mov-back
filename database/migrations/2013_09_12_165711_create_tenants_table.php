@@ -16,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('tenants', function (Blueprint $table) {
             $table->uuid(TenantConstant::ID)->unique()->primary();
-            $table->string(TenantConstant::NAME)->unique();
-            $table->string(TenantConstant::SUB_DOMAIN)->unique();
+            $table->string(TenantConstant::NAME);
+            $table->string(TenantConstant::SUB_DOMAIN)->nullable();
             $table->enum(TenantConstant::STATUS, TenantStatusEnum::values())->default(TenantStatusEnum::ACTIVE->value);
             $table->timestamps();
             $table->softDeletes();

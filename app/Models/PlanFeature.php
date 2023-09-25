@@ -2,10 +2,39 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Ramsey\Uuid\Uuid;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Model;
+use App\Domains\Constant\PlanFeatureConstant;
+use App\Domains\Enum\Plan\BillingCycleEnum;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class PlanFeature extends Model
+class PlanFeature extends BaseModel
 {
-    use HasFactory;
+    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
+    protected $casts = [
+        PlanFeatureConstant::ID => 'string',
+    ];
+
+    public function newUniqueId()
+    {
+        return (string)Uuid::uuid4();
+    }
+
+
+    public function uniqueIds()
+    {
+        return ['id'];
+    }
+
+
 }

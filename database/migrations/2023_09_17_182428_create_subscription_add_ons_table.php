@@ -18,7 +18,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('SubscriptionAddOn_add_ons', function (Blueprint $table) {
+        Schema::create('Subscription_add_ons', function (Blueprint $table) {
             $table->uuid(SubscriptionAddOnConstant::ID)->unique()->primary();
             $table->string(SubscriptionAddOnConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
             $table->string(SubscriptionAddOnConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
