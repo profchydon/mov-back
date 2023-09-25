@@ -3,10 +3,13 @@
 namespace App\Services\Contracts;
 
 use App\Domains\DTO\CreateSSOCompanyDTO;
+use App\Domains\DTO\VerifyOTPDTO;
 
 interface SSOServiceInterface
 {
     public function createSSOCompany(CreateSSOCompanyDTO $createSSOCompanyDTO);
     
-    public function sendEmailOTP(string $email);
+    public function createEmailOTP(string $email);
+
+    public function verifyOTP(VerifyOTPDTO $dto);
 }

@@ -86,7 +86,7 @@ class CompanyController extends Controller
                 return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
             }
 
-            $this->ssoService->sendEmailOTP($dbData['user']->email);
+            $this->ssoService->createEmailOTP($dbData['user']->email);
 
             return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $dbData);
             

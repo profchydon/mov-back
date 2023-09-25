@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Company::class, 'company_id');
     }
+
+    public function otp()
+    {
+        return $this->hasOne(OTP::class);
+    }
 }
