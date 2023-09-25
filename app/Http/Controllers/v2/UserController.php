@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\v2;
 
+use App\Domains\Constant\UserConstant;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\ResendOTPRequest;
+use App\Http\Requests\VerifyOTPRequest;
 use App\Repositories\Contracts\UserRepositoryInterface;
-use App\Services\Contracts\SsoServiceInterface;
+use App\Services\Contracts\SSOServiceInterface;
+use Exception;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
@@ -15,27 +18,36 @@ class UserController extends Controller
      */
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
-        private readonly SsoServiceInterface $ssoService
-    )
-    {
+        private readonly SSOServiceInterface $ssoService,
+    ) {
     }
 
-    public function register(CreateUserRequest $request)
+    public function sendOTP(ResendOTPRequest $request)
     {
-        $userDTO = $request->getUserDTO();
+        try {
+            $isExist = $this->userRepository->exist(UserConstant::EMAIL, $request->email);
 
-        $resp = $this->ssoService->createUser($userDTO);
+            if (!$isExist) {
+                return $this->error(Response::HTTP_BAD_REQUEST, __('messages.email-not-found'));
+            }
 
-        if($resp->status() != Response::HTTP_CREATED){
-            return $this->error(Response::HTTP_BAD_REQUEST, $resp->json()['message']);
+            $this->ssoService->createEmailOTP($request->email);
+
+            return $this->response(Response::HTTP_CREATED, __('messages.otp-resent'));
+        } catch (Exception $exception) {
+
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
         }
+    }
 
-        $user = $this->userRepository->create($userDTO->toArray());
+    public function verifyAccount(VerifyOTPRequest $request)
+    {
+        $isVerified = $this->ssoService->verifyOTP($request->getDTO());
         
-        return $this->response(
-            Response::HTTP_CREATED,
-            'Account created successfully',
-            $user,
-        );
+        if($isVerified){
+            return $this->response(Response::HTTP_OK, __('messages.otp-validated'));
+        }else{
+            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.otp-invalid'));
+        }
     }
 }

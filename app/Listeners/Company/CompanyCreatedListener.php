@@ -31,10 +31,10 @@ class CompanyCreatedListener
         $company = $event->company;
 
         //Send Welcome email
-        Mail::to($company->email)->queue(new CompanyCreatedMail($company));
+        // Mail::to($company->email)->queue(new CompanyCreatedMail($company));
 
         //Trigger Company created event
-        EventTrackerService::track('chidi.nkwocha@rayda.co', EventTrackEnum::COMPANY_CREATED->value, (array) $company);
+        // EventTrackerService::track('chidi.nkwocha@rayda.co', EventTrackEnum::COMPANY_CREATED->value, (array) $company);
 
         Log::info("Info: Company Account Created {$company}");
 
