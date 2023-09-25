@@ -71,6 +71,10 @@ class CompanyController extends Controller
         $DTOs = $request->getInvitationData($company->id, $user->id);
         $this->userInvitationRepository->inviteCompanyUsers($DTOs);
 
+        $this->userRepository->updateById($user->id, [
+            'stage' => UserStageEnum::COMPLETED->value
+            ]);
+
         return $this->response(
             Response::HTTP_CREATED,
             'You have successfully invited users',

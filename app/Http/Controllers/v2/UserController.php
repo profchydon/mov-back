@@ -26,6 +26,7 @@ class UserController extends Controller
 
         $resp = $this->ssoService->createUser($userDTO);
 
+        return $this->response(200, $resp->body());
         if($resp->status() != Response::HTTP_CREATED){
             return $this->error(Response::HTTP_BAD_REQUEST, $resp->json()['message']);
         }

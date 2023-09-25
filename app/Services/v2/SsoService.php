@@ -12,17 +12,23 @@ class SsoService implements SsoServiceInterface
     {
         $url = sprintf('%s/api/oauth/register', env('SSO_URL'));
 
-        $resp = Http::post($url, [
-            'user' =>[
-                "first_name" => $createUserDTO->getFirstName(),
-                "last_name" => $createUserDTO->getLastName(),
-                "email" => $createUserDTO->getEmail(),
-                "password" => $createUserDTO->getPassword()
-            ],
-            'business' => [
-                'phone_number' => $createUserDTO->getPhone()
-            ]
-        ]);
+        $resp = Http::withHeaders(['Accept' => 'application/json'])
+            ->post(
+                $url, 
+                [
+                    'user' =>[
+                        "first_name" => $createUserDTO->getFirstName(),
+                        "last_name" => $createUserDTO->getLastName(),
+                        "email" => $createUserDTO->getEmail(),
+                        "phone" => $createUserDTO->getPhone(),
+                        "password" => $createUserDTO->getPassword()
+                    ],
+                    'company' => [
+                        'name' => "test",
+                        'email' => $createUserDTO->getEmail(),
+                    ]
+                ]
+            );
 
         return $resp;
     }
