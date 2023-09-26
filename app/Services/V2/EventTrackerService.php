@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\v2;
+namespace App\Services\V2;
 
 use Segment\Segment;
 use Illuminate\Support\Facades\Log;

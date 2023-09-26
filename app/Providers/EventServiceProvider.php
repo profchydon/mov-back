@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\UserCreatedEvent;
-use App\Events\UserDeactivatedEvent;
+use App\Events\User\UserCreatedEvent;
+use App\Events\User\UserDeactivatedEvent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use App\Events\Company\CompanyCreatedEvent;

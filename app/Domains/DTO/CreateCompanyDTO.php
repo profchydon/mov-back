@@ -17,6 +17,7 @@ class CreateCompanyDTO
     private ?string $country;
     private ?string $state;
     private string $tenant_id;
+    private string $sso_id;
 
     public function setName(string $name)
     {
@@ -115,5 +116,16 @@ class CreateCompanyDTO
     public function getTenantId()
     {
         return $this->tenant_id;
+    }
+
+    public function setSsoId(string $sso_id)
+    {
+        $this->sso_id = $sso_id;
+        return $this;
+    }
+
+    public function getSsoId()
+    {
+        return $this->sso_id;
     }
 }
