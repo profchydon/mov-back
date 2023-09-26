@@ -55,8 +55,8 @@ class SSOService implements SSOServiceInterface
             }
 
             $this->otpRepository->create([
-                OTPConstant::SSO_ID => $respData['id'],
-                OTPConstant::USER_ID => $user->id,
+                "sso_id" => $respData['id'],
+                "user_id" => $user->id,
             ]);
         }
 
