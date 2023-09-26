@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\DTO\Auction;
+namespace App\Domains\DTO;
 
 use App\Models\User;
 

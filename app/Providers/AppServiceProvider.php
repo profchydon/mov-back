@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Services\Contracts\SSOServiceInterface;
-use App\Services\V2\SSOService;
+use App\Services\v2\SSOService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

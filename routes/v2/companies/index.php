@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\V2\CompanyController;
+use App\Http\Controllers\v2\CompanyController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(CompanyController::class)->prefix('companies')->group(function () {

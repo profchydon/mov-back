@@ -5,7 +5,7 @@ namespace App\Listeners\Subscription;
 use App\Mail\UserCreatedMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use App\Services\V2\EventTrackerService;
+use App\Services\v2\EventTrackerService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Domains\Enum\EventTrack\EventTrackEnum;

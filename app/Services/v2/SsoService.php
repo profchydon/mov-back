@@ -53,7 +53,7 @@ class SSOService implements SSOServiceInterface
             if($user->otp){
                 $user->otp->delete();
             }
-            
+
             $this->otpRepository->create([
                 OTPConstant::SSO_ID => $respData['id'],
                 OTPConstant::USER_ID => $user->id,
@@ -74,7 +74,7 @@ class SSOService implements SSOServiceInterface
         $url = sprintf('%s/api/v1/otp/%s/verify', env('SSO_URL'), $user->otp->sso_id);
 
         $data = ["otp" => $dto->getOTP()];
-        
+
         $resp = Http::acceptJson()->put($url, $data);
 
         if($resp->status() == Response::HTTP_OK){
