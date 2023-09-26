@@ -54,7 +54,7 @@ class CompanyController extends Controller
 
             //Create Company on SSO
             $createSSOCompany = $this->ssoService->createSSOCompany($request->getSSODTO());
-
+            return $this->response(200, $createSSOCompany->json()['data']);
             if ($createSSOCompany->status() !== Response::HTTP_CREATED) {
                 return $this->error(Response::HTTP_BAD_REQUEST, $createSSOCompany->json()['message']);
             }
@@ -65,8 +65,9 @@ class CompanyController extends Controller
 
                     $ssoData = $createSSOCompany->json()['data'];
 
-                    $companyDto = $request->getCompanyDTO()->setTenantId($tenant->id)->setSsoId($ssoData['id']);
-                    $userDto = $request->getUserDTO()->setTenantId($tenant->id);
+                    $companyDto = $request->getCompanyDTO()->setTenantId($tenant->id)->setSsoId($ssoData['companyId']);
+                    $userDto = $request->getUserDTO()->setTenantId($tenant->id)->setSsoId($ssoData['userId']);
+
                     $company = $this->companyRepository->create($companyDto->toArray());
                     $user = $this->userRepository->create($userDto->toArray());
 
