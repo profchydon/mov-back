@@ -58,15 +58,15 @@ class CompanyController extends Controller
             if ($createSSOCompany->status() !== Response::HTTP_CREATED) {
                 return $this->error(Response::HTTP_BAD_REQUEST, $createSSOCompany->json()['message']);
             }
-
+            
             try {
                 $dbData =  DB::transaction(function () use ($request, $createSSOCompany) {
                     $tenant = $this->tenantRepository->create($request->getTenantDTO()->toArray());
 
                     $ssoData = $createSSOCompany->json()['data'];
 
-                    $companyDto = $request->getCompanyDTO()->setTenantId($tenant->id)->setSsoId($ssoData['companyId']);
-                    $userDto = $request->getUserDTO()->setTenantId($tenant->id)->setSsoId($ssoData['userId']);
+                    $companyDto = $request->getCompanyDTO()->setTenantId($tenant->id)->setSsoId($ssoData['company_id']);
+                    $userDto = $request->getUserDTO()->setTenantId($tenant->id)->setSsoId($ssoData['user_id']);
 
                     $company = $this->companyRepository->create($companyDto->toArray());
                     $user = $this->userRepository->create($userDto->toArray());
