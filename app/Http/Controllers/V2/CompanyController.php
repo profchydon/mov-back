@@ -55,10 +55,9 @@ class CompanyController extends Controller
             //Create Company on SSO
             $createSSOCompany = $this->ssoService->createSSOCompany($request->getSSODTO());
 
-            if ($createSSOCompany->status() != Response::HTTP_CREATED) {
+            if ($createSSOCompany->status() !== Response::HTTP_CREATED) {
                 return $this->error(Response::HTTP_BAD_REQUEST, $createSSOCompany->json()['message']);
             }
-
 
             try {
                 $dbData =  DB::transaction(function () use ($request, $createSSOCompany) {
