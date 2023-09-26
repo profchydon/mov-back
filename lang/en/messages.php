@@ -21,4 +21,6 @@ return [
     'otp-resent' => 'The OTP has been resent to your email',
     'otp-validated' => 'The OTP is valid',
     'otp-invalid' => 'The OTP is not valid',
+    'company-updated' => 'Company details have been updated',
+    'wrong-user-stage' => 'Make sure you complete previous steps',
 ];

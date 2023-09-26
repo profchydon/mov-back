@@ -4,6 +4,7 @@ namespace App\Services\V2;
 
 use App\Domains\Constant\OTPConstant;
 use App\Domains\Constant\UserConstant;
+use App\Domains\DTO\AddCompanyDetailsDTO;
 use App\Domains\DTO\CreateSSOCompanyDTO;
 use App\Domains\DTO\VerifyOTPDTO;
 use App\Domains\Enum\User\UserStageEnum;
@@ -88,5 +89,16 @@ class SSOService implements SSOServiceInterface
         }else{
             return false;
         }
+    }
+
+    public function updateCompany(AddCompanyDetailsDTO $dto, string $ssoCompanyId)
+    {
+        $url = sprintf('%s/api/v1/companies/%s', env('SSO_URL'), $ssoCompanyId);
+
+        $data = $dto->toArray();
+
+        $resp = Http::acceptJson()->put($url, $data);
+
+        return $resp;
     }
 }

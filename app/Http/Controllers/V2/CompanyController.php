@@ -22,7 +22,7 @@ use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
-use PhpParser\Node\Stmt\TryCatch;
+use App\Http\Requests\Company\AddCompanyDetailsRequest;
 use Illuminate\Support\Facades\Log;
 
 class CompanyController extends Controller
@@ -127,5 +127,31 @@ class CompanyController extends Controller
             Response::HTTP_CREATED,
             'You have successfully invited users',
         );
+    }
+
+    public function addCompanyDetails(AddCompanyDetailsRequest $request, Company $company)
+    {
+        if(!isset($company->users[0])){
+            return $error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
+        }
+
+        $user = $company->users[0];
+
+        if($user->stage != UserStageEnum::COMPANY_DETAILS->value){
+            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-user-stage'));
+        }
+
+        $dto = $request->getDTO();
+
+        $resp = $this->ssoService->updateCompany($dto, $company->sso_id);
+
+        if($resp->status() != Response::HTTP_OK){
+            return $this->error(Response::HTTP_BAD_REQUEST, $resp->json()['message']);
+        }
+        
+        $company->update($dto->toArray());
+        $user->update(['stage' => UserStageEnum::SUBSCRIPTION_PLAN->value]);
+
+        return $this->response(Response::HTTP_OK, __('messages.company-updated'));
     }
 }
