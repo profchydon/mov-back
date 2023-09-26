@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\v2;
+namespace App\Services\V2;
 
 use App\Domains\Constant\OTPConstant;
 use App\Domains\Constant\UserConstant;

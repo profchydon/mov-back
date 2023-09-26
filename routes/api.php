@@ -13,5 +13,5 @@
 */
 
 $router->group(['prefix' => 'v2'], function () {
-    require __DIR__ . '/v2/index.php';
+    require __DIR__ . '/V2/index.php';
 });
