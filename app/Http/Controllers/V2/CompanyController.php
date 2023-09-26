@@ -43,13 +43,22 @@ class CompanyController extends Controller
         Log::info('Company Registration Request Received', $request->all());
 
         try {
+
+            $companyExist = $this->companyRepository->exist(CompanyConstant::EMAIL, $request->getCompanyDTO()->getEmail());
+
+            throw_if($companyExist, CompanyAlreadyExistException::class);
+
+            $userExist = $this->userRepository->exist(UserConstant::EMAIL, $request->getUserDTO()->getEmail());
+
+            throw_if($userExist, UserAlreadyExistException::class);
+
             //Create Company on SSO
             $createSSOCompany = $this->ssoService->createSSOCompany($request->getSSODTO());
             
             if ($createSSOCompany->status() !== Response::HTTP_CREATED) {
                 return $this->error(Response::HTTP_BAD_REQUEST, $createSSOCompany->json()['message']);
             }
-            return $this->response(200, $createSSOCompany->json());
+
             try {
                 $dbData =  DB::transaction(function () use ($request, $createSSOCompany) {
                     $tenant = $this->tenantRepository->create($request->getTenantDTO()->toArray());
