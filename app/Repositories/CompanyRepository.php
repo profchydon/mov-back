@@ -7,7 +7,6 @@ use App\Repositories\Contracts\CompanyRepositoryInterface;
 
 class CompanyRepository extends BaseRepository implements CompanyRepositoryInterface
 {
-
     public function model(): string
     {
         return Company::class;

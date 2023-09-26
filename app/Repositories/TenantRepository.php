@@ -7,7 +7,6 @@ use App\Repositories\Contracts\TenantRepositoryInterface;
 
 class TenantRepository extends BaseRepository implements TenantRepositoryInterface
 {
-
     public function model(): string
     {
         return Tenant::class;

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Domains\Constant;
+
 use App\Domains\Enum\Plan\BillingCycleEnum;
 
 /**
@@ -21,5 +22,4 @@ class PlanPriceConstant
         BillingCycleEnum::MONTHLY,
         BillingCycleEnum::YEARLY,
     ];
-
 }

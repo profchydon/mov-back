@@ -7,11 +7,13 @@ use App\Repositories\CompanyRepository;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\OTPRepositoryInterface;
+use App\Repositories\Contracts\PlanRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\OTPRepository;
+use App\Repositories\PlanRepository;
 use App\Repositories\TenantRepository;
 use App\Repositories\UserCompanyRepository;
 use App\Repositories\UserInvitationRepository;
@@ -40,5 +42,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(UserCompanyRepositoryInterface::class, UserCompanyRepository::class);
         $this->app->singleton(UserInvitationRepositoryInterface::class, UserInvitationRepository::class);
         $this->app->singleton(OTPRepositoryInterface::class, OTPRepository::class);
+        $this->app->singleton(PlanRepositoryInterface::class, PlanRepository::class);
     }
 }

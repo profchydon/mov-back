@@ -11,7 +11,7 @@ class HumanNameRule implements ValidationRule
     {
         $pattern = '/^[A-Za-z\s\-\']+$/';
 
-        if(!preg_match($pattern, $value)){
+        if (!preg_match($pattern, $value)) {
             $fail('The :attribute does not match a human name format');
         }
     }

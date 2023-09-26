@@ -4,9 +4,8 @@ namespace Database\Seeders;
 
 use App\Domains\Constant\TenantConstant;
 use App\Domains\Enum\Tenant\TenantStatusEnum;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Tenant;
+use Illuminate\Database\Seeder;
 
 class TenantSeeder extends Seeder
 {

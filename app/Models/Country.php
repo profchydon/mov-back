@@ -3,29 +3,19 @@
 namespace App\Models;
 
 use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
-    use HasFactory, SoftDeletes, GetsTableName;
+    use HasFactory, GetsTableName;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $guarded = [
-
+    protected $casts = [
+      'states' => 'json',
     ];
-
-
 
     public static function boot()
     {
         parent::boot();
-
     }
 }

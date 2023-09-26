@@ -10,15 +10,14 @@ class SessionController extends Controller
 {
     public function __construct()
     {
-
     }
 
     public function authorization()
     {
-        $clientId = getenv("SSO_CLIENT_ID");
-        $ssoUrl = getenv("SSO_URL");
+        $clientId = getenv('SSO_CLIENT_ID');
+        $ssoUrl = getenv('SSO_URL');
 
-        $authorizationUrl = sprintf("%s/oauth/authorize?client_id=%s&response_type=%s", $ssoUrl, $clientId, 'code');
+        $authorizationUrl = sprintf('%s/oauth/authorize?client_id=%s&response_type=%s', $ssoUrl, $clientId, 'code');
 
         return response()->json(['redirect_url' => $authorizationUrl]);
     }
@@ -47,12 +46,12 @@ class SessionController extends Controller
 
     public function confirmation(Request $request)
     {
-        $clientId =  getenv("CLIENT_ID");
-        $clientSecret = getenv("CLIENT_SECRET");
+        $clientId = getenv('CLIENT_ID');
+        $clientSecret = getenv('CLIENT_SECRET');
 
-        $ssoUrl = getenv("SSO_URL");
+        $ssoUrl = getenv('SSO_URL');
 
-        $confirmationUrl = sprintf("%s/s/confirm_token?client_id=%s&client_secret=%s&token=%s", $ssoUrl, $clientId, $clientSecret, $request->query('token'));
+        $confirmationUrl = sprintf('%s/s/confirm_token?client_id=%s&client_secret=%s&token=%s', $ssoUrl, $clientId, $clientSecret, $request->query('token'));
 
         $response = Http::get($confirmationUrl);
 

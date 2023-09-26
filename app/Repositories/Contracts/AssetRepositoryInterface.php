@@ -4,7 +4,7 @@ namespace App\Repositories\Contracts;
 
 interface AssetRepositoryInterface extends BaseRepositoryInterface
 {
-    function getCheckouts();
+    public function getCheckouts();
 
-    function getArchived();
+    public function getArchived();
 }

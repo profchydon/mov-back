@@ -12,8 +12,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateCompanyRequest extends FormRequest
 {
-
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,7 +26,7 @@ class CreateCompanyRequest extends FormRequest
             'user.email' => 'required|email|unique:users,email',
             'user.password' => ['required', new RaydaStandardPasswordRule()],
             'user.first_name' => ['required', new HumanNameRule()],
-            'user.last_name' => ['required', new HumanNameRule()]
+            'user.last_name' => ['required', new HumanNameRule()],
         ];
     }
 
@@ -61,7 +59,8 @@ class CreateCompanyRequest extends FormRequest
         return $dto;
     }
 
-    public function getSSODTO() : CreateSSOCompanyDTO {
+    public function getSSODTO(): CreateSSOCompanyDTO
+    {
         $dto = new CreateSSOCompanyDTO();
         $dto->setUser($this->getUserDTO());
         $dto->setCompany($this->getCompanyDTO());

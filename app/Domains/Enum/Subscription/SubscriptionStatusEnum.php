@@ -11,5 +11,4 @@ enum SubscriptionStatusEnum: string
     case ACTIVE = 'ACTIVE';
     case INACTIVE = 'INACTIVE';
     case EXPIRED = 'EXPIRED';
-
 }

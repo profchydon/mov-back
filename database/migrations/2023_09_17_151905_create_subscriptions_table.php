@@ -1,19 +1,18 @@
 <?php
 
 use App\Domains\Constant\CommonConstant;
-use Illuminate\Support\Facades\Schema;
 use App\Domains\Constant\SubscriptionConstant;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
-use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Domains\Enum\Plan\BillingCycleEnum;
-use App\Models\Tenant;
+use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\Plan;
+use App\Models\Tenant;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */

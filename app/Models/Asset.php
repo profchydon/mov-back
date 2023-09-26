@@ -8,8 +8,6 @@ use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Asset extends Model
@@ -67,5 +65,4 @@ class Asset extends Model
     {
         return $this->morphMany(FileUpload::class, 'uploadable');
     }
-
 }

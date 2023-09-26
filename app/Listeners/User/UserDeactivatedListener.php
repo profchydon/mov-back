@@ -2,32 +2,26 @@
 
 namespace App\Listeners\User;
 
+use App\Domains\Enum\EventTrack\EventTrackEnum;
 use App\Events\User\UserCreatedEvent;
 use App\Mail\UserCreatedMail;
+use App\Services\V2\EventTrackerService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use App\Services\V2\EventTrackerService;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Domains\Enum\EventTrack\EventTrackEnum;
 
 class UserDeactivatedListener
 {
-
     /**
      * UserCreatedListener constructor.
      * @param EventTrackerService $eventService
-     *
      */
     public function __construct()
     {
         //
     }
 
-
     public function handle(UserCreatedEvent $event)
     {
-
         $user = $event->user;
 
         //Send Welcome email

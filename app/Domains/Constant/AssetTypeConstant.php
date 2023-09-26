@@ -9,7 +9,6 @@ use App\Domains\Enum\Asset\AssetTypeEnum;
  */
 class AssetTypeConstant
 {
-
     public const ID = 'id';
     public const NAME = 'name';
     public const STATUS = 'status';
@@ -22,5 +21,4 @@ class AssetTypeConstant
         AssetTypeEnum::ACTIVE,
         AssetTypeEnum::INACTIVE,
     ];
-
 }

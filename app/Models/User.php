@@ -3,17 +3,15 @@
 namespace App\Models;
 
 use App\Domains\Constant\UserConstant;
-use App\Traits\GetsTableName;
-use App\Events\UserCreatedEvent;
-use Laravel\Sanctum\HasApiTokens;
-use App\Events\UserDeactivatedEvent;
-use Illuminate\Notifications\Notifiable;
 use App\Domains\Enum\User\UserStatusEnum;
+use App\Events\UserCreatedEvent;
+use App\Events\UserDeactivatedEvent;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\Traits\CausesActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -34,7 +32,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        
+
     ];
 
     /**
@@ -45,15 +43,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
+
     protected static function booted()
     {
-        static::created(function(self $model){
+        static::created(function (self $model) {
             // UserCreatedEvent::dispatch($model);
         });
 
-        static::updated(function(self $model){
-            if($model->status == UserStatusEnum::DEACTIVATED){
+        static::updated(function (self $model) {
+            if ($model->status == UserStatusEnum::DEACTIVATED) {
                 // UserDeactivatedEvent::dispatch($model);
             }
         });

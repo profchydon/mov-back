@@ -1,0 +1,30 @@
+- name: United States
+  code: USD
+  symbol: $
+- name: Eurozone
+  code: EUR
+  symbol: €
+- name: Japan
+  code: JPY
+  symbol: ¥
+- name: United Kingdom
+  code: GBP
+  symbol: £
+- name: China
+  code: CNY
+  symbol: ¥
+- name: India
+  code: INR
+  symbol: ₹
+- name: Canada
+  code: CAD
+  symbol: $
+- name: Australia
+  code: AUD
+  symbol: $
+- name: South Africa
+  code: ZAR
+  symbol: R
+- name: Nigeria
+  code: NGN
+  symbol: ₦

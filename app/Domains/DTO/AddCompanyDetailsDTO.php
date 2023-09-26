@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Domains\DTO;
 
 use App\Traits\DTOToArray;
@@ -15,6 +16,7 @@ class AddCompanyDetailsDTO
     public function setName(string $name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -26,6 +28,7 @@ class AddCompanyDetailsDTO
     public function setSize(string $size)
     {
         $this->size = $size;
+
         return $this;
     }
 
@@ -37,6 +40,7 @@ class AddCompanyDetailsDTO
     public function setIndustry(string $industry)
     {
         $this->industry = $industry;
+
         return $this;
     }
 
@@ -48,6 +52,7 @@ class AddCompanyDetailsDTO
     public function setAddress(string $address)
     {
         $this->address = $address;
+
         return $this;
     }
 

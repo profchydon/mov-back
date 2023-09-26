@@ -62,7 +62,7 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'handler' => Logtail\Monolog\LogtailHandler::class,
             'with' => [
-                'sourceToken' => env('LOGTAIL_SOURCE_TOKEN')
+                'sourceToken' => env('LOGTAIL_SOURCE_TOKEN'),
             ],
         ],
 

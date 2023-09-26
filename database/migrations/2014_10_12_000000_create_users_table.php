@@ -1,16 +1,15 @@
 <?php
 
-use App\Domains\Constant\CommonConstant;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
-use App\Domains\Constant\UserConstant;
 use App\Domains\Constant\TenantConstant;
+use App\Domains\Constant\UserConstant;
 use App\Domains\Enum\User\UserStageEnum;
 use App\Domains\Enum\User\UserStatusEnum;
 use App\Models\Country;
 use App\Models\Tenant;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     /**

@@ -1,18 +1,14 @@
 <?php
 
+use App\Domains\Constant\CompanyConstant;
+use App\Domains\Constant\TenantConstant;
+use App\Domains\Enum\Company\CompanyStatusEnum;
+use App\Models\Tenant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Domains\Constant\CompanyConstant;
-use App\Domains\Constant\UserConstant;
-use App\Domains\Constant\TenantConstant;
-use App\Domains\Enum\Company\CompanyStatusEnum;
-use App\Models\Company;
-use App\Models\Tenant;
-use App\Models\User;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */

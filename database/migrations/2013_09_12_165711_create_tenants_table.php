@@ -1,14 +1,13 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use App\Domains\Constant\TenantConstant;
 use App\Domains\Enum\Tenant\TenantStatusEnum;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-         // Turn on RLS
+        // Turn on RLS
         //  DB::statement('ALTER TABLE tenants ENABLE ROW LEVEL SECURITY;');
 
         //  // Restrict read and write actions so tenants can only see their rows

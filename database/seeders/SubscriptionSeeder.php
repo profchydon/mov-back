@@ -9,7 +9,6 @@ use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\Plan;
 use App\Models\Subscription;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SubscriptionSeeder extends Seeder

@@ -2,7 +2,6 @@
 
 namespace App\Services\V2;
 
-use App\Domains\Constant\OTPConstant;
 use App\Domains\Constant\UserConstant;
 use App\Domains\DTO\AddCompanyDetailsDTO;
 use App\Domains\DTO\CreateSSOCompanyDTO;
@@ -26,10 +25,10 @@ class SSOService implements SSOServiceInterface
     {
         $url = sprintf('%s/api/oauth/register', env('SSO_URL'));
 
-        $data = array(
+        $data = [
             'company' => $createSSOCompanyDTO->getCompany()->toArray(),
             'user' => $createSSOCompanyDTO->getUser()->toArray(),
-        );
+        ];
 
         $resp = Http::acceptJson()->post($url, $data);
 
@@ -41,8 +40,8 @@ class SSOService implements SSOServiceInterface
         $url = sprintf('%s/api/v1/otp', env('SSO_URL'));
 
         $data = [
-            "type" => "email",
-            "info" => $email
+            'type' => 'email',
+            'info' => $email,
         ];
 
         $resp = Http::acceptJson()->post($url, $data);
@@ -51,13 +50,13 @@ class SSOService implements SSOServiceInterface
             $user = $this->userRepository->firstWithRelation(UserConstant::EMAIL, $email, ['otp']);
 
             $respData = $resp->json()['data'];
-            if($user->otp){
+            if ($user->otp) {
                 $user->otp->delete();
             }
 
             $this->otpRepository->create([
-                "sso_id" => $respData['id'],
-                "user_id" => $user->id,
+                'sso_id' => $respData['id'],
+                'user_id' => $user->id,
             ]);
         }
 
@@ -68,25 +67,25 @@ class SSOService implements SSOServiceInterface
     {
         $user = $this->userRepository->firstWithRelation(UserConstant::ID, $dto->getUserId(), ['otp']);
 
-        if(!$user || !$user->otp){
+        if (!$user || !$user->otp) {
             return false;
         }
 
         $url = sprintf('%s/api/v1/otp/%s/verify', env('SSO_URL'), $user->otp->sso_id);
 
-        $data = ["otp" => $dto->getOTP()];
+        $data = ['otp' => $dto->getOTP()];
 
         $resp = Http::acceptJson()->put($url, $data);
 
-        if($resp->status() == Response::HTTP_OK){
+        if ($resp->status() == Response::HTTP_OK) {
             $user->otp->delete();
 
             $user->update([
-                UserConstant::STAGE => UserStageEnum::COMPANY_DETAILS->value
+                UserConstant::STAGE => UserStageEnum::COMPANY_DETAILS->value,
             ]);
 
             return true;
-        }else{
+        } else {
             return false;
         }
     }

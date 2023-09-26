@@ -1,13 +1,12 @@
 <?php
 
+use App\Domains\Constant\PlanConstant;
+use App\Domains\Enum\Plan\PlanStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Domains\Constant\PlanConstant;
-use App\Domains\Enum\Plan\PlanStatusEnum;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */

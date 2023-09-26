@@ -1,22 +1,20 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\CurrencyConstant;
 use App\Domains\Enum\Asset\AssetStatusEnum;
-use App\Models\Office;
-use App\Domains\Enum\Asset\AssetTypeEnum;
 use App\Domains\Enum\Maintenance\MaintenanceCycleEnum;
 use App\Models\AssetType;
-use App\Models\Currency;
-use App\Models\Tenant;
 use App\Models\Company;
+use App\Models\Currency;
+use App\Models\Office;
 use App\Models\OfficeArea;
+use App\Models\Tenant;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */

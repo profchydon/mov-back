@@ -1,15 +1,14 @@
 <?php
 
+use App\Domains\Constant\PlanConstant;
+use App\Domains\Constant\PlanFeatureConstant;
+use App\Models\Feature;
+use App\Models\Plan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Domains\Constant\PlanFeatureConstant;
-use App\Domains\Constant\PlanConstant;
-use App\Models\Feature;
-use App\Models\Plan;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */

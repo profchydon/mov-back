@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\UserInvitation;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -43,7 +42,7 @@ class CompanyUserInvitationEmail extends Mailable
             with: [
                 'invitedBy' => $this->user->invitedBy->first_name,
                 'company' => $this->user->company->name,
-                'link' => sprintf('%f/user-invitation/%f', env('FRONTEND_URL'), $this->user->code)
+                'link' => sprintf('%f/user-invitation/%f', env('FRONTEND_URL'), $this->user->code),
             ]
         );
     }

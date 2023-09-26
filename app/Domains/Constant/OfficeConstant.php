@@ -7,7 +7,7 @@ use App\Domains\Enum\Office\OfficeStatusEnum;
 class OfficeConstant
 {
     public const ID = 'id';
-    public const TENANT_ID= 'tenant_id';
+    public const TENANT_ID = 'tenant_id';
     public const COMPANY_ID = 'company_id';
     public const NAME = 'name';
     public const ADDRESS = 'address';

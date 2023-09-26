@@ -14,6 +14,7 @@ class CreateSSOCompanyDTO
     public function setCompany(object $company)
     {
         $this->company = $company;
+
         return $this;
     }
 
@@ -25,6 +26,7 @@ class CreateSSOCompanyDTO
     public function setUser(object $user)
     {
         $this->user = $user;
+
         return $this;
     }
 

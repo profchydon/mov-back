@@ -11,7 +11,7 @@ class OTP extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $guarded  = [
+    protected $guarded = [
         OTPConstant::ID,
     ];
 }

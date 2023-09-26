@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Domains\DTO;
 
 use App\Domains\Enum\Tenant\TenantStatusEnum;
@@ -18,39 +19,51 @@ class CreateTenantDTO
         $this->status = TenantStatusEnum::ACTIVE->value;
     }
 
-    public function setName(string $name){
+    public function setName(string $name)
+    {
         $this->name = $name;
+
         return $this;
     }
 
-    public function getName(){
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function setStatus(string $status){
+    public function setStatus(string $status)
+    {
         $this->status = $status;
+
         return $this;
     }
 
-    public function getStatus(){
+    public function getStatus()
+    {
         return $this->status;
     }
 
-    public function setEmail(?string $email){
+    public function setEmail(?string $email)
+    {
         $this->email = $email;
+
         return $this;
     }
 
-    public function getEmail(){
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function setSubdomain(?string $sub_domain){
+    public function setSubdomain(?string $sub_domain)
+    {
         $this->sub_domain = $sub_domain;
+
         return $this;
     }
 
-    public function getSubdomain(){
+    public function getSubdomain()
+    {
         return $this->sub_domain;
     }
 }

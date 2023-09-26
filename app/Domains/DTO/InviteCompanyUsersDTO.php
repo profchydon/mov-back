@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Domains\DTO;
 
 use App\Traits\DTOToArray;
@@ -16,6 +17,7 @@ class InviteCompanyUsersDTO
     public function setEmail(string $email)
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -27,6 +29,7 @@ class InviteCompanyUsersDTO
     public function setRoleId(int $role_id)
     {
         $this->role_id = $role_id;
+
         return $this;
     }
 
@@ -38,6 +41,7 @@ class InviteCompanyUsersDTO
     public function setCode(string $code)
     {
         $this->code = $code;
+
         return $this;
     }
 
@@ -49,6 +53,7 @@ class InviteCompanyUsersDTO
     public function setCompanyId(string $company_id)
     {
         $this->company_id = $company_id;
+
         return $this;
     }
 
@@ -60,6 +65,7 @@ class InviteCompanyUsersDTO
     public function setInvitedBy(string $invited_by)
     {
         $this->invited_by = $invited_by;
+
         return $this;
     }
 

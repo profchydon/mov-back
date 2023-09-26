@@ -12,6 +12,6 @@ class UserCompany extends Model
     use HasFactory, HasUuids;
 
     protected $guarded = [
-        UserCompanyConstant::ID
+        UserCompanyConstant::ID,
     ];
 }
