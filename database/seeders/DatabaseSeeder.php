@@ -27,5 +27,5 @@ class DatabaseSeeder extends Seeder
     //     $this->call(CompanySeeder::class);
     //     $this->call(InvoiceSeeder::class);
     //     $this->call(SubscriptionSeeder::class);
-    // }
+    }
 }
