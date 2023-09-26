@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Company;
+namespace App\Events\company;
 
 use App\Models\Company;
 use Illuminate\Broadcasting\Channel;

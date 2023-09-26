@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\Subscription;
+namespace App\Listeners\subscription;
 
 use App\Mail\UserCreatedMail;
 use Illuminate\Support\Facades\Log;
@@ -9,7 +9,7 @@ use App\Services\v2\EventTrackerService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Domains\Enum\EventTrack\EventTrackEnum;
-use App\Events\Subscription\SubscriptionActivatedEvent;
+use App\Events\subscription\SubscriptionActivatedEvent;
 use App\Mail\SubscriptionActivationMail;
 
 class SubscriptionActivatedListener
