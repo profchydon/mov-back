@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\company;
+namespace App\Listeners\Company;
 
 
 use App\Mail\CompanyCreatedMail;
@@ -10,7 +10,7 @@ use App\Services\v2\EventTrackerService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Domains\Enum\EventTrack\EventTrackEnum;
-use App\Events\company\CompanyCreatedEvent;
+use App\Events\Company\CompanyCreatedEvent;
 
 class CompanyCreatedListener
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Listeners\user;
+namespace App\Listeners\User;
 
-use App\Events\user\UserCreatedEvent;
+use App\Events\User\UserCreatedEvent;
 use App\Mail\UserCreatedMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;

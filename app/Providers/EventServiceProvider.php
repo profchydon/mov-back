@@ -2,15 +2,15 @@
 
 namespace App\Providers;
 
-use App\Events\user\UserCreatedEvent;
-use App\Events\user\UserDeactivatedEvent;
+use App\Events\User\UserCreatedEvent;
+use App\Events\User\UserDeactivatedEvent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
-use App\Events\company\CompanyCreatedEvent;
-use App\Listeners\user\UserCreatedListener;
-use App\Listeners\company\CompanyCreatedListener;
-use App\Events\subscription\SubscriptionActivatedEvent;
-use App\Listeners\subscription\SubscriptionActivatedListener;
+use App\Events\Company\CompanyCreatedEvent;
+use App\Listeners\User\UserCreatedListener;
+use App\Listeners\Company\CompanyCreatedListener;
+use App\Events\Subscription\SubscriptionActivatedEvent;
+use App\Listeners\Subscription\SubscriptionActivatedListener;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
