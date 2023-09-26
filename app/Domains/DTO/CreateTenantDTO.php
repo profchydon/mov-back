@@ -11,7 +11,12 @@ class CreateTenantDTO
     private ?string $name = null;
     private string $email;
     private ?string $sub_domain = null;
-    private string $status = TenantStatusEnum::ACTIVE->value;
+    private string $status;
+
+    public function __construct()
+    {
+        $this->status = TenantStatusEnum::ACTIVE->value;
+    }
 
     public function setName(string $name){
         $this->name = $name;
