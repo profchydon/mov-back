@@ -22,7 +22,7 @@ use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
-use PhpParser\Node\Stmt\TryCatch;
+use App\Http\Requests\Company\AddCompanyDetailsRequest;
 
 class CompanyController extends Controller
 {
@@ -124,5 +124,11 @@ class CompanyController extends Controller
             Response::HTTP_CREATED,
             'You have successfully invited users',
         );
+    }
+
+    public function addCompanyDetails(AddCompanyDetailsRequest $request, Company $company)
+    {
+        // $user = $this->userRepository->first()
+        // $dto = $request->getDTO();
     }
 }
