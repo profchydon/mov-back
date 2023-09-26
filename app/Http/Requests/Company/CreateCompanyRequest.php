@@ -47,8 +47,7 @@ class CreateCompanyRequest extends FormRequest
     {
         $dto = new CreateCompanyDTO();
         $dto->setEmail($this->input('company.email', ''))
-            ->setPhone($this->input('company.phone', ''))
-            ->setIndustry('Health'); //Please remove this line later
+            ->setPhone($this->input('company.phone', ''));
 
         return $dto;
     }
@@ -56,7 +55,8 @@ class CreateCompanyRequest extends FormRequest
     public function getTenantDTO(): CreateTenantDTO
     {
         $dto = new CreateTenantDTO();
-        $dto->setName($this->input('company.name', ''));
+        $dto->setName($this->input('company.name', ''))
+            ->setEmail($this->input('company.email', ''));
 
         return $dto;
     }

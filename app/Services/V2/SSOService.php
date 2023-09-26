@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Services\v2;
+namespace App\Services\V2;
 
 use App\Domains\Constant\OTPConstant;
 use App\Domains\Constant\UserConstant;
+use App\Domains\DTO\AddCompanyDetailsDTO;
 use App\Domains\DTO\CreateSSOCompanyDTO;
 use App\Domains\DTO\VerifyOTPDTO;
 use App\Domains\Enum\User\UserStageEnum;
@@ -53,10 +54,10 @@ class SSOService implements SSOServiceInterface
             if($user->otp){
                 $user->otp->delete();
             }
-            
+
             $this->otpRepository->create([
-                OTPConstant::SSO_ID => $respData['id'],
-                OTPConstant::USER_ID => $user->id,
+                "sso_id" => $respData['id'],
+                "user_id" => $user->id,
             ]);
         }
 
@@ -74,7 +75,7 @@ class SSOService implements SSOServiceInterface
         $url = sprintf('%s/api/v1/otp/%s/verify', env('SSO_URL'), $user->otp->sso_id);
 
         $data = ["otp" => $dto->getOTP()];
-        
+
         $resp = Http::acceptJson()->put($url, $data);
 
         if($resp->status() == Response::HTTP_OK){
@@ -88,5 +89,16 @@ class SSOService implements SSOServiceInterface
         }else{
             return false;
         }
+    }
+
+    public function updateCompany(AddCompanyDetailsDTO $dto, string $ssoCompanyId)
+    {
+        $url = sprintf('%s/api/v1/companies/%s', env('SSO_URL'), $ssoCompanyId);
+
+        $data = $dto->toArray();
+
+        $resp = Http::acceptJson()->put($url, $data);
+
+        return $resp;
     }
 }

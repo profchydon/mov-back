@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\v2;
+namespace App\Http\Controllers\V2;
 
 use Exception;
 use App\Models\Company;
@@ -23,6 +23,7 @@ use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
 use App\Http\Requests\Company\AddCompanyDetailsRequest;
+use Illuminate\Support\Facades\Log;
 
 class CompanyController extends Controller
 {
@@ -39,6 +40,8 @@ class CompanyController extends Controller
     public function create(CreateCompanyRequest $request): JsonResponse
     {
 
+        Log::info('Company Registration Request Received', $request->all());
+
         try {
 
             $companyExist = $this->companyRepository->exist(CompanyConstant::EMAIL, $request->getCompanyDTO()->getEmail());
@@ -51,11 +54,10 @@ class CompanyController extends Controller
 
             //Create Company on SSO
             $createSSOCompany = $this->ssoService->createSSOCompany($request->getSSODTO());
-
-            if ($createSSOCompany->status() != Response::HTTP_CREATED) {
+            
+            if ($createSSOCompany->status() !== Response::HTTP_CREATED) {
                 return $this->error(Response::HTTP_BAD_REQUEST, $createSSOCompany->json()['message']);
             }
-
 
             try {
                 $dbData =  DB::transaction(function () use ($request, $createSSOCompany) {
@@ -63,8 +65,9 @@ class CompanyController extends Controller
 
                     $ssoData = $createSSOCompany->json()['data'];
 
-                    $companyDto = $request->getCompanyDTO()->setTenantId($tenant->id)->setSsoId($ssoData['id']);
-                    $userDto = $request->getUserDTO()->setTenantId($tenant->id);
+                    $companyDto = $request->getCompanyDTO()->setTenantId($tenant->id)->setSsoId($ssoData['company_id']);
+                    $userDto = $request->getUserDTO()->setTenantId($tenant->id)->setSsoId($ssoData['user_id']);
+
                     $company = $this->companyRepository->create($companyDto->toArray());
                     $user = $this->userRepository->create($userDto->toArray());
 
@@ -89,7 +92,7 @@ class CompanyController extends Controller
             $this->ssoService->createEmailOTP($dbData['user']->email);
 
             return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $dbData);
-            
+
         } catch (CompanyAlreadyExistException $exception) {
 
             return $exception->message();
@@ -128,7 +131,27 @@ class CompanyController extends Controller
 
     public function addCompanyDetails(AddCompanyDetailsRequest $request, Company $company)
     {
-        // $user = $this->userRepository->first()
-        // $dto = $request->getDTO();
+        if(!isset($company->users[0])){
+            return $error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
+        }
+
+        $user = $company->users[0];
+
+        if($user->stage != UserStageEnum::COMPANY_DETAILS->value){
+            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-user-stage'));
+        }
+
+        $dto = $request->getDTO();
+
+        $resp = $this->ssoService->updateCompany($dto, $company->sso_id);
+
+        if($resp->status() != Response::HTTP_OK){
+            return $this->error(Response::HTTP_BAD_REQUEST, $resp->json()['message']);
+        }
+        
+        $company->update($dto->toArray());
+        $user->update(['stage' => UserStageEnum::SUBSCRIPTION_PLAN->value]);
+
+        return $this->response(Response::HTTP_OK, __('messages.company-updated'));
     }
 }

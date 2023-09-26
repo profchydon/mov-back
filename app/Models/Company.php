@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Company extends Model
 {
@@ -74,4 +75,8 @@ class Company extends Model
         });
     }
 
+    public function users(): HasManyThrough
+    {
+        return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id');
+    }
 }

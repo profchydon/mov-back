@@ -16,8 +16,13 @@ class CreateUserDTO
     private string $country_id;
     private string $password;
     private string $tenant_id;
-    private string $stage = UserStageEnum::VERIFICATION->value;
+    private string $stage;
     private string $sso_id;
+    
+    public function __construct()
+    {
+        $this->stage = UserStageEnum::VERIFICATION->value;
+    }
     
     public function setFirstName(string $first_name){
         $this->first_name = $first_name;
