@@ -38,7 +38,7 @@ class AddCompanyDetailsRequest extends FormRequest
             ->setSize($this->input('size'))
             ->setIndustry($this->input('industry'))
             ->setAddress($this->input('address'));
-        
+
         return $dto;
     }
 }

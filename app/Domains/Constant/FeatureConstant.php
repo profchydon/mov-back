@@ -2,8 +2,9 @@
 
 namespace App\Domains\Constant;
 
-use App\Domains\Enum\Feature\FeatureStatusEnum;
 use App\Domains\Enum\Feature\FeaturePriceEnum;
+use App\Domains\Enum\Feature\FeatureStatusEnum;
+
 /**
  * Class UserConstant.
  */
@@ -26,6 +27,4 @@ class FeatureConstant
         FeaturePriceEnum::FREE,
         FeaturePriceEnum::PAID,
     ];
-
-
 }

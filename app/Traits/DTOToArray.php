@@ -18,7 +18,7 @@ trait DTOToArray
     {
         $values = [];
         foreach ($this as $key => $value) {
-            if (!empty($value)){
+            if (!empty($value)) {
                 $values[$key] = $value;
             }
         }

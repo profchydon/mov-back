@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Model;
 use App\Domains\Constant\TenantConstant;
 use App\Domains\Enum\Tenant\TenantStatusEnum;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tenant extends Model
 {
@@ -41,6 +40,5 @@ class Tenant extends Model
     public static function boot()
     {
         parent::boot();
-
     }
 }

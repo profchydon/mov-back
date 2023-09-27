@@ -2,14 +2,10 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use App\Traits\ApiResponse;
+use Exception;
 
 class BaseException extends Exception
 {
-
     use ApiResponse;
-
-
 }
-

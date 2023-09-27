@@ -11,5 +11,4 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
 
         Route::post('/invitees', 'inviteCompanyUsers')->name('companies.invite.users');
     });
-   
 });

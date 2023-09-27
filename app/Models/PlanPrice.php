@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use Ramsey\Uuid\Uuid;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Model;
 use App\Domains\Constant\PlanPriceConstant;
 use App\Domains\Enum\Plan\BillingCycleEnum;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Ramsey\Uuid\Uuid;
 
 class PlanPrice extends BaseModel
 {
@@ -31,11 +28,13 @@ class PlanPrice extends BaseModel
         return (string)Uuid::uuid4();
     }
 
-
     public function uniqueIds()
     {
         return ['id'];
     }
 
-
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_code', 'code');
+    }
 }

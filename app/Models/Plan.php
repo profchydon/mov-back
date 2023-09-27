@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use Ramsey\Uuid\Uuid;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Model;
 use App\Domains\Constant\PlanConstant;
 use App\Domains\Enum\Plan\PlanStatusEnum;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Ramsey\Uuid\Uuid;
 
 class Plan extends BaseModel
 {
@@ -29,15 +27,13 @@ class Plan extends BaseModel
 
     public function newUniqueId()
     {
-        return (string)Uuid::uuid4();
+        return (string) Uuid::uuid4();
     }
-
 
     public function uniqueIds()
     {
         return ['id'];
     }
-
 
     public function subscriptions(): HasMany
     {
@@ -48,6 +44,4 @@ class Plan extends BaseModel
     {
         return $this->hasMany(PlanPrice::class);
     }
-
-
 }

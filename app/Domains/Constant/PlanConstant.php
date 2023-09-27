@@ -24,5 +24,4 @@ class PlanConstant
         PlanStatusEnum::ACTIVE,
         PlanStatusEnum::INACTIVE,
     ];
-
 }

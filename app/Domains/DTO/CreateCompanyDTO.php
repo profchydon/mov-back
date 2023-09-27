@@ -22,6 +22,7 @@ class CreateCompanyDTO
     public function setName(string $name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -33,6 +34,7 @@ class CreateCompanyDTO
     public function setEmail(string $email)
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -44,6 +46,7 @@ class CreateCompanyDTO
     public function setPhone(string $phone)
     {
         $this->phone = $phone;
+
         return $this;
     }
 
@@ -55,6 +58,7 @@ class CreateCompanyDTO
     public function setSize(?string $size)
     {
         $this->size = $size;
+
         return $this;
     }
 
@@ -66,6 +70,7 @@ class CreateCompanyDTO
     public function setIndustry(?string $industry)
     {
         $this->industry = $industry;
+
         return $this;
     }
 
@@ -77,6 +82,7 @@ class CreateCompanyDTO
     public function setAddress(?string $address)
     {
         $this->address = $address;
+
         return $this;
     }
 
@@ -88,6 +94,7 @@ class CreateCompanyDTO
     public function setCountry(?string $country)
     {
         $this->country = $country;
+
         return $this;
     }
 
@@ -99,6 +106,7 @@ class CreateCompanyDTO
     public function setState(?string $state)
     {
         $this->state = $state;
+
         return $this;
     }
 
@@ -110,6 +118,7 @@ class CreateCompanyDTO
     public function setTenantId(string $tenant_id)
     {
         $this->tenant_id = $tenant_id;
+
         return $this;
     }
 
@@ -121,6 +130,7 @@ class CreateCompanyDTO
     public function setSsoId(string $sso_id)
     {
         $this->sso_id = $sso_id;
+
         return $this;
     }
 

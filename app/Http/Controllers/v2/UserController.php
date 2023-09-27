@@ -35,7 +35,6 @@ class UserController extends Controller
 
             return $this->response(Response::HTTP_CREATED, __('messages.otp-resent'));
         } catch (Exception $exception) {
-
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
         }
     }
@@ -44,9 +43,9 @@ class UserController extends Controller
     {
         $isVerified = $this->ssoService->verifyOTP($request->getDTO());
 
-        if($isVerified){
+        if ($isVerified) {
             return $this->response(Response::HTTP_OK, __('messages.otp-validated'));
-        }else{
+        } else {
             return $this->error(Response::HTTP_BAD_REQUEST, __('messages.otp-invalid'));
         }
     }

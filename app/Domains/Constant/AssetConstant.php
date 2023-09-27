@@ -43,5 +43,4 @@ class AssetConstant
         AssetStatusEnum::CHECKED_OUT,
         AssetStatusEnum::TRANSFERRED,
     ];
-
 }

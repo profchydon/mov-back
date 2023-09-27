@@ -12,5 +12,5 @@ enum UserStageEnum: string
     case COMPANY_DETAILS = 'COMPANY DETAILS';
     case SUBSCRIPTION_PLAN = 'SUBSCRIPTION PLAN';
     case USERS = 'USERS';
-    case COMPLETED ='COMPLETED';
+    case COMPLETED = 'COMPLETED';
 }

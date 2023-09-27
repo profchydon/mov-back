@@ -2,11 +2,8 @@
 
 namespace App\Domains\Constant;
 
-
-
 class CommonConstant
 {
-
     public const ID = 'id';
     public const NAME = 'name';
     public const EMAIL = 'email';
@@ -19,7 +16,4 @@ class CommonConstant
     public const ACTIVE = 'active';
     public const INACTIVE = 'inactive';
     public const CREATED_AT = 'created_at';
-
-
-
 }

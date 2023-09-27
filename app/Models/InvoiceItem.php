@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use Ramsey\Uuid\Uuid;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Model;
 use App\Domains\Constant\InvoiceItemConstant;
 use App\Domains\Enum\Invoice\InvoiceItemTypeEnum;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Ramsey\Uuid\Uuid;
 
 class InvoiceItem extends Model
 {
@@ -62,6 +61,5 @@ class InvoiceItem extends Model
     public static function boot()
     {
         parent::boot();
-
     }
 }

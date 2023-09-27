@@ -1,16 +1,15 @@
 <?php
 
-use App\Models\Tenant;
+use App\Domains\Constant\InvoiceConstant;
+use App\Domains\Enum\Invoice\InvoiceStatusEnum;
 use App\Models\Company;
 use App\Models\Currency;
-use Illuminate\Support\Facades\Schema;
-use App\Domains\Constant\InvoiceConstant;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Tenant;
 use Illuminate\Database\Migrations\Migration;
-use App\Domains\Enum\Invoice\InvoiceStatusEnum;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */

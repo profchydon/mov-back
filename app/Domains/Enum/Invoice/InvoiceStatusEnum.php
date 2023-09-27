@@ -11,5 +11,4 @@ enum InvoiceStatusEnum: string
     case PENDING = 'PENDING';
     case PAID = 'PAID';
     case OVERDUE = 'OVERDUE';
-
 }

@@ -37,5 +37,4 @@ interface BaseRepositoryInterface
     public function updateById($id, $updateData);
 
     public function updateByUuid(string $uuid, $updateData);
-
 }

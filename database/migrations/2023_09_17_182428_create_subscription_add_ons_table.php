@@ -1,18 +1,17 @@
 <?php
 
-use App\Models\Tenant;
+use App\Domains\Constant\CommonConstant;
+use App\Domains\Constant\SubscriptionAddOnConstant;
+use App\Domains\Enum\Subscription\SubscriptionAddOnStatusEnum;
 use App\Models\Company;
 use App\Models\Feature;
 use App\Models\Subscription;
-use Illuminate\Support\Facades\Schema;
-use App\Domains\Constant\CommonConstant;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Tenant;
 use Illuminate\Database\Migrations\Migration;
-use App\Domains\Constant\SubscriptionAddOnConstant;
-use App\Domains\Enum\Subscription\SubscriptionAddOnStatusEnum;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */

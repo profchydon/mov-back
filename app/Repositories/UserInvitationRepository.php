@@ -11,7 +11,6 @@ use Illuminate\Support\Str;
 
 class UserInvitationRepository extends BaseRepository implements UserInvitationRepositoryInterface
 {
-
     public function model(): string
     {
         return UserInvitation::class;
@@ -19,11 +18,11 @@ class UserInvitationRepository extends BaseRepository implements UserInvitationR
 
     /**
      * @param array<int, InviteCompanyUsersDTO> $data
-    */
+     */
     public function inviteCompanyUsers(array $data)
     {
-        foreach($data as $userDto){
-            $code  = (string) Str::uuid();
+        foreach ($data as $userDto) {
+            $code = (string) Str::uuid();
             $userDto->setCode($code);
 
             $invitedUser = $this->create($userDto->toArray());

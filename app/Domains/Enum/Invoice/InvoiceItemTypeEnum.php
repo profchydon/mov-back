@@ -10,5 +10,4 @@ enum InvoiceItemTypeEnum: string
 
     case SUBSCRIPTION = 'SUBSCRIPTION';
     case ADDON = 'ADDON';
-
 }

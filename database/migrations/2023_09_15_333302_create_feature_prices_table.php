@@ -1,15 +1,14 @@
 <?php
 
+use App\Domains\Constant\FeatureConstant;
+use App\Domains\Constant\FeaturePriceConstant;
+use App\Models\Currency;
+use App\Models\Feature;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Domains\Constant\FeatureConstant;
-use App\Domains\Constant\FeaturePriceConstant;
-use App\Models\Feature;
-use App\Models\Currency;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */

@@ -3,7 +3,6 @@
 namespace App\Domains\Constant;
 
 use App\Domains\Enum\User\UserAccountStageEnum;
-use App\Domains\Enum\User\UserStageEnum;
 use App\Domains\Enum\User\UserStatusEnum;
 
 /**
@@ -46,6 +45,6 @@ class UserConstant
         UserAccountStageEnum::COMPANY_DETAILS,
         UserAccountStageEnum::SUBSCRIPTION_PLAN,
         UserAccountStageEnum::ADD_USERS,
-        UserAccountStageEnum::COMPLETED
+        UserAccountStageEnum::COMPLETED,
     ];
 }

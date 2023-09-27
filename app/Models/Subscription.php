@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
-use Ramsey\Uuid\Uuid;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Model;
 use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Events\Subscription\SubscriptionActivatedEvent;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Ramsey\Uuid\Uuid;
 
 class Subscription extends Model
 {
@@ -43,15 +42,15 @@ class Subscription extends Model
     ];
 
     /**
-     * Get the plan of this subscription
+     * Get the plan of this subscription.
      */
     public function plan(): BelongsTo
     {
         return $this->belongsTo(Plan::class, SubscriptionConstant::PLAN_ID);
     }
 
-     /**
-     * Get the company that owns this subscription
+    /**
+     * Get the company that owns this subscription.
      */
     public function company(): BelongsTo
     {
@@ -59,7 +58,7 @@ class Subscription extends Model
     }
 
     /**
-     * Get the addons for this subscription
+     * Get the addons for this subscription.
      */
     public function addOns(): HasMany
     {
@@ -88,7 +87,7 @@ class Subscription extends Model
 
     protected static function booted()
     {
-        static::created(function(self $model){
+        static::created(function (self $model) {
             SubscriptionActivatedEvent::dispatch($model);
         });
     }

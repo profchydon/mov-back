@@ -29,11 +29,11 @@ class InviteUserRequest extends FormRequest
 
     /**
      * @return array<int, InviteCompanyUsersDTO>
-    */
+     */
     public function getInvitationData(string $companyId, string $userId): array
     {
         $DTOs = [];
-        foreach($this->data as $item){
+        foreach ($this->data as $item) {
             $dto = new InviteCompanyUsersDTO();
 
             $dto->setEmail($item['email'])
