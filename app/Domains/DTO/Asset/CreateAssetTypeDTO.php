@@ -5,7 +5,7 @@ namespace App\Domains\DTO\Asset;
 use App\Domains\Enum\Asset\AssetTypeStatusEnum;
 use App\Traits\DTOToArray;
 
-class CreateAssetTypeDTO
+final class CreateAssetTypeDTO
 {
     use DTOToArray;
 
