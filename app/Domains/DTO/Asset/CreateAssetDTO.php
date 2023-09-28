@@ -18,10 +18,18 @@ final class CreateAssetDTO
     private string $office_id;
     private ?string $office_area_id = null;
     private string $currency;
-    private AssetStatusEnum $status = AssetStatusEnum::AVAILABLE;
+    private AssetStatusEnum $status;
     private ?MaintenanceCycleEnum $maintenance_cycle = null;
     private ?string $next_maintenance_date = null;
     private bool $is_insured = false;
+    private string $tenant_id;
+    private string $company_id;
+
+
+    public function __construct()
+    {
+        $this->status = AssetStatusEnum::AVAILABLE->value;
+    }
 
     /**
      * @return string|null
@@ -236,6 +244,42 @@ final class CreateAssetDTO
     public function setIsInsured(string $is_insured): CreateAssetDTO
     {
         $this->is_insured = $is_insured;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTenantId(): string
+    {
+        return $this->tenant_id;
+    }
+
+    /**
+     * @param string $tenant_id
+     * @return CreateAssetDTO
+     */
+    public function setTenantId(string $tenant_id): CreateAssetDTO
+    {
+        $this->tenant_id = $tenant_id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompanyId(): string
+    {
+        return $this->company_id;
+    }
+
+    /**
+     * @param string $company_id
+     * @return CreateAssetDTO
+     */
+    public function setCompanyId(string $company_id): CreateAssetDTO
+    {
+        $this->company_id = $company_id;
         return $this;
     }
 

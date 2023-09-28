@@ -13,12 +13,6 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return Asset::class;
     }
 
-
-    public function create(CreateAssetDTO $companyDTO)
-    {
-
-    }
-
     public function getCheckouts()
     {
         //TODO: write the logic to return all asset checkouts
