@@ -8,7 +8,9 @@ enum UserStageEnum: string
 {
     use ListsEnumValues;
 
-    case START = 'START';
-    case ASSET = 'ASSET';
-    case USER = 'USER';
+    case VERIFICATION = 'VERIFICATION';
+    case COMPANY_DETAILS = 'COMPANY DETAILS';
+    case SUBSCRIPTION_PLAN = 'SUBSCRIPTION PLAN';
+    case USERS = 'USERS';
+    case COMPLETED = 'COMPLETED';
 }

@@ -4,10 +4,9 @@ namespace Database\Seeders;
 
 use App\Domains\Constant\InvoiceConstant;
 use App\Domains\Enum\Invoice\InvoiceStatusEnum;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Company;
 use App\Models\Invoice;
+use Illuminate\Database\Seeder;
 
 class InvoiceSeeder extends Seeder
 {

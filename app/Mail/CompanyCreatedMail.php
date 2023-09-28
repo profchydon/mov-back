@@ -2,17 +2,15 @@
 
 namespace App\Mail;
 
+use App\Models\Company;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Company;
 
 class CompanyCreatedMail extends Mailable
 {
-
     private $company;
 
     use Queueable, SerializesModels;
@@ -46,7 +44,7 @@ class CompanyCreatedMail extends Mailable
             view: 'emails.company.welcome',
             with: [
                 'company' => $this->company,
-                'link' => env('APP_FRONTEND_URL')."/auth/login",
+                'link' => env('APP_FRONTEND_URL') . '/auth/login',
             ],
         );
     }

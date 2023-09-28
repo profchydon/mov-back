@@ -32,10 +32,9 @@ interface BaseRepositoryInterface
 
     public function update($column, $value, $data);
 
-    public function updateOrCreate($condition = [], $data);
+    public function updateOrCreate(array $condition, $data);
 
     public function updateById($id, $updateData);
 
     public function updateByUuid(string $uuid, $updateData);
-
 }

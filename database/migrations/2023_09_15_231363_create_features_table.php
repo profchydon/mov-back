@@ -1,14 +1,13 @@
 <?php
 
+use App\Domains\Constant\FeatureConstant;
+use App\Domains\Enum\Feature\FeaturePriceEnum;
+use App\Domains\Enum\Feature\FeatureStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Domains\Constant\FeatureConstant;
-use App\Domains\Enum\Feature\FeatureStatusEnum;
-use App\Domains\Enum\Feature\FeaturePriceEnum;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */

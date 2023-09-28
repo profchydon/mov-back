@@ -2,18 +2,16 @@
 
 namespace App\Models;
 
-use Ramsey\Uuid\Uuid;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Model;
 use App\Domains\Constant\CompanyConstant;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Domains\Enum\Company\CompanyStatusEnum;
 use App\Events\Company\CompanyCreatedEvent;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
 {
@@ -30,6 +28,15 @@ class Company extends Model
      */
     protected $guarded = [
         CompanyConstant::ID,
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        CompanyConstant::TENANT_ID,
     ];
 
     /**
@@ -51,38 +58,23 @@ class Company extends Model
         CompanyConstant::STATUS => CompanyStatusEnum::class,
     ];
 
-     /**
-     * Get the subscriptions for this company
+    /**
+     * Get the subscriptions for this company.
      */
     public function subscriptions(): HasMany
     {
         return $this->hasMany(Subscription::class);
     }
 
-    /**
-     * Generate a new UUID for the model.
-     *
-     * @return string
-     */
-    public function newUniqueId()
-    {
-        return (string) Uuid::uuid4();
-    }
-
-    /**
-     * Get the columns that should receive a unique identifier.
-     *
-     * @return array
-     */
-    public function uniqueIds()
-    {
-        return ['id'];
-    }
-
     protected static function booted()
     {
-        static::created(function(self $model){
+        static::created(function (self $model) {
             CompanyCreatedEvent::dispatch($model);
         });
+    }
+
+    public function users(): HasManyThrough
+    {
+        return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id');
     }
 }

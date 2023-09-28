@@ -8,6 +8,7 @@ use App\Models\Asset;
 
 interface AssetRepositoryInterface extends BaseRepositoryInterface
 {
-    public function create($data): Asset;
+    public function getCheckouts();
 
+    public function getArchived();
 }

@@ -2,19 +2,15 @@
 
 namespace App\Models;
 
-use Ramsey\Uuid\Uuid;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Model;
 use App\Domains\Constant\CurrencyConstant;
 use App\Domains\Enum\Currency\CurrencyStatusEnum;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model
 {
-    use HasFactory, SoftDeletes, GetsTableName;
+    use HasFactory, GetsTableName;
 
     /**
      * The attributes that are mass assignable.
@@ -37,6 +33,5 @@ class Currency extends Model
     public static function boot()
     {
         parent::boot();
-
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Domains\Constant;
+
 use App\Domains\Enum\Subscription\SubscriptionAddOnStatusEnum;
 
 /**
@@ -26,5 +27,4 @@ class SubscriptionAddOnConstant
         SubscriptionAddOnStatusEnum::ACTIVE,
         SubscriptionAddOnStatusEnum::INACTIVE,
     ];
-
 }

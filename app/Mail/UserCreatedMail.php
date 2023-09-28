@@ -2,17 +2,15 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\User;
 
 class UserCreatedMail extends Mailable
 {
-
     private $user;
 
     use Queueable, SerializesModels;
@@ -46,7 +44,7 @@ class UserCreatedMail extends Mailable
             view: 'emails.user.welcome',
             with: [
                 'user' => $this->user,
-                'link' => env('APP_FRONTEND_URL')."/auth/login",
+                'link' => env('APP_FRONTEND_URL') . '/auth/login',
             ],
         );
     }

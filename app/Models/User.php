@@ -3,20 +3,19 @@
 namespace App\Models;
 
 use App\Domains\Constant\UserConstant;
-use App\Traits\GetsTableName;
-use App\Events\UserCreatedEvent;
-use Laravel\Sanctum\HasApiTokens;
-use App\Events\UserDeactivatedEvent;
-use Illuminate\Notifications\Notifiable;
 use App\Domains\Enum\User\UserStatusEnum;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\Traits\CausesActivity;
+use App\Events\UserCreatedEvent;
+use App\Events\UserDeactivatedEvent;
+use App\Traits\GetsTableName;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, GetsTableName;
+    use HasUuids, HasApiTokens, HasFactory, Notifiable, GetsTableName;
 
     /**
      * The attributes that are mass assignable.
@@ -33,7 +32,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        UserConstant::PASSWORD,
+
     ];
 
     /**
@@ -47,13 +46,13 @@ class User extends Authenticatable
 
     protected static function booted()
     {
-        static::created(function(self $model){
-            UserCreatedEvent::dispatch($model);
+        static::created(function (self $model) {
+            // UserCreatedEvent::dispatch($model);
         });
 
-        static::updated(function(self $model){
-            if($model->status == UserStatusEnum::DEACTIVATED){
-                UserDeactivatedEvent::dispatch($model);
+        static::updated(function (self $model) {
+            if ($model->status == UserStatusEnum::DEACTIVATED) {
+                // UserDeactivatedEvent::dispatch($model);
             }
         });
     }
@@ -61,5 +60,10 @@ class User extends Authenticatable
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function otp()
+    {
+        return $this->hasOne(OTP::class);
     }
 }

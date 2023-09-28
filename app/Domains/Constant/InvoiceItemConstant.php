@@ -10,7 +10,7 @@ use App\Domains\Enum\Invoice\InvoiceItemTypeEnum;
 class InvoiceItemConstant
 {
     public const ID = 'id';
-    public const INVOICE_ID= 'invoice_id';
+    public const INVOICE_ID = 'invoice_id';
     public const PLAN_ID = 'plan_id';
     public const FEATURE_ID = 'feature_id';
     public const TYPE = 'type';

@@ -2,17 +2,15 @@
 
 namespace App\Mail;
 
+use App\Models\Subscription;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Subscription;
 
 class SubscriptionActivationMail extends Mailable
 {
-
     private $subscription;
 
     use Queueable, SerializesModels;
@@ -46,7 +44,7 @@ class SubscriptionActivationMail extends Mailable
             view: 'emails.subscription.activated',
             with: [
                 // 'subscription' => $this->subscription,
-                'link' => env('APP_FRONTEND_URL')."/auth/login",
+                'link' => env('APP_FRONTEND_URL') . '/auth/login',
             ],
         );
     }
