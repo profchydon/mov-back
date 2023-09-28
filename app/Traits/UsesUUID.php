@@ -2,17 +2,11 @@
 
 namespace App\Traits;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 trait UsesUUID
 {
-    public static function bootUsesUUID()
-    {
-        static::creating(function (Model $model) {
-            $model->setAttribute($model->getKeyName(), Str::uuid());
-        });
-    }
+    use HasUuids;
 
     public function getIncrementing(): bool
     {
@@ -22,5 +16,10 @@ trait UsesUUID
     public function getKeyType(): string
     {
         return 'string';
+    }
+
+    public function uniqueIds()
+    {
+        return ['id'];
     }
 }
