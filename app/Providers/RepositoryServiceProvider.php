@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Repositories\AssetRepository;
+use App\Repositories\AssetTypeRepository;
 use App\Repositories\CompanyRepository;
 use App\Repositories\Contracts\AssetRepositoryInterface;
+use App\Repositories\Contracts\AssetTypeRepositoryInterface;
 use App\Repositories\Contracts\CompanyOfficeRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\OTPRepositoryInterface;
@@ -44,6 +46,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(UserInvitationRepositoryInterface::class, UserInvitationRepository::class);
         $this->app->singleton(OTPRepositoryInterface::class, OTPRepository::class);
         $this->app->singleton(PlanRepositoryInterface::class, PlanRepository::class);
+        $this->app->singleton(AssetTypeRepositoryInterface::class, AssetTypeRepository::class);
         $this->app->singleton(CompanyOfficeRepositoryInterface::class, CompanyRepository::class);
     }
 }
