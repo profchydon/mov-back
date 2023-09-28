@@ -15,6 +15,7 @@ Route::controller(AssetController::class)->prefix('assets')->group(function () {
 // Asset Type
 Route::controller(AssetTypeController::class)->prefix('assets/type')->group(function () {
     Route::post('/', 'create')->name('assets.type.create');
+    Route::get('/', 'get')->name('assets.type.get');
 });
 
 

@@ -35,17 +35,14 @@ class AssetTypeController extends Controller
 
         try {
 
-            // $name = $request->createAssetTypeDTO()->getName();
+            $name = $request->createAssetTypeDTO()->getName();
 
-            // $assetType = $this->assetTypeRepository->first(AssetTypeConstant::NAME, $name);
+            $assetType = $this->assetTypeRepository->firstLike(AssetTypeConstant::NAME, $name);
 
-            // if (!$assetType) {
-            //     $assetTypeDto = $request->createAssetTypeDTO()->toArray();
-            //     $assetType = $this->assetTypeRepository->create($assetTypeDto);
-            // }
-
-            $assetTypeDto = $request->createAssetTypeDTO()->toArray();
-            $assetType = $this->assetTypeRepository->create($assetTypeDto);
+            if (!$assetType) {
+                $assetTypeDto = $request->createAssetTypeDTO()->toArray();
+                $assetType = $this->assetTypeRepository->create($assetTypeDto);
+            }
 
             return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $assetType);
 
@@ -55,5 +52,16 @@ class AssetTypeController extends Controller
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
         }
     }
+
+    /**
+     * @return JsonResponse
+     */
+    public function get(): JsonResponse
+    {
+        $assetTypes = $this->assetTypeRepository->all();
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assetTypes);
+    }
+
 
 }

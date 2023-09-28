@@ -89,6 +89,14 @@ abstract class BaseRepository
         return $query->paginate();
     }
 
+    public function firstLike($column, $data) {
+        return $this->model->where($column, 'like', "%$data%")->first();
+    }
+
+    public function manyLike($column, $data) {
+        return $this->model->where($column, 'like', "%$data%")->get();
+    }
+
     public function getMany($column, array $data)
     {
         return $this->model->whereIn($column, $data)->get();
