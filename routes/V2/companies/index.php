@@ -1,7 +1,9 @@
 <?php
 
+
 use App\Http\Controllers\V2\CompanyController;
 use App\Http\Controllers\V2\SubscriptionController;
+use App\Http\Controllers\v2\CompanyOfficeController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(CompanyController::class)->prefix('companies')->group(function () {
@@ -13,5 +15,12 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::post('/invitees', 'inviteCompanyUsers')->name('companies.invite.users');
     });
 
+
     Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan']);
+    Route::resource('{company}/offices', CompanyOfficeController::class);
+});
+
+// Route for office areas
+Route::group(['prefix' => 'offices/{office}'], function () {
+    Route::post('areas', [CompanyOfficeController::class, 'storeOfficeArea']);
 });

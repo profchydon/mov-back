@@ -22,11 +22,11 @@ return new class extends Migration {
             $table->string(OfficeConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
             $table->string(OfficeConstant::NAME);
             $table->string(OfficeConstant::ADDRESS);
-            $table->string(OfficeConstant::CURRENCY_ID)->references(CommonConstant::ID)->on(Currency::getTableName());
+            $table->string(OfficeConstant::CURRENCY_CODE)->references(CommonConstant::CODE)->on(Currency::getTableName());
             $table->string(OfficeConstant::COUNTRY);
             $table->string(OfficeConstant::STATE);
-            $table->string(OfficeConstant::LATITUDE)->nullable();
-            $table->string(OfficeConstant::LONGITUDE)->nullable();
+            $table->float(OfficeConstant::LATITUDE)->nullable();
+            $table->float(OfficeConstant::LONGITUDE)->nullable();
             $table->enum(OfficeConstant::STATUS, OfficeStatusEnum::values())->default(OfficeStatusEnum::ACTIVE->value);
             $table->timestamps();
             $table->softDeletes();
