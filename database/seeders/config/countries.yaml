@@ -3353,3 +3353,394 @@
     - Aileu
     - Ainaro
     - Bauca
+- name: Turkey
+  code: TR
+  states:
+    - Adana
+    - Adıyaman
+    - Afyonkarahisar
+    - Ağrı
+    - Aksaray
+    - Amasya
+    - Ankara
+    - Antalya
+    - Ardahan
+    - Artvin
+    - Aydın
+    - Balıkesir
+    - Bartın
+    - Batman
+    - Bayburt
+    - Bilecik
+    - Bingöl
+    - Bitlis
+    - Bolu
+    - Burdur
+    - Bursa
+    - Çanakkale
+    - Çankırı
+    - Çorum
+    - Denizli
+    - Diyarbakır
+    - Düzce
+    - Edirne
+    - Elazığ
+    - Erzincan
+    - Erzurum
+    - Eskişehir
+    - Gaziantep
+    - Giresun
+    - Gümüşhane
+    - Hakkari
+    - Hatay
+    - Iğdır
+    - Isparta
+    - İstanbul
+    - İzmir
+    - Kahramanmaraş
+    - Karabük
+    - Karaman
+    - Kars
+    - Kastamonu
+    - Kayseri
+    - Kilis
+    - Kırıkkale
+    - Kırklareli
+    - Kırşehir
+    - Kocaeli
+    - Konya
+    - Kütahya
+    - Malatya
+    - Manisa
+    - Mardin
+    - Mersin
+    - Muğla
+    - Muş
+    - Nevşehir
+    - Niğde
+    - Ordu
+    - Osmaniye
+    - Rize
+    - Sakarya
+    - Samsun
+    - Şanlıurfa
+    - Siirt
+    - Sinop
+    - Şırnak
+    - Sivas
+    - Tekirdağ
+    - Tokat
+    - Trabzon
+    - Tunceli
+    - Uşak
+    - Van
+    - Yalova
+    - Yozgat
+    - Zonguldak
+- name: Turkmenistan
+  code: TM
+  states:
+    - Ahal
+    - Balkan
+    - Daşoguz
+    - Lebap
+    - Mary
+- name: Tuvalu
+  code: TV
+  states:
+    - Funafuti
+    - Nanumea
+    - Nanumanga
+    - Niutao
+    - Nui
+    - Nukufetau
+    - Nukulaelae
+    - Vaitupu
+- name: Uganda
+  code: UG
+  states:
+    - Central Region
+    - Eastern Region
+    - Northern Region
+    - Western Region
+- name: Ukraine
+  code: UA
+  states:
+    - Cherkasy
+    - Chernihiv
+    - Chernivtsi
+    - Dnipropetrovsk
+    - Donetsk
+    - Ivano-Frankivsk
+    - Kharkiv
+    - Kherson
+    - Khmelnytskyi
+    - Kirovohrad
+    - Kyiv
+    - Luhansk
+    - Lviv
+    - Mykolaiv
+    - Odessa
+    - Poltava
+    - Rivne
+    - Sumy
+    - Ternopil
+    - Vinnytsia
+    - Volyn
+    - Zakarpattia
+    - Zaporizhia
+    - Zhytomyr
+- name: United Arab Emirates
+  code: AE
+  states:
+    - Abu Dhabi
+    - Ajman
+    - Dubai
+    - Fujairah
+    - Ras Al Khaimah
+    - Sharjah
+    - Umm Al Quwain
+- name: United Kingdom
+  code: GB
+  states:
+    - England
+    - Northern Ireland
+    - Scotland
+    - Wales
+- name: United States of America
+  code: US
+  states:
+    - Alabama
+    - Alaska
+    - Arizona
+    - Arkansas
+    - California
+    - Colorado
+    - Connecticut
+    - Delaware
+    - Florida
+    - Georgia
+    - Hawaii
+    - Idaho
+    - Illinois
+    - Indiana
+    - Iowa
+    - Kansas
+    - Kentucky
+    - Louisiana
+    - Maine
+    - Maryland
+    - Massachusetts
+    - Michigan
+    - Minnesota
+    - Mississippi
+    - Missouri
+    - Montana
+    - Nebraska
+    - Nevada
+    - New Hampshire
+    - New Jersey
+    - New Mexico
+    - New York
+    - North Carolina
+    - North Dakota
+    - Ohio
+    - Oklahoma
+    - Oregon
+    - Pennsylvania
+    - Rhode Island
+    - South Carolina
+    - South Dakota
+    - Tennessee
+    - Texas
+    - Utah
+    - Vermont
+    - Virginia
+    - Washington
+    - West Virginia
+    - Wisconsin
+    - Wyoming
+- name: Uruguay
+  code: UY
+  states:
+    - Artigas
+    - Canelones
+    - Cerro Largo
+    - Colonia
+    - Durazno
+    - Flores
+    - Florida
+    - Lavalleja
+    - Maldonado
+    - Montevideo
+    - Paysandú
+    - Río Negro
+    - Rivera
+    - Rocha
+    - Salto
+    - San José
+    - Soriano
+    - Tacuarembó
+    - Treinta y Tres
+- name: Uzbekistan
+  code: UZ
+  states:
+    - Andijan
+    - Bukhara
+    - Fergana
+    - Jizzakh
+    - Karakalpakstan
+    - Namangan
+    - Navoiy
+    - Qashqadaryo
+    - Samarkand
+    - Sirdaryo
+    - Surxondaryo
+    - Tashkent
+    - Xorazm
+- name: Vanuatu
+  code: VU
+  states:
+    - Malampa
+    - Penama
+    - Sanma
+    - Shefa
+    - Tafea
+    - Torba
+- name: Vatican City
+  code: VA
+  states:
+    - Vatican City
+- name: Venezuela
+  code: VE
+  states:
+    - Amazonas
+    - Anzoátegui
+    - Apure
+    - Aragua
+    - Barinas
+    - Bolívar
+    - Carabobo
+    - Cojedes
+    - Delta Amacuro
+    - Falcón
+    - Guárico
+    - Lara
+    - Mérida
+    - Miranda
+    - Monagas
+    - Nueva Esparta
+    - Portuguesa
+    - Sucre
+    - Táchira
+    - Trujillo
+    - Vargas
+    - Yaracuy
+    - Zulia
+- name: Vietnam
+  code: VN
+  states:
+    - An Giang
+    - Bà Rịa-Vũng Tàu
+    - Bắc Giang
+    - Bắc Kạn
+    - Bạc Liêu
+    - Bắc Ninh
+    - Bến Tre
+    - Bình Định
+    - Bình Dương
+    - Bình Phước
+    - Bình Thuận
+    - Cà Mau
+    - Cao Bằng
+    - Đắk Lắk
+    - Đắk Nông
+    - Điện Biên
+    - Đồng Nai
+    - Đồng Tháp
+    - Gia Lai
+    - Hà Giang
+    - Hà Nam
+    - Hà Tĩnh
+    - Hải Dương
+    - Hậu Giang
+    - Hòa Bình
+    - Hưng Yên
+    - Khánh Hòa
+    - Kiên Giang
+    - Kon Tum
+    - Lai Châu
+    - Lâm Đồng
+    - Lạng Sơn
+    - Lào Cai
+    - Long An
+    - Nam Định
+    - Nghệ An
+    - Ninh Bình
+    - Ninh Thuận
+    - Phú Thọ
+    - Quảng Bình
+    - Quảng Nam
+    - Quảng Ngãi
+    - Quảng Ninh
+    - Quảng Trị
+    - Sóc Trăng
+    - Sơn La
+    - Tây Ninh
+    - Thái Bình
+    - Thái Nguyên
+    - Thanh Hóa
+    - Thừa Thiên-Huế
+    - Tiền Giang
+    - Trà Vinh
+    - Tuyên Quang
+    - Vĩnh Long
+    - Vĩnh Phúc
+    - Yên Bái
+- name: Yemen
+  code: YE
+  states:
+    - 'Adan
+    - Abyan
+    - Al Bayda'
+    - Al Hudaydah
+    - Al Jawf
+    - Al Mahrah
+    - Al Mahwit
+    - Amanat Al Asimah
+    - Dhamar
+    - Hadramawt
+    - Hajjah
+    - Ibb
+    - Lahij
+    - Ma'rib
+    - Raymah
+    - Sa'dah
+    - Shabwah
+    - Ta'izz
+- name: Zambia
+  code: ZM
+  states:
+    - Central
+    - Copperbelt
+    - Eastern
+    - Luapula
+    - Lusaka
+    - Muchinga
+    - Northern
+    - North-Western
+    - Southern
+    - Western
+- name: Zimbabwe
+  code: ZW
+  states:
+    - Bulawayo
+    - Harare
+    - Manicaland
+    - Mashonaland Central
+    - Mashonaland East
+    - Mashonaland West
+    - Masvingo
+    - Matabeleland North
+    - Matabeleland South
+    - Midlands
