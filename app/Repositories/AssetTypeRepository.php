@@ -12,5 +12,4 @@ class AssetTypeRepository extends BaseRepository implements AssetTypeRepositoryI
     {
         return AssetType::class;
     }
-
 }

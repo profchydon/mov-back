@@ -25,7 +25,7 @@ class PlanPrice extends BaseModel
 
     public function newUniqueId()
     {
-        return (string)Uuid::uuid4();
+        return (string) Uuid::uuid4();
     }
 
     public function uniqueIds()
