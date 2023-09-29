@@ -83,7 +83,6 @@ class CompanyController extends Controller
                 });
             } catch (Exception $exception) {
                 //operation failed on core, notify sso
-
                 return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
             }
 
