@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\DTO\Asset;
+namespace App\Domains\DTO\Asset;
 
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Domains\Enum\Maintenance\MaintenanceCycleEnum;
@@ -13,25 +13,27 @@ final class CreateAssetDTO
     private ?string $make = null;
     private ?string $model = null;
     private string $type;
+    private string $serial_number;
     private float $purchase_price;
     private ?string $purchase_date = null;
     private string $office_id;
     private ?string $office_area_id = null;
     private string $currency;
-    private AssetStatusEnum $status;
-    private ?MaintenanceCycleEnum $maintenance_cycle = null;
+    private ?string $status;
+    private ?string $maintenance_cycle = null;
     private ?string $next_maintenance_date = null;
     private bool $is_insured = false;
     private string $tenant_id;
     private string $company_id;
-
+    private string $added_at;
 
     public function __construct()
     {
+        $this->added_at = now();
         $this->status = AssetStatusEnum::AVAILABLE->value;
     }
 
-    /**
+     /**
      * @return string|null
      */
     public function getMake(): ?string
@@ -82,6 +84,24 @@ final class CreateAssetDTO
     public function setType(string $type): CreateAssetDTO
     {
         $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSerialNumber(): string
+    {
+        return $this->serial_number;
+    }
+
+    /**
+     * @param string $serial_number
+     * @return CreateAssetDTO
+     */
+    public function setSerialNumber(string $serial_number): CreateAssetDTO
+    {
+        $this->serial_number = $serial_number;
         return $this;
     }
 
@@ -157,7 +177,7 @@ final class CreateAssetDTO
         return $this;
     }
 
-    /**
+     /**
      * @return string
      */
     public function getCurrency(): string
@@ -178,7 +198,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getStatus(): AssetStatusEnum
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -196,7 +216,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getMaintenanceCycle(): MaintenanceCycleEnum
+    public function getMaintenanceCycle(): string
     {
         return $this->maintenance_cycle;
     }
@@ -205,7 +225,7 @@ final class CreateAssetDTO
      * @param string $maintenance_cycle
      * @return CreateAssetDTO
      */
-    public function setMaintenanceCycle(string $maintenance_cycle): CreateAssetDTO
+    public function setMaintenanceCycle(string | null $maintenance_cycle): CreateAssetDTO
     {
         $this->maintenance_cycle = $maintenance_cycle;
         return $this;
@@ -282,5 +302,4 @@ final class CreateAssetDTO
         $this->company_id = $company_id;
         return $this;
     }
-
 }

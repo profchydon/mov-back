@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('asset_types', function (Blueprint $table) {
-            $table->softDeletes();
+            // $table->softDeletes();
         });
     }
 

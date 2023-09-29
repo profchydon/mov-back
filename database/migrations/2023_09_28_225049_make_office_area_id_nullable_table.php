@@ -1,8 +1,7 @@
 <?php
 
 use App\Domains\Constant\AssetConstant;
-use App\Domains\Constant\CommonConstant;
-use App\Models\User;
+use App\Models\OfficeArea;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,8 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->string(AssetConstant::ASSIGNED_TO)->nullable()->references(CommonConstant::ID)->on(User::getTableName());
-            $table->dateTime(AssetConstant::ASSIGNED_DATE)->nullable();
+            $table->uuid(AssetConstant::OFFICE_AREA_ID)->nullable()->references(AssetConstant::ID)->on(OfficeArea::getTableName())->change();
         });
     }
 

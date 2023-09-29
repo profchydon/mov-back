@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Asset;
 
-use App\Domain\DTO\Asset\CreateAssetDTO;
+use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Rules\HumanNameRule;
 use App\Rules\RaydaStandardPasswordRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateAssetRequest extends FormRequest
 {
@@ -16,30 +17,35 @@ class CreateAssetRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
-            'type' => 'required|array',
-            'company.email' => 'required|email|unique:companies,email',
-            'user' => 'required|array',
-            'user.email' => 'required|email|unique:users,email',
-            'user.password' => ['required', new RaydaStandardPasswordRule()],
-            'user.first_name' => ['required', new HumanNameRule()],
-            'user.last_name' => ['required', new HumanNameRule()],
+            'make' => ['nullable', new HumanNameRule()],
+            'model' => ['nullable', new HumanNameRule()],
+            'type' => ['required', 'string'],
+            'serial_number' => 'required|string',
+            'purchase_price' => ['required', 'decimal:2,4'],
+            'purchase_date' => 'nullable|date',
+            'office_id' => ['required', Rule::exists('offices', 'id')],
+            'company_id' => ['required', Rule::exists('companies', 'id')],
+            'currency' => ['required', Rule::exists('currencies', 'code')],
         ];
     }
 
-    public function creatAssetDTO(): CreateAssetDTO
+
+    public function createAssetDTO(): CreateAssetDTO
     {
         $dto = new CreateAssetDTO();
-        $dto->setMake($this->input('make', ''))
-            ->setModel($this->input('model', ''))
+        $dto->setMake($this->input('make', null))
+            ->setModel($this->input('model', null))
             ->setType($this->input('type'))
-            ->setPurchasePrice($this->input('purchase_price', ''))
-            ->setPurchaseDate($this->input('purchase_date', ''))
+            ->setSerialNumber($this->input('serial_number'))
+            ->setPurchasePrice($this->input('purchase_price', null))
+            ->setPurchaseDate($this->input('purchase_date', null))
             ->setOfficeId($this->input('office_id'))
-            ->setOfficeAreaId($this->input('office_area_id', ''))
+            ->setOfficeAreaId($this->input('office_area_id', null))
             ->setCurrency($this->input('currency'))
-            ->setMaintenanceCycle($this->input('maintenance_cycle', ''))
-            ->setNextMaintenanceDate($this->input('next_maintenance_date', ''))
+            ->setMaintenanceCycle($this->input('maintenance_cycle', null))
+            ->setNextMaintenanceDate($this->input('next_maintenance_date', null))
             ->setIsInsured($this->input('is_insured', false))
             ->setCompanyId($this->input('company_id'))
             ;
