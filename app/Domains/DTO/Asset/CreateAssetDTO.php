@@ -24,7 +24,7 @@ final class CreateAssetDTO
     private ?string $next_maintenance_date = null;
     private bool $is_insured = false;
     private string $tenant_id;
-    private string $company_id;
+    private ?string $company_id;
     private string $added_at;
 
     public function __construct()

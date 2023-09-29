@@ -33,15 +33,16 @@ class AssetController extends Controller
      * @param CreateAssetRequest $request
      * @return JsonResponse
      */
-    public function create(CreateAssetRequest $request): JsonResponse
+    public function create(Company $company, CreateAssetRequest $request): JsonResponse
     {
         Log::info('Asset Creation Request Received', $request->all());
 
         try {
 
-            $company = $this->companyRepository->first(CompanyConstant::ID, $request->company_id);
-
-            $createAssetDto = $request->createAssetDTO()->setTenantId($company->tenant_id)->toArray();
+            $createAssetDto = $request->createAssetDTO()
+                ->setCompanyId($company->id)
+                ->setTenantId($company->tenant_id)
+                ->toArray();
 
             $asset = $this->assetRepository->create($createAssetDto);
 
