@@ -54,8 +54,6 @@ class UserController extends Controller
 
     public function find(User $user) : JsonResponse {
 
-
-
         $response = [
             'user' => $user,
             'company' => $user->userCompanies()->get()
