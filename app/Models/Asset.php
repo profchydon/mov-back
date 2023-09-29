@@ -18,8 +18,6 @@ class Asset extends Model
 
     protected $keyType = 'string';
 
-    protected $with = ['image'];
-
     /**
      * The attributes that are mass assignable.
      *
@@ -29,13 +27,9 @@ class Asset extends Model
         AssetConstant::ID,
     ];
 
-    /**
-     * Get the asset images that belongs to the asset.
-     */
-    public function assetImages()
-    {
-        return $this->hasMany(AssetImage::class);
-    }
+    protected $hidden = [
+        AssetConstant::TENANT_ID,
+    ];
 
     /**
      * The attributes that should be cast.
@@ -61,8 +55,4 @@ class Asset extends Model
         });
     }
 
-    public function image()
-    {
-        return $this->morphMany(FileUpload::class, 'uploadable');
-    }
 }

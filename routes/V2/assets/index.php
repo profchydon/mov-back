@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 // Asset
 Route::controller(AssetController::class)->prefix('assets')->group(function () {
-    Route::post('{company}/company', 'create')->name('assets.create');
-    Route::get('{company}/company', 'create')->name('assets.create');
+    Route::post('{company}/company', 'create')->name('create.company.asset');
+    Route::get('{company}/company', 'get')->name('get.company.asset');
 });
 
 

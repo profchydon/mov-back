@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Domains\Constant\CompanyConstant;
+use App\Domains\Constant\AssetConstant;
 use App\Http\Requests\Asset\CreateAssetRequest;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
@@ -56,5 +57,15 @@ class AssetController extends Controller
             Log::info('Asset Creation Error', $request->all());
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
         }
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function get(Company $company): JsonResponse
+    {
+        $assets = $this->assetRepository->get(AssetConstant::COMPANY_ID, $company->id);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assets);
     }
 }

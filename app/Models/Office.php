@@ -24,6 +24,10 @@ class Office extends Model
         OfficeConstant::STATUS => OfficeStatusEnum::class,
     ];
 
+    protected $hidden = [
+        OfficeConstant::TENANT_ID,
+    ];
+
     public function areas(): HasMany
     {
         return $this->hasMany(OfficeArea::class, 'office_id');
