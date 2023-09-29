@@ -1,8 +1,8 @@
 <?php
 
 
-use App\Http\Controllers\V2\CompanyController;
-use App\Http\Controllers\V2\SubscriptionController;
+use App\Http\Controllers\v2\CompanyController;
+use App\Http\Controllers\v2\SubscriptionController;
 use App\Http\Controllers\v2\CompanyOfficeController;
 use Illuminate\Support\Facades\Route;
 

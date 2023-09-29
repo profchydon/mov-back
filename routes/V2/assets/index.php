@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\V2\AssetController;
-use App\Http\Controllers\V2\AssetTypeController;
-use App\Http\Controllers\V2\AssetMaintenanceController;
+use App\Http\Controllers\v2\AssetController;
+use App\Http\Controllers\v2\AssetTypeController;
+use App\Http\Controllers\v2\AssetMaintenanceController;
 use Illuminate\Support\Facades\Route;
 
 
