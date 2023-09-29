@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\v2;
+namespace App\Http\Controllers\V2;
 
 use App\Domains\Constant\AssetTypeConstant;
 use App\Http\Controllers\Controller;
