@@ -37,8 +37,12 @@ class SubscriptionActivatedListener
         ];
 
         //Trigger user created event
-        EventTrackerService::track('chidi.nkwocha@rayda.co', EventTrackEnum::SUBSCRIPTION_ACTIVATED->value, (array) $data);
-
+        try {
+            EventTrackerService::track('chidi.nkwocha@rayda.co', EventTrackEnum::SUBSCRIPTION_ACTIVATED->value, (array) $data);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        
         Log::info("Info: Subscription Activated {$subscription}");
 
         return true;
