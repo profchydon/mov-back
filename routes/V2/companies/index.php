@@ -3,7 +3,7 @@
 
 use App\Http\Controllers\V2\CompanyController;
 use App\Http\Controllers\V2\SubscriptionController;
-use App\Http\Controllers\v2\CompanyOfficeController;
+use App\Http\Controllers\V2\CompanyOfficeController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(CompanyController::class)->prefix('companies')->group(function () {
