@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Asset;
 
+use App\Domains\Constant\CompanyConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Rules\HumanNameRule;
 use App\Rules\RaydaStandardPasswordRule;
@@ -17,8 +18,10 @@ class CreateAssetRequest extends FormRequest
      */
     public function rules(): array
     {
+        $company = $this->route('company');
 
         return [
+            // Rule::exists(Company::class, CompanyConstant::ID),
             'make' => ['nullable', new HumanNameRule()],
             'model' => ['nullable', new HumanNameRule()],
             'type' => ['required', 'string'],
@@ -26,7 +29,6 @@ class CreateAssetRequest extends FormRequest
             'purchase_price' => ['required', 'decimal:2,4'],
             'purchase_date' => 'nullable|date',
             'office_id' => ['required', Rule::exists('offices', 'id')],
-            'company_id' => ['required', Rule::exists('companies', 'id')],
             'currency' => ['required', Rule::exists('currencies', 'code')],
         ];
     }
@@ -34,6 +36,7 @@ class CreateAssetRequest extends FormRequest
 
     public function createAssetDTO(): CreateAssetDTO
     {
+        $company = $this->route('company');
         $dto = new CreateAssetDTO();
         $dto->setMake($this->input('make', null))
             ->setModel($this->input('model', null))
@@ -47,8 +50,7 @@ class CreateAssetRequest extends FormRequest
             ->setMaintenanceCycle($this->input('maintenance_cycle', null))
             ->setNextMaintenanceDate($this->input('next_maintenance_date', null))
             ->setIsInsured($this->input('is_insured', false))
-            ->setCompanyId($this->input('company_id'))
-            ;
+            ->setCompanyId($company->id);
 
         return $dto;
     }
