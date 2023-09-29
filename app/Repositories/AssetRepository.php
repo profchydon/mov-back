@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Domain\DTO\Asset\CreateAssetDTO;
 use App\Models\Asset;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 

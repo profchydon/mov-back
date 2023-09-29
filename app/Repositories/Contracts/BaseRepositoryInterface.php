@@ -22,6 +22,10 @@ interface BaseRepositoryInterface
 
     public function getWithRelation($column, $data, $models = [], $chronological = false);
 
+    public function firstLike($column, $data);
+
+    public function manyLike($column, $data);
+
     public function getMany($column, array $data);
 
     public function getWithTrashed($column, $data);

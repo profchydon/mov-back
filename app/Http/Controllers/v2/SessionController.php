@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V2;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class SessionController extends Controller
 {
@@ -12,12 +13,14 @@ class SessionController extends Controller
     {
     }
 
-    public function authorization()
+    public function authorization(Request $request)
     {
-        $clientId = getenv('SSO_CLIENT_ID');
-        $ssoUrl = getenv('SSO_URL');
+        $clientId = getenv("SSO_CLIENT_ID");
+        $ssoUrl = getenv("SSO_URL");
+        $state = Str::random(40);
+        $redirectUrl = getenv("CORE_AUTH_CALLBACK_URL");
 
-        $authorizationUrl = sprintf('%s/oauth/authorize?client_id=%s&response_type=%s', $ssoUrl, $clientId, 'code');
+        $authorizationUrl = sprintf("%s/oauth/authorize?client_id=%s&redirectUrl=%s&response_type=%s&state=%s", $ssoUrl, $clientId, $redirectUrl, 'code', $state);
 
         return response()->json(['redirect_url' => $authorizationUrl]);
     }

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\AssetConstant;
-use App\Domains\Enum\Asset\AssetStatusEnum;
+use App\Domains\Constant\AssetTypeConstant;
+use App\Domains\Enum\Asset\AssetTypeStatusEnum;
 use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,7 +25,7 @@ class AssetType extends Model
      * @var array<int, string>
      */
     protected $guarded = [
-        AssetConstant::ID,
+        AssetTypeConstant::ID,
     ];
 
     /**
@@ -34,8 +34,8 @@ class AssetType extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        AssetConstant::ID => 'string',
-        AssetConstant::STATUS => AssetStatusEnum::class,
+        AssetTypeConstant::ID => 'string',
+        AssetTypeConstant::STATUS => AssetTypeStatusEnum::class,
     ];
 
     /**

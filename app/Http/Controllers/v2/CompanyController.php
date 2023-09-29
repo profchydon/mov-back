@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\v2;
 
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\UserConstant;
@@ -125,7 +125,7 @@ class CompanyController extends Controller
     public function addCompanyDetails(AddCompanyDetailsRequest $request, Company $company)
     {
         if (!isset($company->users[0])) {
-            return $error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
         }
 
         $user = $company->users[0];
