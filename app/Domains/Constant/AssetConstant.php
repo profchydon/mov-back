@@ -24,6 +24,7 @@ class AssetConstant
     public const OFFICE_ID = 'office_id';
     public const OFFICE_AREA_ID = 'office_area_id';
     public const ASSIGNED_TO = 'assigned_to';
+    public const ASSIGNED_DATE = 'assigned_date';
     public const ADDED_AT = 'added_at';
     public const STATUS = 'status';
     public const CURRENCY = 'currency';

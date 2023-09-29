@@ -4,6 +4,8 @@ namespace App\Http\Controllers\v2;
 
 use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use App\Http\Requests\SelectSubscriptionPlanRequest;
 use App\Models\Company;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;

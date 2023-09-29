@@ -4,7 +4,7 @@ namespace App\Domains\Enum\Asset;
 
 use App\Traits\ListsEnumValues;
 
-enum AssetTypeEnum: string
+enum AssetTypeStatusEnum: string
 {
     use ListsEnumValues;
 

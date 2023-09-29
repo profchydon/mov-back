@@ -1,5 +1,7 @@
 <?php
 
+use App\Domains\Constant\AssetConstant;
+use App\Models\OfficeArea;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,8 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('asset_types', function (Blueprint $table) {
-            // $table->softDeletes();
+        Schema::table('assets', function (Blueprint $table) {
+            $table->uuid(AssetConstant::OFFICE_AREA_ID)->nullable()->references(AssetConstant::ID)->on(OfficeArea::getTableName())->change();
         });
     }
 
@@ -21,8 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('asset_types', function (Blueprint $table) {
-            $table->dropSoftDeletes();
+        Schema::table('assets', function (Blueprint $table) {
+            //
         });
     }
 };

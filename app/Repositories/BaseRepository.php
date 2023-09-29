@@ -2,8 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Traits\DTOToArray;
+
 abstract class BaseRepository
 {
+    use DTOToArray;
+
     protected $model;
     /**
      * @var array
@@ -83,6 +87,14 @@ abstract class BaseRepository
         }
 
         return $query->paginate();
+    }
+
+    public function firstLike($column, $data) {
+        return $this->model->where($column, 'like', "%$data%")->first();
+    }
+
+    public function manyLike($column, $data) {
+        return $this->model->where($column, 'like', "%$data%")->get();
     }
 
     public function getMany($column, array $data)
