@@ -9,7 +9,9 @@ use App\Http\Requests\VerifyOTPRequest;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -48,5 +50,18 @@ class UserController extends Controller
         } else {
             return $this->error(Response::HTTP_BAD_REQUEST, __('messages.otp-invalid'));
         }
+    }
+
+    public function find(User $user) : JsonResponse {
+
+
+
+        $response = [
+            'user' => $user,
+            'company' => $user->userCompanies()->get()
+        ];
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $response);
+
     }
 }
