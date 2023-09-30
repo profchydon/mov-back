@@ -31,7 +31,9 @@ class SessionController extends Controller
     public function confirmation(Request $request)
     {
 
-        $ssoEndpoint = getenv('SSO_URL')."/oauth/token";
+        // $ssoEndpoint = getenv('SSO_URL')."/oauth/token";
+
+        $ssoEndpoint = 'https://account-dev.rayda.co/oauth/token';
 
         $response = Http::asForm()->post($ssoEndpoint, [
             'grant_type' => 'authorization_code',
@@ -41,7 +43,7 @@ class SessionController extends Controller
             'code' => $request->code,
         ]);
 
-        return response()->json($response);
+        return $response->json();
     }
 
     // public function authorization()
