@@ -35,7 +35,7 @@ class SessionController extends Controller
 
         $ssoEndpoint = 'https://account-dev.rayda.co/oauth/token';
 
-        $response = Http::asForm()->post($ssoEndpoint, [
+        $response = Http::post($ssoEndpoint, [
             'grant_type' => 'authorization_code',
             'client_id' => getenv('CLIENT_ID'),
             'client_secret' => getenv('CLIENT_SECRET'),
