@@ -33,6 +33,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         UserConstant::TENANT_ID,
+        UserConstant::SSO_ID
     ];
 
     /**
