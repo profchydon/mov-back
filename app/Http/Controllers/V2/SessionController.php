@@ -31,19 +31,21 @@ class SessionController extends Controller
     public function confirmation(Request $request)
     {
 
+
         // $ssoEndpoint = getenv('SSO_URL')."/oauth/token";
 
         $ssoEndpoint = 'https://account-dev.rayda.co/oauth/token';
 
         $response = Http::post($ssoEndpoint, [
             'grant_type' => 'authorization_code',
-            'client_id' => getenv('CLIENT_ID'),
-            'client_secret' => getenv('CLIENT_SECRET'),
+            'client_id' => getenv('SSO_CLIENT_ID'),
+            'client_secret' => getenv('SSO_SECRET_ID'),
             'redirect_uri' => getenv("CORE_AUTH_CALLBACK_URL"),
             'code' => $request->code,
         ]);
 
-        return $response->json();
+        return response()->json(['data' => $response->json()]);
+
     }
 
     // public function authorization()
