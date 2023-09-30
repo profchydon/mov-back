@@ -31,10 +31,7 @@ class SessionController extends Controller
     public function confirmation(Request $request)
     {
 
-
-        // $ssoEndpoint = getenv('SSO_URL')."/oauth/token";
-
-        $ssoEndpoint = 'https://account-dev.rayda.co/oauth/token';
+        $ssoEndpoint = getenv('SSO_URL')."/oauth/token";
 
         $response = Http::post($ssoEndpoint, [
             'grant_type' => 'authorization_code',
