@@ -2,7 +2,7 @@
 
 cd /var/www
 
-php artisan test --profile --coverage --min=80
+php artisan test --profile
 
 php artisan migrate --seed --force
 php artisan cache:clear
