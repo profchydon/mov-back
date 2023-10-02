@@ -26,8 +26,6 @@ class UserCompany extends Model
         UserCompanyConstant::TENANT_ID,
     ];
 
-
-
     public function user()
     {
         return $this->belongsTo(User::class, UserConstant::USER_ID);
@@ -38,5 +36,3 @@ class UserCompany extends Model
         return $this->belongsTo(Company::class);
     }
 }
-
-

@@ -5,7 +5,6 @@ namespace App\Http\Requests\Asset;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Rules\HumanNameRule;
-use App\Rules\RaydaStandardPasswordRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -33,7 +32,6 @@ class CreateAssetRequest extends FormRequest
         ];
     }
 
-
     public function createAssetDTO(): CreateAssetDTO
     {
         $company = $this->route('company');
@@ -54,5 +52,4 @@ class CreateAssetRequest extends FormRequest
 
         return $dto;
     }
-
 }

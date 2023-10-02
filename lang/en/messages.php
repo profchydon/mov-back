@@ -24,4 +24,5 @@ return [
     'company-updated' => 'Company details have been updated',
     'wrong-user-stage' => 'Make sure you complete previous steps',
     'subscription-selected' => 'Your subscription is successful',
+    'processing' => 'Operation processing',
 ];

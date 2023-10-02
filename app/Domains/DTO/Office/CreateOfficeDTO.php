@@ -2,7 +2,6 @@
 
 namespace App\Domain\DTO\Office;
 
-use App\Domains\Enum\Office\OfficeStatusEnum;
 use App\Traits\DTOToArray;
 
 final class CreateOfficeDTO
@@ -19,6 +18,4 @@ final class CreateOfficeDTO
     private string $status;
     private string $tenant_id;
     private string $company_id;
-
-
 }
