@@ -32,7 +32,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-
+        UserConstant::TENANT_ID,
+        UserConstant::SSO_ID,
     ];
 
     /**
@@ -60,6 +61,11 @@ class User extends Authenticatable
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function userCompanies()
+    {
+        return $this->hasMany(UserCompany::class, UserConstant::USER_ID);
     }
 
     public function otp()

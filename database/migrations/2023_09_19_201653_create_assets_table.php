@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->string(AssetConstant::COMPANY_ID)->references(AssetConstant::ID)->on(Company::getTableName());
             $table->string(AssetConstant::MAKE)->nullable();
             $table->string(AssetConstant::MODEL)->nullable();
-            $table->uuid(AssetConstant::TYPE)->references(AssetConstant::ID)->on(AssetType::getTableName());
+            $table->uuid(AssetConstant::TYPE_ID)->references(AssetConstant::ID)->on(AssetType::getTableName());
             $table->double(AssetConstant::PURCHASE_PRICE);
             $table->dateTime(AssetConstant::PURCHASE_DATE)->nullable();
             $table->uuid(AssetConstant::OFFICE_ID)->references(AssetConstant::ID)->on(Office::getTableName());

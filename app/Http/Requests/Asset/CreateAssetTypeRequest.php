@@ -23,7 +23,7 @@ class CreateAssetTypeRequest extends FormRequest
     {
         $dto = new CreateAssetTypeDTO();
         $dto->setName($this->input('name'));
+
         return $dto;
     }
-
 }

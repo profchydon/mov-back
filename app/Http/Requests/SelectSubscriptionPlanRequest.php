@@ -35,9 +35,9 @@ class SelectSubscriptionPlanRequest extends FormRequest
     {
         $startDate = Carbon::now();
 
-        if($this->input('billing_cycle') == BillingCycleEnum::MONTHLY){
+        if ($this->input('billing_cycle') == BillingCycleEnum::MONTHLY) {
             $endDate = $startDate->addMonth();
-        }else{
+        } else {
             $endDate = $startDate->addYear();
         }
 
@@ -48,7 +48,7 @@ class SelectSubscriptionPlanRequest extends FormRequest
             ->setStartDate($startDate)
             ->setEndDate($endDate)
             ->setStatus(SubscriptionStatusEnum::ACTIVE->value);
-            
+
         return $dto;
     }
 }

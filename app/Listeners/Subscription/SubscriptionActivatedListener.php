@@ -42,7 +42,7 @@ class SubscriptionActivatedListener
         } catch (\Throwable $th) {
             //throw $th;
         }
-        
+
         Log::info("Info: Subscription Activated {$subscription}");
 
         return true;

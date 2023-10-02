@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     lua-zlib-dev \
     libmemcached-dev \
-    nginx 
+    nginx
 
 # Install supervisor
 RUN apt-get install -y supervisor
@@ -47,6 +47,7 @@ COPY --chown=www:www-data . /var/www
 
 # add root to www group
 RUN chmod -R ug+w /var/www/storage
+RUN chmod -R 777 /var/www/storage
 
 # Copy nginx/php/supervisor configs
 RUN cp ./docker/supervisord.conf /etc/supervisord.conf

@@ -3,7 +3,6 @@
 namespace App\Domains\DTO\Asset;
 
 use App\Domains\Enum\Asset\AssetStatusEnum;
-use App\Domains\Enum\Maintenance\MaintenanceCycleEnum;
 use App\Traits\DTOToArray;
 
 final class CreateAssetDTO
@@ -33,7 +32,7 @@ final class CreateAssetDTO
         $this->status = AssetStatusEnum::AVAILABLE->value;
     }
 
-     /**
+    /**
      * @return string|null
      */
     public function getMake(): ?string
@@ -45,9 +44,10 @@ final class CreateAssetDTO
      * @param string|null $make
      * @return CreateAssetDTO
      */
-    public function setMake(?string $make): CreateAssetDTO
+    public function setMake(?string $make): self
     {
         $this->make = $make;
+
         return $this;
     }
 
@@ -63,9 +63,10 @@ final class CreateAssetDTO
      * @param string|null $model
      * @return CreateAssetDTO
      */
-    public function setModel(?string $model): CreateAssetDTO
+    public function setModel(?string $model): self
     {
         $this->model = $model;
+
         return $this;
     }
 
@@ -81,9 +82,10 @@ final class CreateAssetDTO
      * @param string $type
      * @return CreateAssetDTO
      */
-    public function setType(string $type): CreateAssetDTO
+    public function setType(string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -99,9 +101,10 @@ final class CreateAssetDTO
      * @param string $serial_number
      * @return CreateAssetDTO
      */
-    public function setSerialNumber(string $serial_number): CreateAssetDTO
+    public function setSerialNumber(string $serial_number): self
     {
         $this->serial_number = $serial_number;
+
         return $this;
     }
 
@@ -117,9 +120,10 @@ final class CreateAssetDTO
      * @param string $purchase_price
      * @return CreateAssetDTO
      */
-    public function setPurchasePrice(string $purchase_price): CreateAssetDTO
+    public function setPurchasePrice(string $purchase_price): self
     {
         $this->purchase_price = $purchase_price;
+
         return $this;
     }
 
@@ -135,9 +139,10 @@ final class CreateAssetDTO
      * @param string|null $purchase_date
      * @return CreateAssetDTO
      */
-    public function setPurchaseDate(?string $purchase_date): CreateAssetDTO
+    public function setPurchaseDate(?string $purchase_date): self
     {
         $this->purchase_date = $purchase_date;
+
         return $this;
     }
 
@@ -153,9 +158,10 @@ final class CreateAssetDTO
      * @param string $office_id
      * @return CreateAssetDTO
      */
-    public function setOfficeId(string $office_id): CreateAssetDTO
+    public function setOfficeId(string $office_id): self
     {
         $this->office_id = $office_id;
+
         return $this;
     }
 
@@ -171,13 +177,14 @@ final class CreateAssetDTO
      * @param string|null $office_area_id
      * @return CreateAssetDTO
      */
-    public function setOfficeAreaId(?string $office_area_id): CreateAssetDTO
+    public function setOfficeAreaId(?string $office_area_id): self
     {
         $this->office_area_id = $office_area_id;
+
         return $this;
     }
 
-     /**
+    /**
      * @return string
      */
     public function getCurrency(): string
@@ -189,9 +196,10 @@ final class CreateAssetDTO
      * @param string $currency
      * @return CreateAssetDTO
      */
-    public function setCurrency(string $currency): CreateAssetDTO
+    public function setCurrency(string $currency): self
     {
         $this->currency = $currency;
+
         return $this;
     }
 
@@ -207,9 +215,10 @@ final class CreateAssetDTO
      * @param string $status
      * @return CreateAssetDTO
      */
-    public function setStatus(string $status): CreateAssetDTO
+    public function setStatus(string $status): self
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -225,9 +234,10 @@ final class CreateAssetDTO
      * @param string $maintenance_cycle
      * @return CreateAssetDTO
      */
-    public function setMaintenanceCycle(string | null $maintenance_cycle): CreateAssetDTO
+    public function setMaintenanceCycle(string | null $maintenance_cycle): self
     {
         $this->maintenance_cycle = $maintenance_cycle;
+
         return $this;
     }
 
@@ -243,9 +253,10 @@ final class CreateAssetDTO
      * @param string|null $next_maintenance_date
      * @return CreateAssetDTO
      */
-    public function setNextMaintenanceDate(?string $next_maintenance_date): CreateAssetDTO
+    public function setNextMaintenanceDate(?string $next_maintenance_date): self
     {
         $this->next_maintenance_date = $next_maintenance_date;
+
         return $this;
     }
 
@@ -261,9 +272,10 @@ final class CreateAssetDTO
      * @param string $is_insured
      * @return CreateAssetDTO
      */
-    public function setIsInsured(string $is_insured): CreateAssetDTO
+    public function setIsInsured(string $is_insured): self
     {
         $this->is_insured = $is_insured;
+
         return $this;
     }
 
@@ -279,9 +291,10 @@ final class CreateAssetDTO
      * @param string $tenant_id
      * @return CreateAssetDTO
      */
-    public function setTenantId(string $tenant_id): CreateAssetDTO
+    public function setTenantId(string $tenant_id): self
     {
         $this->tenant_id = $tenant_id;
+
         return $this;
     }
 
@@ -297,9 +310,10 @@ final class CreateAssetDTO
      * @param string $company_id
      * @return CreateAssetDTO
      */
-    public function setCompanyId(string $company_id): CreateAssetDTO
+    public function setCompanyId(string $company_id): self
     {
         $this->company_id = $company_id;
+
         return $this;
     }
 }

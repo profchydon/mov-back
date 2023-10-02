@@ -2,7 +2,6 @@
 
 namespace App\Domains\DTO\Asset;
 
-use App\Domains\Enum\Asset\AssetTypeStatusEnum;
 use App\Traits\DTOToArray;
 
 final class CreateAssetTypeDTO

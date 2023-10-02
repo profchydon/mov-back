@@ -19,6 +19,7 @@ class AssetConstant
     public const MODEL = 'model';
     public const SERIAL_NUMBER = 'serial_number';
     public const TYPE = 'type';
+    public const TYPE_ID = 'type_id';
     public const PURCHASE_PRICE = 'purchase_price';
     public const PURCHASE_DATE = 'purchase_date';
     public const OFFICE_ID = 'office_id';

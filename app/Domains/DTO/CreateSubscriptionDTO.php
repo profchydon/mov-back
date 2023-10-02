@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Domains\DTO;
 
 use App\Traits\DTOToArray;
@@ -7,7 +8,7 @@ use Illuminate\Support\Carbon;
 class CreateSubscriptionDTO
 {
     use DTOToArray;
-    
+
     private string $tenant_id;
     private string $company_id;
     private string $plan_id;
@@ -20,6 +21,7 @@ class CreateSubscriptionDTO
     public function setTenantId(string $tenant_id)
     {
         $this->tenant_id = $tenant_id;
+
         return $this;
     }
 
@@ -31,6 +33,7 @@ class CreateSubscriptionDTO
     public function setCompanyId(string $company_id)
     {
         $this->company_id = $company_id;
+
         return $this;
     }
 
@@ -42,6 +45,7 @@ class CreateSubscriptionDTO
     public function setPlanId(string $plan_id)
     {
         $this->plan_id = $plan_id;
+
         return $this;
     }
 
@@ -53,6 +57,7 @@ class CreateSubscriptionDTO
     public function setInvoiceId(string $invoice_id)
     {
         $this->invoice_id = $invoice_id;
+
         return $this;
     }
 
@@ -64,6 +69,7 @@ class CreateSubscriptionDTO
     public function setStartDate(Carbon $start_date)
     {
         $this->start_date = $start_date;
+
         return $this;
     }
 
@@ -75,6 +81,7 @@ class CreateSubscriptionDTO
     public function setEndDate(Carbon $end_date)
     {
         $this->end_date = $end_date;
+
         return $this;
     }
 
@@ -86,6 +93,7 @@ class CreateSubscriptionDTO
     public function setBillingCycle(string $billing_cycle)
     {
         $this->billing_cycle = $billing_cycle;
+
         return $this;
     }
 
@@ -97,6 +105,7 @@ class CreateSubscriptionDTO
     public function setStatus(string $status)
     {
         $this->status = $status;
+
         return $this;
     }
 

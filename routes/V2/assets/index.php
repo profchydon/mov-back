@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\v2\AssetController;
-use App\Http\Controllers\v2\AssetTypeController;
-use App\Http\Controllers\v2\AssetMaintenanceController;
+use App\Http\Controllers\V2\AssetController;
+use App\Http\Controllers\V2\AssetMaintenanceController;
+use App\Http\Controllers\V2\AssetTypeController;
 use Illuminate\Support\Facades\Route;
 
-
 // Asset
-Route::controller(AssetController::class)->prefix('assets')->group(function () {
-    Route::post('{company}/company', 'create')->name('create.company.asset');
-    Route::get('{company}/company', 'get')->name('get.company.asset');
+Route::controller(AssetController::class)->prefix('companies')->group(function () {
+    Route::post('{company}/assets', 'create')->name('create.company.asset');
+    Route::post('{company}/assets/bulk', 'createBulk')->name('create.company.bulk.assets');
+    Route::get('{company}/assets/bulk', 'getBulkDownloadTemplate')->name('get-template.company.bulk.assets')->withoutMiddleware(\App\Http\Middleware\NormalizeResponseForFrontEndMiddleware::class);
+    Route::get('{company}/assets', 'get')->name('get.company.asset');
 });
 
 
@@ -22,5 +23,4 @@ Route::controller(AssetTypeController::class)->prefix('assets/type')->group(func
 
 // Asset Maintenance
 Route::controller(AssetMaintenanceController::class)->prefix('assets/maintenance')->group(function () {
-
 });

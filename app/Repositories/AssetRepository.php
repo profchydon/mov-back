@@ -2,9 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Domain\DTO\Asset\CreateAssetDTO;
+use App\Imports\AssetImport;
 use App\Models\Asset;
+use App\Models\Company;
 use App\Repositories\Contracts\AssetRepositoryInterface;
+use Illuminate\Http\UploadedFile;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 {
@@ -21,5 +24,13 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
     public function getArchived()
     {
         //TODO: write the logic to return all archived assets
+    }
+
+    public function importCompanyAssets(Company $company, UploadedFile $file)
+    {
+        $import = new AssetImport($company);
+
+//        Excel::import($import, $file);
+        return Excel::queueImport($import, $file);
     }
 }
