@@ -17,9 +17,9 @@ return new class extends Migration {
     {
         Schema::create('user_companies', function (Blueprint $table) {
             $table->uuid(UserCompanyConstant::ID)->unique()->primary();
-            $table->string(UserCompanyConstant::TENANT_ID)->references(UserCompanyConstant::ID)->on(Tenant::getTableName());
-            $table->string(UserCompanyConstant::COMPANY_ID)->references(UserCompanyConstant::ID)->on(Company::getTableName())->onDelete('cascade');
-            $table->string(UserCompanyConstant::USER_ID)->references(UserCompanyConstant::ID)->on(User::getTableName())->onDelete('cascade');
+            $table->foreignUuid(UserCompanyConstant::TENANT_ID)->references(UserCompanyConstant::ID)->on(Tenant::getTableName());
+            $table->foreignUuid(UserCompanyConstant::COMPANY_ID)->references(UserCompanyConstant::ID)->on(Company::getTableName())->onDelete('cascade');
+            $table->foreignUuid(UserCompanyConstant::USER_ID)->references(UserCompanyConstant::ID)->on(User::getTableName())->onDelete('cascade');
             $table->enum(UserCompanyConstant::STATUS, UserCompanyStatusEnum::values())->default(UserCompanyStatusEnum::ACTIVE->value);
             $table->timestamps();
             $table->softDeletes();

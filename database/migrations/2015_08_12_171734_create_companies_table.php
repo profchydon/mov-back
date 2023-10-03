@@ -25,7 +25,7 @@ return new class extends Migration {
             $table->string(CompanyConstant::ADDRESS)->nullable();
             $table->string(CompanyConstant::COUNTRY)->nullable();
             $table->string(CompanyConstant::STATE)->nullable();
-            $table->string(CompanyConstant::TENANT_ID)->unique()->references(TenantConstant::ID)->on(Tenant::getTableName());
+            $table->foreignUuid(CompanyConstant::TENANT_ID)->unique()->references(TenantConstant::ID)->on(Tenant::getTableName());
             $table->enum(CompanyConstant::STATUS, CompanyStatusEnum::values())->default(CompanyStatusEnum::ACTIVE->value);
             $table->timestamps();
             $table->softDeletes();

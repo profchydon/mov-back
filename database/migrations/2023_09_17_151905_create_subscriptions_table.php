@@ -20,10 +20,10 @@ return new class extends Migration {
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->uuid(SubscriptionConstant::ID)->unique()->primary();
-            $table->string(SubscriptionConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
-            $table->string(SubscriptionConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
-            $table->string(SubscriptionConstant::PLAN_ID)->references(CommonConstant::ID)->on(Plan::getTableName());
-            $table->string(SubscriptionConstant::INVOICE_ID)->references(CommonConstant::ID)->on(Invoice::getTableName());
+            $table->foreignUuid(SubscriptionConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
+            $table->foreignUuid(SubscriptionConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
+            $table->foreignUuid(SubscriptionConstant::PLAN_ID)->references(CommonConstant::ID)->on(Plan::getTableName());
+            $table->foreignUuid(SubscriptionConstant::INVOICE_ID)->references(CommonConstant::ID)->on(Invoice::getTableName());
             $table->dateTime(SubscriptionConstant::START_DATE);
             $table->dateTime(SubscriptionConstant::END_DATE);
             $table->enum(SubscriptionConstant::BILLING_CYCLE, BillingCycleEnum::values());

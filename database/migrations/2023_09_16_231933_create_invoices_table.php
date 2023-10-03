@@ -17,8 +17,8 @@ return new class extends Migration {
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->uuid(InvoiceConstant::ID)->unique()->primary();
-            $table->string(InvoiceConstant::TENANT_ID)->references(InvoiceConstant::ID)->on(Tenant::getTableName());
-            $table->string(InvoiceConstant::COMPANY_ID)->references(InvoiceConstant::ID)->on(Company::getTableName());
+            $table->foreignUuid(InvoiceConstant::TENANT_ID)->references(InvoiceConstant::ID)->on(Tenant::getTableName());
+            $table->foreignUuid(InvoiceConstant::COMPANY_ID)->references(InvoiceConstant::ID)->on(Company::getTableName());
             $table->string(InvoiceConstant::INVOICE_NUMBER)->unique();
             $table->dateTime(InvoiceConstant::DATE_ISSUED)->default(now());
             $table->dateTime(InvoiceConstant::DUE_DATE)->nullable();

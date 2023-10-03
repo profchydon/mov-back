@@ -18,9 +18,9 @@ return new class extends Migration {
     {
         Schema::create('Invoice_items', function (Blueprint $table) {
             $table->uuid(InvoiceItemConstant::ID)->unique()->primary();
-            $table->string(InvoiceItemConstant::INVOICE_ID)->references(CommonConstant::ID)->on(Invoice::getTableName());
-            $table->string(InvoiceItemConstant::PLAN_ID)->nullable()->references(CommonConstant::ID)->on(Plan::getTableName());
-            $table->string(InvoiceItemConstant::FEATURE_ID)->nullable()->references(CommonConstant::ID)->on(Feature::getTableName());
+            $table->foreignUuid(InvoiceItemConstant::INVOICE_ID)->references(CommonConstant::ID)->on(Invoice::getTableName());
+            $table->foreignUuid(InvoiceItemConstant::PLAN_ID)->nullable()->references(CommonConstant::ID)->on(Plan::getTableName());
+            $table->foreignUuid(InvoiceItemConstant::FEATURE_ID)->nullable()->references(CommonConstant::ID)->on(Feature::getTableName());
             $table->integer(InvoiceItemConstant::QUANTITY)->unique();
             $table->decimal(InvoiceItemConstant::AMOUNT);
             $table->enum(InvoiceItemConstant::TYPE, InvoiceItemTypeEnum::values());
