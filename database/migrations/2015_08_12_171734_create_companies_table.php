@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string(CompanyConstant::EMAIL)->unique();
             $table->string(CompanyConstant::SIZE)->nullable();
             $table->string(CompanyConstant::PHONE)->nullable();
-            $table->string(CompanyConstant::SSO_ID)->nullable();
+            $table->uuid(CompanyConstant::SSO_ID)->nullable();
             $table->string(CompanyConstant::INDUSTRY)->nullable();
             $table->string(CompanyConstant::ADDRESS)->nullable();
             $table->string(CompanyConstant::COUNTRY)->nullable();
