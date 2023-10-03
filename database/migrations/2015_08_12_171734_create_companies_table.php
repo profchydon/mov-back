@@ -20,12 +20,12 @@ return new class extends Migration {
             $table->string(CompanyConstant::EMAIL)->unique();
             $table->string(CompanyConstant::SIZE)->nullable();
             $table->string(CompanyConstant::PHONE)->nullable();
-            $table->string(CompanyConstant::SSO_ID)->nullable();
+            $table->uuid(CompanyConstant::SSO_ID)->nullable();
             $table->string(CompanyConstant::INDUSTRY)->nullable();
             $table->string(CompanyConstant::ADDRESS)->nullable();
             $table->string(CompanyConstant::COUNTRY)->nullable();
             $table->string(CompanyConstant::STATE)->nullable();
-            $table->string(CompanyConstant::TENANT_ID)->unique()->references(TenantConstant::ID)->on(Tenant::getTableName());
+            $table->foreignUuid(CompanyConstant::TENANT_ID)->unique()->references(TenantConstant::ID)->on(Tenant::getTableName());
             $table->enum(CompanyConstant::STATUS, CompanyStatusEnum::values())->default(CompanyStatusEnum::ACTIVE->value);
             $table->timestamps();
             $table->softDeletes();

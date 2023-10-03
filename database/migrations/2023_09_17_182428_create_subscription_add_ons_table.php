@@ -19,10 +19,10 @@ return new class extends Migration {
     {
         Schema::create('Subscription_add_ons', function (Blueprint $table) {
             $table->uuid(SubscriptionAddOnConstant::ID)->unique()->primary();
-            $table->string(SubscriptionAddOnConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
-            $table->string(SubscriptionAddOnConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
-            $table->string(SubscriptionAddOnConstant::SUBSCRIPTION_ID)->nullable()->references(CommonConstant::ID)->on(Subscription::getTableName());
-            $table->string(SubscriptionAddOnConstant::FEATURE_ID)->nullable()->references(CommonConstant::ID)->on(Feature::getTableName());
+            $table->foreignUuid(SubscriptionAddOnConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
+            $table->foreignUuid(SubscriptionAddOnConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
+            $table->foreignUuid(SubscriptionAddOnConstant::SUBSCRIPTION_ID)->nullable()->references(CommonConstant::ID)->on(Subscription::getTableName());
+            $table->foreignUuid(SubscriptionAddOnConstant::FEATURE_ID)->nullable()->references(CommonConstant::ID)->on(Feature::getTableName());
             $table->dateTime(SubscriptionAddOnConstant::START_DATE);
             $table->dateTime(SubscriptionAddOnConstant::END_DATE);
             $table->enum(SubscriptionAddOnConstant::STATUS, SubscriptionAddOnStatusEnum::values())->default(SubscriptionAddOnStatusEnum::INACTIVE->value);

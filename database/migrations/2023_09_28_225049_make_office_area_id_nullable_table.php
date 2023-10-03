@@ -13,7 +13,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->uuid(AssetConstant::OFFICE_AREA_ID)->nullable()->references(AssetConstant::ID)->on(OfficeArea::getTableName())->change();
+            $table->foreignUuid(AssetConstant::OFFICE_AREA_ID)->nullable()->references(AssetConstant::ID)->on(OfficeArea::getTableName())->change();
         });
     }
 

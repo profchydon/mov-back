@@ -18,13 +18,13 @@ return new class extends Migration {
     {
         Schema::create('offices', function (Blueprint $table) {
             $table->uuid(OfficeConstant::ID)->unique()->primary();
-            $table->string(OfficeConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
-            $table->string(OfficeConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
+            $table->foreignUuid(OfficeConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
+            $table->foreignUuid(OfficeConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
             $table->string(OfficeConstant::NAME);
-            $table->string(OfficeConstant::ADDRESS);
-            $table->string(OfficeConstant::CURRENCY_CODE)->references(CommonConstant::CODE)->on(Currency::getTableName());
+            $table->string(OfficeConstant::ADDRESS)->nullable();
+            $table->foreignUuid(OfficeConstant::CURRENCY_CODE)->references(CommonConstant::CODE)->on(Currency::getTableName());
             $table->string(OfficeConstant::COUNTRY);
-            $table->string(OfficeConstant::STATE);
+            $table->string(OfficeConstant::STATE)->nullable();
             $table->float(OfficeConstant::LATITUDE)->nullable();
             $table->float(OfficeConstant::LONGITUDE)->nullable();
             $table->enum(OfficeConstant::STATUS, OfficeStatusEnum::values())->default(OfficeStatusEnum::ACTIVE->value);
