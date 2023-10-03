@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->foreignUuid(SubscriptionConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
             $table->foreignUuid(SubscriptionConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
             $table->foreignUuid(SubscriptionConstant::PLAN_ID)->references(CommonConstant::ID)->on(Plan::getTableName());
-            $table->foreignUuid(SubscriptionConstant::INVOICE_ID)->references(CommonConstant::ID)->on(Invoice::getTableName());
+            $table->foreignUuid(SubscriptionConstant::INVOICE_ID)->nullable()->references(CommonConstant::ID)->on(Invoice::getTableName());
             $table->dateTime(SubscriptionConstant::START_DATE);
             $table->dateTime(SubscriptionConstant::END_DATE);
             $table->enum(SubscriptionConstant::BILLING_CYCLE, BillingCycleEnum::values());

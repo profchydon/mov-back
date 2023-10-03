@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->foreignUuid(OfficeConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
             $table->string(OfficeConstant::NAME);
             $table->string(OfficeConstant::ADDRESS);
-            $table->foreignUuid(OfficeConstant::CURRENCY_CODE)->references(CommonConstant::CODE)->on(Currency::getTableName());
+            $table->string(OfficeConstant::CURRENCY_CODE)->references(CommonConstant::CODE)->on(Currency::getTableName());
             $table->string(OfficeConstant::COUNTRY);
             $table->string(OfficeConstant::STATE);
             $table->float(OfficeConstant::LATITUDE)->nullable();

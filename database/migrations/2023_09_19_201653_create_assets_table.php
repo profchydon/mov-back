@@ -30,8 +30,8 @@ return new class extends Migration {
             $table->double(AssetConstant::PURCHASE_PRICE);
             $table->dateTime(AssetConstant::PURCHASE_DATE)->nullable();
             $table->foreignUuid(AssetConstant::OFFICE_ID)->references(AssetConstant::ID)->on(Office::getTableName());
-            $table->foreignUuid(AssetConstant::OFFICE_AREA_ID)->references(AssetConstant::ID)->on(OfficeArea::getTableName());
-            $table->foreignUuid(AssetConstant::CURRENCY)->references(CurrencyConstant::CODE)->on(Currency::getTableName());
+            $table->foreignUuid(AssetConstant::OFFICE_AREA_ID)->nullable()->references(AssetConstant::ID)->on(OfficeArea::getTableName());
+            $table->string(AssetConstant::CURRENCY)->references(CurrencyConstant::CODE)->on(Currency::getTableName());
             $table->dateTime(AssetConstant::ADDED_AT);
             $table->enum(AssetConstant::STATUS, AssetStatusEnum::values());
             $table->enum(AssetConstant::MAINTENANCE_CYCLE, MaintenanceCycleEnum::values())->nullable();
