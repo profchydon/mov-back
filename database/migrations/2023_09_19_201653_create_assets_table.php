@@ -1,6 +1,7 @@
 <?php
 
 use App\Domains\Constant\AssetConstant;
+use App\Domains\Constant\CommonConstant;
 use App\Domains\Constant\CurrencyConstant;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Domains\Enum\Maintenance\MaintenanceCycleEnum;
@@ -10,6 +11,7 @@ use App\Models\Currency;
 use App\Models\Office;
 use App\Models\OfficeArea;
 use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -33,6 +35,8 @@ return new class extends Migration {
             $table->foreignUuid(AssetConstant::OFFICE_AREA_ID)->references(AssetConstant::ID)->on(OfficeArea::getTableName());
             $table->foreignUuid(AssetConstant::CURRENCY)->references(CurrencyConstant::CODE)->on(Currency::getTableName());
             $table->dateTime(AssetConstant::ADDED_AT);
+            $table->foreignUuid(AssetConstant::ASSIGNED_TO)->nullable()->references(CommonConstant::ID)->on(User::getTableName());
+            $table->dateTime(AssetConstant::ASSIGNED_DATE)->nullable();
             $table->enum(AssetConstant::STATUS, AssetStatusEnum::values());
             $table->enum(AssetConstant::MAINTENANCE_CYCLE, MaintenanceCycleEnum::values())->nullable();
             $table->dateTime(AssetConstant::NEXT_MAINTENANCE_DATE)->nullable();

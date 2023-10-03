@@ -16,7 +16,7 @@ return new class extends Migration {
         Schema::create('countries', function (Blueprint $table) {
             $table->bigIncrements(CommonConstant::ID)->unique();
             $table->string(CommonConstant::NAME)->unique();
-            $table->string(CommonConstant::CODE);
+            $table->string(CommonConstant::CODE)->unique();
             $table->json(CommonConstant::STATES);
             $table->string(CommonConstant::STATUS)->default(CommonConstant::INACTIVE);
             $table->timestamps();
