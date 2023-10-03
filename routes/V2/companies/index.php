@@ -13,6 +13,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::put('/', 'addCompanyDetails')->name('companies.update');
 
         Route::post('/invitees', 'inviteCompanyUsers')->name('companies.invite.users');
+        Route::get('/user-roles', 'fetchUserRoles')->name('companies.user.roles');
     });
 
 

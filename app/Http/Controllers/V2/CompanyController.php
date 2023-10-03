@@ -14,6 +14,7 @@ use App\Http\Requests\Company\CreateCompanyRequest;
 use App\Http\Requests\InviteUserRequest;
 use App\Models\Company;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
+use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
@@ -33,7 +34,8 @@ class CompanyController extends Controller
         private readonly UserRepositoryInterface $userRepository,
         private readonly UserCompanyRepositoryInterface $userCompanyRepository,
         private readonly UserInvitationRepositoryInterface $userInvitationRepository,
-        private readonly SSOServiceInterface $ssoService
+        private readonly SSOServiceInterface $ssoService,
+        private readonly RoleRepositoryInterface $roleRepository
     ) {
     }
 
@@ -145,5 +147,12 @@ class CompanyController extends Controller
         $user->update(['stage' => UserStageEnum::SUBSCRIPTION_PLAN->value]);
 
         return $this->response(Response::HTTP_OK, __('messages.company-updated'));
+    }
+
+    public function fetchUserRoles(Company $company)
+    {
+        $roles = $this->roleRepository->all();
+
+        return $this->response(Response::HTTP_OK, null, $roles);
     }
 }
