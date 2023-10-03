@@ -18,10 +18,10 @@ return new class extends Migration {
         Schema::create('user_invitations', function (Blueprint $table) {
             $table->uuid(UserInvitationConstant::ID)->unique()->primary();
             $table->string(UserInvitationConstant::EMAIL);
-            $table->bigInteger(UserInvitationConstant::ROLE_ID)->references('id')->on('roles');
+            $table->foreignId(UserInvitationConstant::ROLE_ID)->references('id')->on('roles');
             $table->string(UserInvitationConstant::CODE);
-            $table->string(UserInvitationConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName())->onDelete('cascade');
-            $table->string(UserInvitationConstant::INVITED_BY)->references(CommonConstant::ID)->on(User::getTableName())->onDelete('cascade');
+            $table->foreignUuid(UserInvitationConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName())->onDelete('cascade');
+            $table->foreignUuid(UserInvitationConstant::INVITED_BY)->references(CommonConstant::ID)->on(User::getTableName())->onDelete('cascade');
             $table->string(UserInvitationConstant::STATUS)->default(UserInvitationStatusEnum::PENDING->value);
             $table->timestamps();
         });

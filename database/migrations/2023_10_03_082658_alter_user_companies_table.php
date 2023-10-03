@@ -16,9 +16,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('user_companies', function (Blueprint $table) {
-            $table->uuid(UserCompanyConstant::TENANT_ID)->references(UserCompanyConstant::ID)->on(Tenant::getTableName())->change();
-            $table->uuid(UserCompanyConstant::COMPANY_ID)->references(UserCompanyConstant::ID)->on(Company::getTableName())->onDelete('cascade')->change();
-            $table->uuid(UserCompanyConstant::USER_ID)->references(UserCompanyConstant::ID)->on(User::getTableName())->onDelete('cascade')->change();
+            $table->foreignUuid(UserCompanyConstant::TENANT_ID)->references(UserCompanyConstant::ID)->on(Tenant::getTableName())->change();
+            $table->foreignUuid(UserCompanyConstant::COMPANY_ID)->references(UserCompanyConstant::ID)->on(Company::getTableName())->onDelete('cascade')->change();
+            $table->foreignUuid(UserCompanyConstant::USER_ID)->references(UserCompanyConstant::ID)->on(User::getTableName())->onDelete('cascade')->change();
         });
     }
 

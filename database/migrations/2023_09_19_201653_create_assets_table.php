@@ -22,16 +22,16 @@ return new class extends Migration {
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->uuid(AssetConstant::ID)->unique()->primary();
-            $table->string(AssetConstant::TENANT_ID)->references(AssetConstant::ID)->on(Tenant::getTableName());
-            $table->string(AssetConstant::COMPANY_ID)->references(AssetConstant::ID)->on(Company::getTableName());
+            $table->foreignUuid(AssetConstant::TENANT_ID)->references(AssetConstant::ID)->on(Tenant::getTableName());
+            $table->foreignUuid(AssetConstant::COMPANY_ID)->references(AssetConstant::ID)->on(Company::getTableName());
             $table->string(AssetConstant::MAKE)->nullable();
             $table->string(AssetConstant::MODEL)->nullable();
-            $table->uuid(AssetConstant::TYPE_ID)->references(AssetConstant::ID)->on(AssetType::getTableName());
+            $table->foreignUuid(AssetConstant::TYPE_ID)->references(AssetConstant::ID)->on(AssetType::getTableName());
             $table->double(AssetConstant::PURCHASE_PRICE);
             $table->dateTime(AssetConstant::PURCHASE_DATE)->nullable();
-            $table->uuid(AssetConstant::OFFICE_ID)->references(AssetConstant::ID)->on(Office::getTableName());
-            $table->uuid(AssetConstant::OFFICE_AREA_ID)->references(AssetConstant::ID)->on(OfficeArea::getTableName());
-            $table->string(AssetConstant::CURRENCY)->references(CurrencyConstant::CODE)->on(Currency::getTableName());
+            $table->foreignUuid(AssetConstant::OFFICE_ID)->references(AssetConstant::ID)->on(Office::getTableName());
+            $table->foreignUuid(AssetConstant::OFFICE_AREA_ID)->references(AssetConstant::ID)->on(OfficeArea::getTableName());
+            $table->foreignUuid(AssetConstant::CURRENCY)->references(CurrencyConstant::CODE)->on(Currency::getTableName());
             $table->dateTime(AssetConstant::ADDED_AT);
             $table->enum(AssetConstant::STATUS, AssetStatusEnum::values());
             $table->enum(AssetConstant::MAINTENANCE_CYCLE, MaintenanceCycleEnum::values())->nullable();

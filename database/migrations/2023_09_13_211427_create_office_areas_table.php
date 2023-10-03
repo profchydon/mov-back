@@ -16,7 +16,7 @@ return new class extends Migration {
     {
         Schema::create('office_areas', function (Blueprint $table) {
             $table->uuid(OfficeConstant::ID)->unique()->primary();
-            $table->string(OfficeConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
+            $table->foreignUuid(OfficeConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
             $table->foreignUuid(OfficeConstant::OFFICE_ID)->references(CommonConstant::ID)->on(\App\Models\Office::getTableName());
             $table->string(OfficeConstant::NAME);
             $table->enum(OfficeConstant::STATUS, OfficeStatusEnum::values())->default(OfficeStatusEnum::ACTIVE->value);

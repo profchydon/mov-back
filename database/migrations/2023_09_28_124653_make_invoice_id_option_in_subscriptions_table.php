@@ -14,7 +14,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            $table->string(SubscriptionConstant::INVOICE_ID)->references(CommonConstant::ID)->on(Invoice::getTableName())->nullable()->change();
+            $table->foreignUuid(SubscriptionConstant::INVOICE_ID)->references(CommonConstant::ID)->on(Invoice::getTableName())->nullable()->change();
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            $table->string(SubscriptionConstant::INVOICE_ID)->references(CommonConstant::ID)->on(Invoice::getTableName());
+            $table->foreignUuid(SubscriptionConstant::INVOICE_ID)->references(CommonConstant::ID)->on(Invoice::getTableName());
         });
     }
 };

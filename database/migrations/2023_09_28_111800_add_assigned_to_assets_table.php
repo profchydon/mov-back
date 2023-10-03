@@ -14,7 +14,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->string(AssetConstant::ASSIGNED_TO)->nullable()->references(CommonConstant::ID)->on(User::getTableName());
+            $table->foreignUuid(AssetConstant::ASSIGNED_TO)->nullable()->references(CommonConstant::ID)->on(User::getTableName());
             $table->dateTime(AssetConstant::ASSIGNED_DATE)->nullable();
         });
     }

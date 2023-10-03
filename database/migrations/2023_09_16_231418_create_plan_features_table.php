@@ -16,8 +16,8 @@ return new class extends Migration {
     {
         Schema::create('plan_features', function (Blueprint $table) {
             $table->uuid(PlanFeatureConstant::ID)->unique()->primary();
-            $table->uuid(PlanFeatureConstant::PLAN_ID)->references(PlanConstant::ID)->on(Plan::getTableName());
-            $table->uuid(PlanFeatureConstant::FEATURE_ID)->references(PlanConstant::ID)->on(Feature::getTableName());
+            $table->foreignUuid(PlanFeatureConstant::PLAN_ID)->references(PlanConstant::ID)->on(Plan::getTableName());
+            $table->foreignUuid(PlanFeatureConstant::FEATURE_ID)->references(PlanConstant::ID)->on(Feature::getTableName());
             $table->string(PlanFeatureConstant::VALUE);
             $table->timestamps();
             $table->softDeletes();

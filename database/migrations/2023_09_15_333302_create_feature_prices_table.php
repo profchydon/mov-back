@@ -16,7 +16,7 @@ return new class extends Migration {
     {
         Schema::create('feature_prices', function (Blueprint $table) {
             $table->uuid(FeaturePriceConstant::ID)->unique()->primary();
-            $table->uuid(FeaturePriceConstant::FEATURE_ID)->references(FeatureConstant::ID)->on(Feature::getTableName());
+            $table->foreignUuid(FeaturePriceConstant::FEATURE_ID)->references(FeatureConstant::ID)->on(Feature::getTableName());
             $table->foreignIdFor(Currency::class, FeaturePriceConstant::CURRENCY_ID);
             $table->double(FeaturePriceConstant::PRICE);
             $table->timestamps();
