@@ -34,8 +34,7 @@ class CompanyController extends Controller
         private readonly UserRepositoryInterface $userRepository,
         private readonly UserCompanyRepositoryInterface $userCompanyRepository,
         private readonly UserInvitationRepositoryInterface $userInvitationRepository,
-        private readonly SSOServiceInterface $ssoService,
-        private readonly RoleRepositoryInterface $roleRepository
+        private readonly SSOServiceInterface $ssoService
     ) {
     }
 
@@ -147,12 +146,5 @@ class CompanyController extends Controller
         $user->update(['stage' => UserStageEnum::SUBSCRIPTION_PLAN->value]);
 
         return $this->response(Response::HTTP_OK, __('messages.company-updated'));
-    }
-
-    public function fetchUserRoles(Company $company)
-    {
-        $roles = $this->roleRepository->all();
-
-        return $this->response(Response::HTTP_OK, null, $roles);
     }
 }
