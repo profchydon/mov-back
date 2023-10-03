@@ -102,7 +102,7 @@ class CompanyController extends Controller
 
     public function inviteCompanyUsers(InviteUserRequest $request, Company $company)
     {
-        $user = $this->userRepository->first('id', '9a320b0d-cb24-4cf9-b6de-f77407fde3ae'); //this is only temporary till we finish up auth
+        $user = $company->users[0];
 
         if ($user->stage != UserStageEnum::USERS->value) {
             return $this->error(Response::HTTP_BAD_REQUEST, 'Make sure you complete previous steps');
