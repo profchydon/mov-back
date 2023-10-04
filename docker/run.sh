@@ -2,6 +2,7 @@
 
 cd /var/www
 
+chmod -R 777 /var/www/storage
 php artisan test --profile
 
 php artisan migrate --seed --force
