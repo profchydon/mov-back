@@ -6,6 +6,7 @@ use App\Domains\Constant\CompanyConstant;
 use App\Domains\Enum\Company\CompanyStatusEnum;
 use App\Events\Company\CompanyCreatedEvent;
 use App\Traits\GetsTableName;
+use App\Traits\QueryFormatter;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
 {
-    use UsesUUID, HasFactory, SoftDeletes, GetsTableName;
+    use UsesUUID, HasFactory, SoftDeletes, GetsTableName, QueryFormatter;
 
     protected $guarded = [
         CompanyConstant::ID,

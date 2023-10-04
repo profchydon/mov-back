@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Domains\Constant\OfficeConstant;
 use App\Domains\Enum\Office\OfficeStatusEnum;
 use App\Traits\GetsTableName;
+use App\Traits\QueryFormatter;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Office extends Model
 {
-    use UsesUUID, HasFactory, SoftDeletes, GetsTableName;
+    use UsesUUID, HasFactory, SoftDeletes, GetsTableName, QueryFormatter;
 
     protected $guarded = [
         OfficeConstant::ID,
@@ -26,6 +27,15 @@ class Office extends Model
 
     protected $hidden = [
         OfficeConstant::TENANT_ID,
+    ];
+
+    protected static array $searchable = [
+        'offices.name', 'offices.street_address',
+    ];
+
+    protected static array $filterable = [
+        'company' => 'offices.company_id',
+        'country' => 'offices.country'
     ];
 
     public function areas(): HasMany

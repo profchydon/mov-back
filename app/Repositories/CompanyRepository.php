@@ -31,4 +31,25 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
             'tenant_id' => $office->tenant_id,
         ]);
     }
+
+    public function getCompanyOffices(Company|string $company)
+    {
+        if (!($company instanceof Company)) {
+            $company = Company::findOrFail($company);
+        }
+
+        $offices = $company->offices()->withCount('areas');
+        $offices = Office::appendToQueryFromRequestQueryParameters($offices);
+
+        return $offices->paginate();
+    }
+
+    public function getCompanyOffice(Office|string $office)
+    {
+        if (!($office instanceof Office)) {
+            $office = Office::findOrFail($office);
+        }
+
+        return $office->load('areas');
+    }
 }
