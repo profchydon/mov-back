@@ -12,6 +12,7 @@ return [
     'record-updated' => 'Record Updated successfully',
     'unauthorized' => 'Authorization Failed',
     'unauthenticated' => 'Authentication Failed',
+    'authenticated' => 'Authentication Successful',
     'action-not-allowed' => 'You are not allowed to perform this action',
     'record-deleted' => 'Record successfully deleted',
     'account-created' => 'Account successfully created',
@@ -25,4 +26,5 @@ return [
     'wrong-user-stage' => 'Make sure you complete previous steps',
     'subscription-selected' => 'Your subscription is successful',
     'processing' => 'Operation processing',
+    'error-verify-account' => 'Make sure you verify your account',
 ];

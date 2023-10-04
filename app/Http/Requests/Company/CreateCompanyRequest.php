@@ -36,7 +36,7 @@ class CreateCompanyRequest extends FormRequest
         $dto->setFirstName($this->input('user.first_name'))
             ->setLastName($this->input('user.last_name'))
             ->setPassword($this->input('user.password'))
-            ->setEmail($this->input('company.email'));
+            ->setEmail($this->input('user.email'));
 
         return $dto;
     }

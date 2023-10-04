@@ -36,7 +36,7 @@ class SessionController extends Controller
 
         $authorizationUrl = sprintf('%s/oauth/authorize?client_id=%s&redirect_uri=%s&response_type=%s&state=%s&scope=%s', $ssoUrl, $clientId, $redirectUrl, $response_type, $state, $scope);
 
-        return response()->json(['redirect_url' => $authorizationUrl]);
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), ['redirect_url' => $authorizationUrl]);
     }
 
     public function confirmation(Request $request)
@@ -63,7 +63,7 @@ class SessionController extends Controller
 
         $response = $this->issueCoreAuthToken($sub);
 
-        return response()->json(['data' => $response]);
+        return $this->response(Response::HTTP_OK, __('messages.authenticated'), ['data' => $response]);
 
     }
 
