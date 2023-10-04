@@ -104,8 +104,8 @@ class CompanyController extends Controller
     {
         $user = $company->users[0];
 
-        if ($user->stage != UserStageEnum::USERS->value) {
-            return $this->error(Response::HTTP_BAD_REQUEST, 'Make sure you complete previous steps');
+        if ($user->stage == UserStageEnum::VERIFICATION->value || $user->stage == UserStageEnum::COMPANY_DETAILS || $user->stage == UserStageEnum::SUBSCRIPTION_PLAN) {
+            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-user-stage'));
         }
 
         $DTOs = $request->getInvitationData($company->id, $user->id);
@@ -129,8 +129,8 @@ class CompanyController extends Controller
 
         $user = $company->users[0];
 
-        if ($user->stage != UserStageEnum::COMPANY_DETAILS->value) {
-            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-user-stage'));
+        if ($user->stage == UserStageEnum::VERIFICATION->value) {
+            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.error-verify-account'));
         }
 
         $dto = $request->getDTO();

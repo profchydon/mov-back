@@ -25,4 +25,5 @@ return [
     'wrong-user-stage' => 'Make sure you complete previous steps',
     'subscription-selected' => 'Your subscription is successful',
     'processing' => 'Operation processing',
+    'error-verify-account' => 'Make sure you verify your account',
 ];
