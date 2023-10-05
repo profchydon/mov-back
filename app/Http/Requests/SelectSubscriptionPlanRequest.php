@@ -39,11 +39,12 @@ class SelectSubscriptionPlanRequest extends FormRequest
     public function getDTO()
     {
         $startDate = Carbon::now();
+        $endDate = Carbon::now();
 
-        if ($this->input('billing_cycle') == BillingCycleEnum::MONTHLY) {
-            $endDate = $startDate->addMonth();
-        } else {
-            $endDate = $startDate->addYear();
+        if ($this->input('billing_cycle') == BillingCycleEnum::MONTHLY->value) {
+            $endDate = $endDate->addMonth();
+        } else if($this->input('billing_cycle') == BillingCycleEnum::YEARLY->value){
+            $endDate = $endDate->addYear();
         }
 
         $dto = new CreateSubscriptionDTO();

@@ -31,6 +31,6 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             });
         }
 
-        return $subscription->load('addOns');
+        return $subscription->load('addOns', 'plan');
     }
 }
