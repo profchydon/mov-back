@@ -28,10 +28,10 @@ class SubscriptionController extends Controller
         $dto->setCompanyId($company->id)
             ->setTenantId($company->tenant_id);
 
-        $this->subscriptionRepository->create($dto->toArray());
+        $subscription = $this->subscriptionRepository->create($dto->toArray());
 
         $user->update(['stage' => UserStageEnum::USERS]);
 
-        return $this->response(Response::HTTP_OK, __('messages.subscription-selected'));
+        return $this->response(Response::HTTP_OK, __('messages.subscription-selected'), $subscription);
     }
 }
