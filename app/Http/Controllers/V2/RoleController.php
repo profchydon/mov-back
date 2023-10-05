@@ -20,7 +20,7 @@ class RoleController extends Controller
 
     public function fetchUserRoles(Company $company)
     {
-        $roles = $this->roleRepository->all();
+        $roles = $this->roleRepository->getCompanyRoles($company->id);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $roles);
     }

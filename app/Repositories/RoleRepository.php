@@ -15,6 +15,13 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
         return Role::class;
     }
 
+    public function getCompanyRoles(string $companyId)
+    {
+        $roles = Role::where(CommonConstant::COMPANY_ID, $companyId)->orWhere(CommonConstant::COMPANY_ID, null)->get();
+
+        return $roles;
+    }
+
     public function createRole(CreateUserRoleDTO $dto): Role
     {
         $role = Role::create($dto->toArray());
