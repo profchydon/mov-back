@@ -122,23 +122,22 @@ class CreateSubscriptionDTO
         return $this->currency;
     }
 
-    public function setCurrency(string $currency): CreateSubscriptionDTO
+    public function setCurrency(string $currency): self
     {
         $this->currency = $currency;
+
         return $this;
     }
-
 
     public function getAddOnIds(): Collection
     {
         return collect($this->add_on_ids);
     }
 
-    public function setAddOnIds(?array $add_on_ids): CreateSubscriptionDTO
+    public function setAddOnIds(?array $add_on_ids): self
     {
         $this->add_on_ids = $add_on_ids;
+
         return $this;
     }
-
-
 }

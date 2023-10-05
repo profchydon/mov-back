@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Constant\FeatureConstant;
 use App\Domains\Constant\PlanConstant;
 use App\Domains\Constant\PlanPriceConstant;
 use App\Models\Plan;

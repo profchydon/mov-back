@@ -14,14 +14,14 @@ class SubscriptionPayment extends Model
     use HasFactory, UsesUUID;
 
     protected $casts = [
-        'status' => PaymentStatusEnum::class
+        'status' => PaymentStatusEnum::class,
     ];
 
     public static function booted()
     {
         parent::booted();
         static::updated(function (self $payment) {
-            if($payment->isComplete()){
+            if ($payment->isComplete()) {
                 $payment->subscription->activate();
             }
         });

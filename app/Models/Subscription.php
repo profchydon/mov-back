@@ -7,13 +7,11 @@ use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Events\Subscription\SubscriptionActivatedEvent;
 use App\Traits\GetsTableName;
 use App\Traits\UsesUUID;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ramsey\Uuid\Uuid;
 
 class Subscription extends Model
 {
@@ -62,8 +60,7 @@ class Subscription extends Model
     public function activate(): bool
     {
         return $this->update([
-            SubscriptionConstant::STATUS => SubscriptionStatusEnum::ACTIVE
+            SubscriptionConstant::STATUS => SubscriptionStatusEnum::ACTIVE,
         ]);
     }
-
 }

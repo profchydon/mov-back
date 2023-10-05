@@ -22,7 +22,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             $addons = $subDTO->getAddOnIds()->map(function ($id) use ($subscription) {
                 return [
                     'feature_id' => $id,
-                    ...Arr::except($subscription->toArray(), ['id', 'plan_id', 'invoice_id'])
+                    ...Arr::except($subscription->toArray(), ['id', 'plan_id', 'invoice_id']),
                 ];
             });
 
