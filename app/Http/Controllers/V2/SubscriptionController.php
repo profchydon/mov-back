@@ -19,7 +19,7 @@ class SubscriptionController extends Controller
     {
         $user = $company->users[0];
 
-        if ($user->stage != UserStageEnum::SUBSCRIPTION_PLAN->value) {
+        if ($user->stage == UserStageEnum::VERIFICATION->value || $user->stage == UserStageEnum::COMPANY_DETAILS) {
             return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-user-stage'));
         }
 
@@ -32,6 +32,7 @@ class SubscriptionController extends Controller
 
         $user->update(['stage' => UserStageEnum::USERS]);
 
+        $subscription->load('plan');
         return $this->response(Response::HTTP_OK, __('messages.subscription-selected'), $subscription);
     }
 }
