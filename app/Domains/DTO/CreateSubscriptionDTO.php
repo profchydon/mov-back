@@ -4,6 +4,7 @@ namespace App\Domains\DTO;
 
 use App\Traits\DTOToArray;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 class CreateSubscriptionDTO
 {
@@ -17,6 +18,8 @@ class CreateSubscriptionDTO
     private Carbon $end_date;
     private string $billing_cycle;
     private string $status;
+    private ?array $add_on_ids;
+    private string $currency;
 
     public function setTenantId(string $tenant_id)
     {
@@ -113,4 +116,29 @@ class CreateSubscriptionDTO
     {
         return $this->status;
     }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): CreateSubscriptionDTO
+    {
+        $this->currency = $currency;
+        return $this;
+    }
+
+
+    public function getAddOnIds(): Collection
+    {
+        return collect($this->add_on_ids);
+    }
+
+    public function setAddOnIds(?array $add_on_ids): CreateSubscriptionDTO
+    {
+        $this->add_on_ids = $add_on_ids;
+        return $this;
+    }
+
+
 }

@@ -1,0 +1,8 @@
+name: Depreciation
+description: See how much your asset will be worth year on year
+pricing: PAID
+prices:
+  - currency_code: NGN
+    price: 50000
+  - currency_code: USD
+    price: 500

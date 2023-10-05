@@ -2,11 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Domains\Constant\PlanPriceConstant;
 use App\Domains\DTO\CreateSubscriptionDTO;
 use App\Domains\Enum\Plan\BillingCycleEnum;
 use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
+use Illuminate\Validation\Rule;
 
 class SelectSubscriptionPlanRequest extends FormRequest
 {
@@ -27,7 +29,10 @@ class SelectSubscriptionPlanRequest extends FormRequest
     {
         return [
             'plan_id' => 'required|string|exists:plans,id',
-            'billing_cycle' => sprintf('required|string|in:%s', implode(',', BillingCycleEnum::values())),
+            'billing_cycle' => ['required', Rule::exists('plan_prices', PlanPriceConstant::BILLING_CYCLE)->where(PlanPriceConstant::PLAN_ID, $this->input('plan_id'))],
+            'currency' => ['required', Rule::exists('plan_prices', PlanPriceConstant::CURRENCY_CODE)->where(PlanPriceConstant::PLAN_ID, $this->input('plan_id'))->where(PlanPriceConstant::BILLING_CYCLE, $this->input('billing_cycle'))],
+            'add-on-ids' => ['sometimes', 'nullable', 'array'],
+            'add-on-ids.*' => ['sometimes', Rule::exists('features', 'id')]
         ];
     }
 
@@ -47,7 +52,9 @@ class SelectSubscriptionPlanRequest extends FormRequest
             ->setBillingCycle($this->input('billing_cycle'))
             ->setStartDate($startDate)
             ->setEndDate($endDate)
-            ->setStatus(SubscriptionStatusEnum::ACTIVE->value);
+            ->setStatus(SubscriptionStatusEnum::ACTIVE->value)
+            ->setCurrency($this->input('currency'))
+            ->setAddOnIds($this->input('add-on-ids'));
 
         return $dto;
     }

@@ -1,0 +1,8 @@
+name: Maintenance
+description: We will help you keep your asset in tip tip shape
+pricing: PAID
+prices:
+  - currency_code: NGN
+    price: 50000
+  - currency_code: USD
+    price: 500

@@ -17,21 +17,21 @@ class SubscriptionController extends Controller
 
     public function selectSubscriptionPlan(SelectSubscriptionPlanRequest $request, Company $company)
     {
-        $user = $company->users[0];
-
-        if ($user->stage != UserStageEnum::SUBSCRIPTION_PLAN->value) {
-            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-user-stage'));
-        }
+        $user = $company->users()->first();
+//
+//        if ($user->stage != UserStageEnum::SUBSCRIPTION_PLAN->value) {
+//            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-user-stage'));
+//        }
 
         $dto = $request->getDTO();
 
         $dto->setCompanyId($company->id)
             ->setTenantId($company->tenant_id);
 
-        $this->subscriptionRepository->create($dto->toArray());
+        $subscription = $this->subscriptionRepository->createSubscription($dto);
 
         $user->update(['stage' => UserStageEnum::USERS]);
 
-        return $this->response(Response::HTTP_OK, __('messages.subscription-selected'));
+        return $this->response(Response::HTTP_OK, __('messages.subscription-selected'), $subscription);
     }
 }

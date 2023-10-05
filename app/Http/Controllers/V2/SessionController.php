@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers\V2;
 
-
+use App\Common\JWTHandler;
+use App\Domains\Constant\UserConstant;
 use App\Http\Controllers\Controller;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use App\Common\JWTHandler;
-use App\Models\User;
-use App\Domains\Constant\UserConstant;
-use App\Repositories\Contracts\UserRepositoryInterface;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 
 class SessionController extends Controller
 {
-
     /**
      * @param UserRepositoryInterface $userRepositoryInterface
      */
@@ -55,7 +51,7 @@ class SessionController extends Controller
             return $this->error(Response::HTTP_UNAUTHORIZED, $response->json()['message']);
         }
 
-        $response = (Object)$response->json();
+        $response = (object) $response->json();
 
         $jwtToken = new JWTHandler($response);
 
@@ -64,18 +60,16 @@ class SessionController extends Controller
         $response = $this->issueCoreAuthToken($sub);
 
         return $this->response(Response::HTTP_OK, __('messages.authenticated'), ['data' => $response]);
-
     }
 
-    public function issueCoreAuthToken(string $sub) {
-
+    public function issueCoreAuthToken(string $sub)
+    {
         $user = $this->userRepository->first(UserConstant::SSO_ID, $sub);
 
         return [
             'user' => $user,
             'auth_token' => $user->createToken('auth_token')->plainTextToken,
         ];
-
     }
 
     // public function authorization()

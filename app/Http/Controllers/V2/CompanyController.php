@@ -111,9 +111,11 @@ class CompanyController extends Controller
         $DTOs = $request->getInvitationData($company->id, $user->id);
         $this->userInvitationRepository->inviteCompanyUsers($DTOs);
 
-        $this->userRepository->updateById($user->id, [
-            'stage' => UserStageEnum::COMPLETED->value,
-        ]);
+        if ($user->stage == UserStageEnum::USERS->value) {
+            $this->userRepository->updateById($user->id, [
+                'stage' => UserStageEnum::COMPLETED->value,
+            ]);
+        }
 
         return $this->response(
             Response::HTTP_CREATED,
@@ -142,7 +144,9 @@ class CompanyController extends Controller
         }
 
         $company->update($dto->toArray());
-        $user->update(['stage' => UserStageEnum::SUBSCRIPTION_PLAN->value]);
+        if ($user->stage == UserStageEnum::COMPANY_DETAILS->value) {
+            $user->update(['stage' => UserStageEnum::SUBSCRIPTION_PLAN->value]);
+        }
 
         return $this->response(Response::HTTP_OK, __('messages.company-updated'));
     }

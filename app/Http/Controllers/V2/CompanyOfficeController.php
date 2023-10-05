@@ -30,7 +30,7 @@ class CompanyOfficeController extends Controller
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $office);
     }
 
-    public function storeOfficeArea(Office $office, \Illuminate\Http\Request $request)
+    public function storeOfficeArea(Office $office, Request $request)
     {
         $this->validate($request, [
             'name' => 'required|min:3|regex:/\b[a-zA-Z]{3,}(?:\s[a-zA-Z]+)*\b/',

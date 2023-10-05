@@ -1,7 +1,7 @@
 <?php
 
 use App\Domains\Constant\CommonConstant;
-use App\Domains\Constant\PlanConstant;
+use App\Domains\Constant\FeatureConstant;
 use App\Domains\Constant\PlanPriceConstant;
 use App\Domains\Enum\Plan\BillingCycleEnum;
 use App\Models\Currency;
@@ -18,7 +18,7 @@ return new class extends Migration {
     {
         Schema::create('plan_prices', function (Blueprint $table) {
             $table->uuid(PlanPriceConstant::ID)->unique()->primary();
-            $table->foreignUuid(PlanPriceConstant::PLAN_ID)->references(PlanConstant::ID)->on(Plan::getTableName());
+            $table->foreignUuid(PlanPriceConstant::PLAN_ID)->references(FeatureConstant::ID)->on(Plan::getTableName());
             $table->string(PlanPriceConstant::CURRENCY_CODE)->references(CommonConstant::CODE)->on(Currency::getTableName());
             $table->double(PlanPriceConstant::AMOUNT);
             $table->enum(PlanPriceConstant::BILLING_CYCLE, BillingCycleEnum::values());
