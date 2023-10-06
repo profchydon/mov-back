@@ -14,3 +14,5 @@ Route::put('/otp', [UserController::class, 'verifyAccount'])->name('verify.otp')
 
 Route::get('/sessions/authorization', [SessionController::class, 'authorization']);
 Route::get('/sessions/confirmation', [SessionController::class, 'confirmation']);
+
+Route::middleware('auth:sanctum')->get('/me', [UserController::class, 'userDetails'])->name('user.details');
