@@ -64,7 +64,8 @@ class AssetController extends Controller
      */
     public function get(Company $company): JsonResponse
     {
-        $assets = $this->assetRepository->get(AssetConstant::COMPANY_ID, $company->id);
+
+        $assets = $this->assetRepository->getWithRelation(AssetConstant::COMPANY_ID, $company->id, ['type', 'office']);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assets);
     }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Domains\Constant\AssetConstant;
+use App\Domains\Constant\AssetTypeConstant;
 use App\Events\AssetStatusUpdatedEvent;
 use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -53,5 +54,15 @@ class Asset extends Model
                 AssetStatusUpdatedEvent::dispatch($asset);
             }
         });
+    }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class, AssetConstant::OFFICE_ID);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(AssetType::class, AssetConstant::TYPE_ID);
     }
 }
