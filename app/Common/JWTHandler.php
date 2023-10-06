@@ -12,8 +12,9 @@ class JWTHandler
      * JWTHandler constructor.
      * @param object $token
      */
-    public function __construct(private readonly object $token) {}
-
+    public function __construct(private readonly object $token)
+    {
+    }
 
     public function getToken(): object
     {
@@ -25,15 +26,15 @@ class JWTHandler
      */
     public function getAccessToken()
     {
-       return $this->token->access_token;
+        return $this->token->access_token;
     }
 
-     /**
+    /**
      * @return string
      */
     public function getRefreshToken()
     {
-       return $this->token->refresh_token;
+        return $this->token->refresh_token;
     }
 
     /**
@@ -50,7 +51,8 @@ class JWTHandler
     public function getAccessTokenPayload()
     {
         $payload = $this->getPayload($this->token->access_token);
-        return json_decode((string)$payload, true);
+
+        return json_decode((string) $payload, true);
     }
 
     /**
@@ -59,8 +61,8 @@ class JWTHandler
     public function getAccessTokenSubject()
     {
         $payload = $this->getPayload($this->token->access_token);
-        $decodedPayload = json_decode((string)$payload, true);
+        $decodedPayload = json_decode((string) $payload, true);
+
         return $decodedPayload['sub'];
     }
-
 }

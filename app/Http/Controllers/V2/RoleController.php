@@ -7,7 +7,6 @@ use App\Http\Requests\CreateUserRoleRequest;
 use App\Models\Company;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Contracts\RoleRepositoryInterface;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class RoleController extends Controller

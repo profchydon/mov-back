@@ -47,7 +47,7 @@ class UserController extends Controller
     public function verifyAccount(VerifyOTPRequest $request)
     {
         $isVerified = $this->ssoService->verifyOTP($request->getDTO());
-      
+
         if ($isVerified) {
             return $this->response(Response::HTTP_OK, __('messages.otp-validated'));
         } else {

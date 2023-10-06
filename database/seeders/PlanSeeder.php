@@ -28,7 +28,7 @@ class PlanSeeder extends Seeder
                 PlanConstant::NAME => $seedFile['name'],
                 PlanConstant::DESCRIPTION => $seedFile['description'],
                 PlanConstant::PRECEDING_PLAN_NAME => $seedFile['preceding_plan_name'] ?? null,
-                PlanConstant::OFFERS => $seedFile['offers']
+                PlanConstant::OFFERS => $seedFile['offers'],
             ]);
 
             foreach ($seedFile['prices'] as $price) {

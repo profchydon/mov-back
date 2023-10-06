@@ -14,7 +14,6 @@ use App\Http\Requests\Company\CreateCompanyRequest;
 use App\Http\Requests\InviteUserRequest;
 use App\Models\Company;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
-use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
