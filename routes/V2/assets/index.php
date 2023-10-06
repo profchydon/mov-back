@@ -12,7 +12,7 @@ Route::controller(AssetController::class)->prefix('companies')->group(function (
     Route::get('{company}/assets/bulk', 'getBulkDownloadTemplate')->name('get-template.company.bulk.assets')->withoutMiddleware(\App\Http\Middleware\NormalizeResponseForFrontEndMiddleware::class);
     Route::get('{company}/assets', 'get')->name('get.company.asset');
 
-    Route::get('{company}/asset-makes', 'getAssetMakes')->name('get.company.asset');
+    Route::get('{company}/asset-makes', 'getAssetMakes')->name('get.asset.makes');
 });
 
 

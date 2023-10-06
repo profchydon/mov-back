@@ -72,7 +72,14 @@ class UserController extends Controller
     public function userDetails(Request $request)
     {
         $user = $request->user();
+        $userCompany = $user->userCompanies()->first();
+        $company = $this->companyRepository->first(CompanyConstant::ID, $userCompany->company_id);
 
-        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $user);
+        $data = [
+            'user' => $user,
+            'company' => $company
+        ];
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $data);
     }
 }
