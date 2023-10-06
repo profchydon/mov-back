@@ -23,7 +23,7 @@ class CreateAssetRequest extends FormRequest
             // Rule::exists(Company::class, CompanyConstant::ID),
             'make' => ['nullable', new HumanNameRule()],
             'model' => ['nullable', new HumanNameRule()],
-            'type' => ['required', 'string'],
+            'type_id' => ['required', Rule::exists('asset_types', 'id')],
             'serial_number' => 'required|string',
             'purchase_price' => ['required', 'decimal:2,4'],
             'purchase_date' => 'nullable|date',
@@ -38,7 +38,7 @@ class CreateAssetRequest extends FormRequest
         $dto = new CreateAssetDTO();
         $dto->setMake($this->input('make', null))
             ->setModel($this->input('model', null))
-            ->setType($this->input('type'))
+            ->setTypeId($this->input('type_id'))
             ->setSerialNumber($this->input('serial_number'))
             ->setPurchasePrice($this->input('purchase_price', null))
             ->setPurchaseDate($this->input('purchase_date', null))
