@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\AssetConstant;
+use App\Domains\Constant\AssetMakeConstant;
 use App\Http\Requests\Asset\CreateAssetRequest;
+use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 
@@ -27,6 +29,7 @@ class AssetController extends Controller
     public function __construct(
         private readonly AssetRepositoryInterface $assetRepository,
         private readonly CompanyRepositoryInterface $companyRepository,
+        private readonly AssetMakeRepositoryInterface $assetMakeRepository
     ) {
     }
 
@@ -68,5 +71,12 @@ class AssetController extends Controller
         $assets = $this->assetRepository->getWithRelation(AssetConstant::COMPANY_ID, $company->id, ['type', 'office']);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assets);
+    }
+
+    public function getAssetMakes(Company $company)
+    {
+        $assetMakes = $this->assetMakeRepository->get(AssetMakeConstant::COMPANY_ID, $company->id);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assetMakes);
     }
 }
