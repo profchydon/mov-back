@@ -3,6 +3,8 @@
 namespace App\Domains\DTO;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Fluent;
 
 final class CreatePaymentLinkDTO
 {
@@ -17,7 +19,7 @@ final class CreatePaymentLinkDTO
     {
         $this->currency = 'NGN';
         $this->tx_ref = uniqid('tx_ref_');
-        $this->redirect_url = route('flutterwave.callback');
+        $this->redirect_url = route('payment-subscription.callback');
     }
 
     public function toArray(): array
@@ -104,12 +106,12 @@ final class CreatePaymentLinkDTO
         return $this->customer;
     }
 
-    public function setCustomer(User $customer): self
+    public function setCustomer(Model $customer): self
     {
         $this->customer = [
-            'email' => $customer->email,
-            'phoneNumber' => $customer->phone,
-            'name' => "{$customer->first_name} {$customer->last_name}",
+            'email' => $customer?->email,
+            'phoneNumber' => $customer?->phone,
+            'name' => $customer?->name,
         ];
 
         return $this;

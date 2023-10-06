@@ -13,6 +13,10 @@ class SubscriptionPayment extends Model
 {
     use HasFactory, UsesUUID;
 
+    protected $guarded = [
+        'id'
+    ];
+
     protected $casts = [
         'status' => PaymentStatusEnum::class,
     ];
@@ -35,5 +39,13 @@ class SubscriptionPayment extends Model
     public function isComplete()
     {
         return $this->status == PaymentStatusEnum::COMPLETED;
+    }
+
+    public function complete()
+    {
+        $this->status = PaymentStatusEnum::COMPLETED;
+        $this->save();
+
+        return $this->fresh();
     }
 }
