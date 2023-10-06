@@ -23,4 +23,6 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
 // Route for office areas
 Route::group(['prefix' => 'offices/{office}'], function () {
     Route::post('areas', [CompanyOfficeController::class, 'storeOfficeArea']);
+    Route::put('areas/{officeArea}', [CompanyOfficeController::class, 'updateOfficeArea']);
+    Route::delete('areas/{officeArea}', [CompanyOfficeController::class, 'destroyOfficeArea']);
 });
