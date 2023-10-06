@@ -70,7 +70,7 @@ class CompanyOfficeController extends Controller
     {
         $this->validate($request, [
             'name' => 'sometimes|min:3|regex:/\b[a-zA-Z]{3,}(?:\s[a-zA-Z]+)*\b/',
-            'status' => ['sometimes', Rule::in(OfficeStatusEnum::values())]
+            'status' => ['sometimes', Rule::in(OfficeStatusEnum::values())],
         ]);
 
         $officeArea = $this->companyOfficeRepository->updateOfficeArea($officeArea, $request->only('name', 'status'));

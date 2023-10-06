@@ -43,7 +43,7 @@ class SelectSubscriptionPlanRequest extends FormRequest
 
         if ($this->input('billing_cycle') == BillingCycleEnum::MONTHLY->value) {
             $endDate = $endDate->addMonth();
-        } else if($this->input('billing_cycle') == BillingCycleEnum::YEARLY->value){
+        } elseif ($this->input('billing_cycle') == BillingCycleEnum::YEARLY->value) {
             $endDate = $endDate->addYear();
         }
 

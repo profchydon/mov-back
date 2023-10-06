@@ -84,9 +84,9 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
             $officeArea = OfficeArea::findOrFail($officeArea);
         }
 
-       $officeArea->update($attributes);
+        $officeArea->update($attributes);
 
-       return $officeArea->fresh();
+        return $officeArea->fresh();
     }
 
     public function deleteOfficeArea(OfficeArea|string $officeArea)
