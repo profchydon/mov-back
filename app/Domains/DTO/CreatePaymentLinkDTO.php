@@ -2,9 +2,7 @@
 
 namespace App\Domains\DTO;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Fluent;
 
 final class CreatePaymentLinkDTO
 {

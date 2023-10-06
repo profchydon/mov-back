@@ -6,13 +6,11 @@ use App\Domains\DTO\CreatePaymentLinkDTO;
 use App\Domains\DTO\CreateSubscriptionDTO;
 use App\Models\Company;
 use App\Models\FeaturePrice;
-use App\Models\Plan;
 use App\Models\Subscription;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Services\V2\PaystackService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class SubscriptionRepository extends BaseRepository implements SubscriptionRepositoryInterface
 {
@@ -52,11 +50,11 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         $paymentLink = new CreatePaymentLinkDTO();
         $paymentLink->setCurrency($subDTO->getCurrency())
             ->setAmount($planAmount + $addOnAmount)
-            ->setRedirectUrl(config('app.frontend_url')."/path/to/redirect")
+            ->setRedirectUrl(config('app.frontend_url') . '/path/to/redirect')
             ->setCustomer(Company::find($subDTO->getCompanyId()))
             ->setMeta([
                 'subscription_id' => $subscription->id,
-                'billing_cycle' => $subDTO->getBillingCycle()
+                'billing_cycle' => $subDTO->getBillingCycle(),
             ]);
 
         $paymentLink = PaystackService::getStandardPaymentLink($paymentLink);
@@ -65,7 +63,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             'company_id' => $subDTO->getCompanyId(),
             'tenant_id' => $subDTO->getTenantId(),
             'payment_link' => $paymentLink->authorization_url,
-            'tx_ref' => $paymentLink->reference
+            'tx_ref' => $paymentLink->reference,
         ]);
 
         DB::commit();

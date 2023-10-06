@@ -14,7 +14,7 @@ class SubscriptionPayment extends Model
     use HasFactory, UsesUUID;
 
     protected $guarded = [
-        'id'
+        'id',
     ];
 
     protected $casts = [
