@@ -11,7 +11,7 @@ final class CreateAssetDTO
 
     private ?string $make = null;
     private ?string $model = null;
-    private string $type;
+    private string $type_id;
     private string $serial_number;
     private float $purchase_price;
     private ?string $purchase_date = null;
@@ -73,18 +73,18 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getType(): string
+    public function getTypeId(): string
     {
-        return $this->type;
+        return $this->type_id;
     }
 
     /**
-     * @param string $type
+     * @param string $type_id
      * @return CreateAssetDTO
      */
-    public function setType(string $type): self
+    public function setTypeId(string $type_id): self
     {
-        $this->type = $type;
+        $this->type_id = $type_id;
 
         return $this;
     }

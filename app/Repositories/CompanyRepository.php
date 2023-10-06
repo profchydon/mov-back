@@ -5,8 +5,10 @@ namespace App\Repositories;
 use App\Domains\DTO\CreateCompanyOfficeDTO;
 use App\Models\Company;
 use App\Models\Office;
+use App\Models\OfficeArea;
 use App\Repositories\Contracts\CompanyOfficeRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class CompanyRepository extends BaseRepository implements CompanyRepositoryInterface, CompanyOfficeRepositoryInterface
 {
@@ -51,5 +53,48 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         }
 
         return $office->load('areas');
+    }
+
+    public function deleteCompanyOffice(Office|string $office)
+    {
+        if (!($office instanceof Office)) {
+            $office = Office::findOrFail($office);
+        }
+
+        DB::beginTransaction();
+        $office->areas()->delete();
+        $office->deleteOrFail();
+        DB::commit();
+    }
+
+    public function updateCompanyOffice(Office|string $office, CreateCompanyOfficeDTO $officeDTO)
+    {
+        if (!($office instanceof Office)) {
+            $office = Office::findOrFail($office);
+        }
+
+        $office->update($officeDTO->toSynthensizedArray());
+
+        return $office->fresh();
+    }
+
+    public function updateOfficeArea(OfficeArea|string $officeArea, array $attributes)
+    {
+        if (!($officeArea instanceof OfficeArea)) {
+            $officeArea = OfficeArea::findOrFail($officeArea);
+        }
+
+        $officeArea->update($attributes);
+
+        return $officeArea->fresh();
+    }
+
+    public function deleteOfficeArea(OfficeArea|string $officeArea)
+    {
+        if (!($officeArea instanceof OfficeArea)) {
+            $officeArea = OfficeArea::findOrFail($officeArea);
+        }
+
+        $officeArea->deleteOrFail();
     }
 }

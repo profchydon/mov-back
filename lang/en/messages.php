@@ -27,4 +27,6 @@ return [
     'subscription-selected' => 'Your subscription is successful',
     'processing' => 'Operation processing',
     'error-verify-account' => 'Make sure you verify your account',
+    'role.created' => 'You have successfully created a role',
+    'role-exists' => 'The role already exist',
 ];

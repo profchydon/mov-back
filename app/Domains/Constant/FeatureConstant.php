@@ -13,6 +13,7 @@ class FeatureConstant
     public const ID = 'id';
     public const NAME = 'name';
     public const PRICING = 'pricing';
+    public const DESCRIPTION = 'description';
     public const STATUS = 'status';
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';

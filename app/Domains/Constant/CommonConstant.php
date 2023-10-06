@@ -13,6 +13,7 @@ class CommonConstant
     public const STATUS = 'status';
     public const SYMBOL = 'symbol';
     public const COUNTRY_ID = 'country_id';
+    public const COMPANY_ID = 'company_id';
     public const ACTIVE = 'active';
     public const INACTIVE = 'inactive';
     public const CREATED_AT = 'created_at';
