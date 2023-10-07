@@ -50,7 +50,7 @@ test('create single asset', function () {
     $this->assertDatabaseCount('assets', 1);
     expect($response->getData()->success)->toBeTrue();
     expect($response->getData()->message)->toBe('Record created successfully');
-    // return $response->getData();
+    return $response->getData();
 
 });
 
@@ -67,4 +67,12 @@ test('error when payload is empty', function () {
     expect($response->getData()->success)->toBeFalse();
     expect($response->getData()->message)->toBe('Validation error');
     $this->assertDatabaseCount('assets', 0);
+});
+
+
+test('get assets', function () {
+    $response = $this->get("http://localhost:80/api/v2/companies/{$this->company->id}/assets");
+    $response->assertStatus(Response::HTTP_OK);
+    expect($response->getData()->success)->toBeTrue();
+    expect($response->getData()->message)->toBe('Records fetched successfully');
 });
