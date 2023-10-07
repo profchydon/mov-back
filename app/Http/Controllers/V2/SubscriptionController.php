@@ -6,7 +6,9 @@ use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SelectSubscriptionPlanRequest;
 use App\Models\Company;
+use App\Models\SubscriptionPayment;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class SubscriptionController extends Controller
@@ -33,5 +35,12 @@ class SubscriptionController extends Controller
         $user->update(['stage' => UserStageEnum::USERS]);
 
         return $this->response(Response::HTTP_OK, __('messages.subscription-selected'), $subscription);
+    }
+
+    public function confirmSubscriptionPayment(SubscriptionPayment $payment, Request $request)
+    {
+        $payment->complete();
+
+        return $this->response(Response::HTTP_OK, __('Subscription Confirmed'), $payment->fresh());
     }
 }

@@ -29,7 +29,7 @@ class Subscription extends Model
     protected static function booted()
     {
         static::created(function (self $model) {
-            SubscriptionActivatedEvent::dispatch($model);
+//            SubscriptionActivatedEvent::dispatch($model);
         });
     }
 
@@ -55,6 +55,11 @@ class Subscription extends Model
     public function addOns(): HasMany
     {
         return $this->hasMany(SubscriptionAddOn::class);
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(SubscriptionPayment::class, 'subscription_id');
     }
 
     public function activate(): bool
