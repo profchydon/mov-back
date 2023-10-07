@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Constant\FeatureConstant;
+use App\Domains\Constant\PlanConstant;
 use App\Domains\Enum\Plan\PlanStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,12 +13,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('plans', function (Blueprint $table) {
-            $table->uuid(FeatureConstant::ID)->unique()->primary();
-            $table->string(FeatureConstant::NAME)->unique();
-            $table->string(FeatureConstant::DESCRIPTION)->nullable();
-            $table->string(FeatureConstant::PRECEDING_PLAN_NAME)->index()->nullable();
-            $table->json(FeatureConstant::OFFERS)->nullable();
-            $table->enum(FeatureConstant::STATUS, PlanStatusEnum::values())->default(PlanStatusEnum::ACTIVE->value);
+            $table->uuid(PlanConstant::ID)->unique()->primary();
+            $table->string(PlanConstant::NAME)->unique();
+            $table->string(PlanConstant::DESCRIPTION)->nullable();
+            $table->string(PlanConstant::PRECEDING_PLAN_NAME)->index()->nullable();
+            $table->json(PlanConstant::OFFERS)->nullable();
+            $table->enum(PlanConstant::STATUS, PlanStatusEnum::values())->default(PlanStatusEnum::ACTIVE->value);
             $table->timestamps();
             $table->softDeletes();
         });
