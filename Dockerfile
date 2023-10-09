@@ -46,8 +46,8 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 COPY --chown=www:www-data . /var/www
 
 # add root to www group
+RUN chown -R www:www-data /var/www/storage
 RUN chmod -R ug+w /var/www/storage
-RUN chmod -R 777 /var/www/storage
 
 # Copy nginx/php/supervisor configs
 RUN cp ./docker/supervisord.conf /etc/supervisord.conf

@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Constant\PlanConstant;
+use App\Domains\Constant\FeatureConstant;
 use App\Domains\Constant\PlanFeatureConstant;
 use App\Models\Feature;
 use App\Models\Plan;
@@ -16,8 +16,8 @@ return new class extends Migration {
     {
         Schema::create('plan_features', function (Blueprint $table) {
             $table->uuid(PlanFeatureConstant::ID)->unique()->primary();
-            $table->foreignUuid(PlanFeatureConstant::PLAN_ID)->references(PlanConstant::ID)->on(Plan::getTableName());
-            $table->foreignUuid(PlanFeatureConstant::FEATURE_ID)->references(PlanConstant::ID)->on(Feature::getTableName());
+            $table->foreignUuid(PlanFeatureConstant::PLAN_ID)->references(FeatureConstant::ID)->on(Plan::getTableName());
+            $table->foreignUuid(PlanFeatureConstant::FEATURE_ID)->references(FeatureConstant::ID)->on(Feature::getTableName());
             $table->string(PlanFeatureConstant::VALUE);
             $table->timestamps();
             $table->softDeletes();

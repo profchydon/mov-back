@@ -10,6 +10,7 @@ class FeaturePriceConstant
     public const ID = 'id';
     public const FEATURE_ID = 'feature_id';
     public const CURRENCY_ID = 'currency_id';
+    public const CURRENCY_CODE = 'currency_code';
     public const PRICE = 'price';
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';

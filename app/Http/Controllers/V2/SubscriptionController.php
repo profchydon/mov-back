@@ -6,7 +6,9 @@ use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SelectSubscriptionPlanRequest;
 use App\Models\Company;
+use App\Models\SubscriptionPayment;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class SubscriptionController extends Controller
@@ -19,7 +21,7 @@ class SubscriptionController extends Controller
     {
         $user = $company->users[0];
 
-        if ($user->stage != UserStageEnum::SUBSCRIPTION_PLAN->value) {
+        if ($user->stage == UserStageEnum::VERIFICATION->value || $user->stage == UserStageEnum::COMPANY_DETAILS) {
             return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-user-stage'));
         }
 
@@ -28,10 +30,17 @@ class SubscriptionController extends Controller
         $dto->setCompanyId($company->id)
             ->setTenantId($company->tenant_id);
 
-        $this->subscriptionRepository->create($dto->toArray());
+        $subscription = $this->subscriptionRepository->createSubscription($dto);
 
         $user->update(['stage' => UserStageEnum::USERS]);
 
-        return $this->response(Response::HTTP_OK, __('messages.subscription-selected'));
+        return $this->response(Response::HTTP_OK, __('messages.subscription-selected'), $subscription);
+    }
+
+    public function confirmSubscriptionPayment(SubscriptionPayment $payment, Request $request)
+    {
+        $payment->complete();
+
+        return $this->response(Response::HTTP_OK, __('Subscription Confirmed'), $payment->fresh());
     }
 }

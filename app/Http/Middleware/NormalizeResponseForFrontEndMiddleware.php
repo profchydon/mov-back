@@ -13,9 +13,13 @@ class NormalizeResponseForFrontEndMiddleware
     {
         $response = $next($request);
 
-        $responseInCamelCase = $this->keysToCamelCase($response->getData(true));
+        if (method_exists($response, 'getData')) {
+            $responseInCamelCase = $this->keysToCamelCase($response->getData(true));
 
-        return $response->setData($responseInCamelCase);
+            return $response->setData($responseInCamelCase);
+        }
+
+        return $response;
     }
 
     private function keysToCamelCase($data)

@@ -2,22 +2,30 @@
 
 namespace App\Providers;
 
+use App\Repositories\AssetMakeRepository;
 use App\Repositories\AssetRepository;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\CompanyRepository;
+use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\AssetTypeRepositoryInterface;
 use App\Repositories\Contracts\CompanyOfficeRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
+use App\Repositories\Contracts\FeatureRepositoryInterface;
 use App\Repositories\Contracts\OTPRepositoryInterface;
+use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Contracts\PlanRepositoryInterface;
+use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\FeatureRepository;
 use App\Repositories\OTPRepository;
+use App\Repositories\PermissionRepository;
 use App\Repositories\PlanRepository;
+use App\Repositories\RoleRepository;
 use App\Repositories\SubscriptionRepository;
 use App\Repositories\TenantRepository;
 use App\Repositories\UserCompanyRepository;
@@ -52,5 +60,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(SubscriptionRepositoryInterface::class, SubscriptionRepository::class);
         $this->app->singleton(AssetTypeRepositoryInterface::class, AssetTypeRepository::class);
         $this->app->singleton(CompanyOfficeRepositoryInterface::class, CompanyRepository::class);
+        $this->app->singleton(RoleRepositoryInterface::class, RoleRepository::class);
+        $this->app->singleton(FeatureRepositoryInterface::class, FeatureRepository::class);
+        $this->app->singleton(PermissionRepositoryInterface::class, PermissionRepository::class);
+        $this->app->singleton(AssetMakeRepositoryInterface::class, AssetMakeRepository::class);
     }
 }

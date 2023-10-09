@@ -28,6 +28,7 @@ return new class extends Migration {
             $table->foreignUuid(AssetConstant::COMPANY_ID)->references(AssetConstant::ID)->on(Company::getTableName());
             $table->string(AssetConstant::MAKE)->nullable();
             $table->string(AssetConstant::MODEL)->nullable();
+            $table->string(AssetConstant::SERIAL_NUMBER)->nullable();
             $table->foreignUuid(AssetConstant::TYPE_ID)->references(AssetConstant::ID)->on(AssetType::getTableName());
             $table->double(AssetConstant::PURCHASE_PRICE);
             $table->dateTime(AssetConstant::PURCHASE_DATE)->nullable();

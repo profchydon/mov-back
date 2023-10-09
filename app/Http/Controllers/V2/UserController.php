@@ -12,6 +12,7 @@ use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
@@ -47,7 +48,7 @@ class UserController extends Controller
     public function verifyAccount(VerifyOTPRequest $request)
     {
         $isVerified = $this->ssoService->verifyOTP($request->getDTO());
-      
+
         if ($isVerified) {
             return $this->response(Response::HTTP_OK, __('messages.otp-validated'));
         } else {
@@ -66,5 +67,19 @@ class UserController extends Controller
         ];
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $response);
+    }
+
+    public function userDetails(Request $request)
+    {
+        $user = $request->user();
+        $userCompany = $user->userCompanies()->first();
+        $company = $this->companyRepository->first(CompanyConstant::ID, $userCompany->company_id);
+
+        $data = [
+            'user' => $user,
+            'company' => $company
+        ];
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $data);
     }
 }

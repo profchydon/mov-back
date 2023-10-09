@@ -35,7 +35,7 @@ class Office extends Model
 
     protected static array $filterable = [
         'company' => 'offices.company_id',
-        'country' => 'offices.country'
+        'country' => 'offices.country',
     ];
 
     public function areas(): HasMany
