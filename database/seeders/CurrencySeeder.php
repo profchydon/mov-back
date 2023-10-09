@@ -19,8 +19,6 @@ class CurrencySeeder extends Seeder
 
         $currencies = Yaml::parseFile($file);
 
-        Log::info($currencies);
-
         foreach ($currencies as $currency) {
             Currency::updateOrCreate([
                 CurrencyConstant::NAME => $currency['name'],
