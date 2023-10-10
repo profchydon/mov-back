@@ -1,0 +1,9 @@
+name: Custom roles
+description: You can create roles custom to your company's operation and assigned the neccessary permissions
+pricing: FREE
+available_as_addon: false
+prices:
+  - currency_code: NGN
+    price: 0
+  - currency_code: USD
+    price: 0

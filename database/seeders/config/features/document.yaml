@@ -1,9 +1,9 @@
-name: Audit
+name: Document Manager
 description: Let us help you audit your assets
 pricing: PAID
 available_as_addon: true
 prices:
   - currency_code: NGN
-    price: 30000
+    price: 25000
   - currency_code: USD
-    price: 300
+    price: 500
