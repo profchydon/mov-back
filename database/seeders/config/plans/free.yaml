@@ -2,13 +2,9 @@ name: Free
 description: Popular plan for small teams
 offers:
   - Up to 10 assets
-  - Asset Regular
-  - Document Manager
-  - Knowledge Base
   - Only 1 user
-  - Live chat
-  - Purchase Insurance
-  - Audit Log and notes
+  - Asset Register
+  - Manage Insurance
 prices:
   - currency_code: NGN
     billing_cycle: MONTHLY
