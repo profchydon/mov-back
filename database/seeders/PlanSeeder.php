@@ -7,6 +7,7 @@ use App\Domains\Constant\PlanPriceConstant;
 use App\Models\Plan;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Yaml\Yaml;
 
 class PlanSeeder extends Seeder
@@ -21,6 +22,8 @@ class PlanSeeder extends Seeder
 
         foreach ($files as $file) {
             $seedFile = Yaml::parseFile($file->getPathname());
+
+            Log::info($seedFile);
 
             $plan = Plan::updateOrCreate([
                 PlanConstant::NAME => $seedFile['name'],

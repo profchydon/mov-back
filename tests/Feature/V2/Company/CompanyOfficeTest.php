@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 beforeEach(function () {
-    $this->artisan('db:seed --class=CountrySeeder');
-    $this->artisan('db:seed --class=CurrencySeeder');
+    $this->seed();
     $this->useDatabaseTransactions = true;
 });
 
