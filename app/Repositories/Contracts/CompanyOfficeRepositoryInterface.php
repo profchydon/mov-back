@@ -19,6 +19,8 @@ interface CompanyOfficeRepositoryInterface
 
     public function updateCompanyOffice(Office|string $office, CreateCompanyOfficeDTO $officeDTO);
 
+    public function getOfficeAreas(Office|string $office);
+
     public function updateOfficeArea(OfficeArea|string $officeArea, array $attributes);
 
     public function deleteCompanyOffice(Office|string $office);

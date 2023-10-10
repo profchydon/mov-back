@@ -28,6 +28,10 @@ class OfficeArea extends Model
         OfficeConstant::ID,
     ];
 
+    protected $hidden = [
+        OfficeConstant::TENANT_ID,
+    ];
+
     /**
      * The attributes that should be cast.
      *

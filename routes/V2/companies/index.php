@@ -26,6 +26,7 @@ Route::post('confirm-payment', [SubscriptionController::class, 'confirmPayment']
 // Route for office areas
 Route::group(['prefix' => 'offices/{office}'], function () {
     Route::post('areas', [CompanyOfficeController::class, 'storeOfficeArea']);
+    Route::get('areas', [CompanyOfficeController::class, 'getOfficeAreas']);
     Route::put('areas/{officeArea}', [CompanyOfficeController::class, 'updateOfficeArea']);
     Route::delete('areas/{officeArea}', [CompanyOfficeController::class, 'destroyOfficeArea']);
 });
