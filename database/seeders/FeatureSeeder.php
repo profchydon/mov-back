@@ -24,6 +24,7 @@ class FeatureSeeder extends Seeder
             ], [
                 FeatureConstant::NAME => $seedFile['name'],
                 FeatureConstant::DESCRIPTION => $seedFile['description'],
+                FeatureConstant::AVAILABLE_AS_ADDON => $seedFile['available_as_addon'],
                 FeatureConstant::PRICING => $seedFile['pricing'] ?? null,
             ]);
 
