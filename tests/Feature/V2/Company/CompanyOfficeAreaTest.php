@@ -1,0 +1,87 @@
+<?php
+
+namespace Tests\Feature\V2\Company;
+
+use App\Models\Company;
+use App\Models\Office;
+use App\Models\OfficeArea;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Tests\TestCase;
+
+beforeEach(function () {
+    $this->artisan('db:seed --class=CountrySeeder');
+    $this->artisan('db:seed --class=CurrencySeeder');
+    $this->useDatabaseTransactions = true;
+});
+
+it('can create office area with valid data', function () {
+    $company = Company::factory()->create();
+
+    $office = Office::factory([
+        'tenant_id' => $company->tenant_id
+    ])->recycle($company)->create();
+
+
+
+    $officeCount = OfficeArea::count();
+    $this->assertDatabaseCount('office_areas', $officeCount);
+    $payload = [
+        'name' => "Jenkins",
+    ];
+
+    $response = $this->postJson(TestCase::fullLink("/offices/{$office->id}/areas"), $payload);
+    $response->assertCreated();
+
+    $this->assertDatabaseCount('office_areas', $officeCount + 1);
+    $this->assertDatabaseHas('office_areas', $payload);
+});
+
+
+
+it('can edit office with valid data', function () {
+    $company = Company::factory()->create();
+
+    $office = Office::factory([
+        'tenant_id' => $company->tenant_id
+    ])->recycle($company)->create();
+
+    $area = $office->areas()->create([
+        'name' => "Top Floor Corner",
+        'tenant_id' => $company->tenant_id,
+        'company_id' => $company->id
+    ]);
+
+    $payload = [
+        'name' => "Floor Corner",
+    ];
+
+    $response = $this->putJson(TestCase::fullLink("/offices/{$office->id}/areas/{$area->id}"), $payload);
+    $response->assertOk();
+
+    $areaAfterUpdate = $area->fresh();
+
+    $this->assertEquals($area->id, $areaAfterUpdate->id);
+    $this->assertNotEquals($area->name, $areaAfterUpdate->name);
+});
+
+it('deletes office', function(){
+    $company = Company::factory()->create();
+
+    $office = Office::factory([
+        'tenant_id' => $company->tenant_id
+    ])->recycle($company)->create();
+
+    $officeCount = Office::count();
+    $this->assertDatabaseCount('offices', $officeCount);
+
+    $area = $office->areas()->create([
+        'name' => "Top Floor Corner",
+        'tenant_id' => $company->tenant_id,
+        'company_id' => $company->id
+    ]);
+
+    $response = $this->deleteJson(TestCase::fullLink("/offices/{$office->id}/areas/{$area->id}"));
+    $response->assertNoContent();
+    $this->assertLessThan($officeCount, OfficeArea::count());
+});

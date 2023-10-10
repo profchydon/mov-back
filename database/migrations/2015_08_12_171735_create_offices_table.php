@@ -25,8 +25,8 @@ return new class extends Migration {
             $table->string(OfficeConstant::CURRENCY_CODE)->references(CommonConstant::CODE)->on(Currency::getTableName());
             $table->string(OfficeConstant::COUNTRY);
             $table->string(OfficeConstant::STATE)->nullable();
-            $table->float(OfficeConstant::LATITUDE)->nullable();
-            $table->float(OfficeConstant::LONGITUDE)->nullable();
+            $table->decimal(OfficeConstant::LATITUDE, 6)->nullable();
+            $table->decimal(OfficeConstant::LONGITUDE, 6)->nullable();
             $table->enum(OfficeConstant::STATUS, OfficeStatusEnum::values())->default(OfficeStatusEnum::ACTIVE->value);
             $table->timestamps();
             $table->softDeletes();

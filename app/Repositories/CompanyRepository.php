@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Domains\Constant\OfficeConstant;
 use App\Domains\DTO\CreateCompanyOfficeDTO;
 use App\Models\Company;
 use App\Models\Office;
@@ -76,6 +77,13 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         $office->update($officeDTO->toSynthensizedArray());
 
         return $office->fresh();
+    }
+
+    public function getOfficeAreas(Office|string $office)
+    {
+        $officeAreas = OfficeArea::where(OfficeConstant::OFFICE_ID, $office->id)->get();
+
+        return $officeAreas;
     }
 
     public function updateOfficeArea(OfficeArea|string $officeArea, array $attributes)

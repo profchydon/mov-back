@@ -20,7 +20,7 @@ class UpdateCompanyOfficeRequest extends FormRequest
 
         return [
             'name' => ['sometimes', new HumanNameRule(), Rule::unique('offices', 'name')->where('company_id', $company->id)->ignore($office->id)],
-            'street_address' => 'required|string|min:5',
+            'street_address' => 'sometimes|nullable|string|min:5',
             'country' => ['sometimes', Rule::exists('countries', 'name')],
             'currency_code' => ['sometimes', Rule::exists('currencies', 'code')],
             'state' => ['sometimes', new StateExistsInCountry($country)],
