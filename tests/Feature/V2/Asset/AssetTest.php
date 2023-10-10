@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Asset;
+use Tests\TestCase;
 use App\Models\Office;
 use App\Models\Company;
 use App\Models\Currency;
@@ -14,6 +15,10 @@ use App\Domains\Enum\Asset\AssetStatusEnum;
 
 beforeEach(function () {
 
+    $this->artisan('db:seed --class=CountrySeeder');
+    $this->artisan('db:seed --class=CurrencySeeder');
+    $this->currency = Currency::inRandomOrder()->first();
+
     $this->baseUrl = config('app.url');
     $this->make = ['Apple', 'Samsung'];
     $this->model = ['Iphone', 'Galaxy'];
@@ -24,8 +29,6 @@ beforeEach(function () {
         OfficeConstant::TENANT_ID => $this->company->tenant_id,
         OfficeConstant::COMPANY_ID => $this->company->id,
     ]);
-
-    $this->currency = Currency::factory()->create()->inRandomOrder()->first();
 
     $this->payload = [
         AssetConstant::TENANT_ID => $this->company->tenant_id,
@@ -44,25 +47,30 @@ beforeEach(function () {
 
 test('create single asset', function () {
 
-    $response = $this->post("http://localhost:80/api/v2/companies/{$this->company->id}/assets", $this->payload);
-    $response->assertStatus(Response::HTTP_CREATED);
+    // $response = $this->post("http://localhost:80/api/v2/companies/{$this->company->id}/assets", $this->payload);
+
+    $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/assets"), $this->payload);
+    $response->assertCreated();
     $this->assertDatabaseHas('assets', $this->payload);
     $this->assertDatabaseCount('assets', 1);
     expect($response->getData()->success)->toBeTrue();
     expect($response->getData()->message)->toBe('Record created successfully');
-    return $response->getData();
 
 });
 
 test('error when wrong company id is provided', function () {
-    $response = $this->post("http://localhost:80/api/v2/companies/wrong-company-id/assets", $this->payload);
+    // $response = $this->post("http://localhost:80/api/v2/companies/wrong-company-id/assets", $this->payload);
+
+    $response = $this->postJson(TestCase::fullLink("/companies/wrong-company-id/assets"), $this->payload);
     $response->assertStatus(Response::HTTP_NOT_FOUND);
     $this->assertDatabaseMissing('assets', $this->payload);
     $this->assertDatabaseCount('assets', 0);
 });
 
 test('error when payload is empty', function () {
-    $response = $this->post("http://localhost:80/api/v2/companies/{$this->company->id}/assets", []);
+    // $response = $this->post("http://localhost:80/api/v2/companies/{$this->company->id}/assets", []);
+
+    $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/assets"), []);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     expect($response->getData()->success)->toBeFalse();
     expect($response->getData()->message)->toBe('Validation error');
@@ -71,7 +79,9 @@ test('error when payload is empty', function () {
 
 
 test('get assets', function () {
-    $response = $this->get("http://localhost:80/api/v2/companies/{$this->company->id}/assets");
+    // $response = $this->get("http://localhost:80/api/v2/companies/{$this->company->id}/assets");
+
+    $response = $this->get(TestCase::fullLink("/companies/{$this->company->id}/assets"));
     $response->assertStatus(Response::HTTP_OK);
     expect($response->getData()->success)->toBeTrue();
     expect($response->getData()->message)->toBe('Records fetched successfully');
