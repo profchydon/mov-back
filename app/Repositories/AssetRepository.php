@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Domains\Constant\AssetConstant;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Imports\AssetImport;
 use App\Models\Asset;
 use App\Models\Company;
@@ -32,5 +34,10 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
 //        Excel::import($import, $file);
         return Excel::queueImport($import, $file);
+    }
+
+    public function markAsStolen(string $assetId)
+    {
+        return $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::STOLEN->value]);
     }
 }

@@ -12,4 +12,6 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
     public function getArchived();
 
     public function importCompanyAssets(Company $company, UploadedFile $file);
+
+    public function markAsStolen(string $assetId);
 }

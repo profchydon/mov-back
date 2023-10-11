@@ -17,7 +17,7 @@ use App\Models\Asset;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
-
+use Illuminate\Http\Request;
 
 class AssetController extends Controller
 {
@@ -84,5 +84,30 @@ class AssetController extends Controller
     public function getAsset(Company $company, Asset $asset)
     {
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $asset);
+    }
+
+    public function deleteAsset(Company $company, Asset $asset)
+    {
+        $asset->delete();
+
+        return $this->response(Response::HTTP_OK, __('messages.asset-deleted'));
+    }
+
+    public function updateAsset(Request $request, Company $company, Asset $asset)
+    {
+        switch ($request->query('type')) {
+            case 'stolen':
+                return $this->markAssetAsStolen($asset);
+            
+            default:
+                return $this->error(Response::HTTP_BAD_REQUEST, __('messages.action-not-allowed'));
+        };
+    }
+
+    private function markAssetAsStolen(Asset $asset)
+    {
+        $stolenAsset = $this->assetRepository->markAsStolen($asset->id);
+
+        return $this->response(Response::HTTP_OK, __('messages.asset-marked-as-stolen'), $stolenAsset);
     }
 }
