@@ -16,7 +16,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
     });
 
 
-    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan']);
+    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');
     Route::resource('{company}/offices', CompanyOfficeController::class);
 });
 
