@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(OTP::class);
     }
+
+    public function logoutFromSSO()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
 }

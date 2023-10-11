@@ -18,8 +18,6 @@ beforeEach(function () {
     $this->artisan('db:seed --class=CountrySeeder');
     $this->artisan('db:seed --class=CurrencySeeder');
     $this->currency = Currency::inRandomOrder()->first();
-
-    $this->baseUrl = config('app.url');
     $this->make = ['Apple', 'Samsung'];
     $this->model = ['Iphone', 'Galaxy'];
     $this->assetRepository = new AssetRepository();

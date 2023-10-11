@@ -1,6 +1,6 @@
-name: Maintenance
-description: We will help you keep your asset in tip tip shape
-pricing: PAID
+name: Vendor
+description: Manage all your company's vendor in one place
+pricing: FREE
 available_as_addon: true
 prices:
   - currency_code: NGN

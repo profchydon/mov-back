@@ -16,6 +16,7 @@ return new class extends Migration {
         Schema::create('features', function (Blueprint $table) {
             $table->uuid(FeatureConstant::ID)->unique()->primary();
             $table->string(FeatureConstant::NAME)->unique();
+            $table->boolean(FeatureConstant::AVAILABLE_AS_ADDON)->default(false);
             $table->enum(FeatureConstant::PRICING, FeaturePriceEnum::values())->default(FeaturePriceEnum::PAID->value);
             $table->enum(FeatureConstant::STATUS, FeatureStatusEnum::values())->default(FeatureStatusEnum::ACTIVE->value);
             $table->timestamps();
