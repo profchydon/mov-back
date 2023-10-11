@@ -37,7 +37,7 @@ class RoleController extends Controller
 
         $dto->setCompanyId($company->id);
 
-        if($this->roleRepository->isRoleExists($dto->getName(), $dto->getCompanyId())){
+        if ($this->roleRepository->isRoleExists($dto->getName(), $dto->getCompanyId())) {
             return $this->error(Response::HTTP_BAD_REQUEST, __('messages.role-exists'));
         }
 

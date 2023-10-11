@@ -77,7 +77,7 @@ class UserController extends Controller
 
         $data = [
             'user' => $user,
-            'company' => $company
+            'company' => $company,
         ];
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $data);

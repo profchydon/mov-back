@@ -5,7 +5,6 @@ namespace App\Rules;
 use App\Models\Country;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Support\Facades\Log;
 
 class StateExistsInCountry implements ValidationRule
 {
@@ -15,7 +14,7 @@ class StateExistsInCountry implements ValidationRule
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if(empty($this->countryName)){
+        if (empty($this->countryName)) {
             return;
         }
 
@@ -23,6 +22,7 @@ class StateExistsInCountry implements ValidationRule
 
         if (empty($country)) {
             $fail('The :attribute not match a valid country name');
+
             return;
         }
 

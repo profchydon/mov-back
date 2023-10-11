@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Domains\Constant\OfficeConstant;
 use App\Models\Company;
-use App\Models\Office;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OfficeFactory extends Factory

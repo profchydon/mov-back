@@ -25,7 +25,7 @@ class CreateUserRoleRequest extends FormRequest
         return [
             'name' => 'required|string',
             'permissions' => 'required|array',
-            'permissions.*' => 'integer'
+            'permissions.*' => 'integer',
         ];
     }
 
@@ -35,7 +35,7 @@ class CreateUserRoleRequest extends FormRequest
 
         $dto->setName($this->input('name'))
             ->setPermissions($this->input('permissions'));
-        
+
         return $dto;
     }
 }

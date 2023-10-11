@@ -60,7 +60,6 @@ class AuthController extends Controller
         $response = $this->issueCoreAuthToken($sub);
 
         return $this->response(Response::HTTP_OK, __('messages.authenticated'), $response);
-
     }
 
     public function issueCoreAuthToken(string $sub)
