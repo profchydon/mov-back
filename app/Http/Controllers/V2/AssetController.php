@@ -13,6 +13,7 @@ use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\AssetMakeConstant;
 use App\Http\Requests\Asset\CreateAssetRequest;
+use App\Models\Asset;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
@@ -78,5 +79,10 @@ class AssetController extends Controller
         $assetMakes = $this->assetMakeRepository->get(AssetMakeConstant::COMPANY_ID, $company->id);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assetMakes);
+    }
+
+    public function getAsset(Company $company, Asset $asset)
+    {
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $asset);
     }
 }
