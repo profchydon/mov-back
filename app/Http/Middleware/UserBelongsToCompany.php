@@ -21,7 +21,7 @@ class UserBelongsToCompany
             throw new AuthenticationException();
         }
 
-        $company_id = $request->header('company_id');
+        $company_id = $request->header('x-company-id');
 
         if(empty($company_id)){
             throw new InvalidCompanyIDException(__('messages.headers.company_id.missing'));
