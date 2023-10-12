@@ -2,10 +2,10 @@
 
 dataset('make', [
     'Apple',
-    'Tecno'
+    'Tecno',
 ]);
 
 dataset('model', [
     'IPhone 12',
-    'Phantom'
+    'Phantom',
 ]);

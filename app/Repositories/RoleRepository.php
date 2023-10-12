@@ -5,8 +5,8 @@ namespace App\Repositories;
 use App\Domains\Constant\CommonConstant;
 use App\Domains\DTO\CreateUserRoleDTO;
 use App\Repositories\Contracts\RoleRepositoryInterface;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleRepository extends BaseRepository implements RoleRepositoryInterface
 {
@@ -36,7 +36,7 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
     {
         return $role = Role::where('name', $name)->where(CommonConstant::COMPANY_ID, $companyId)->first();
 
-        if($role != null){
+        if ($role != null) {
             return true;
         }
 

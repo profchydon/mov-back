@@ -9,4 +9,3 @@ Route::resource('features', \App\Http\Controllers\V2\FeatureController::class);
 //     Route::post('/', 'register')->name('create.user');
 //     Route::get('/{user}', 'find')->name('find.user');
 // });
-

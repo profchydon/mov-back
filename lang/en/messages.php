@@ -29,4 +29,12 @@ return [
     'error-verify-account' => 'Make sure you verify your account',
     'role.created' => 'You have successfully created a role',
     'role-exists' => 'The role already exist',
+    "headers" => [
+        'company_id' => [
+            'invalid' => "Invalid Company ID provided in request header",
+            "missing" => "Company ID missing in request header, provide company_id in your header"
+        ]
+        ],
+    'company-sole-admin' => 'You have been set as the company\'s sole admin',
+    'onboarding-already-completed' => 'You have already completed the onboarding on Rayda Core',
 ];

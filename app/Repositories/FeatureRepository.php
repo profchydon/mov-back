@@ -17,6 +17,4 @@ class FeatureRepository implements FeatureRepositoryInterface
     {
         return Feature::where(FeatureConstant::AVAILABLE_AS_ADDON, true)->with('prices')->simplePaginate();
     }
-
-
 }
