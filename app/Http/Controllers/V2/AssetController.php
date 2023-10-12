@@ -17,9 +17,11 @@ use App\Models\Asset;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
+use App\Repositories\Contracts\FileRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class AssetController extends Controller
 {
@@ -32,7 +34,8 @@ class AssetController extends Controller
     public function __construct(
         private readonly AssetRepositoryInterface $assetRepository,
         private readonly CompanyRepositoryInterface $companyRepository,
-        private readonly AssetMakeRepositoryInterface $assetMakeRepository
+        private readonly AssetMakeRepositoryInterface $assetMakeRepository,
+        private readonly FileRepositoryInterface $fileRepository
     ) {
     }
 
@@ -83,8 +86,10 @@ class AssetController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assetMakes);
     }
 
-    public function getAsset(Company $company, Asset $asset)
+    public function getAsset(Company $company, string $assetId)
     {
+        $asset = $this->assetRepository->firstWithRelation('id', $assetId, ['image']);
+
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $asset);
     }
 
@@ -108,7 +113,7 @@ class AssetController extends Controller
                     return $this->error(Response::HTTP_BAD_REQUEST, __('messages.provide-asset-image'));
                 }
 
-
+                return $this->uploadAssetImage($request->image, $asset);
             default:
                 return $this->error(Response::HTTP_BAD_REQUEST, __('messages.action-not-allowed'));
         };
@@ -133,5 +138,17 @@ class AssetController extends Controller
         $extension = $image->getClientOriginalExtension();
 
         $fileName = sprintf('%s-%s.%s', time(), Str::uuid(), $extension);
+
+        if ($asset->image != null) {
+            Storage::disk('s3')->delete($asset->image->path);
+            $this->fileRepository->deleteById($asset->image->id);
+        }
+
+        $path = $image->storeAs('asset-images', $fileName, 's3');
+        $path = Storage::disk('s3')->url($path);
+
+        $asset->image()->create(['path' => $path]);
+        
+        return $this->response(Response::HTTP_OK, __('messages.asset-image-updated'));
     }
 }

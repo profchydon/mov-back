@@ -65,4 +65,9 @@ class Asset extends Model
     {
         return $this->belongsTo(AssetType::class, AssetConstant::TYPE_ID);
     }
+
+    public function image()
+    {
+        return $this->morphOne(File::class, 'fileable');
+    }
 }
