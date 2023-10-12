@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Domains\Constant\AssetCheckoutConstant;
 use App\Domains\Constant\AssetConstant;
-use App\Domains\Constant\AssetTypeConstant;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Events\AssetStatusUpdatedEvent;
 use App\Traits\GetsTableName;
+use App\Traits\UsesUUID;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,17 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Asset extends Model
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
+    use UsesUUID, HasFactory, SoftDeletes, GetsTableName;
 
-    public $incrementing = false;
-
-    protected $keyType = 'string';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $guarded = [
         AssetConstant::ID,
     ];
@@ -32,11 +26,6 @@ class Asset extends Model
         AssetConstant::TENANT_ID,
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         AssetConstant::ID => 'string',
     ];
@@ -56,6 +45,21 @@ class Asset extends Model
         });
     }
 
+    public function scopeAvailable(Builder $query): Builder
+    {
+        return $query->where(AssetConstant::STATUS, AssetStatusEnum::AVAILABLE);
+    }
+
+    public function scopeAchieved(Builder $query): Builder
+    {
+        return $query->where(AssetConstant::STATUS, AssetStatusEnum::ARCHIVED);
+    }
+
+    public function scopeCheckedOut(Builder $query): Builder
+    {
+        return $query->where(AssetConstant::STATUS, AssetStatusEnum::CHECKED_OUT);
+    }
+
     public function office()
     {
         return $this->belongsTo(Office::class, AssetConstant::OFFICE_ID);
@@ -69,5 +73,12 @@ class Asset extends Model
     public function image()
     {
         return $this->morphOne(File::class, 'fileable');
+
+    }
+  
+    public function checkouts()
+    {
+        return $this->hasMany(AssetCheckout::class, AssetCheckoutConstant::ASSET_ID);
+
     }
 }

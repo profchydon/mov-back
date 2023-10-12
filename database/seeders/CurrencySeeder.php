@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Domains\Constant\CurrencyConstant;
 use App\Models\Currency;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\Yaml\Yaml;
 
 class CurrencySeeder extends Seeder

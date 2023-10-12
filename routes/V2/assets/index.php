@@ -30,3 +30,5 @@ Route::controller(AssetTypeController::class)->prefix('assets/type')->group(func
 // Asset Maintenance
 Route::controller(AssetMaintenanceController::class)->prefix('assets/maintenance')->group(function () {
 });
+
+Route::post('assets/checkouts', [\App\Http\Controllers\V2\AssetCheckoutController::class, 'store']);

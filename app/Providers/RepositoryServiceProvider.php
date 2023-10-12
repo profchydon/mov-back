@@ -6,6 +6,7 @@ use App\Repositories\AssetMakeRepository;
 use App\Repositories\AssetRepository;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\CompanyRepository;
+use App\Repositories\Contracts\AssetCheckoutRepositoryInterface;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\AssetTypeRepositoryInterface;
@@ -67,5 +68,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(PermissionRepositoryInterface::class, PermissionRepository::class);
         $this->app->singleton(AssetMakeRepositoryInterface::class, AssetMakeRepository::class);
         $this->app->singleton(FileRepositoryInterface::class, FileRepository::class);
+        $this->app->singleton(AssetCheckoutRepositoryInterface::class, AssetRepository::class);
     }
 }

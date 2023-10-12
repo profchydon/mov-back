@@ -1,20 +1,18 @@
 <?php
 
-use App\Models\Asset;
-use Tests\TestCase;
-use App\Models\Office;
-use App\Models\Company;
-use App\Models\Currency;
-use App\Models\AssetType;
-use Illuminate\Support\Str;
-use Illuminate\Http\Response;
-use App\Repositories\AssetRepository;
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\OfficeConstant;
 use App\Domains\Enum\Asset\AssetStatusEnum;
+use App\Models\AssetType;
+use App\Models\Company;
+use App\Models\Currency;
+use App\Models\Office;
+use App\Repositories\AssetRepository;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
+use Tests\TestCase;
 
 beforeEach(function () {
-
     $this->artisan('db:seed --class=CountrySeeder');
     $this->artisan('db:seed --class=CurrencySeeder');
     $this->currency = Currency::inRandomOrder()->first();
@@ -36,15 +34,14 @@ beforeEach(function () {
         AssetConstant::MODEL => $this->model[array_rand($this->model)],
         AssetConstant::SERIAL_NUMBER => Str::random(10),
         AssetConstant::OFFICE_ID => $this->office->id,
-        AssetConstant::PURCHASE_PRICE => "300000.00",
+        AssetConstant::PURCHASE_PRICE => '300000.00',
         AssetConstant::CURRENCY => $this->currency->code,
         AssetConstant::ADDED_AT => now(),
-        AssetConstant::STATUS => AssetStatusEnum::AVAILABLE->value
+        AssetConstant::STATUS => AssetStatusEnum::AVAILABLE->value,
     ];
 });
 
 test('create single asset', function () {
-
     // $response = $this->post("http://localhost:80/api/v2/companies/{$this->company->id}/assets", $this->payload);
 
     $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/assets"), $this->payload);
@@ -53,13 +50,12 @@ test('create single asset', function () {
     $this->assertDatabaseCount('assets', 1);
     expect($response->getData()->success)->toBeTrue();
     expect($response->getData()->message)->toBe('Record created successfully');
-
 });
 
 test('error when wrong company id is provided', function () {
     // $response = $this->post("http://localhost:80/api/v2/companies/wrong-company-id/assets", $this->payload);
 
-    $response = $this->postJson(TestCase::fullLink("/companies/wrong-company-id/assets"), $this->payload);
+    $response = $this->postJson(TestCase::fullLink('/companies/wrong-company-id/assets'), $this->payload);
     $response->assertStatus(Response::HTTP_NOT_FOUND);
     $this->assertDatabaseMissing('assets', $this->payload);
     $this->assertDatabaseCount('assets', 0);

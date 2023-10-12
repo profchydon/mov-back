@@ -15,6 +15,7 @@ class CreateUserRoleDTO
     public function setName(string $name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -26,6 +27,7 @@ class CreateUserRoleDTO
     public function setPermissions(array $permissions)
     {
         $this->permissions = $permissions;
+
         return $this;
     }
 
@@ -37,6 +39,7 @@ class CreateUserRoleDTO
     public function setCompanyId(string $company_id)
     {
         $this->company_id = $company_id;
+
         return $this;
     }
 

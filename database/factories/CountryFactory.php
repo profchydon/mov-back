@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Company;
-use App\Models\Country;
 use App\Domains\Constant\CommonConstant;
+use App\Models\Country;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -12,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CountryFactory extends Factory
 {
-
     /**
      * The name of the factory's corresponding model.
      *
@@ -27,9 +25,8 @@ class CountryFactory extends Factory
      */
     public function definition()
     {
-
         $states = [
-            "Lagos"
+            'Lagos',
         ];
 
         return [

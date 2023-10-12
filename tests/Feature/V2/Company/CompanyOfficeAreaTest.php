@@ -5,8 +5,6 @@ namespace Tests\Feature\V2\Company;
 use App\Models\Company;
 use App\Models\Office;
 use App\Models\OfficeArea;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -18,7 +16,7 @@ it('can create office area with valid data', function () {
     $company = Company::factory()->create();
 
     $office = Office::factory([
-        'tenant_id' => $company->tenant_id
+        'tenant_id' => $company->tenant_id,
     ])->recycle($company)->create();
 
 
@@ -26,7 +24,7 @@ it('can create office area with valid data', function () {
     $officeCount = OfficeArea::count();
     $this->assertDatabaseCount('office_areas', $officeCount);
     $payload = [
-        'name' => "Jenkins",
+        'name' => 'Jenkins',
     ];
 
     $response = $this->postJson(TestCase::fullLink("/offices/{$office->id}/areas"), $payload);
@@ -42,17 +40,17 @@ it('can edit office with valid data', function () {
     $company = Company::factory()->create();
 
     $office = Office::factory([
-        'tenant_id' => $company->tenant_id
+        'tenant_id' => $company->tenant_id,
     ])->recycle($company)->create();
 
     $area = $office->areas()->create([
-        'name' => "Top Floor Corner",
+        'name' => 'Top Floor Corner',
         'tenant_id' => $company->tenant_id,
-        'company_id' => $company->id
+        'company_id' => $company->id,
     ]);
 
     $payload = [
-        'name' => "Floor Corner",
+        'name' => 'Floor Corner',
     ];
 
     $response = $this->putJson(TestCase::fullLink("/offices/{$office->id}/areas/{$area->id}"), $payload);
@@ -64,20 +62,20 @@ it('can edit office with valid data', function () {
     $this->assertNotEquals($area->name, $areaAfterUpdate->name);
 });
 
-it('deletes office', function(){
+it('deletes office', function () {
     $company = Company::factory()->create();
 
     $office = Office::factory([
-        'tenant_id' => $company->tenant_id
+        'tenant_id' => $company->tenant_id,
     ])->recycle($company)->create();
 
     $officeCount = Office::count();
     $this->assertDatabaseCount('offices', $officeCount);
 
     $area = $office->areas()->create([
-        'name' => "Top Floor Corner",
+        'name' => 'Top Floor Corner',
         'tenant_id' => $company->tenant_id,
-        'company_id' => $company->id
+        'company_id' => $company->id,
     ]);
 
     $response = $this->deleteJson(TestCase::fullLink("/offices/{$office->id}/areas/{$area->id}"));

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V2;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Contracts\FeatureRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class FeatureController extends Controller
@@ -12,9 +13,13 @@ class FeatureController extends Controller
     {
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $features = $this->featureRepository->getFeatures();
+        if ($request->query('addon')) {
+            $features = $this->featureRepository->getAddOnFeatures();
+        } else {
+            $features = $this->featureRepository->getFeatures();
+        }
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $features);
     }

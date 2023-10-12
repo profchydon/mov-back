@@ -87,11 +87,8 @@ class CompanyOfficeController extends Controller
 
     public function getOfficeAreas(Office $office, Request $request)
     {
-
         $officeAreas = $this->companyOfficeRepository->getOfficeAreas($office);
+
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), $officeAreas);
-
     }
-
-
 }
