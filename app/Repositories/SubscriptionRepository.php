@@ -43,28 +43,32 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             ->first('amount')
             ?->amount;
 
-        $addOnAmount = FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
-            ->where('currency_code', $subDTO->getCurrency())
-            ->sum('price');
+        if($planAmount > 0){
+            $addOnAmount = FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
+                ->where('currency_code', $subDTO->getCurrency())
+                ->sum('price');
 
-        $paymentLink = new CreatePaymentLinkDTO();
-        $paymentLink->setCurrency($subDTO->getCurrency())
-            ->setAmount($planAmount + $addOnAmount)
-            ->setRedirectUrl(config('app.frontend_url') . '/path/to/redirect')
-            ->setCustomer(Company::find($subDTO->getCompanyId()))
-            ->setMeta([
-                'subscription_id' => $subscription->id,
-                'billing_cycle' => $subDTO->getBillingCycle(),
+            $paymentLink = new CreatePaymentLinkDTO();
+            $paymentLink->setCurrency($subDTO->getCurrency())
+                ->setAmount($planAmount + $addOnAmount)
+                ->setRedirectUrl(config('app.frontend_url') . '/path/to/redirect')
+                ->setCustomer(Company::find($subDTO->getCompanyId()))
+                ->setMeta([
+                    'subscription_id' => $subscription->id,
+                    'billing_cycle' => $subDTO->getBillingCycle(),
+                ]);
+
+            $paymentLink = PaystackService::getStandardPaymentLink($paymentLink);
+
+            $subscription->payment()->create([
+                'company_id' => $subDTO->getCompanyId(),
+                'tenant_id' => $subDTO->getTenantId(),
+                'payment_link' => $paymentLink->authorization_url,
+                'tx_ref' => $paymentLink->reference,
             ]);
-
-        $paymentLink = PaystackService::getStandardPaymentLink($paymentLink);
-
-        $subscription->payment()->create([
-            'company_id' => $subDTO->getCompanyId(),
-            'tenant_id' => $subDTO->getTenantId(),
-            'payment_link' => $paymentLink->authorization_url,
-            'tx_ref' => $paymentLink->reference,
-        ]);
+        }else {
+            $subscription->activate();
+        }
 
         DB::commit();
 
