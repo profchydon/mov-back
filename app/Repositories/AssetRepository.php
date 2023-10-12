@@ -36,8 +36,18 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return Excel::queueImport($import, $file);
     }
 
-    public function markAsStolen(string $assetId)
+    public function markAsStolen(string $assetId): Asset
     {
-        return $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::STOLEN->value]);
+        $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::STOLEN->value]);
+
+        return $this->first('id', $assetId);
     }
+
+    public function markAsArchived(string $assetId): Asset
+    {
+        $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::ARCHIVED->value]);
+
+        return $this->first('id', $assetId);
+    }
+
 }

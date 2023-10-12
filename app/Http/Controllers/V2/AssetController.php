@@ -18,6 +18,8 @@ use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 class AssetController extends Controller
 {
@@ -98,7 +100,15 @@ class AssetController extends Controller
         switch ($request->query('type')) {
             case 'stolen':
                 return $this->markAssetAsStolen($asset);
-            
+            case 'archive':
+                return $this->markAssetAsArchived($asset);
+            case 'image':
+                $image = $request->file('image');
+                if(!$image){
+                    return $this->error(Response::HTTP_BAD_REQUEST, __('messages.provide-asset-image'));
+                }
+
+
             default:
                 return $this->error(Response::HTTP_BAD_REQUEST, __('messages.action-not-allowed'));
         };
@@ -109,5 +119,19 @@ class AssetController extends Controller
         $stolenAsset = $this->assetRepository->markAsStolen($asset->id);
 
         return $this->response(Response::HTTP_OK, __('messages.asset-marked-as-stolen'), $stolenAsset);
+    }
+
+    private function markAssetAsArchived(Asset $asset)
+    {
+        $archivedAsset = $this->assetRepository->markAsArchived($asset->id);
+
+        return $this->response(Response::HTTP_OK, __('messages.asset-archived'), $archivedAsset);
+    }
+
+    private function uploadAssetImage(UploadedFile $image, Asset $asset)
+    {
+        $extension = $image->getClientOriginalExtension();
+
+        $fileName = sprintf('%s-%s.%s', time(), Str::uuid(), $extension);
     }
 }

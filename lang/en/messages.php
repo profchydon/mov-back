@@ -31,4 +31,6 @@ return [
     'role-exists' => 'The role already exist',
     'asset-deleted' => 'The asset has been deleted',
     'asset-marked-as-stolen' => 'You have successfully marked the asset as stolen',
+    'asset-archived' => 'You have successfully archived the asset',
+    'provide-asset-image' => 'Provide an asset image',
 ];
