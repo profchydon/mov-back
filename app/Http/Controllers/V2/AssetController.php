@@ -12,16 +12,19 @@ use App\Http\Controllers\Controller;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\AssetMakeConstant;
+use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Http\Requests\Asset\CreateAssetRequest;
 use App\Models\Asset;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\FileRepositoryInterface;
+use App\Rules\HumanNameRule;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class AssetController extends Controller
 {
@@ -114,6 +117,9 @@ class AssetController extends Controller
                 }
 
                 return $this->uploadAssetImage($request->image, $asset);
+            case 'details':
+                return $this->updateAssetDetails($request, $asset);
+
             default:
                 return $this->error(Response::HTTP_BAD_REQUEST, __('messages.action-not-allowed'));
         };
@@ -148,7 +154,35 @@ class AssetController extends Controller
         $path = Storage::disk('s3')->url($path);
 
         $asset->image()->create(['path' => $path]);
-        
+
         return $this->response(Response::HTTP_OK, __('messages.asset-image-updated'));
+    }
+
+    private function updateAssetDetails(Request $request, Asset $asset)
+    {
+        $request->validate([
+            'make' => ['nullable', new HumanNameRule()],
+            'model' => ['nullable', new HumanNameRule()],
+            'type_id' => ['required', Rule::exists('asset_types', 'id')],
+            'serial_number' => 'required|string',
+            'purchase_price' => ['required', 'decimal:2,4'],
+            'purchase_date' => 'nullable|date',
+            'office_id' => ['required', Rule::exists('offices', 'id')],
+            'currency' => ['required', Rule::exists('currencies', 'code')],
+        ]);
+
+        $dto = new CreateAssetDTO();
+        $dto->setMake($request->input('make'))
+            ->setModel($request->input('model'))
+            ->setTypeId($request->input('type_id'))
+            ->setSerialNumber($request->input('serial_number'))
+            ->setPurchasePrice($request->input('purchase_price'))
+            ->setPurchaseDate($request->input('purchase_date'))
+            ->setOfficeId($request->input('office_id'))
+            ->setCurrency($request->input('currency'));
+
+        $this->assetRepository->updateById($asset->id, $dto->toSynthensizedArray());
+
+        return $this->response(Response::HTTP_OK, __('messages.asset-updated'));
     }
 }

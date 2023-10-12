@@ -34,4 +34,5 @@ return [
     'asset-archived' => 'You have successfully archived the asset',
     'provide-asset-image' => 'Provide an asset image',
     'asset-image-updated' => 'You have successfully updated the asset image',
+    'asset-updated' => 'Asset has been updated',
 ];
