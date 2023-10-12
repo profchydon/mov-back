@@ -29,6 +29,12 @@ return [
     'error-verify-account' => 'Make sure you verify your account',
     'role.created' => 'You have successfully created a role',
     'role-exists' => 'The role already exist',
+    'asset-deleted' => 'The asset has been deleted',
+    'asset-marked-as-stolen' => 'You have successfully marked the asset as stolen',
+    'asset-archived' => 'You have successfully archived the asset',
+    'provide-asset-image' => 'Provide an asset image',
+    'asset-image-updated' => 'You have successfully updated the asset image',
+    'asset-updated' => 'Asset has been updated',
     "headers" => [
         'company_id' => [
             'invalid' => "Invalid Company ID provided in request header",

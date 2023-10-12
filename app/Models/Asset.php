@@ -70,8 +70,15 @@ class Asset extends Model
         return $this->belongsTo(AssetType::class, AssetConstant::TYPE_ID);
     }
 
+    public function image()
+    {
+        return $this->morphOne(File::class, 'fileable');
+
+    }
+  
     public function checkouts()
     {
         return $this->hasMany(AssetCheckout::class, AssetCheckoutConstant::ASSET_ID);
+
     }
 }
