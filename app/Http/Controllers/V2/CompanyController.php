@@ -150,4 +150,23 @@ class CompanyController extends Controller
 
         return $this->response(Response::HTTP_OK, __('messages.company-updated'));
     }
+
+    public function soleAdminUser(Company $company)
+    {
+        $user = $company->users[0];
+
+        if ($user->stage == UserStageEnum::COMPLETED->value) {
+            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.onboarding-already-completed'));
+        }
+
+        if ($user->stage != UserStageEnum::USERS->value) {
+            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-user-stage'));
+        }
+
+        $this->userRepository->updateById($user->id, [
+            'stage' => UserStageEnum::COMPLETED->value,
+        ]);
+
+        return $this->response(Response::HTTP_CREATED, __('messages.company-sole-admin'));
+    }
 }

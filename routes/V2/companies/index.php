@@ -13,10 +13,11 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::put('/', 'addCompanyDetails')->name('companies.update');
 
         Route::post('/invitees', 'inviteCompanyUsers')->name('companies.invite.users');
+        Route::post('/sole-admin', 'soleAdminUser')->name('companies.sole.admin');
     });
 
 
-    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan']);
+    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');
     Route::resource('{company}/offices', CompanyOfficeController::class);
 });
 
