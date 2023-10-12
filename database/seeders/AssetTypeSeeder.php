@@ -14,13 +14,12 @@ class AssetTypeSeeder extends Seeder
      */
     public function run(): void
     {
-
         $types = [
             'Mobile Phone',
             'Laptop',
             'Desktop',
             'Vehicle',
-            'Furniture'
+            'Furniture',
         ];
 
         foreach ($types as $type) {
@@ -29,6 +28,5 @@ class AssetTypeSeeder extends Seeder
                 AssetTypeConstant::STATUS => AssetTypeStatusEnum::ACTIVE->value,
             ]);
         }
-
     }
 }

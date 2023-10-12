@@ -4,7 +4,6 @@ namespace App\Domains\Constant;
 
 use App\Domains\Enum\Asset\AssetMakeStatusEnum;
 
-
 class AssetMakeConstant
 {
     public const ID = 'id';

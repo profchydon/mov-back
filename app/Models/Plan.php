@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\FeatureConstant;
 use App\Domains\Constant\PlanConstant;
 use App\Domains\Enum\Plan\PlanStatusEnum;
 use App\Traits\GetsTableName;
@@ -23,7 +22,7 @@ class Plan extends BaseModel
     protected $casts = [
         PlanConstant::ID => 'string',
         PlanConstant::STATUS => PlanStatusEnum::class,
-        PlanConstant::OFFERS => 'json'
+        PlanConstant::OFFERS => 'json',
     ];
 
     public function newUniqueId()

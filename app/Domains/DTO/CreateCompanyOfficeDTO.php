@@ -50,7 +50,6 @@ final class CreateCompanyOfficeDTO
         return $this->name;
     }
 
-
     public function setName(?string $name): self
     {
         $this->name = $name;
@@ -94,12 +93,10 @@ final class CreateCompanyOfficeDTO
         return $this;
     }
 
-
     public function getLongitude(): float
     {
         return $this->longitude;
     }
-
 
     public function setLongitude(?float $longitude): self
     {
@@ -108,12 +105,10 @@ final class CreateCompanyOfficeDTO
         return $this;
     }
 
-
     public function getLatitude(): float
     {
         return $this->latitude;
     }
-
 
     public function setLatitude(?float $latitude): self
     {
@@ -121,7 +116,6 @@ final class CreateCompanyOfficeDTO
 
         return $this;
     }
-
 
     public function getCurrencyCode(): string
     {

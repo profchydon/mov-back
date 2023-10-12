@@ -10,6 +10,6 @@ interface RoleRepositoryInterface extends BaseRepositoryInterface
     public function getCompanyRoles(string $companyId);
 
     public function createRole(CreateUserRoleDTO $dto): Role;
-    
+
     public function isRoleExists(string $name, string $companyId);
 }
