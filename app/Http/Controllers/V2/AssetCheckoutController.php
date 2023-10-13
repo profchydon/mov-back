@@ -19,6 +19,7 @@ class AssetCheckoutController extends Controller
 
     public function store(AssetCheckoutRequest $request)
     {
+
         $assets = collect($request->assets);
         $assets = $assets->transform(fn($asset) => Asset::find($asset));
 
