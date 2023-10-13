@@ -5,7 +5,9 @@ namespace App\Http\Controllers\V2;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\AssetCheckoutRequest;
+use App\Http\Requests\Asset\UpdateAssetCheckoutRequest;
 use App\Models\Asset;
+use App\Models\AssetCheckout;
 use App\Repositories\Contracts\AssetCheckoutRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -15,6 +17,21 @@ class AssetCheckoutController extends Controller
 {
     public function __construct(private readonly AssetCheckoutRepositoryInterface $checkoutRepository)
     {
+    }
+
+    public function index()
+    {
+        $checkout = AssetCheckout::with('asset')->orderBy('group_id');
+        $checkout = $checkout->paginate()->groupBy('group_id');
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $checkout);
+    }
+
+    public function show(AssetCheckout $asset_checkout)
+    {
+        $asset_checkout = $this->checkoutRepository->getAssetCheckout($asset_checkout);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $asset_checkout);
     }
 
     public function store(AssetCheckoutRequest $request)
@@ -41,5 +58,12 @@ class AssetCheckoutController extends Controller
         });
 
         return $this->response(Response::HTTP_OK, __('messages.record-created'), $assets);
+    }
+
+    public function update(UpdateAssetCheckoutRequest $request, AssetCheckout $asset_checkout)
+    {
+        $asset_checkout = $this->checkoutRepository->updateAssetCheckout($asset_checkout, $request->updateAssetDTO());
+
+        return $this->response(Response::HTTP_OK, __('messages.record-updated'), $asset_checkout);
     }
 }

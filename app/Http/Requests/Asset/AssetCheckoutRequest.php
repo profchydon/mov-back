@@ -16,8 +16,9 @@ class AssetCheckoutRequest extends FormRequest
             'reason' => 'required|string|min:3',
             'receiver_type' => ['sometimes', Rule::in(['user', 'vendor'])],
             'receiver_id' => [
-                'sometimes',
-                Rule::exists($this->input('receiver_type') . "s", 'id')
+                Rule::when(fn($input) => !empty($this->input('receiver_type')),
+                    ['required', Rule::exists($this->input('receiver_type') . "s", 'id')]
+                )
             ],
             'checkout_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
             'return_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:checkout_date'],

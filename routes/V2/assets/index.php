@@ -15,7 +15,7 @@ Route::controller(AssetController::class)->prefix('companies')->group(function (
     Route::get('{company}/assets/{asset}', 'getAsset')->name('get.company.asset');
     Route::delete('{company}/assets/{asset}', 'deleteAsset')->name('delete.company.asset');
     Route::patch('{company}/assets/{asset}', 'updateAsset')->name('update.company.asset');
-    
+
     Route::get('{company}/asset-makes', 'getAssetMakes')->name('get.asset.makes');
 });
 
@@ -31,4 +31,4 @@ Route::controller(AssetTypeController::class)->prefix('assets/type')->group(func
 Route::controller(AssetMaintenanceController::class)->prefix('assets/maintenance')->group(function () {
 });
 
-Route::post('assets/checkouts', [\App\Http\Controllers\V2\AssetCheckoutController::class, 'store']);
+Route::resource('asset-checkouts', \App\Http\Controllers\V2\AssetCheckoutController::class);
