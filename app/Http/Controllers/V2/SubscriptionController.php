@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SelectSubscriptionPlanRequest;
 use App\Models\Company;
+use App\Models\Subscription;
 use App\Models\SubscriptionPayment;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use Illuminate\Http\Request;
@@ -42,6 +44,13 @@ class SubscriptionController extends Controller
         $payment->complete();
 
         return $this->response(Response::HTTP_OK, __('Subscription Confirmed'), $payment->fresh());
+    }
+
+    public function getSubscription(Subscription $subscription)
+    {
+        $subscription = $this->subscriptionRepository->firstWithRelation(SubscriptionConstant::ID, $subscription->id, 'payment');
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $subscription);
     }
 
     public function getSubscriptions(Company $company)
