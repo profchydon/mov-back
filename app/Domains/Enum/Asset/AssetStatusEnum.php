@@ -12,4 +12,5 @@ enum AssetStatusEnum: string
     case CHECKED_OUT = 'CHECKED OUT';
     case TRANSFERRED = 'TRANSFERRED';
     case ARCHIVED = 'ARCHIVED';
+    case STOLEN = 'STOLEN';
 }

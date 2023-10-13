@@ -13,6 +13,7 @@ use App\Repositories\Contracts\AssetTypeRepositoryInterface;
 use App\Repositories\Contracts\CompanyOfficeRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\FeatureRepositoryInterface;
+use App\Repositories\Contracts\FileRepositoryInterface;
 use App\Repositories\Contracts\OTPRepositoryInterface;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Contracts\PlanRepositoryInterface;
@@ -23,6 +24,7 @@ use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\FeatureRepository;
+use App\Repositories\FileRepository;
 use App\Repositories\OTPRepository;
 use App\Repositories\PermissionRepository;
 use App\Repositories\PlanRepository;
@@ -65,6 +67,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(FeatureRepositoryInterface::class, FeatureRepository::class);
         $this->app->singleton(PermissionRepositoryInterface::class, PermissionRepository::class);
         $this->app->singleton(AssetMakeRepositoryInterface::class, AssetMakeRepository::class);
+        $this->app->singleton(FileRepositoryInterface::class, FileRepository::class);
         $this->app->singleton(AssetCheckoutRepositoryInterface::class, AssetRepository::class);
     }
 }

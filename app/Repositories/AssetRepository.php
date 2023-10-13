@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Domains\Constant\AssetConstant;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
 use App\Imports\AssetImport;
 use App\Models\Asset;
@@ -41,4 +43,19 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
     {
         // TODO: Implement getAssetCheckout() method.
     }
+
+    public function markAsStolen(string $assetId): Asset
+    {
+        $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::STOLEN->value]);
+
+        return $this->first('id', $assetId);
+    }
+
+    public function markAsArchived(string $assetId): Asset
+    {
+        $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::ARCHIVED->value]);
+
+        return $this->first('id', $assetId);
+    }
+
 }
