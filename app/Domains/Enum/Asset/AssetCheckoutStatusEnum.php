@@ -4,11 +4,11 @@ namespace App\Domains\Enum\Asset;
 
 use App\Traits\ListsEnumValues;
 
-enum AssetCheckoutStatusEnum : string
+enum AssetCheckoutStatusEnum: string
 {
-  use ListsEnumValues;
+    use ListsEnumValues;
 
-  case CHECKED_OUT = 'checked_out';
-  case OVERDUE = 'overdue';
-  case RETURNED = 'returned';
+    case CHECKED_OUT = 'CHECKED_OUT';
+    case OVERDUE = 'OVERDUE';
+    case RETURNED = 'RETURNED';
 }

@@ -20,6 +20,7 @@ class CreateSubscriptionDTO
     private string $status;
     private ?array $add_on_ids;
     private string $currency;
+    private ?string $redirect_uri;
 
     public function setTenantId(string $tenant_id)
     {
@@ -137,6 +138,18 @@ class CreateSubscriptionDTO
     public function setAddOnIds(?array $add_on_ids): self
     {
         $this->add_on_ids = $add_on_ids;
+
+        return $this;
+    }
+
+    public function getRedirectURI(): string
+    {
+        return $this->redirect_uri;
+    }
+
+    public function setRedirectURI(string $redirect_uri): self
+    {
+        $this->redirect_uri = $redirect_uri;
 
         return $this;
     }

@@ -5,8 +5,6 @@ namespace App\Models;
 use App\Domains\Constant\AssetCheckoutConstant;
 use App\Domains\Enum\Asset\AssetCheckoutStatusEnum;
 use App\Traits\UsesUUID;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AssetCheckout extends BaseModel
@@ -22,7 +20,11 @@ class AssetCheckout extends BaseModel
     }
 
     protected $casts = [
-        AssetCheckoutConstant::STATUS => AssetCheckoutStatusEnum::class
+        AssetCheckoutConstant::STATUS => AssetCheckoutStatusEnum::class,
+    ];
+
+    protected $hidden = [
+        AssetCheckoutConstant::TENANT_ID,
     ];
 
     public function asset(): BelongsTo

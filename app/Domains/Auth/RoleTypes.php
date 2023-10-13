@@ -8,5 +8,5 @@ enum RoleTypes: string
     case ASSET_MANAGER = 'Asset Manager';
     case TECHNICIAN = 'Technician';
     case FINANCE = 'Finance';
-    case VIEWER = 'Viewer';
+    case BASIC = 'Basic';
 }

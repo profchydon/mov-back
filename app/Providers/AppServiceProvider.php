@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(SSOServiceInterface::class, SSOService::class);
 
         Relation::morphMap([
-            'user' => User::class
+            'user' => User::class,
         ]);
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\Domains\Constant\AssetConstant;
-use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Imports\AssetImport;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
@@ -46,12 +46,12 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function getAssetCheckouts(Asset|string $asset)
     {
-
     }
 
     public function getCheckouts()
     {
         $checkout = AssetCheckout::with('asset')->orderBy('group_id');
+
         return $checkout->paginate()->groupBy('group_id');
     }
 
@@ -77,5 +77,4 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
         return $this->first('id', $assetId);
     }
-
 }
