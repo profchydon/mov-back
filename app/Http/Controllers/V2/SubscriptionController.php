@@ -46,8 +46,9 @@ class SubscriptionController extends Controller
         return $this->response(Response::HTTP_OK, __('Subscription Confirmed'), $payment->fresh());
     }
 
-    public function getSubscription(Subscription $subscription)
+    public function getSubscription(Company $company, Subscription $subscription)
     {
+
         $subscription = $this->subscriptionRepository->firstWithRelation(SubscriptionConstant::ID, $subscription->id, 'payment');
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $subscription);
