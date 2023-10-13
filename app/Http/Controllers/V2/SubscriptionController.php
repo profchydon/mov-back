@@ -49,7 +49,7 @@ class SubscriptionController extends Controller
     public function getSubscription(Company $company, Subscription $subscription)
     {
 
-        $subscription = $this->subscriptionRepository->firstWithRelation(SubscriptionConstant::ID, $subscription->id, 'payment');
+        $subscription = $this->subscriptionRepository->firstWithRelation(SubscriptionConstant::ID, $subscription->id, ['payment', 'plan']);
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $subscription);
     }
