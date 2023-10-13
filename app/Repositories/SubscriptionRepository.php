@@ -51,7 +51,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             $paymentLink = new CreatePaymentLinkDTO();
             $paymentLink->setCurrency($subDTO->getCurrency())
                 ->setAmount($planAmount + $addOnAmount)
-                ->setRedirectUrl(config('app.frontend_url') . '/path/to/redirect')
+                ->setRedirectUrl($subDTO->getRedirectURI())
                 ->setCustomer(Company::find($subDTO->getCompanyId()))
                 ->setMeta([
                     'subscription_id' => $subscription->id,
