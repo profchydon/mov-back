@@ -85,6 +85,24 @@ class AssetController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assetMakes);
     }
 
+    public function createBulk(Company $company, Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xls,xlsx',
+        ]);
+
+        $import = $this->assetRepository->importCompanyAssets($company, $request->file('file'));
+
+        return $this->response(Response::HTTP_ACCEPTED, __('messages.processing'), $import);
+    }
+
+    public function getBulkDownloadTemplate(Company $company, Request $request)
+    {
+        $path = url(asset('assets/templates/assets_upload_template.xlsx'));
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $path);
+    }
+
     public function getAsset(Company $company, string $assetId)
     {
         $asset = $this->assetRepository->firstWithRelation('id', $assetId, ['image']);
