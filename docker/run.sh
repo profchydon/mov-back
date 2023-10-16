@@ -2,7 +2,7 @@
 
 cd /var/www
 
-php artisan test --profile
+# php artisan test --profile
 
 php artisan migrate --seed --force
 php artisan cache:clear

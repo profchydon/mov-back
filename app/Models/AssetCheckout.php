@@ -16,6 +16,10 @@ class AssetCheckout extends BaseModel
         AssetCheckoutConstant::STATUS => 'json'
     ];
 
+    protected $hidden = [
+        AssetCheckoutConstant::TENANT_ID,
+    ];
+
     public function asset(): BelongsTo
     {
         return $this->belongsTo(Asset::class, 'asset_id');

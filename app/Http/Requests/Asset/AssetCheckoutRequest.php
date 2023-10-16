@@ -21,7 +21,8 @@ class AssetCheckoutRequest extends FormRequest
             ],
             'checkout_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
             'return_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:checkout_date'],
-            'comment' => ['sometimes', 'regex:/^[A-Za-z0-9 ]+$/'],
+            // 'comment' => ['sometimes', 'regex:/^[A-Za-z0-9]+$/'],
+            'comment' => ['sometimes'],
             'assets' => ['required', 'array', 'min:1'],
             'assets.*' => ['required', Rule::exists('assets', 'id')->where('status', AssetStatusEnum::AVAILABLE)]
         ];
