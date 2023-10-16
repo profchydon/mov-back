@@ -2,10 +2,10 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Domains\DTO\InviteCompanyUsersDTO;
+
 interface UserInvitationRepositoryInterface extends BaseRepositoryInterface
 {
-    /**
-     * @param array<int, InviteCompanyUsersDTO> $data
-     */
-    public function inviteCompanyUsers(array $data);
+
+    public function inviteCompanyUser(InviteCompanyUsersDTO $data);
 }

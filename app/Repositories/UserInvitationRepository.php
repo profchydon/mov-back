@@ -16,17 +16,11 @@ class UserInvitationRepository extends BaseRepository implements UserInvitationR
         return UserInvitation::class;
     }
 
-    /**
-     * @param array<int, InviteCompanyUsersDTO> $data
-     */
-    public function inviteCompanyUsers(array $data)
-    {
-        foreach ($data as $userDto) {
-            $code = (string) Str::uuid();
-            $userDto->setCode($code);
 
-            $invitedUser = $this->create($userDto->toArray());
-            Mail::to($invitedUser->email)->queue(new CompanyUserInvitationEmail($invitedUser));
-        }
+    public function inviteCompanyUser(InviteCompanyUsersDTO $userDto)
+    {
+        $code = (string) Str::uuid();
+        $userDto->setCode($code);
+        $this->create($userDto->toArray());
     }
 }
