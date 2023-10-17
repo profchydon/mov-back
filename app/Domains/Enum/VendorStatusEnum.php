@@ -8,6 +8,6 @@ enum VendorStatusEnum: string
 {
     use ListsEnumValues;
 
-    case ACTIVE = 'active';
-    case INACTIVE = 'inactive';
+    case ACTIVE = 'ACTIVE';
+    case INACTIVE = 'INACTIVE';
 }

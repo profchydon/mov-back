@@ -17,7 +17,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('vendors', function (Blueprint $table) {
-            $table->id();
+            $table->uuid(VendorConstant::ID)->unique()->primary();
             $table->foreignUuid(VendorConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
             $table->foreignUuid(VendorConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
             $table->string(VendorConstant::NAME);
