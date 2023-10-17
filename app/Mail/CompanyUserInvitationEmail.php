@@ -21,7 +21,7 @@ class CompanyUserInvitationEmail extends Mailable
     public function __construct(public UserInvitation $userInvitation)
     {
 
-        Log::info("User invitation email bootstraping... {$userInvitation->email} {$userInvitation}");
+        Log::info(env('APP_FRONTEND_URL') . "/user-invitation/" . $this->userInvitation->code ."?email={$this->userInvitation->email}");
 
     }
 
@@ -45,7 +45,7 @@ class CompanyUserInvitationEmail extends Mailable
             with: [
                 'invitedBy' => $this->userInvitation->invitedBy->first_name,
                 'company' => $this->userInvitation->company->name,
-                'link' => env('APP_FRONTEND_URL') . "/user-invitation/" . $this->userInvitation->code,
+                'link' => env('APP_FRONTEND_URL') . "/user-invitation/" . $this->userInvitation->code ."?email={$this->userInvitation->email}",
                 // 'link' => sprintf('%f/user-invitation/%f', env('FRONTEND_URL'), $this->userInvitation->code),
             ]
         );
