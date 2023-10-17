@@ -5,7 +5,7 @@ Rayda Invitation
 @endsection
 
 @section('content')
-<p style="font-size: 1.5rem; color: #111322; font-family: 'IBM Plex Sans', sans-serif; font-weight: bold;">You've Been Invited To Collaborate On Rayda</p>
+<p style="font-size: 1.5rem; color: #111322; font-family: 'IBM Plex Sans', sans-serif; font-weight: bold;">You've been invited to collaborate on Rayda</p>
 <p style="font-family: 'IBM Plex Sans', sans-serif; color: #404968;">Hello, {{$invitedBy}} has invited you to collaborate with them on Rayda at <strong>{{ $company }}</strong>. We are excited to have you join their team!</p>
 <p style="font-family: 'IBM Plex Sans', sans-serif; color: #404968;">To get started, just click the link below to dive into the organisation’s asset management backbone.</p>
 
