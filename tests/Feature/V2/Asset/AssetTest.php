@@ -2,6 +2,7 @@
 
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\OfficeConstant;
+use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Models\AssetType;
 use App\Models\Company;
@@ -76,6 +77,15 @@ test('get assets', function () {
     // $response = $this->get("http://localhost:80/api/v2/companies/{$this->company->id}/assets");
 
     $response = $this->get(TestCase::fullLink("/companies/{$this->company->id}/assets"));
+    $response->assertStatus(Response::HTTP_OK);
+    expect($response->getData()->success)->toBeTrue();
+    expect($response->getData()->message)->toBe('Records fetched successfully');
+});
+
+test('get asset details', function () {
+    $asset = $this->company->assets()->create($this->payload);
+
+    $response = $this->get(TestCase::fullLink("/companies/{$this->company->id}/assets/{$asset->id}"));
     $response->assertStatus(Response::HTTP_OK);
     expect($response->getData()->success)->toBeTrue();
     expect($response->getData()->message)->toBe('Records fetched successfully');
