@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\DTO\CreateSSOUserDTO;
 use App\Domains\DTO\CreateUserDTO;
 use App\Domains\Enum\User\UserStageEnum;
@@ -9,6 +10,7 @@ use App\Rules\HumanNameRule;
 use App\Rules\RaydaStandardPasswordRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
 class AcceptUserInvitationRequest extends FormRequest
 {
@@ -27,8 +29,11 @@ class AcceptUserInvitationRequest extends FormRequest
      */
     public function rules(): array
     {
+        $code = $this->route('code');
+
         return [
             'email' => 'required|email|unique:users,email',
+            'email' =>  Rule::exists('user_invitations', UserInvitationConstant::EMAIL)->where(UserInvitationConstant::CODE,  $code),
             'password' => ['required', new RaydaStandardPasswordRule()],
             'first_name' => ['required', new HumanNameRule()],
             'last_name' => ['required', new HumanNameRule()],
