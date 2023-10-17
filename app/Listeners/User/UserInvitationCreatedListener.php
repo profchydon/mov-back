@@ -28,6 +28,5 @@ class UserInvitationCreatedListener
 
         Log::info("User Invitation Sent to {$invitation->email} {$invitation}");
 
-        return true;
     }
 }
