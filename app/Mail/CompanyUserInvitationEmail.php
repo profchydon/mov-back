@@ -21,8 +21,7 @@ class CompanyUserInvitationEmail extends Mailable
     public function __construct(public UserInvitation $userInvitation)
     {
 
-        // $url = env('APP_FRONTEND_URL') . "/user-invitation/" . $userInvitation->code;
-        // Log::info("Email Bootstrap {$url} {$userInvitation->invitedBy}");
+        Log::info("User invitation email bootstraping... {$userInvitation->email} {$userInvitation}");
 
     }
 
