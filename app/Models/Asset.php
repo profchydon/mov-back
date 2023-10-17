@@ -9,7 +9,6 @@ use App\Events\AssetStatusUpdatedEvent;
 use App\Traits\GetsTableName;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -73,12 +72,17 @@ class Asset extends Model
     public function image()
     {
         return $this->morphOne(File::class, 'fileable');
-
     }
-  
+
     public function checkouts()
     {
         return $this->hasMany(AssetCheckout::class, AssetCheckoutConstant::ASSET_ID);
+    }
 
+    public function checkout()
+    {
+        return $this->update([
+            'status' => AssetStatusEnum::CHECKED_OUT,
+        ]);
     }
 }

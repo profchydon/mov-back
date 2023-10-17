@@ -2,7 +2,6 @@
 
 namespace App\Domains\DTO\Asset;
 
-use App\Domains\Enum\Asset\AssetCheckoutStatusEnum;
 use App\Traits\DTOToArray;
 use Illuminate\Support\Carbon;
 
@@ -27,9 +26,10 @@ final class AssetCheckoutDTO
         return $this->tenant_id;
     }
 
-    public function setTenantId(?string $tenant_id): AssetCheckoutDTO
+    public function setTenantId(?string $tenant_id): self
     {
         $this->tenant_id = $tenant_id;
+
         return $this;
     }
 
@@ -38,9 +38,10 @@ final class AssetCheckoutDTO
         return $this->company_id;
     }
 
-    public function setCompanyId(?string $company_id): AssetCheckoutDTO
+    public function setCompanyId(?string $company_id): self
     {
         $this->company_id = $company_id;
+
         return $this;
     }
 
@@ -49,9 +50,10 @@ final class AssetCheckoutDTO
         return $this->asset_id;
     }
 
-    public function setAssetId(?string $asset_id): AssetCheckoutDTO
+    public function setAssetId(?string $asset_id): self
     {
         $this->asset_id = $asset_id;
+
         return $this;
     }
 
@@ -60,9 +62,10 @@ final class AssetCheckoutDTO
         return $this->group_id;
     }
 
-    public function setGroupId(?string $group_id): AssetCheckoutDTO
+    public function setGroupId(?string $group_id): self
     {
         $this->group_id = $group_id;
+
         return $this;
     }
 
@@ -71,9 +74,10 @@ final class AssetCheckoutDTO
         return $this->reason;
     }
 
-    public function setReason(?string $reason): AssetCheckoutDTO
+    public function setReason(?string $reason): self
     {
         $this->reason = $reason;
+
         return $this;
     }
 
@@ -82,9 +86,10 @@ final class AssetCheckoutDTO
         return $this->receiver_type;
     }
 
-    public function setReceiverType(?string $receiver_type): AssetCheckoutDTO
+    public function setReceiverType(?string $receiver_type): self
     {
         $this->receiver_type = $receiver_type;
+
         return $this;
     }
 
@@ -93,9 +98,10 @@ final class AssetCheckoutDTO
         return $this->receiver_id;
     }
 
-    public function setReceiverId(?string $receiver_id): AssetCheckoutDTO
+    public function setReceiverId(?string $receiver_id): self
     {
         $this->receiver_id = $receiver_id;
+
         return $this;
     }
 
@@ -104,9 +110,10 @@ final class AssetCheckoutDTO
         return $this->checkout_date;
     }
 
-    public function setCheckoutDate(?Carbon $checkout_date): AssetCheckoutDTO
+    public function setCheckoutDate(?Carbon $checkout_date): self
     {
         $this->checkout_date = $checkout_date;
+
         return $this;
     }
 
@@ -115,9 +122,10 @@ final class AssetCheckoutDTO
         return $this->return_date;
     }
 
-    public function setReturnDate(?Carbon $return_date): AssetCheckoutDTO
+    public function setReturnDate(?Carbon $return_date): self
     {
         $this->return_date = $return_date;
+
         return $this;
     }
 
@@ -126,9 +134,10 @@ final class AssetCheckoutDTO
         return $this->comment;
     }
 
-    public function setComment(?string $comment): AssetCheckoutDTO
+    public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
         return $this;
     }
 
@@ -137,11 +146,10 @@ final class AssetCheckoutDTO
         return $this->status;
     }
 
-    public function setStatus(?string $status): AssetCheckoutDTO
+    public function setStatus(?string $status): self
     {
         $this->status = $status;
+
         return $this;
     }
-
-
 }

@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\Domains\Constant\AssetConstant;
-use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Imports\AssetImport;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
@@ -21,7 +21,6 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return Asset::class;
     }
 
-
     public function importCompanyAssets(Company $company, UploadedFile $file)
     {
         $import = new AssetImport($company);
@@ -34,14 +33,35 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return AssetCheckout::create($checkoutDTO->toArray());
     }
 
+    public function updateAssetCheckout(AssetCheckout|string $checkout, AssetCheckoutDTO $checkoutDTO)
+    {
+        if (!($checkout instanceof AssetCheckout)) {
+            $checkout = AssetCheckout::findOrFail($checkout);
+        }
+
+        $checkout->update($checkoutDTO->toSynthensizedArray());
+
+        return $checkout->fresh();
+    }
+
     public function getAssetCheckouts(Asset|string $asset)
     {
-        // TODO: Implement getAssetCheckouts() method.
+    }
+
+    public function getCheckouts()
+    {
+        $checkout = AssetCheckout::with('asset')->orderBy('group_id');
+
+        return $checkout->paginate()->groupBy('group_id');
     }
 
     public function getAssetCheckout(AssetCheckout|string $checkout)
     {
-        // TODO: Implement getAssetCheckout() method.
+        if (!($checkout instanceof AssetCheckout)) {
+            $checkout = AssetCheckout::findOrFail($checkout);
+        }
+
+        return $checkout->load('asset', 'receiver');
     }
 
     public function markAsStolen(string $assetId): Asset
@@ -57,5 +77,4 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
         return $this->first('id', $assetId);
     }
-
 }

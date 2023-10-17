@@ -17,30 +17,18 @@ class User extends Authenticatable
 {
     use HasUuids, HasApiTokens, HasFactory, Notifiable, GetsTableName;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+
     protected $guarded = [
         UserConstant::ID,
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+
     protected $hidden = [
         UserConstant::TENANT_ID,
         UserConstant::SSO_ID,
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -76,5 +64,10 @@ class User extends Authenticatable
     public function logoutFromSSO()
     {
         return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function getMorphClass()
+    {
+        return 'users';
     }
 }

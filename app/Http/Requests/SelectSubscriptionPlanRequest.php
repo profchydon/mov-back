@@ -33,7 +33,7 @@ class SelectSubscriptionPlanRequest extends FormRequest
             'currency' => ['required', Rule::exists('plan_prices', PlanPriceConstant::CURRENCY_CODE)->where(PlanPriceConstant::PLAN_ID, $this->input('plan_id'))->where(PlanPriceConstant::BILLING_CYCLE, $this->input('billing_cycle'))],
             'add-on-ids' => ['sometimes', 'nullable', 'array'],
             'add-on-ids.*' => ['sometimes', Rule::exists('features', 'id')],
-            'redirect_uri' => 'string',
+            'redirect_uri' => ['required', 'string'],
         ];
     }
 

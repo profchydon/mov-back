@@ -12,17 +12,17 @@ it('can create a company', function () {
     $phone = fake()->phoneNumber();
 
     $data = [
-        "company" => [
-            "email" => $email,
-            "phone" => $phone
+        'company' => [
+            'email' => $email,
+            'phone' => $phone,
         ],
-        "user" => [
-            "first_name" => fake()->firstName(),
-            "last_name" => fake()->lastName(),
-            "email" => $email,
-            "phone" => $phone,
-            "password" => fake()->password()
-        ]
+        'user' => [
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'email' => $email,
+            'phone' => $phone,
+            'password' => fake()->password(),
+        ],
     ];
 
     $response = $this->postJson(route('companies.create'), $data);
@@ -32,7 +32,7 @@ it('can create a company', function () {
         'message',
         'data' => [
             'user',
-            'company'
+            'company',
         ],
     ]);
 });
@@ -42,17 +42,17 @@ it('can update company details', function () {
     $phone = fake()->phoneNumber();
 
     $data = [
-        "company" => [
-            "email" => $email,
-            "phone" => $phone
+        'company' => [
+            'email' => $email,
+            'phone' => $phone,
         ],
-        "user" => [
-            "first_name" => fake()->firstName(),
-            "last_name" => fake()->lastName(),
-            "email" => $email,
-            "phone" => $phone,
-            "password" => fake()->password()
-        ]
+        'user' => [
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'email' => $email,
+            'phone' => $phone,
+            'password' => fake()->password(),
+        ],
     ];
 
     $response = $this->postJson(route('companies.create'), $data);
@@ -62,10 +62,10 @@ it('can update company details', function () {
     User::find($userId)->update(['stage' => UserStageEnum::COMPANY_DETAILS->value]);
 
     $data = [
-        "name" => fake()->company(),
-        "size" => "Just me",
-        "industry" => "IT",
-        "address" => fake()->address(),
+        'name' => fake()->company(),
+        'size' => 'Just me',
+        'industry' => 'IT',
+        'address' => fake()->address(),
     ];
 
     $response = $this->postJson(route('companies.update', ['company' => $companyId]), $data);
@@ -73,7 +73,7 @@ it('can update company details', function () {
     $response->assertOk()->assertJsonStructure([
         'success',
         'message',
-        'data'
+        'data',
     ]);
 });
 
@@ -82,17 +82,17 @@ it('can create company subscription', function () {
     $phone = fake()->phoneNumber();
 
     $data = [
-        "company" => [
-            "email" => $email,
-            "phone" => $phone
+        'company' => [
+            'email' => $email,
+            'phone' => $phone,
         ],
-        "user" => [
-            "first_name" => fake()->firstName(),
-            "last_name" => fake()->lastName(),
-            "email" => $email,
-            "phone" => $phone,
-            "password" => fake()->password()
-        ]
+        'user' => [
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'email' => $email,
+            'phone' => $phone,
+            'password' => fake()->password(),
+        ],
     ];
 
     $response = $this->postJson(route('companies.create'), $data);
@@ -103,9 +103,9 @@ it('can create company subscription', function () {
     $plan = Plan::first();
 
     $data = [
-        "plan_id" => $plan->id,
-        "billing_cycle" => "MONTHLY",
-        "currency" => "NGN"
+        'plan_id' => $plan->id,
+        'billing_cycle' => 'MONTHLY',
+        'currency' => 'NGN',
     ];
 
     $response = $this->postJson(route('create.company.subscription', ['company' => $companyId]), $data);
@@ -113,6 +113,6 @@ it('can create company subscription', function () {
     $response->assertOk()->assertJsonStructure([
         'success',
         'message',
-        'data'
+        'data',
     ]);
 });
