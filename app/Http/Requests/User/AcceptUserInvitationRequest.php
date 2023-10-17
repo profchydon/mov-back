@@ -47,6 +47,7 @@ class AcceptUserInvitationRequest extends FormRequest
             ->setLastName($this->last_name)
             ->setEmail($this->email)
             ->setPassword($this->password)
+            ->setJobTitle($this->job_title, '')
             ->setStage(UserStageEnum::COMPLETED->value);
 
         return $dto;

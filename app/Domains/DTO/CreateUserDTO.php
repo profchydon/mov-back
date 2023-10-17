@@ -18,6 +18,7 @@ class CreateUserDTO
     private string $tenant_id;
     private string $stage;
     private string $sso_id;
+    private ?string $job_title = null;
 
     public function __construct()
     {
@@ -130,5 +131,17 @@ class CreateUserDTO
     public function getSsoId()
     {
         return $this->sso_id;
+    }
+
+    public function setJobTitle(?string $job_title)
+    {
+        $this->job_title = $job_title;
+
+        return $this;
+    }
+
+    public function getJobTitle()
+    {
+        return $this->job_title;
     }
 }
