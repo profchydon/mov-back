@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Domains\Constant\VendorConstant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateVendorRequest;
 use App\Models\Company;
@@ -25,5 +26,12 @@ class VendorController extends Controller
         $vendor = $this->vendorRepository->create($dto->toSynthensizedArray());
 
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $vendor);
+    }
+
+    public function index(Company $company)
+    {
+        $vendors = $this->vendorRepository->get(VendorConstant::COMPANY_ID, $company->id);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $vendors);
     }
 }
