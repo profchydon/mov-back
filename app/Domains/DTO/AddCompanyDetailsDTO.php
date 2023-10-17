@@ -12,6 +12,8 @@ class AddCompanyDetailsDTO
     private string $size;
     private string $industry;
     private string $address;
+    private string $country;
+    private string $state;
 
     public function setName(string $name)
     {
@@ -59,5 +61,27 @@ class AddCompanyDetailsDTO
     public function getAddress()
     {
         return $this->address;
+    }
+
+    public function setCountry(string $country)
+    {
+        $this->country = $country;
+        return $this;
+    }
+
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    public function setState(string $state)
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+    public function getState()
+    {
+        return $this->state;
     }
 }
