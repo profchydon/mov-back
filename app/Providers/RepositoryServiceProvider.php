@@ -23,6 +23,7 @@ use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Contracts\VendorRepositoryInterface;
 use App\Repositories\FeatureRepository;
 use App\Repositories\FileRepository;
 use App\Repositories\OTPRepository;
@@ -34,6 +35,7 @@ use App\Repositories\TenantRepository;
 use App\Repositories\UserCompanyRepository;
 use App\Repositories\UserInvitationRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\VendorRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -69,5 +71,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(AssetMakeRepositoryInterface::class, AssetMakeRepository::class);
         $this->app->singleton(FileRepositoryInterface::class, FileRepository::class);
         $this->app->singleton(AssetCheckoutRepositoryInterface::class, AssetRepository::class);
+        $this->app->singleton(VendorRepositoryInterface::class, VendorRepository::class);
     }
 }
