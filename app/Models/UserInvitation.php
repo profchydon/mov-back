@@ -31,8 +31,10 @@ class UserInvitation extends Model
     protected static function booted()
     {
         static::created(function (self $model) {
+
+           Log::info("Dispatching event... User Invitation: {$model->email} {$model}");
            UserInvitationCreatedEvent::dispatch($model);
-           Log::info('User Invitation event dispatched');
+           Log::info("User Invitation event dispatched: {$model->email} {$model}");
         });
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class CompanyUserInvitationEmail extends Mailable
 {
@@ -17,9 +18,12 @@ class CompanyUserInvitationEmail extends Mailable
      * Create a new message instance.
      * @param UserInvitation $dto
      */
-    public function __construct(public UserInvitation $user)
+    public function __construct(public UserInvitation $userInvitation)
     {
-        //
+
+        // $url = env('APP_FRONTEND_URL') . "/user-invitation/" . $userInvitation->code;
+        // Log::info("Email Bootstrap {$url} {$userInvitation->invitedBy}");
+
     }
 
     /**
@@ -40,9 +44,10 @@ class CompanyUserInvitationEmail extends Mailable
         return new Content(
             view: 'emails.company.user_invitation',
             with: [
-                'invitedBy' => $this->user->invitedBy->first_name,
-                'company' => $this->user->company->name,
-                'link' => sprintf('%f/user-invitation/%f', env('FRONTEND_URL'), $this->user->code),
+                'invitedBy' => $this->userInvitation->invitedBy->first_name,
+                'company' => $this->userInvitation->company->name,
+                'link' => env('APP_FRONTEND_URL') . "/user-invitation/" . $this->userInvitation->code,
+                // 'link' => sprintf('%f/user-invitation/%f', env('FRONTEND_URL'), $this->userInvitation->code),
             ]
         );
     }

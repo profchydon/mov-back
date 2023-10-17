@@ -26,7 +26,7 @@ class UserInvitationCreatedListener
         //Send Invitation email
         Mail::to($invitation->email)->queue(new CompanyUserInvitationEmail($invitation));
 
-        Log::info("Info: User Invitation Created {$invitation}");
+        Log::info("User Invitation Sent to {$invitation->email} {$invitation}");
 
         return true;
     }
