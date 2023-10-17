@@ -8,10 +8,30 @@ env:
   BRANCH: ${GIT_REF##*/}
   
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+
+    - name: Install dependencies
+      run: composer install
+
+    - name: Run Tests with Profiling
+      run: php artisan test --profile
+
   build-and-push-to-dev:
     name: Build and Push to ECR dev
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest  
+    needs:
+      - test
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -79,6 +99,8 @@ jobs:
     name: Build and Push to ECR dev
     if: github.ref == 'refs/heads/staging'
     runs-on: ubuntu-latest  
+    needs:
+      - test    
     steps:
       - name: Checkout
         uses: actions/checkout@v3
