@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/me', [UserController::class, 'userDetai
 
 Route::controller(UserInvitationController::class)->prefix('users/invitation')->group(function () {
     Route::get('/{code}', 'findUserInvitation')->name('find.user.invitation');
+    Route::post('/{code}', 'acceptUserInvitation')->name('accept.user.invitation');
 });

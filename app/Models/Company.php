@@ -24,7 +24,7 @@ class Company extends Model
 
     protected $hidden = [
         CompanyConstant::TENANT_ID,
-        CompanyConstant::SSO_ID,
+        // CompanyConstant::SSO_ID,
     ];
 
     protected $casts = [
