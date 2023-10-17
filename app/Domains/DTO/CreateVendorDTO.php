@@ -11,7 +11,7 @@ class CreateVendorDTO
 
     private string $name;
     private string $email;
-    private string $telephone;
+    private string $phone;
     private string $address;
     private string $status;
     private string $tenant_id;
@@ -44,15 +44,15 @@ class CreateVendorDTO
         return $this->email;
     }
 
-    public function setTelephone(string $telephone)
+    public function setPhone(string $phone)
     {
-        $this->telephone = $telephone;
+        $this->phone = $phone;
         return $this;
     }
 
-    public function getTelephone()
+    public function getPhone()
     {
-        return $this->telephone;
+        return $this->phone;
     }
 
     public function setAddress(string $address)

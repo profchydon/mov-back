@@ -11,7 +11,7 @@ class VendorConstant
     public const COMPANY_ID = 'company_id';
     public const NAME = 'name';
     public const EMAIL = 'email';
-    public const TELEPHONE = 'telephone';
+    public const PHONE = 'phone';
     public const ADDRESS = 'address';
     public const STATUS = 'status';
     public const CREATED_AT = 'created_at';

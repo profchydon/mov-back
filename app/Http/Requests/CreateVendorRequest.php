@@ -25,7 +25,7 @@ class CreateVendorRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => 'nullable|email',
-            'telephone' => 'nullable|string',
+            'phone' => 'nullable|string',
             'address' => 'nullable|string'
         ];
     }
@@ -36,10 +36,10 @@ class CreateVendorRequest extends FormRequest
 
         $dto->setName($this->input('name'))
             ->setEmail($this->input('email'))
-            ->setTelephone($this->input('telephone'))
+            ->setPhone($this->input('phone'))
             ->setAddress($this->input('address'));
 
-            
+
         return $dto;
     }
 }

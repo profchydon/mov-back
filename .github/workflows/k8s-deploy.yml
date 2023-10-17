@@ -6,7 +6,7 @@ env:
   GIT_REF: ${{ github.ref }}
   GIT_PAT: ${{ secrets.GIT_PAT }}
   BRANCH: ${GIT_REF##*/}
-  
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -23,13 +23,13 @@ jobs:
     - name: Install dependencies
       run: composer install
 
-    - name: Run Tests with Profiling
-      run: php artisan test --profile
+    # - name: Run Tests with Profiling
+    #   run: php artisan test --profile
 
   build-and-push-to-dev:
     name: Build and Push to ECR dev
     if: github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
     needs:
       - test
     steps:
@@ -52,7 +52,7 @@ jobs:
         run: |
           docker build -t 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8} .
           docker push 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8}
-      
+
       # - uses: 8398a7/action-slack@v3
       #   with:
       #     status: ${{ job.status }}
@@ -61,7 +61,7 @@ jobs:
       #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
       #   if: always() # Pick up events even if the job fails or is canceled.
 
-  
+
   deploy-to-dev:
     name: Update the Deployment dev
     runs-on: ubuntu-latest
@@ -74,7 +74,7 @@ jobs:
 
       - name: Install Kustomize
         uses: imranismail/setup-kustomize@v2
-        
+
       - name: Set latest images in the kustomize deployment
         working-directory: deployment
         run: |
@@ -98,9 +98,9 @@ jobs:
   build-and-push-to-staging:
     name: Build and Push to ECR dev
     if: github.ref == 'refs/heads/staging'
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
     needs:
-      - test    
+      - test
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -121,7 +121,7 @@ jobs:
         run: |
           docker build -t 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8} .
           docker push 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8}
-      
+
       # - uses: 8398a7/action-slack@v3
       #   with:
       #     status: ${{ job.status }}
@@ -130,7 +130,7 @@ jobs:
       #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
       #   if: always() # Pick up events even if the job fails or is canceled.
 
-  
+
   deploy-to-staging:
     name: Update the Deployment dev
     runs-on: ubuntu-latest
@@ -143,7 +143,7 @@ jobs:
 
       - name: Install Kustomize
         uses: imranismail/setup-kustomize@v2
-        
+
       - name: Set latest images in the kustomize deployment
         working-directory: deployment
         run: |

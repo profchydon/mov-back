@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignUuid(VendorConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
             $table->string(VendorConstant::NAME);
             $table->string(VendorConstant::EMAIL)->nullable();
-            $table->string(VendorConstant::TELEPHONE)->nullable();
+            $table->string(VendorConstant::PHONE)->nullable();
             $table->string(VendorConstant::ADDRESS)->nullable();
             $table->enum(VendorConstant::STATUS, VendorStatusEnum::values())->default(VendorStatusEnum::ACTIVE->value);
             $table->timestamps();
