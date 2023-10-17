@@ -3,6 +3,7 @@
 namespace App\Domains\Constant;
 
 use App\Domains\Enum\User\UserAccountStageEnum;
+use App\Domains\Enum\User\UserStageEnum;
 use App\Domains\Enum\User\UserStatusEnum;
 
 /**
@@ -26,6 +27,7 @@ class UserConstant
     public const STATUS = 'status';
     public const STAGE = 'stage';
     public const LAST_LOGIN = 'last_login';
+    public const JOB_TITLE = 'job_title';
     public const EMAIL_VERIFIED_AT = 'email_verified_at';
 
     public const CREATED_AT = 'created_at';
@@ -41,10 +43,10 @@ class UserConstant
     ];
 
     public const STAGE_ENUM = [
-        UserAccountStageEnum::VERIFICATION,
-        UserAccountStageEnum::COMPANY_DETAILS,
-        UserAccountStageEnum::SUBSCRIPTION_PLAN,
-        UserAccountStageEnum::ADD_USERS,
-        UserAccountStageEnum::COMPLETED,
+        UserStageEnum::VERIFICATION,
+        UserStageEnum::COMPANY_DETAILS,
+        UserStageEnum::SUBSCRIPTION_PLAN,
+        UserStageEnum::USERS,
+        UserStageEnum::COMPLETED,
     ];
 }
