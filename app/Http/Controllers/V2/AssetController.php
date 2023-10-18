@@ -181,6 +181,7 @@ class AssetController extends Controller
             'purchase_price' => ['nullable', 'decimal:2,4'],
             'purchase_date' => 'nullable|date',
             'office_id' => ['nullable', Rule::exists('offices', 'id')],
+            'office_area_id' => ['nullable', Rule::exists('office_areas', 'id')],
             'currency' => ['nullable', Rule::exists('currencies', 'code')],
             'acquisition_type' => ['nullable', 'string'],
             'custom_tags' => ['nullable', 'array'],
