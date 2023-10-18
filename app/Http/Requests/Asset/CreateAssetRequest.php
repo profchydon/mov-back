@@ -48,7 +48,8 @@ class CreateAssetRequest extends FormRequest
             ->setMaintenanceCycle($this->input('maintenance_cycle', null))
             ->setNextMaintenanceDate($this->input('next_maintenance_date', null))
             ->setIsInsured($this->input('is_insured', false))
-            ->setCompanyId($company->id);
+            ->setCompanyId($company->id)
+            ->setStatus($this->input('status'));
 
         return $dto;
     }
