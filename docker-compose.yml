@@ -92,7 +92,7 @@ networks:
         driver: bridge
 volumes:
     sail-mysql:
-         driver: local
+        driver: local
     sail-pgsql:
         driver: local
     sail-redis:

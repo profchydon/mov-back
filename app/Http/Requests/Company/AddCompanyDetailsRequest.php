@@ -27,6 +27,8 @@ class AddCompanyDetailsRequest extends FormRequest
             'size' => 'required|string',
             'industry' => 'required|string',
             'address' => 'required|string',
+            'country' => 'required|string',
+            'state' => 'required|string',
         ];
     }
 
@@ -37,8 +39,10 @@ class AddCompanyDetailsRequest extends FormRequest
         $dto->setName($this->input('name'))
             ->setSize($this->input('size'))
             ->setIndustry($this->input('industry'))
-            ->setAddress($this->input('address'));
-
+            ->setAddress($this->input('address'))
+            ->setCountry($this->input('country'))
+            ->setState($this->input('state'));
+            
         return $dto;
     }
 }

@@ -43,4 +43,5 @@ return [
         ],
     'company-sole-admin' => 'You have been set as the company\'s sole admin',
     'onboarding-already-completed' => 'You have already completed the onboarding on Rayda Core',
+    'invite-not-found' => 'No invitiation found',
 ];

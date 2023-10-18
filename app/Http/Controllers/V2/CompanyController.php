@@ -102,6 +102,7 @@ class CompanyController extends Controller
 
     public function inviteCompanyUsers(InviteUserRequest $request, Company $company)
     {
+
         $user = $company->users[0];
 
         if ($user->stage == UserStageEnum::VERIFICATION->value || $user->stage == UserStageEnum::COMPANY_DETAILS || $user->stage == UserStageEnum::SUBSCRIPTION_PLAN) {
@@ -109,7 +110,10 @@ class CompanyController extends Controller
         }
 
         $DTOs = $request->getInvitationData($company->id, $user->id);
-        $this->userInvitationRepository->inviteCompanyUsers($DTOs);
+
+        foreach ($DTOs as $userDto) {
+            $this->userInvitationRepository->inviteCompanyUser($userDto);
+        }
 
         if ($user->stage == UserStageEnum::USERS->value) {
             $this->userRepository->updateById($user->id, [

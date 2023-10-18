@@ -5,6 +5,7 @@ namespace App\Services\V2;
 use App\Domains\Constant\UserConstant;
 use App\Domains\DTO\AddCompanyDetailsDTO;
 use App\Domains\DTO\CreateSSOCompanyDTO;
+use App\Domains\DTO\CreateSSOUserDTO;
 use App\Domains\DTO\VerifyOTPDTO;
 use App\Domains\Enum\User\UserStageEnum;
 use App\Repositories\Contracts\OTPRepositoryInterface;
@@ -97,6 +98,18 @@ class SSOService implements SSOServiceInterface
         $data = $dto->toArray();
 
         $resp = Http::acceptJson()->put($url, $data);
+
+        return $resp;
+    }
+
+    public function createSSOUser(CreateSSOUserDTO $dto, string $ssoCompanyId)
+    {
+
+        $url = sprintf('%s/api/v1/companies/%s/users', env('SSO_URL'), $ssoCompanyId);
+
+        $data = $dto->toArray();
+
+        $resp = Http::acceptJson()->post($url, $data);
 
         return $resp;
     }

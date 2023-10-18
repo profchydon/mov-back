@@ -24,7 +24,7 @@ class Company extends Model
 
     protected $hidden = [
         CompanyConstant::TENANT_ID,
-        CompanyConstant::SSO_ID,
+        // CompanyConstant::SSO_ID,
     ];
 
     protected $casts = [
@@ -63,5 +63,10 @@ class Company extends Model
     public function departments()
     {
         return $this->hasMany(Department::class, 'company_id');
+    }
+    
+    public function assets(): HasMany
+    {
+        return $this->hasMany(Asset::class, 'company_id');
     }
 }

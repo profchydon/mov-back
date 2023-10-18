@@ -33,14 +33,35 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return AssetCheckout::create($checkoutDTO->toArray());
     }
 
+    public function updateAssetCheckout(AssetCheckout|string $checkout, AssetCheckoutDTO $checkoutDTO)
+    {
+        if (!($checkout instanceof AssetCheckout)) {
+            $checkout = AssetCheckout::findOrFail($checkout);
+        }
+
+        $checkout->update($checkoutDTO->toSynthensizedArray());
+
+        return $checkout->fresh();
+    }
+
     public function getAssetCheckouts(Asset|string $asset)
     {
-        // TODO: Implement getAssetCheckouts() method.
+    }
+
+    public function getCheckouts()
+    {
+        $checkout = AssetCheckout::with('asset')->orderBy('group_id');
+
+        return $checkout->paginate()->groupBy('group_id');
     }
 
     public function getAssetCheckout(AssetCheckout|string $checkout)
     {
-        // TODO: Implement getAssetCheckout() method.
+        if (!($checkout instanceof AssetCheckout)) {
+            $checkout = AssetCheckout::findOrFail($checkout);
+        }
+
+        return $checkout->load('asset', 'receiver');
     }
 
     public function markAsStolen(string $assetId): Asset

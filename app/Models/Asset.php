@@ -78,4 +78,11 @@ class Asset extends Model
     {
         return $this->hasMany(AssetCheckout::class, AssetCheckoutConstant::ASSET_ID);
     }
+
+    public function checkout()
+    {
+        return $this->update([
+            'status' => AssetStatusEnum::CHECKED_OUT,
+        ]);
+    }
 }
