@@ -22,7 +22,7 @@ it('can create a company', function () {
             'last_name' => fake()->lastName(),
             'email' => $email,
             'phone' => $phone,
-            'password' => fake()->password(),
+            'password' => "*Rayda38349#",
         ],
     ];
 
