@@ -23,8 +23,8 @@ jobs:
     - name: Install dependencies
       run: composer install
 
-    # - name: Run Tests with Profiling
-    #   run: php artisan test --profile
+    - name: Run Tests with Profiling
+      run: php artisan test --profile
 
   build-and-push-to-dev:
     name: Build and Push to ECR dev

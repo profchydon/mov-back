@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\V2\Session;
 
+use Tests\TestCase;
+
 it('can create a login link', function () {
-    $response = $this->get(route('login.link'));
+    $response = $this->get(TestCase::fullLink("/sessions/authorization"));
 
     $response->assertOk()->assertJsonStructure([
         'success',
@@ -12,4 +14,6 @@ it('can create a login link', function () {
             'redirectUrl',
         ],
     ]);
+    expect($response->getData()->success)->toBeTrue();
+
 });
