@@ -188,6 +188,11 @@ class AssetController extends Controller
             'vendor_id' => ['nullable', Rule::exists('vendors', 'id')],
         ]);
 
+        $image = $request->file('image');
+        if ($image) {
+            $this->uploadAssetImage($request->image, $asset);
+        }
+
         $dto = new CreateAssetDTO();
         $dto->setMake($request->input('make'))
             ->setModel($request->input('model'))
