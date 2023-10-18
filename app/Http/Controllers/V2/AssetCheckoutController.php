@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\AssetCheckoutRequest;
 use App\Models\Asset;
 use App\Repositories\Contracts\AssetCheckoutRepositoryInterface;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 
@@ -19,9 +18,8 @@ class AssetCheckoutController extends Controller
 
     public function store(AssetCheckoutRequest $request)
     {
-
         $assets = collect($request->assets);
-        $assets = $assets->transform(fn($asset) => Asset::find($asset));
+        $assets = $assets->transform(fn ($asset) => Asset::find($asset));
 
         $groupId = strtolower(uniqid());
 

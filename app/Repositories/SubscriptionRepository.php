@@ -43,7 +43,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             ->first('amount')
             ?->amount;
 
-        if($planAmount > 0){
+        if ($planAmount > 0) {
             $addOnAmount = FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
                 ->where('currency_code', $subDTO->getCurrency())
                 ->sum('price');
@@ -66,7 +66,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                 'payment_link' => $paymentLink->authorization_url,
                 'tx_ref' => $paymentLink->reference,
             ]);
-        }else {
+        } else {
             $subscription->activate();
         }
 

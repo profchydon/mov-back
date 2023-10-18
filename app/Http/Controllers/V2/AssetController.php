@@ -5,25 +5,24 @@ namespace App\Http\Controllers\V2;
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\AssetMakeConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\CreateAssetRequest;
 use App\Models\Asset;
+use App\Models\Company;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\FileRepositoryInterface;
 use App\Rules\HumanNameRule;
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
-use App\Models\Company;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class AssetController extends Controller
 {
@@ -126,7 +125,7 @@ class AssetController extends Controller
                 return $this->markAssetAsArchived($asset);
             case 'image':
                 $image = $request->file('image');
-                if(!$image){
+                if (!$image) {
                     return $this->error(Response::HTTP_BAD_REQUEST, __('messages.provide-asset-image'));
                 }
 
@@ -136,7 +135,7 @@ class AssetController extends Controller
 
             default:
                 return $this->error(Response::HTTP_BAD_REQUEST, __('messages.action-not-allowed'));
-        };
+        }
     }
 
     private function markAssetAsStolen(Asset $asset)

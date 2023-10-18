@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\Domains\Constant\AssetConstant;
-use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Imports\AssetImport;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
@@ -20,7 +20,6 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
     {
         return Asset::class;
     }
-
 
     public function importCompanyAssets(Company $company, UploadedFile $file)
     {
@@ -57,5 +56,4 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
         return $this->first('id', $assetId);
     }
-
 }
