@@ -196,7 +196,10 @@ class AssetController extends Controller
             ->setPurchasePrice($request->input('purchase_price'))
             ->setPurchaseDate($request->input('purchase_date'))
             ->setOfficeId($request->input('office_id'))
-            ->setCurrency($request->input('currency'));
+            ->setOfficeAreaId($request->input('office_area_id'))
+            ->setCurrency($request->input('currency'))
+            ->setVendorId($request->input('vendor_id'))
+            ->setAcquisitionType($request->input('acquisition_type'));
 
         $this->assetRepository->updateById($asset->id, $dto->toSynthensizedArray());
 
