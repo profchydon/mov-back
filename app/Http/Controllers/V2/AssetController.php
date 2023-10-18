@@ -176,13 +176,22 @@ class AssetController extends Controller
         $request->validate([
             'make' => ['nullable', new HumanNameRule()],
             'model' => ['nullable', new HumanNameRule()],
-            'type_id' => ['required', Rule::exists('asset_types', 'id')],
-            'serial_number' => 'required|string',
-            'purchase_price' => ['required', 'decimal:2,4'],
+            'type_id' => ['nullable', Rule::exists('asset_types', 'id')],
+            'serial_number' => 'nullable|string',
+            'purchase_price' => ['nullable', 'decimal:2,4'],
             'purchase_date' => 'nullable|date',
-            'office_id' => ['required', Rule::exists('offices', 'id')],
-            'currency' => ['required', Rule::exists('currencies', 'code')],
+            'office_id' => ['nullable', Rule::exists('offices', 'id')],
+            'office_area_id' => ['nullable', Rule::exists('office_areas', 'id')],
+            'currency' => ['nullable', Rule::exists('currencies', 'code')],
+            'acquisition_type' => ['nullable', 'string'],
+            'custom_tags' => ['nullable', 'array'],
+            'vendor_id' => ['nullable', Rule::exists('vendors', 'id')],
         ]);
+
+        $image = $request->file('image');
+        if ($image) {
+            $this->uploadAssetImage($request->image, $asset);
+        }
 
         $dto = new CreateAssetDTO();
         $dto->setMake($request->input('make'))
@@ -192,7 +201,10 @@ class AssetController extends Controller
             ->setPurchasePrice($request->input('purchase_price'))
             ->setPurchaseDate($request->input('purchase_date'))
             ->setOfficeId($request->input('office_id'))
-            ->setCurrency($request->input('currency'));
+            ->setOfficeAreaId($request->input('office_area_id'))
+            ->setCurrency($request->input('currency'))
+            ->setVendorId($request->input('vendor_id'))
+            ->setAcquisitionType($request->input('acquisition_type'));
 
         $this->assetRepository->updateById($asset->id, $dto->toSynthensizedArray());
 

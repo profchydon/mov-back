@@ -25,6 +25,8 @@ final class CreateAssetDTO
     private string $tenant_id;
     private ?string $company_id;
     private string $added_at;
+    private string $vendor_id;
+    private string $acquisition_type;
 
     public function __construct()
     {
@@ -315,5 +317,41 @@ final class CreateAssetDTO
         $this->company_id = $company_id;
 
         return $this;
+    }
+
+    /**
+     * @param string $vendor_id
+     * @return CreateAssetDTO
+     */
+    public function setVendorId(string $vendor_id): self
+    {
+        $this->vendor_id = $vendor_id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVendorId()
+    {
+        return $this->vendor_id;
+    }
+
+    /**
+     * @param string $acquisition_type
+     * @return CreateAssetDTO
+     */
+    public function setAcquisitionType(string $acquisition_type): self
+    {
+        $this->acquisition_type = $acquisition_type;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAcquisitionType()
+    {
+        return $this->acquisition_type;
     }
 }
