@@ -2,7 +2,7 @@
 
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\CommonConstant;
-use App\Domains\Enum\Asset\AssetAquisitionTypeEnum;
+use App\Domains\Enum\Asset\AssetAcquisitionTypeEnum;
 use App\Models\Vendor;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +16,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->enum(AssetConstant::ACQUISITION_TYPE, AssetAquisitionTypeEnum::values())->nullable();
+            $table->enum(AssetConstant::ACQUISITION_TYPE, AssetAcquisitionTypeEnum::values())->nullable();
             $table->foreignUuid(AssetConstant::VENDOR_ID)->nullable()->references(CommonConstant::ID)->on(Vendor::getTableName());
         });
     }

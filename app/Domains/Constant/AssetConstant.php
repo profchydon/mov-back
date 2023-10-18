@@ -2,7 +2,7 @@
 
 namespace App\Domains\Constant;
 
-use App\Domains\Enum\Asset\AssetAquisitionTypeEnum;
+use App\Domains\Enum\Asset\AssetAcquisitionTypeEnum;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 
 /**
@@ -50,8 +50,8 @@ class AssetConstant
     ];
 
     public const ACQUISITION_TYPE_ENUM = [
-        AssetAquisitionTypeEnum::BRAND_NEW,
-        AssetAquisitionTypeEnum::REFURBISHED,
-        AssetAquisitionTypeEnum::USED,
+        AssetAcquisitionTypeEnum::BRAND_NEW,
+        AssetAcquisitionTypeEnum::REFURBISHED,
+        AssetAcquisitionTypeEnum::USED,
     ];
 }
