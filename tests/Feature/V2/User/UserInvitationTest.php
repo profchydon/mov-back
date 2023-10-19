@@ -125,6 +125,8 @@ test('error when email provider is different from invited email', function () {
 //     @dump($response);
 //     $response->assertOk();
 //     expect($response->getData()->success)->toBeTrue();
-//     expect($response->getData()->data->status)->toBe(UserInvitationStatusEnum::ACCEPTED->value);
+
+        // $initationAfterUpdate = $invitation->fresh();
+        // expect($initationAfterUpdate->status)->toBe(UserInvitationStatusEnum::ACCEPTED->value);
 
 // });
