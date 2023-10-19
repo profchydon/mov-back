@@ -8,6 +8,12 @@ use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Http\Response;
 
+beforeEach(function () {
+    $this->artisan('db:seed --class=PermissionSeeder');
+    $this->artisan('db:seed --class=RoleSeeder');
+});
+
+
 it('can create a company', function () {
     $email = fake()->email;
     $phone = fake()->phoneNumber();
