@@ -2,25 +2,15 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\UserRoleConstant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Role extends Model
+class Permission extends Model
 {
     use HasFactory, GetsTableName;
 
 
-    public function permissions(): HasMany
-    {
-        return $this->hasMany(Permission::class);
-    }
-
-    public function rolePermissions()
-    {
-        return $this->hasMany(RoleHasPermission::class, 'permission_id');
-    }
 }

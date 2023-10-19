@@ -60,6 +60,11 @@ class User extends Authenticatable
         return $this->hasMany(UserCompany::class, UserConstant::USER_ID);
     }
 
+    public function roles()
+    {
+        return $this->hasManyThrough(Role::class, UserRole::class, 'user_id', 'id', 'id', 'role_id');
+    }
+
     public function otp()
     {
         return $this->hasOne(OTP::class);

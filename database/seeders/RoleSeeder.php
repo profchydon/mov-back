@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Domains\Auth\PermissionTypes;
 use App\Domains\Auth\RoleTypes;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -23,13 +24,43 @@ class RoleSeeder extends Seeder
         ]);
 
         $roles->each(function ($role) {
+
             $dbRole = Role::firstOrCreate(['name' => $role->value]);
 
-            if ($role == RoleTypes::ADMINISTRATOR) {
-                $permissions = Permission::all();
+            switch ($role) {
 
-                $dbRole->syncPermissions($permissions);
+                case RoleTypes::ADMINISTRATOR:
+                    $permissions = Permission::all();
+                    $dbRole->syncPermissions($permissions);
+                    break;
+
+                case RoleTypes::ASSET_MANAGER:
+                    $permissions = Permission::where('name', PermissionTypes::ASSET_FULL_ACCESS)->get();
+                    $dbRole->syncPermissions($permissions);
+                    break;
+
+                case RoleTypes::TECHNICIAN:
+                    $permissions = Permission::where('name', PermissionTypes::ASSET_FULL_ACCESS)->get();
+                    $dbRole->syncPermissions($permissions);
+                    break;
+
+                case RoleTypes::FINANCE:
+                    $permissions = Permission::where('name', PermissionTypes::BILLING_FULL_ACCESS)->get();
+                    $dbRole->syncPermissions($permissions);
+                    break;
+
+                case RoleTypes::BASIC:
+                    $permissions = Permission::where('name', PermissionTypes::ASSET_CREATE_ACCESS)
+                                    ->OrWhere('name', PermissionTypes::ASSET_READ_ACCESS)
+                                    ->get();
+                    $dbRole->syncPermissions($permissions);
+                    break;
+
+                default:
+                    # code...
+                    break;
             }
+
         });
     }
 }
