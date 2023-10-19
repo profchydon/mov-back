@@ -17,6 +17,10 @@ class User extends Authenticatable
 {
     use HasUuids, HasApiTokens, HasFactory, Notifiable, GetsTableName;
 
+    use HasApiTokens {
+        createToken as createBaseToken;
+    }
+
 
     protected $guarded = [
         UserConstant::ID,
