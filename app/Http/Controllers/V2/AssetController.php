@@ -186,6 +186,9 @@ class AssetController extends Controller
             'acquisition_type' => ['nullable', 'string'],
             'custom_tags' => ['nullable', 'array'],
             'vendor_id' => ['nullable', Rule::exists('vendors', 'id')],
+            'condition' => ['nullable', 'string'],
+            'maintenance_cycle' => ['nullable', 'string'],
+            'next_maintenance_date' => ['nullable', 'date'],
         ]);
 
         $image = $request->file('image');
@@ -204,7 +207,10 @@ class AssetController extends Controller
             ->setOfficeAreaId($request->input('office_area_id'))
             ->setCurrency($request->input('currency'))
             ->setVendorId($request->input('vendor_id'))
-            ->setAcquisitionType($request->input('acquisition_type'));
+            ->setAcquisitionType($request->input('acquisition_type'))
+            ->setCondition($request->input('condition'))
+            ->setMaintenanceCycle($request->input('maintenance_cycle'))
+            ->setNextMaintenanceDate($request->input('next_maintenance_date'));
 
         $this->assetRepository->updateById($asset->id, $dto->toSynthensizedArray());
 
