@@ -27,6 +27,7 @@ final class CreateAssetDTO
     private string $added_at;
     private string $vendor_id;
     private string $acquisition_type;
+    private string $condition;
 
     public function __construct()
     {
@@ -353,5 +354,23 @@ final class CreateAssetDTO
     public function getAcquisitionType()
     {
         return $this->acquisition_type;
+    }
+
+    /**
+     * @param string $condition
+     * @return CreateAssetDTO
+     */
+    public function setCondition(string $condition): self
+    {
+        $this->condition = $condition;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCondition()
+    {
+        return $this->condition;
     }
 }
