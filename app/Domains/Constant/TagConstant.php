@@ -2,7 +2,7 @@
 
 namespace App\Domains\Constant;
 
-use App\Domains\Enum\TagStatusEnum;
+use App\Domains\Enum\Tag\TagStatusEnum;
 
 class TagConstant
 {

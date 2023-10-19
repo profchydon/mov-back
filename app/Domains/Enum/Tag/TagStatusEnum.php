@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Enum;
+namespace App\Domains\Enum\Tag;
 
 use App\Traits\ListsEnumValues;
 

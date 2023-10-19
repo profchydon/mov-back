@@ -2,7 +2,7 @@
 
 use App\Domains\Constant\CommonConstant;
 use App\Domains\Constant\TagConstant;
-use App\Domains\Enum\TagStatusEnum;
+use App\Domains\Enum\Tag\TagStatusEnum;
 use App\Models\Company;
 use App\Models\Tenant;
 use Illuminate\Database\Migrations\Migration;
