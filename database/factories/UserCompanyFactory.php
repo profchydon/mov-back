@@ -2,14 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
-class UserFactory extends Factory
+class UserCompanyFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,12 +18,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
-            'email' => fake()->unique()->safeEmail(),
-            'tenant_id' => Tenant::factory(),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
+
         ];
     }
 

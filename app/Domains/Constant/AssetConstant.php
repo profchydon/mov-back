@@ -2,6 +2,7 @@
 
 namespace App\Domains\Constant;
 
+use App\Domains\Enum\Asset\AssetAcquisitionTypeEnum;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 
 /**
@@ -32,7 +33,9 @@ class AssetConstant
     public const MAINTENANCE_CYCLE = 'maintenance_cycle';
     public const NEXT_MAINTENANCE_DATE = 'next_maintenance_date';
     public const IS_INSURED = 'is_insured';
-
+    public const ACQUISITION_TYPE = 'acquisition_type';
+    public const VENDOR_ID = 'vendor_id';
+    public const CONDITION = 'condition';
 
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';
@@ -44,5 +47,11 @@ class AssetConstant
         AssetStatusEnum::ARCHIVED,
         AssetStatusEnum::CHECKED_OUT,
         AssetStatusEnum::TRANSFERRED,
+    ];
+
+    public const ACQUISITION_TYPE_ENUM = [
+        AssetAcquisitionTypeEnum::BRAND_NEW,
+        AssetAcquisitionTypeEnum::REFURBISHED,
+        AssetAcquisitionTypeEnum::USED,
     ];
 }

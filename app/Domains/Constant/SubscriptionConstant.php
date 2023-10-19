@@ -34,6 +34,4 @@ class SubscriptionConstant
         BillingCycleEnum::MONTHLY,
         BillingCycleEnum::YEARLY,
     ];
-
-    
 }

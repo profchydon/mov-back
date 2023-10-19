@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V2;
 
 use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
+use App\Domains\Enum\User\UserInvitationStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\AcceptUserInvitationRequest;
 use App\Models\UserInvitation;
@@ -60,7 +61,7 @@ class UserInvitationController extends Controller
                 return $this->error(Response::HTTP_BAD_REQUEST, $createSSOUser->json()['message']);
             }
 
-            $dbData = DB::transaction(function () use ($request, $createSSOUser, $company) {
+            $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code) {
 
                 $ssoData = $createSSOUser->json()['data'];
 
@@ -74,6 +75,10 @@ class UserInvitationController extends Controller
                     'user_id' => $user->id,
                     'status' => UserCompanyStatusEnum::ACTIVE->value,
                 ]);
+
+                $this->userInvitationRepository->update(UserInvitationConstant::CODE, $code,
+                    [UserInvitationConstant::STATUS => UserInvitationStatusEnum::ACCEPTED]
+                );
 
                 return [
                     'user' => $user,

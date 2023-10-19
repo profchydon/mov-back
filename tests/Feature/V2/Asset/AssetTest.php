@@ -43,8 +43,6 @@ beforeEach(function () {
 });
 
 test('create single asset', function () {
-    // $response = $this->post("http://localhost:80/api/v2/companies/{$this->company->id}/assets", $this->payload);
-
     $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/assets"), $this->payload);
     $response->assertCreated();
     $this->assertDatabaseHas('assets', $this->payload);
@@ -54,8 +52,6 @@ test('create single asset', function () {
 });
 
 test('error when wrong company id is provided', function () {
-    // $response = $this->post("http://localhost:80/api/v2/companies/wrong-company-id/assets", $this->payload);
-
     $response = $this->postJson(TestCase::fullLink('/companies/wrong-company-id/assets'), $this->payload);
     $response->assertStatus(Response::HTTP_NOT_FOUND);
     $this->assertDatabaseMissing('assets', $this->payload);
@@ -63,8 +59,6 @@ test('error when wrong company id is provided', function () {
 });
 
 test('error when payload is empty', function () {
-    // $response = $this->post("http://localhost:80/api/v2/companies/{$this->company->id}/assets", []);
-
     $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/assets"), []);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     expect($response->getData()->success)->toBeFalse();
@@ -74,8 +68,6 @@ test('error when payload is empty', function () {
 
 
 test('get assets', function () {
-    // $response = $this->get("http://localhost:80/api/v2/companies/{$this->company->id}/assets");
-
     $response = $this->get(TestCase::fullLink("/companies/{$this->company->id}/assets"));
     $response->assertStatus(Response::HTTP_OK);
     expect($response->getData()->success)->toBeTrue();
@@ -84,7 +76,6 @@ test('get assets', function () {
 
 test('get asset details', function () {
     $asset = $this->company->assets()->create($this->payload);
-
     $response = $this->get(TestCase::fullLink("/companies/{$this->company->id}/assets/{$asset->id}"));
     $response->assertStatus(Response::HTTP_OK);
     expect($response->getData()->success)->toBeTrue();

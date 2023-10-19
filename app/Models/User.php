@@ -17,6 +17,10 @@ class User extends Authenticatable
 {
     use HasUuids, HasApiTokens, HasFactory, Notifiable, GetsTableName;
 
+    use HasApiTokens {
+        createToken as createBaseToken;
+    }
+
 
     protected $guarded = [
         UserConstant::ID,
@@ -68,6 +72,6 @@ class User extends Authenticatable
 
     public function getMorphClass()
     {
-        return 'users';
+        return User::class;
     }
 }

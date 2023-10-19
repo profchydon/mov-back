@@ -48,7 +48,7 @@ class UserController extends Controller
     public function verifyAccount(VerifyOTPRequest $request)
     {
         $isVerified = $this->ssoService->verifyOTP($request->getDTO());
-        
+
         if ($isVerified) {
             return $this->response(Response::HTTP_OK, __('messages.otp-validated'));
         } else {
@@ -71,6 +71,7 @@ class UserController extends Controller
 
     public function userDetails(Request $request)
     {
+
         $user = $request->user();
         $userCompany = $user->userCompanies()->first();
         $company = $this->companyRepository->first(CompanyConstant::ID, $userCompany->company_id);

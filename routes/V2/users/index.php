@@ -16,8 +16,7 @@ Route::put('/otp', [UserController::class, 'verifyAccount'])->name('verify.otp')
 Route::get('/sessions/authorization', [SessionController::class, 'authorization']);
 Route::get('/sessions/confirmation', [SessionController::class, 'confirmation']);
 
-Route::middleware('auth:sanctum')->get('/me', [UserController::class, 'userDetails'])->name('user.details');
-
+Route::get('/me', [UserController::class, 'userDetails'])->name('user.details')->middleware(['auth:sanctum']);;
 
 Route::controller(UserInvitationController::class)->prefix('users/invitation')->group(function () {
     Route::get('/{code}', 'findUserInvitation')->name('find.user.invitation');
