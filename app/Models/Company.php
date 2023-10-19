@@ -60,6 +60,11 @@ class Company extends Model
         return $this->hasMany(Office::class, 'company_id');
     }
 
+    public function departments()
+    {
+        return $this->hasMany(Department::class, 'company_id');
+    }
+    
     public function assets(): HasMany
     {
         return $this->hasMany(Asset::class, 'company_id');

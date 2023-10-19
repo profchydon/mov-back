@@ -14,6 +14,8 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
 
         Route::post('/invitees', 'inviteCompanyUsers')->name('companies.invite.users');
         Route::post('/sole-admin', 'soleAdminUser')->name('companies.sole.admin');
+
+        Route::resource('departments', \App\Http\Controllers\DepartmentController::class);
     });
 
 
