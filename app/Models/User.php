@@ -72,6 +72,6 @@ class User extends Authenticatable
 
     public function getMorphClass()
     {
-        return 'users';
+        return User::class;
     }
 }
