@@ -16,7 +16,7 @@ trait WithActivityLog
 
     public function getActivitylogOptions(): LogOptions
     {
-        $className = explode('\\', self::class);
+        $className = explode('\\', static::class);
         $className = array_pop($className);
 
         return LogOptions::defaults()
