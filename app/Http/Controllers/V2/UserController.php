@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Common\SerializePermission;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\UserConstant;
 use App\Http\Controllers\Controller;
@@ -79,11 +80,13 @@ class UserController extends Controller
         $userCompany = $user->userCompanies()->first();
         $userRoles = $user->roles()->with('permissions')->get();
         $company = $this->companyRepository->first(CompanyConstant::ID, $userCompany->company_id);
+        $serializePermission = new SerializePermission($userRoles);
 
         $response = [
             'user' => new UserResource($user),
             'company' => new CompanyResource($company),
-            'roles' =>  new RoleResource($userRoles)
+            'roles' =>  new RoleResource($userRoles),
+            'permissions' => $serializePermission->stringifyPermission(),
         ];
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $response);
