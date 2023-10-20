@@ -14,9 +14,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Company extends Model
+class Company extends BaseModel
 {
-    use UsesUUID, HasFactory, SoftDeletes, GetsTableName, QueryFormatter;
+    use UsesUUID, SoftDeletes, QueryFormatter;
 
     protected $guarded = [
         CompanyConstant::ID,
@@ -64,7 +64,7 @@ class Company extends Model
     {
         return $this->hasMany(Department::class, 'company_id');
     }
-    
+
     public function assets(): HasMany
     {
         return $this->hasMany(Asset::class, 'company_id');

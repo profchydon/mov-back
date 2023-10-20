@@ -5,15 +5,16 @@ namespace App\Models;
 use App\Domains\Constant\InvoiceConstant;
 use App\Domains\Enum\Invoice\InvoiceStatusEnum;
 use App\Traits\GetsTableName;
+use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
-class Invoice extends Model
+class Invoice extends BaseModel
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
+    use UsesUUID;
 
     public $incrementing = false;
 

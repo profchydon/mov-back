@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Department extends BaseModel
 {
-    use HasFactory, UsesUUID, QueryFormatter;
+    use UsesUUID, QueryFormatter;
 
     protected static $searchable = [
         'name',
