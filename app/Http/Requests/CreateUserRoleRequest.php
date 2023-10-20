@@ -2,24 +2,22 @@
 
 namespace App\Http\Requests;
 
+use App\Domains\Auth\PermissionTypes;
 use App\Domains\DTO\CreateUserRoleDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateUserRoleRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+
     public function authorize(): bool
     {
-        return true;
+        $user = auth()->user();
+        $permissionsList = $user->roles()->with('permissions')->get()->pluck('permissions')->flatten(1);
+        return $permissionsList->contains('name', PermissionTypes::ROLE_FULL_ACCESS)
+            || $permissionsList->contains('name', PermissionTypes::ROLE_CREATE_ACCESS);
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+
     public function rules(): array
     {
         return [

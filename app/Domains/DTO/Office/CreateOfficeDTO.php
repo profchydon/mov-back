@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\DTO\Office;
+namespace App\Domains\DTO\Office;
 
 use App\Traits\DTOToArray;
 
