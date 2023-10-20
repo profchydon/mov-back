@@ -66,29 +66,37 @@ class SSOService implements SSOServiceInterface
 
     public function verifyOTP(VerifyOTPDTO $dto)
     {
+        // $user = $this->userRepository->firstWithRelation(UserConstant::ID, $dto->getUserId(), ['otp']);
+
+        // if (!$user || !$user->otp) {
+        //     return false;
+        // }
+
+        // $url = sprintf('%s/api/v1/otp/%s/verify', env('SSO_URL'), $user->otp->sso_id);
+
+        // $data = ['otp' => $dto->getOTP()];
+
+        // $resp = Http::acceptJson()->put($url, $data);
+
+        // if ($resp->status() == Response::HTTP_OK) {
+        //     $user->otp->delete();
+
+        //     $user->update([
+        //         UserConstant::STAGE => UserStageEnum::COMPANY_DETAILS->value,
+        //     ]);
+
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+
         $user = $this->userRepository->firstWithRelation(UserConstant::ID, $dto->getUserId(), ['otp']);
 
-        if (!$user || !$user->otp) {
-            return false;
-        }
+        $user->update([
+            UserConstant::STAGE => UserStageEnum::COMPANY_DETAILS->value,
+        ]);
 
-        $url = sprintf('%s/api/v1/otp/%s/verify', env('SSO_URL'), $user->otp->sso_id);
-
-        $data = ['otp' => $dto->getOTP()];
-
-        $resp = Http::acceptJson()->put($url, $data);
-
-        if ($resp->status() == Response::HTTP_OK) {
-            $user->otp->delete();
-
-            $user->update([
-                UserConstant::STAGE => UserStageEnum::COMPANY_DETAILS->value,
-            ]);
-
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     public function updateCompany(AddCompanyDetailsDTO $dto, string $ssoCompanyId)
