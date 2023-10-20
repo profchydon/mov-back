@@ -4,6 +4,7 @@ namespace App\Http\Requests\Asset;
 
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Rules\HumanNameRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -49,7 +50,7 @@ class CreateAssetRequest extends FormRequest
             ->setNextMaintenanceDate($this->input('next_maintenance_date', null))
             ->setIsInsured($this->input('is_insured', false))
             ->setCompanyId($company->id)
-            ->setStatus($this->input('status'));
+            ->setStatus($this->input('status' , AssetStatusEnum::AVAILABLE->value));
 
         return $dto;
     }

@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\V2;
 
 use App\Domains\Constant\UserInvitationConstant;
+use App\Domains\Constant\UserRoleConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserInvitationStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\AcceptUserInvitationRequest;
 use App\Models\UserInvitation;
+use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Contracts\UserRoleRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
 use Exception;
 use Illuminate\Http\Request;
@@ -26,7 +29,9 @@ class UserInvitationController extends Controller
         private readonly UserInvitationRepositoryInterface $userInvitationRepository,
         private readonly UserRepositoryInterface $userRepository,
         private readonly UserCompanyRepositoryInterface $userCompanyRepository,
-        private readonly SSOServiceInterface $ssoService
+        private readonly SSOServiceInterface $ssoService,
+        private readonly UserRoleRepositoryInterface $userRoleRepository,
+        private readonly RoleRepositoryInterface $roleRepository,
     ) {
     }
 
@@ -61,7 +66,7 @@ class UserInvitationController extends Controller
                 return $this->error(Response::HTTP_BAD_REQUEST, $createSSOUser->json()['message']);
             }
 
-            $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code) {
+            $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code, $invitation) {
 
                 $ssoData = $createSSOUser->json()['data'];
 
@@ -74,6 +79,15 @@ class UserInvitationController extends Controller
                     'company_id' => $company->id,
                     'user_id' => $user->id,
                     'status' => UserCompanyStatusEnum::ACTIVE->value,
+                ]);
+
+                //Assign role to user
+                $role = $this->roleRepository->first('id', $invitation->role_id);
+
+                $this->userRoleRepository->create([
+                    UserRoleConstant::USER_ID => $user->id,
+                    UserRoleConstant::COMPANY_ID => $company->id,
+                    UserRoleConstant::ROLE_ID => $role->id,
                 ]);
 
                 $this->userInvitationRepository->update(UserInvitationConstant::CODE, $code,

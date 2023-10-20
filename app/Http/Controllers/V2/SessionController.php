@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V2;
 
 use App\Common\JWTHandler;
+use App\Common\SerializePermission;
 use App\Domains\Constant\UserConstant;
 use App\Http\Controllers\Controller;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -66,10 +67,15 @@ class SessionController extends Controller
     {
         $user = $this->userRepository->first(UserConstant::SSO_ID, $sub);
 
+        $userRoles = $user->roles()->with('permissions')->get();
+
+        $serializePermission = new SerializePermission($userRoles);
+
         return [
             'user' => $user,
+            'permissions' => $serializePermission->stringifyPermission(),
             'auth_token' => $user->createToken('auth_token')->plainTextToken,
         ];
     }
-    
+
 }

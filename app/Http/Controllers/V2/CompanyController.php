@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Domains\Auth\RoleTypes;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\UserConstant;
+use App\Domains\Constant\UserRoleConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserStageEnum;
 use App\Exceptions\Company\CompanyAlreadyExistException;
@@ -14,10 +16,12 @@ use App\Http\Requests\Company\CreateCompanyRequest;
 use App\Http\Requests\InviteUserRequest;
 use App\Models\Company;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
+use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Contracts\UserRoleRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -33,7 +37,10 @@ class CompanyController extends Controller
         private readonly UserRepositoryInterface $userRepository,
         private readonly UserCompanyRepositoryInterface $userCompanyRepository,
         private readonly UserInvitationRepositoryInterface $userInvitationRepository,
-        private readonly SSOServiceInterface $ssoService
+        private readonly SSOServiceInterface $ssoService,
+        private readonly UserRoleRepositoryInterface $userRoleRepository,
+        private readonly RoleRepositoryInterface $roleRepository,
+
     ) {
     }
 
@@ -58,6 +65,7 @@ class CompanyController extends Controller
             }
 
             try {
+
                 $dbData = DB::transaction(function () use ($request, $createSSOCompany) {
                     $tenant = $this->tenantRepository->create($request->getTenantDTO()->toArray());
 
@@ -74,6 +82,15 @@ class CompanyController extends Controller
                         'company_id' => $company->id,
                         'user_id' => $user->id,
                         'status' => UserCompanyStatusEnum::ACTIVE->value,
+                    ]);
+
+                    //Assign admin role to user
+                    $adminRole = $this->roleRepository->first('name', RoleTypes::ADMINISTRATOR);
+
+                    $this->userRoleRepository->create([
+                        UserRoleConstant::USER_ID => $user->id,
+                        UserRoleConstant::COMPANY_ID => $company->id,
+                        UserRoleConstant::ROLE_ID => $adminRole->id,
                     ]);
 
                     return [
