@@ -79,4 +79,9 @@ class User extends Authenticatable
     {
         return User::class;
     }
+
+    public function hasPermissions(string $permission)
+    {
+        return $this->roles->permissions()->where('permissions.name', $permission)->exists();
+    }
 }

@@ -13,6 +13,10 @@ class Role extends Model
 {
     use HasFactory, GetsTableName;
 
+    public $guarded = [
+        'id'
+    ];
+
     public static $returnable = ['id', 'name'];
 
 

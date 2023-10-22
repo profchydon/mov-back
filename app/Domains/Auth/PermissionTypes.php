@@ -19,4 +19,10 @@ enum PermissionTypes: string
     case ACCOUNT_FULL_ACCESS = 'AccountFullAccess';
     case ACCOUNT_READ_ACCESS = 'AccountReadAccess';
     case ACCOUNT_CREATE_ACCESS = 'AccountCreateAccess';
+
+    // Role
+
+    case ROLE_FULL_ACCESS = 'RoleFullAccess';
+    case ROLE_CREATE_ACCESS = 'RoleCreateAccess';
+    case ROLE_READ_ACCESS = 'RoleReadAccess';
 }
