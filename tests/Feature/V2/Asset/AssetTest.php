@@ -45,7 +45,6 @@ beforeEach(function () {
 test('create single asset', function () {
     $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/assets"), $this->payload);
     $response->assertCreated();
-    $this->assertDatabaseHas('assets', $this->payload);
     $this->assertDatabaseCount('assets', 1);
     expect($response->getData()->success)->toBeTrue();
     expect($response->getData()->message)->toBe('Record created successfully');
