@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Domains\Constant\PlanConstant;
 use App\Domains\Enum\Plan\PlanStatusEnum;
 use App\Traits\GetsTableName;
+use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +14,7 @@ use Ramsey\Uuid\Uuid;
 
 class Plan extends BaseModel
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
+    use UsesUUID, SoftDeletes;
 
     public $incrementing = false;
 

@@ -13,13 +13,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Asset extends Model
+class Asset extends BaseModel
 {
-    use UsesUUID, HasFactory, SoftDeletes, GetsTableName;
-
-    protected $guarded = [
-        AssetConstant::ID,
-    ];
+    use UsesUUID, HasFactory, SoftDeletes;
 
     protected $hidden = [
         AssetConstant::TENANT_ID,
