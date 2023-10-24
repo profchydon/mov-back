@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V2;
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\AssetMakeConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
+use App\Domains\DTO\Asset\UpdateAssetDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\CreateAssetRequest;
 use App\Models\Asset;
@@ -196,7 +197,7 @@ class AssetController extends Controller
             $this->uploadAssetImage($request->image, $asset);
         }
 
-        $dto = new CreateAssetDTO();
+        $dto = new UpdateAssetDTO();
         $dto->setMake($request->input('make'))
             ->setModel($request->input('model'))
             ->setTypeId($request->input('type_id'))
@@ -214,6 +215,7 @@ class AssetController extends Controller
 
         $this->assetRepository->updateById($asset->id, $dto->toSynthensizedArray());
 
-        return $this->response(Response::HTTP_OK, __('messages.asset-updated'));
+        $asset->refresh();
+        return $this->response(Response::HTTP_OK, __('messages.asset-updated'), $asset);
     }
 }
