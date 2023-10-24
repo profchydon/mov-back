@@ -17,6 +17,17 @@ class Asset extends BaseModel
 {
     use UsesUUID, HasFactory, SoftDeletes;
 
+    protected static $searchable = [
+        'make',
+        'model'
+    ];
+
+    protected static $filterable = [
+        'condition' => 'assets.condition',
+        'type' => 'assets.type_id',
+        'assignee' => 'assets.assigned_to'
+    ];
+
     protected $hidden = [
         AssetConstant::TENANT_ID,
     ];
@@ -28,7 +39,6 @@ class Asset extends BaseModel
     public static function boot()
     {
         parent::boot();
-
 
         self::created(function ($asset) {
         });
@@ -73,6 +83,11 @@ class Asset extends BaseModel
     public function checkouts()
     {
         return $this->hasMany(AssetCheckout::class, AssetCheckoutConstant::ASSET_ID);
+    }
+
+    public function assignee()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 
     public function checkout()
