@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Domains\Auth\PermissionTypes;
+use App\Domains\Auth\RoleTypes;
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\AssetMakeConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Domains\DTO\Asset\UpdateAssetDTO;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\CreateAssetRequest;
 use App\Models\Asset;
@@ -51,10 +54,15 @@ class AssetController extends Controller
         try {
             $createAssetDto = $request->createAssetDTO()
                 ->setCompanyId($company->id)
-                ->setTenantId($company->tenant_id)
-                ->toArray();
+                ->setTenantId($company->tenant_id);
 
-            $asset = $this->assetRepository->create($createAssetDto);
+
+            $user = $request->user();
+            if($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)){
+                $createAssetDto->setStatus(AssetStatusEnum::AVAILABLE->value);
+            }
+
+            $asset = $this->assetRepository->create($createAssetDto->toArray());
 
             return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $asset);
         } catch (\ErrorException $exception) {

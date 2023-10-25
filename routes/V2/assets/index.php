@@ -17,7 +17,7 @@ Route::controller(AssetController::class)->prefix('companies')->group(function (
     Route::patch('{company}/assets/{asset}', 'updateAsset')->name('update.company.asset');
 
     Route::get('{company}/asset-makes', 'getAssetMakes')->name('get.asset.makes');
-});
+})->middleware(['auth:sanctum']);
 
 
 // Asset Type

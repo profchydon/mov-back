@@ -50,7 +50,7 @@ class CreateAssetRequest extends FormRequest
             ->setNextMaintenanceDate($this->input('next_maintenance_date', null))
             ->setIsInsured($this->input('is_insured', false))
             ->setCompanyId($company->id)
-            ->setStatus($this->input('status' , AssetStatusEnum::AVAILABLE->value));
+            ->setStatus(AssetStatusEnum::PENDING_APPROVAL->value);
 
         return $dto;
     }
