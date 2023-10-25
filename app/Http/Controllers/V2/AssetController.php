@@ -56,7 +56,6 @@ class AssetController extends Controller
                 ->setCompanyId($company->id)
                 ->setTenantId($company->tenant_id);
 
-
             $user = $request->user();
             if($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)){
                 $createAssetDto->setStatus(AssetStatusEnum::AVAILABLE->value);
