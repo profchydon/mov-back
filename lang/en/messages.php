@@ -44,4 +44,6 @@ return [
     'company-sole-admin' => 'You have been set as the company\'s sole admin',
     'onboarding-already-completed' => 'You have already completed the onboarding on Rayda Core',
     'invite-not-found' => 'No invitiation found',
+    'only-admins-can-approve' => 'Only admins can approve assets',
+    'wrong-status-update' => 'You can only approve assets with pending status'
 ];

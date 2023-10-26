@@ -57,7 +57,7 @@ class AssetController extends Controller
                 ->setTenantId($company->tenant_id);
 
             $user = $request->user();
-            if($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)){
+            if ($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)) {
                 $createAssetDto->setStatus(AssetStatusEnum::AVAILABLE->value);
             }
 
@@ -199,6 +199,18 @@ class AssetController extends Controller
             'next_maintenance_date' => ['nullable', 'date'],
         ]);
 
+        if ($request->input('status') != null) {
+            $user = $request->user();
+            if (!$user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)) {
+                return $this->error(Response::HTTP_BAD_REQUEST, __('messages.only-admins-can-approve'));
+            }
+
+            if($asset->status != AssetStatusEnum::PENDING_APPROVAL->value){
+                return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-status-update'));
+            }
+        }
+
+
         $image = $request->file('image');
         if ($image) {
             $this->uploadAssetImage($request->image, $asset);
@@ -218,7 +230,8 @@ class AssetController extends Controller
             ->setAcquisitionType($request->input('acquisition_type'))
             ->setCondition($request->input('condition'))
             ->setMaintenanceCycle($request->input('maintenance_cycle'))
-            ->setNextMaintenanceDate($request->input('next_maintenance_date'));
+            ->setNextMaintenanceDate($request->input('next_maintenance_date'))
+            ->setStatus($request->input('status'));
 
         $this->assetRepository->updateById($asset->id, $dto->toSynthensizedArray());
 
