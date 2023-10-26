@@ -104,7 +104,6 @@ class SSOService implements SSOServiceInterface
 
     public function createSSOUser(CreateSSOUserDTO $dto, string $ssoCompanyId)
     {
-
         $url = sprintf('%s/api/v1/companies/%s/users', env('SSO_URL'), $ssoCompanyId);
 
         $data = $dto->toArray();

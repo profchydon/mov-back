@@ -25,6 +25,7 @@ class CreateVendorDTO
     public function setName(string $name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -36,6 +37,7 @@ class CreateVendorDTO
     public function setEmail(string $email)
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -47,6 +49,7 @@ class CreateVendorDTO
     public function setPhone(string $phone)
     {
         $this->phone = $phone;
+
         return $this;
     }
 
@@ -58,6 +61,7 @@ class CreateVendorDTO
     public function setAddress(string $address)
     {
         $this->address = $address;
+
         return $this;
     }
 
@@ -69,6 +73,7 @@ class CreateVendorDTO
     public function setStatus(string $status)
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -80,6 +85,7 @@ class CreateVendorDTO
     public function setTenantId(string $tenant_id)
     {
         $this->tenant_id = $tenant_id;
+
         return $this;
     }
 
@@ -91,6 +97,7 @@ class CreateVendorDTO
     public function setCompanyId(string $company_id)
     {
         $this->company_id = $company_id;
+
         return $this;
     }
 

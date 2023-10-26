@@ -10,6 +10,7 @@ trait QueryFormatter
     public static function appendValidFiltersToQuery(Builder $query, Request $request, array $validFilters): Builder
     {
         $validFiltersKeyValues = static::getValidFiltersKeyValuesFromRequest($request, $validFilters);
+
         return static::getQueryWithValidFilters($query, $validFiltersKeyValues);
     }
 
@@ -111,6 +112,7 @@ trait QueryFormatter
     protected static function appendValidHavingCriteriaToQuery(Builder $query, Request $request, array $validHavingCriteria): Builder
     {
         $validHavingKeyValues = static::getValidHavingCriteria($request, $validHavingCriteria);
+
         return static::getQueryWithValidHavingCriteria($query, $validHavingKeyValues);
     }
 
@@ -218,6 +220,7 @@ trait QueryFormatter
     public static function appendValidSortCriteriaToQuery(Builder $query, Request $request, array $validSortCriteria): Builder
     {
         $validSortKeyValues = static::getValidSortCriteriaKeyValuesFromRequest($request, $validSortCriteria);
+
         return static::getQueryWithValidSortCriteria($query, $validSortKeyValues);
     }
 

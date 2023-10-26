@@ -5,8 +5,8 @@ namespace Tests\Feature\V2\Onboarding;
 use App\Domains\Enum\User\UserStageEnum;
 use App\Models\Plan;
 use App\Models\User;
-use Tests\TestCase;
 use Illuminate\Http\Response;
+use Tests\TestCase;
 
 beforeEach(function () {
     $this->artisan('db:seed --class=PermissionSeeder');
@@ -28,11 +28,11 @@ it('can create a company', function () {
             'last_name' => fake()->lastName(),
             'email' => $email,
             'phone' => $phone,
-            'password' => "*Rayda38349#",
+            'password' => '*Rayda38349#',
         ],
     ];
 
-    $response = $this->postJson(TestCase::fullLink("/companies"), $data);
+    $response = $this->postJson(TestCase::fullLink('/companies'), $data);
 
     $response->assertStatus(Response::HTTP_CREATED)->assertJsonStructure([
         'success',
@@ -44,7 +44,6 @@ it('can create a company', function () {
     ]);
 
     $this->assertDatabaseHas('companies', $data['company']);
-
 });
 
 // it('can update company details', function () {

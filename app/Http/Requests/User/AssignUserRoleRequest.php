@@ -24,7 +24,6 @@ class AssignUserRoleRequest extends FormRequest
      */
     public function rules(): array
     {
-
         return [
             'user_id' => ['required', Rule::exists('users', 'id')],
             'company_id' => ['required', Rule::exists('companies', 'id')],
@@ -43,5 +42,4 @@ class AssignUserRoleRequest extends FormRequest
 
         return $dto;
     }
-
 }

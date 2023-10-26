@@ -4,7 +4,6 @@ namespace Tests\Feature\V2\Departments;
 
 use App\Models\Company;
 use App\Models\Department;
-use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -32,7 +31,7 @@ it('can edit department with valid data', function () {
     $department = Department::factory()->create();
 
     $payload = [
-        'name' => "new name",
+        'name' => 'new name',
     ];
 
     $response = $this->putJson(TestCase::fullLink("/companies/$department->company_id/departments/{$department->id}"), $payload);

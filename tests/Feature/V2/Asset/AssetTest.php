@@ -2,7 +2,6 @@
 
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\OfficeConstant;
-use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Domains\Enum\Asset\AssetAcquisitionTypeEnum;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Models\AssetType;

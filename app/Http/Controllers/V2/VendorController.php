@@ -8,7 +8,6 @@ use App\Http\Requests\CreateVendorRequest;
 use App\Models\Company;
 use App\Models\Vendor;
 use App\Repositories\Contracts\VendorRepositoryInterface;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class VendorController extends Controller

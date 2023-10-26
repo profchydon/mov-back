@@ -6,11 +6,9 @@ use App\Domains\Constant\AssetCheckoutConstant;
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Events\AssetStatusUpdatedEvent;
-use App\Traits\GetsTableName;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Asset extends BaseModel
@@ -19,13 +17,13 @@ class Asset extends BaseModel
 
     protected static $searchable = [
         'make',
-        'model'
+        'model',
     ];
 
     protected static $filterable = [
         'condition' => 'assets.condition',
         'type' => 'assets.type_id',
-        'assignee' => 'assets.assigned_to'
+        'assignee' => 'assets.assigned_to',
     ];
 
     protected $hidden = [

@@ -28,7 +28,7 @@ class CreateAssetRequest extends FormRequest
             'serial_number' => 'required|string',
             'purchase_price' => ['required', 'decimal:2,4'],
             'purchase_date' => 'nullable|date',
-            'office_id' => ['required', Rule::exists('offices', 'id')],
+            'office_id' => ['required', Rule::exists('offices', 'id')->where('company_id', $company->id)],
             'currency' => ['required', Rule::exists('currencies', 'code')],
         ];
     }
@@ -50,7 +50,7 @@ class CreateAssetRequest extends FormRequest
             ->setNextMaintenanceDate($this->input('next_maintenance_date', null))
             ->setIsInsured($this->input('is_insured', false))
             ->setCompanyId($company->id)
-            ->setStatus($this->input('status' , AssetStatusEnum::AVAILABLE->value));
+            ->setStatus($this->input('status', AssetStatusEnum::AVAILABLE->value));
 
         return $dto;
     }

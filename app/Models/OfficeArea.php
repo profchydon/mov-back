@@ -4,10 +4,7 @@ namespace App\Models;
 
 use App\Domains\Constant\OfficeConstant;
 use App\Domains\Enum\Office\OfficeStatusEnum;
-use App\Traits\GetsTableName;
 use App\Traits\UsesUUID;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;

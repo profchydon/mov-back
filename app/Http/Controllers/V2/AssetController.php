@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\V2;
 
-use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\AssetMakeConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Domains\DTO\Asset\UpdateAssetDTO;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Asset\CreateAssetFromArrayRequest;
 use App\Http\Requests\Asset\CreateAssetRequest;
 use App\Models\Asset;
 use App\Models\Company;
@@ -15,11 +16,11 @@ use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\FileRepositoryInterface;
 use App\Rules\HumanNameRule;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -48,24 +49,44 @@ class AssetController extends Controller
     {
         Log::info('Asset Creation Request Received', $request->all());
 
-        try {
-            $createAssetDto = $request->createAssetDTO()
+        $createAssetDto = $request->createAssetDTO()
+            ->setCompanyId($company->id)
+            ->setTenantId($company->tenant_id)
+            ->toArray();
+
+        $asset = $this->assetRepository->create($createAssetDto);
+
+        return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $asset);
+    }
+
+    public function createBulk(Company $company, CreateAssetFromArrayRequest $request)
+    {
+        $assetDTOs = collect($request->assets)->transform(function ($asset) use ($company) {
+            $dto = new CreateAssetDTO();
+            $dto->setTenantId($company->tenant_id)
                 ->setCompanyId($company->id)
-                ->setTenantId($company->tenant_id)
-                ->toArray();
+                ->setMake(Arr::get($asset, 'make', null))
+                ->setModel(Arr::get($asset, 'model', null))
+                ->setTypeId(Arr::get($asset, 'type_id'))
+                ->setSerialNumber(Arr::get($asset, 'serial_number'))
+                ->setPurchasePrice(Arr::get($asset, 'purchase_price', null))
+                ->setPurchaseDate(Arr::get($asset, 'purchase_date', null))
+                ->setOfficeId(Arr::get($asset, 'office_id'))
+                ->setOfficeAreaId(Arr::get($asset, 'office_area_id', null))
+                ->setCurrency(Arr::get($asset, 'currency'))
+                ->setMaintenanceCycle(Arr::get($asset, 'maintenance_cycle', null))
+                ->setNextMaintenanceDate(Arr::get($asset, 'next_maintenance_date', null))
+                ->setIsInsured(Arr::get($asset, 'is_insured', false))
+                ->setStatus(Arr::get($asset, 'status', AssetStatusEnum::PENDING_APPROVAL->value));
 
-            $asset = $this->assetRepository->create($createAssetDto);
+            return $dto;
+        });
 
-            return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $asset);
-        } catch (\ErrorException $exception) {
-            Log::info('Asset Creation Error', $request->all());
+        $assetDTOs->each(function ($dto) {
+            dispatch(fn () => $this->assetRepository->create($dto->toArray()));
+        });
 
-            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __($exception->getMessage()));
-        } catch (Exception $exception) {
-            Log::info('Asset Creation Error', $request->all());
-
-            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __($exception->getMessage()));
-        }
+        return $this->response(Response::HTTP_ACCEPTED, __("{$assetDTOs->count()} assets being created"));
     }
 
     /**
@@ -85,7 +106,7 @@ class AssetController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assetMakes);
     }
 
-    public function createBulk(Company $company, Request $request)
+    public function createFromCSV(Company $company, Request $request)
     {
         $request->validate([
             'file' => 'required|file|mimes:xls,xlsx',
@@ -216,6 +237,7 @@ class AssetController extends Controller
         $this->assetRepository->updateById($asset->id, $dto->toSynthensizedArray());
 
         $asset->refresh();
+
         return $this->response(Response::HTTP_OK, __('messages.asset-updated'), $asset);
     }
 }
