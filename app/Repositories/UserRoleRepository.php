@@ -5,8 +5,6 @@ namespace App\Repositories;
 use App\Domains\DTO\AssignUserRoleDTO;
 use App\Models\UserRole;
 use App\Repositories\Contracts\UserRoleRepositoryInterface;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class UserRoleRepository extends BaseRepository implements UserRoleRepositoryInterface
 {
@@ -15,10 +13,7 @@ class UserRoleRepository extends BaseRepository implements UserRoleRepositoryInt
         return UserRole::class;
     }
 
-    public function assignUserRole(AssignUserRoleDTO $assignUserRoleDTO) {
-
-        
-
+    public function assignUserRole(AssignUserRoleDTO $assignUserRoleDTO)
+    {
     }
-
 }

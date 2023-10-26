@@ -21,6 +21,19 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return Asset::class;
     }
 
+    public function getCompanyAssets(Company|string $company)
+    {
+        if (!($company instanceof  Company)) {
+            $company = Company::findOrFail($company);
+        }
+
+        $assets = $company->assets();
+        $assets = $assets->with(['type', 'office', 'assignee'])->orderBy('assets.created_at', 'desc');
+        $assets = Asset::appendToQueryFromRequestQueryParameters($assets);
+
+        return $assets->paginate();
+    }
+
     public function importCompanyAssets(Company $company, UploadedFile $file)
     {
         $import = new AssetImport($company);

@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\UserRoleConstant;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Role extends Model
@@ -14,7 +12,7 @@ class Role extends Model
     use HasFactory, GetsTableName;
 
     public $guarded = [
-        'id'
+        'id',
     ];
 
     public static $returnable = ['id', 'name'];

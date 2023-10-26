@@ -13,4 +13,6 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
     public function markAsStolen(string $assetId): Asset;
 
     public function markAsArchived(string $assetId): Asset;
+
+    public function getCompanyAssets(Company|string $company);
 }

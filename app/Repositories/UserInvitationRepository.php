@@ -3,10 +3,8 @@
 namespace App\Repositories;
 
 use App\Domains\DTO\InviteCompanyUsersDTO;
-use App\Mail\CompanyUserInvitationEmail;
 use App\Models\UserInvitation;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class UserInvitationRepository extends BaseRepository implements UserInvitationRepositoryInterface
@@ -15,7 +13,6 @@ class UserInvitationRepository extends BaseRepository implements UserInvitationR
     {
         return UserInvitation::class;
     }
-
 
     public function inviteCompanyUser(InviteCompanyUsersDTO $userDto)
     {

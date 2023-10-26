@@ -77,7 +77,7 @@ class User extends Authenticatable
 
     public function getMorphClass()
     {
-        return User::class;
+        return self::class;
     }
 
     public function hasPermissions(string $permission)

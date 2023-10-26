@@ -23,5 +23,3 @@ class UserInvitationCreatedEvent implements ShouldBroadcast
         return new PrivateChannel('channel-name');
     }
 }
-
-

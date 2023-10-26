@@ -40,7 +40,6 @@ class CompanyController extends Controller
         private readonly SSOServiceInterface $ssoService,
         private readonly UserRoleRepositoryInterface $userRoleRepository,
         private readonly RoleRepositoryInterface $roleRepository,
-
     ) {
     }
 
@@ -65,7 +64,6 @@ class CompanyController extends Controller
             }
 
             try {
-
                 $dbData = DB::transaction(function () use ($request, $createSSOCompany) {
                     $tenant = $this->tenantRepository->create($request->getTenantDTO()->toArray());
 
@@ -119,7 +117,6 @@ class CompanyController extends Controller
 
     public function inviteCompanyUsers(InviteUserRequest $request, Company $company)
     {
-
         $user = $company->users[0];
 
         if ($user->stage == UserStageEnum::VERIFICATION->value || $user->stage == UserStageEnum::COMPANY_DETAILS || $user->stage == UserStageEnum::SUBSCRIPTION_PLAN) {

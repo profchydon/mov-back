@@ -42,7 +42,7 @@ class AddCompanyDetailsRequest extends FormRequest
             ->setAddress($this->input('address'))
             ->setCountry($this->input('country'))
             ->setState($this->input('state'));
-            
+
         return $dto;
     }
 }

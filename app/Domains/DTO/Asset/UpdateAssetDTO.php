@@ -2,38 +2,31 @@
 
 namespace App\Domains\DTO\Asset;
 
-use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Traits\DTOToArray;
 
-final class CreateAssetDTO
+final class UpdateAssetDTO
 {
     use DTOToArray;
 
     private ?string $make = null;
     private ?string $model = null;
-    private string $type_id;
-    private string $serial_number;
-    private float $purchase_price;
+    private ?string $type_id;
+    private ?string $serial_number;
+    private ?float $purchase_price;
     private ?string $purchase_date = null;
-    private string $office_id;
+    private ?string $office_id;
     private ?string $office_area_id = null;
-    private string $currency;
+    private ?string $currency;
     private ?string $status;
     private ?string $maintenance_cycle = null;
     private ?string $next_maintenance_date = null;
-    private bool $is_insured = false;
-    private string $tenant_id;
+    private ?bool $is_insured = false;
+    private ?string $tenant_id;
     private ?string $company_id;
-    private string $added_at;
-    private string $vendor_id;
-    private string $acquisition_type;
-    private string $condition;
-
-    public function __construct()
-    {
-        $this->added_at = now();
-        $this->status = AssetStatusEnum::AVAILABLE->value;
-    }
+    private ?string $added_at;
+    private ?string $vendor_id;
+    private ?string $acquisition_type;
+    private ?string $condition;
 
     /**
      * @return string|null
@@ -76,7 +69,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getTypeId(): string
+    public function getTypeId(): ?string
     {
         return $this->type_id;
     }
@@ -85,7 +78,7 @@ final class CreateAssetDTO
      * @param string $type_id
      * @return CreateAssetDTO
      */
-    public function setTypeId(string $type_id): self
+    public function setTypeId(?string $type_id): self
     {
         $this->type_id = $type_id;
 
@@ -95,7 +88,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getSerialNumber(): string
+    public function getSerialNumber(): ?string
     {
         return $this->serial_number;
     }
@@ -104,7 +97,7 @@ final class CreateAssetDTO
      * @param string $serial_number
      * @return CreateAssetDTO
      */
-    public function setSerialNumber(string $serial_number): self
+    public function setSerialNumber(?string $serial_number): self
     {
         $this->serial_number = $serial_number;
 
@@ -114,7 +107,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getPurchasePrice(): string
+    public function getPurchasePrice(): ?string
     {
         return $this->purchase_price;
     }
@@ -123,7 +116,7 @@ final class CreateAssetDTO
      * @param string $purchase_price
      * @return CreateAssetDTO
      */
-    public function setPurchasePrice(string $purchase_price): self
+    public function setPurchasePrice(?string $purchase_price): self
     {
         $this->purchase_price = $purchase_price;
 
@@ -152,7 +145,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getOfficeId(): string
+    public function getOfficeId(): ?string
     {
         return $this->office_id;
     }
@@ -161,7 +154,7 @@ final class CreateAssetDTO
      * @param string $office_id
      * @return CreateAssetDTO
      */
-    public function setOfficeId(string $office_id): self
+    public function setOfficeId(?string $office_id): self
     {
         $this->office_id = $office_id;
 
@@ -190,7 +183,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getCurrency(): string
+    public function getCurrency(): ?string
     {
         return $this->currency;
     }
@@ -199,7 +192,7 @@ final class CreateAssetDTO
      * @param string $currency
      * @return CreateAssetDTO
      */
-    public function setCurrency(string $currency): self
+    public function setCurrency(?string $currency): self
     {
         $this->currency = $currency;
 
@@ -209,7 +202,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -218,7 +211,7 @@ final class CreateAssetDTO
      * @param string $status
      * @return CreateAssetDTO
      */
-    public function setStatus(string $status): self
+    public function setStatus(?string $status): self
     {
         $this->status = $status;
 
@@ -228,7 +221,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getMaintenanceCycle(): string
+    public function getMaintenanceCycle(): ?string
     {
         return $this->maintenance_cycle;
     }
@@ -237,7 +230,7 @@ final class CreateAssetDTO
      * @param string $maintenance_cycle
      * @return CreateAssetDTO
      */
-    public function setMaintenanceCycle(string | null $maintenance_cycle): self
+    public function setMaintenanceCycle(?string $maintenance_cycle): self
     {
         $this->maintenance_cycle = $maintenance_cycle;
 
@@ -266,7 +259,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getIsInsured(): bool
+    public function getIsInsured(): ?bool
     {
         return $this->is_insured;
     }
@@ -275,7 +268,7 @@ final class CreateAssetDTO
      * @param string $is_insured
      * @return CreateAssetDTO
      */
-    public function setIsInsured(string $is_insured): self
+    public function setIsInsured(?bool $is_insured): self
     {
         $this->is_insured = $is_insured;
 
@@ -285,7 +278,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getTenantId(): string
+    public function getTenantId(): ?string
     {
         return $this->tenant_id;
     }
@@ -294,7 +287,7 @@ final class CreateAssetDTO
      * @param string $tenant_id
      * @return CreateAssetDTO
      */
-    public function setTenantId(string $tenant_id): self
+    public function setTenantId(?string $tenant_id): self
     {
         $this->tenant_id = $tenant_id;
 
@@ -304,7 +297,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getCompanyId(): string
+    public function getCompanyId(): ?string
     {
         return $this->company_id;
     }
@@ -313,7 +306,7 @@ final class CreateAssetDTO
      * @param string $company_id
      * @return CreateAssetDTO
      */
-    public function setCompanyId(string $company_id): self
+    public function setCompanyId(?string $company_id): self
     {
         $this->company_id = $company_id;
 
@@ -324,7 +317,7 @@ final class CreateAssetDTO
      * @param string $vendor_id
      * @return CreateAssetDTO
      */
-    public function setVendorId(string $vendor_id): self
+    public function setVendorId(?string $vendor_id): self
     {
         $this->vendor_id = $vendor_id;
 
@@ -334,7 +327,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getVendorId()
+    public function getVendorId(): ?string
     {
         return $this->vendor_id;
     }
@@ -343,7 +336,7 @@ final class CreateAssetDTO
      * @param string $acquisition_type
      * @return CreateAssetDTO
      */
-    public function setAcquisitionType(string $acquisition_type): self
+    public function setAcquisitionType(?string $acquisition_type): self
     {
         $this->acquisition_type = $acquisition_type;
 
@@ -353,7 +346,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getAcquisitionType()
+    public function getAcquisitionType(): ?string
     {
         return $this->acquisition_type;
     }
@@ -362,7 +355,7 @@ final class CreateAssetDTO
      * @param string $condition
      * @return CreateAssetDTO
      */
-    public function setCondition(string $condition): self
+    public function setCondition(?string $condition): self
     {
         $this->condition = $condition;
 
@@ -372,7 +365,7 @@ final class CreateAssetDTO
     /**
      * @return string
      */
-    public function getCondition()
+    public function getCondition(): ?string
     {
         return $this->condition;
     }

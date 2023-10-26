@@ -1,27 +1,20 @@
 <?php
 
-use Tests\TestCase;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Office;
-use App\Models\Company;
-use App\Models\UserCompany;
-use Illuminate\Support\Str;
-use Illuminate\Http\Response;
-use App\Repositories\AssetRepository;
-use App\Domains\Constant\UserConstant;
-use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\OfficeConstant;
-use App\Domains\Enum\User\UserStageEnum;
-use App\Domains\DTO\Asset\CreateAssetDTO;
-use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Domains\Constant\UserCompanyConstant;
+use App\Domains\Constant\UserConstant;
 use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\Enum\User\UserInvitationStatusEnum;
+use App\Domains\Enum\User\UserStageEnum;
+use App\Models\Company;
+use App\Models\Office;
+use App\Models\Role;
+use App\Models\User;
 use App\Models\UserInvitation;
+use Illuminate\Http\Response;
+use Tests\TestCase;
 
 beforeEach(function () {
-
     $this->artisan('db:seed --class=RoleSeeder');
     $this->role = Role::inRandomOrder()->first();
     $this->company = Company::factory()->create();
@@ -41,10 +34,9 @@ beforeEach(function () {
 });
 
 test('invite user', function () {
-
     $data = [
         ['email' => fake()->safeEmail(), 'role_id' => $this->role->id],
-        ['email' => fake()->safeEmail(), 'role_id' => $this->role->id]
+        ['email' => fake()->safeEmail(), 'role_id' => $this->role->id],
     ];
 
     $payload = [
@@ -66,7 +58,6 @@ test('invite user', function () {
 });
 
 test('fetch user invitation', function () {
-
     $invitation = UserInvitation::factory()->create([
         UserInvitationConstant::ROLE_ID => $this->role->id,
         UserInvitationConstant::COMPANY_ID => $this->company,
@@ -82,7 +73,6 @@ test('fetch user invitation', function () {
 });
 
 test('error when email provider is different from invited email', function () {
-
     $invitation = UserInvitation::factory()->create([
         UserInvitationConstant::ROLE_ID => $this->role->id,
         UserInvitationConstant::COMPANY_ID => $this->company,
@@ -101,7 +91,6 @@ test('error when email provider is different from invited email', function () {
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     expect($response->getData()->success)->toBeFalse();
     expect($response->getData()->message)->toBe('Validation error');
-
 });
 
 
@@ -126,7 +115,7 @@ test('error when email provider is different from invited email', function () {
 //     $response->assertOk();
 //     expect($response->getData()->success)->toBeTrue();
 
-        // $initationAfterUpdate = $invitation->fresh();
-        // expect($initationAfterUpdate->status)->toBe(UserInvitationStatusEnum::ACCEPTED->value);
+// $initationAfterUpdate = $invitation->fresh();
+// expect($initationAfterUpdate->status)->toBe(UserInvitationStatusEnum::ACCEPTED->value);
 
 // });
