@@ -1,9 +1,6 @@
 
 FROM php:8.1-fpm
 
-# Copy composer.lock and composer.json
-COPY composer.lock composer.json /var/www/
-
 # Set working directory
 WORKDIR /var/www
 ENV TZ=Africa/Lagos
@@ -45,12 +42,13 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
-# Copy existing application directory contents
-COPY . /var/www
+# Copy code to /var/www
+COPY --chown=www:www-data . /var/www
 
-# Copy existing application directory permissions
-COPY --chown=www:www . /var/www
-COPY --chown=www:www . /var/www/storage
+# add root to www group
+RUN chown -R www:www-data /var/www/storage
+RUN chmod -R ug+w /var/www/storage
+RUN chmod -R 777 /var/www/storage
 
 # Copy nginx/php/supervisor configs
 RUN cp ./docker/supervisord.conf /etc/supervisord.conf
@@ -64,9 +62,6 @@ RUN touch /var/log/php/errors.log && chmod 777 /var/log/php/errors.log
 # Deployment steps
 RUN composer install --ignore-platform-reqs
 RUN chmod +x /var/www/docker/run.sh
-
-# Change current user to www
-USER www
 
 EXPOSE 80
 ENTRYPOINT ["/var/www/docker/run.sh"]
