@@ -95,7 +95,9 @@ final class AssetCheckoutDTO
 
     public function setReceiverType(?string $receiver_type): self
     {
-        $this->receiver_type = self::REVEIVER_TYPE[$receiver_type];
+        if (!empty($receiver_type)) {
+            $this->receiver_type = self::REVEIVER_TYPE[$receiver_type];
+        }
 
         return $this;
     }

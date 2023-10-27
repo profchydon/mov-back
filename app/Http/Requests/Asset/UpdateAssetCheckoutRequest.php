@@ -31,10 +31,10 @@ class UpdateAssetCheckoutRequest extends FormRequest
     public function updateAssetDTO()
     {
         $dto = new AssetCheckoutDTO();
-        $dto->setReason($this->input('reason'))
-            ->setComment($this->input('comment'))
-            ->setReceiverType($this->input('receiver_type'))
-            ->setReceiverId($this->input('receiver_id'));
+        $dto->setReason($this->input('reason', null))
+            ->setComment($this->input('comment', null))
+            ->setReceiverType($this->input('receiver_type', null))
+            ->setReceiverId($this->input('receiver_id', null));
 
         if (!empty($this->input('return_date'))) {
             $dto->setReturnDate(Carbon::createFromFormat('Y-m-d', $this->input('return_date')));
