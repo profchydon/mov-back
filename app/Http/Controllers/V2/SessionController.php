@@ -70,7 +70,7 @@ class SessionController extends Controller
         $userRoles = $user->roles()->with('permissions')->get();
 
         $serializePermission = new SerializePermission($userRoles);
-
+        
         return [
             'user' => $user,
             'permissions' => $serializePermission->stringifyPermission(),
