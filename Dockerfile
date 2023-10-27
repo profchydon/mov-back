@@ -27,8 +27,7 @@ RUN apt-get update && apt-get install -y \
     nginx
 
 # Install php extensions
-RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions mbstring pdo_mysql zip exif pcntl gd memcached pdo pdo_pgsql
+RUN docker-php-ext-install mbstring pdo_mysql zip exif pcntl gd memcached pdo pdo_pgsql
 
 # Copy files
 COPY . /var/www
