@@ -4,10 +4,10 @@ FROM php:8.1-fpm
 USER root
 
 WORKDIR /var/www
+ENV TZ=Africa/Lagos
 
-# setup node js source will be used later to install node js
-RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
-RUN ["sh",  "./nodesource_setup.sh"]
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -27,7 +27,8 @@ RUN apt-get update && apt-get install -y \
     nginx
 
 # Install php extensions
-RUN docker-php-ext-install mbstring pdo_mysql zip exif pcntl gd memcached pdo pdo_pgsql
+RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
+    install-php-extensions mbstring pdo_mysql zip exif pcntl gd memcached pdo pdo_pgsql
 
 # Copy files
 COPY . /var/www
