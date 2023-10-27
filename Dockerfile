@@ -32,20 +32,14 @@ RUN apt-get update && apt-get install -y \
     libmemcached-dev \
     nginx
 
-
 # Install supervisor
 RUN apt-get install -y supervisor
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install extensions
-RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring zip exif pcntl
-RUN docker-php-ext-configure gd 
-RUN docker-php-ext-install gd
-
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Add user for laravel application
 RUN groupadd -g 1000 www
@@ -56,12 +50,24 @@ COPY . /var/www
 
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
+COPY --chown=www:www . /var/www/storage
+
+# Copy nginx/php/supervisor configs
+RUN cp ./docker/supervisord.conf /etc/supervisord.conf
+RUN cp ./docker/php.ini /usr/local/etc/php/conf.d/php.ini
+RUN cp ./docker/nginx.conf /etc/nginx/sites-enabled/default
+
+# PHP Error Log Files
+RUN mkdir /var/log/php
+RUN touch /var/log/php/errors.log && chmod 777 /var/log/php/errors.log
+
+# Deployment steps
+RUN composer install --ignore-platform-reqs
+RUN chmod +x /var/www/docker/run.sh
 
 # Change current user to www
 USER www
 
-# Deployment steps
-RUN chmod +x /var/www/docker/run.sh
-
 EXPOSE 80
 ENTRYPOINT ["/var/www/docker/run.sh"]
+# CMD ["chmod", "-R", "777", "/var/www/storage"]
