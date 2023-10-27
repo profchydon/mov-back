@@ -2,9 +2,6 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -12,7 +9,7 @@ trait WithActivityLog
 {
     use LogsActivity;
 
-    protected static $recordEvents = ['created','retrieved','updated','deleted'];
+    protected static $recordEvents = ['created', 'retrieved', 'updated', 'deleted'];
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -20,7 +17,7 @@ trait WithActivityLog
         $className = array_pop($className);
 
         return LogOptions::defaults()
-            ->setDescriptionForEvent(fn($eventName) => "{$className} was {$eventName}")
+            ->setDescriptionForEvent(fn ($eventName) => "{$className} was {$eventName}")
             ->logAll();
     }
 
@@ -28,5 +25,4 @@ trait WithActivityLog
     {
         return 'Core Backend';
     }
-
 }

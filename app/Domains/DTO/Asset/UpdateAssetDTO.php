@@ -28,7 +28,6 @@ final class UpdateAssetDTO
     private ?string $acquisition_type;
     private ?string $condition;
 
-
     /**
      * @return string|null
      */
@@ -321,6 +320,7 @@ final class UpdateAssetDTO
     public function setVendorId(?string $vendor_id): self
     {
         $this->vendor_id = $vendor_id;
+
         return $this;
     }
 
@@ -339,6 +339,7 @@ final class UpdateAssetDTO
     public function setAcquisitionType(?string $acquisition_type): self
     {
         $this->acquisition_type = $acquisition_type;
+
         return $this;
     }
 
@@ -357,6 +358,7 @@ final class UpdateAssetDTO
     public function setCondition(?string $condition): self
     {
         $this->condition = $condition;
+
         return $this;
     }
 

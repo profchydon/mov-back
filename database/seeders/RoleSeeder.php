@@ -24,11 +24,9 @@ class RoleSeeder extends Seeder
         ]);
 
         $roles->each(function ($role) {
-
             $dbRole = Role::firstOrCreate(['name' => $role->value]);
 
             switch ($role) {
-
                 case RoleTypes::ADMINISTRATOR:
                     $permissions = Permission::all();
                     $dbRole->syncPermissions($permissions);
@@ -57,10 +55,9 @@ class RoleSeeder extends Seeder
                     break;
 
                 default:
-                    # code...
+                    // code...
                     break;
             }
-
         });
     }
 }

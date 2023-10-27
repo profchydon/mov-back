@@ -22,14 +22,13 @@ class RoleResource extends JsonResource
         $data = [];
 
         foreach ($roles as $role) {
-
             $permission = $role->permissions;
 
             array_push($data, [
                 'id' => $role->id,
                 'name' => $role->name,
                 'company_id' => $role->company_id,
-                'permissions' => PermissionResource::collection($permission)
+                'permissions' => PermissionResource::collection($permission),
             ]);
         }
 

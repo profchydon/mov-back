@@ -25,7 +25,7 @@ final class AssetCheckoutDTO
 
     const REVEIVER_TYPE = [
         'users' => User::class,
-        'vendors' => Vendor::class
+        'vendors' => Vendor::class,
     ];
 
     public function getTenantId(): ?string

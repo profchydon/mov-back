@@ -23,7 +23,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function getCompanyAssets(Company|string $company)
     {
-        if( !($company instanceof  Company)){
+        if (!($company instanceof  Company)) {
             $company = Company::findOrFail($company);
         }
 
