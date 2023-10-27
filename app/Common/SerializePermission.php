@@ -2,10 +2,8 @@
 
 namespace App\Common;
 
-use App\Models\Role;
 class SerializePermission
 {
-
     /**
      * SerializePermission constructor.
      * @param object[] $roles
@@ -25,22 +23,16 @@ class SerializePermission
         return $roles;
     }
 
-
     public function stringifyPermission(): string
     {
-
-        $permissions = "";
+        $permissions = '';
 
         foreach ($this->roles as $role) {
-
-           foreach ($role->permissions as $permission) {
-
-                $permissions .= !str_contains($permissions, $permission->name) ? $permission->name . "," : null;
-
-           }
-
+            foreach ($role->permissions as $permission) {
+                $permissions .= !str_contains($permissions, $permission->name) ? $permission->name . ',' : null;
+            }
         }
+
         return rtrim($permissions, ',');
     }
-
 }

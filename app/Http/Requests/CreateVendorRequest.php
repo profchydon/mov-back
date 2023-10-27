@@ -26,7 +26,7 @@ class CreateVendorRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'nullable|email',
             'phone' => 'nullable|string',
-            'address' => 'nullable|string'
+            'address' => 'nullable|string',
         ];
     }
 

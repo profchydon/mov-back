@@ -8,7 +8,6 @@ use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserInvitationStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\AcceptUserInvitationRequest;
-use App\Models\UserInvitation;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
@@ -16,7 +15,6 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserRoleRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
@@ -55,7 +53,6 @@ class UserInvitationController extends Controller
         }
 
         try {
-
             $userDto = $request->getSSOUserDTO();
 
             $company = $invitation->company;
@@ -67,7 +64,6 @@ class UserInvitationController extends Controller
             }
 
             $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code, $invitation) {
-
                 $ssoData = $createSSOUser->json()['data'];
 
                 $userDto = $request->getUserDTO()->setTenantId($company->tenant_id)->setSsoId($ssoData['id']);
@@ -90,7 +86,9 @@ class UserInvitationController extends Controller
                     UserRoleConstant::ROLE_ID => $role->id,
                 ]);
 
-                $this->userInvitationRepository->update(UserInvitationConstant::CODE, $code,
+                $this->userInvitationRepository->update(
+                    UserInvitationConstant::CODE,
+                    $code,
                     [UserInvitationConstant::STATUS => UserInvitationStatusEnum::ACCEPTED]
                 );
 

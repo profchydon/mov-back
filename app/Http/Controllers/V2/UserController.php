@@ -75,7 +75,6 @@ class UserController extends Controller
 
     public function userDetails(Request $request)
     {
-
         $user = $request->user();
         $userCompany = $user->userCompanies()->first();
         $userRoles = $user->roles()->with('permissions')->get();
@@ -85,7 +84,7 @@ class UserController extends Controller
         $response = [
             'user' => new UserResource($user),
             'company' => new CompanyResource($company),
-            'roles' =>  new RoleResource($userRoles),
+            'roles' => new RoleResource($userRoles),
             'permissions' => $serializePermission->stringifyPermission(),
         ];
 

@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Route;
 // Asset
 Route::middleware(['auth:sanctum'])->controller(AssetController::class)->prefix('companies')->group(function () {
     Route::post('{company}/assets', 'create')->name('create.company.asset');
+    Route::post('{company}/assets/csv-upload', 'createFromCSV(')->name('create.company.csv-upload.assets');
     Route::post('{company}/assets/bulk', 'createBulk')->name('create.company.bulk.assets');
-    Route::get('{company}/assets/bulk', 'getBulkDownloadTemplate')->name('get-template.company.bulk.assets')->withoutMiddleware(\App\Http\Middleware\NormalizeResponseForFrontEndMiddleware::class);
+    Route::get('{company}/assets/csv-upload', 'getBulkDownloadTemplate')->name('get-template.company.bulk.assets')->withoutMiddleware(\App\Http\Middleware\NormalizeResponseForFrontEndMiddleware::class);
     Route::get('{company}/assets', 'get')->name('get.company.assets');
 
     Route::get('{company}/assets/{asset}', 'getAsset')->name('get.company.asset');

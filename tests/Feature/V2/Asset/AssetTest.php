@@ -2,7 +2,7 @@
 
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\OfficeConstant;
-use App\Domains\DTO\Asset\CreateAssetDTO;
+use App\Domains\Enum\Asset\AssetAcquisitionTypeEnum;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Models\AssetType;
 use App\Models\Company;
@@ -82,4 +82,18 @@ test('get asset details', function () {
     $response->assertStatus(Response::HTTP_OK);
     expect($response->getData()->success)->toBeTrue();
     expect($response->getData()->message)->toBe('Records fetched successfully');
+});
+
+test('update asset details', function () {
+    $asset = $this->company->assets()->create($this->payload);
+
+    $updatePayload = [
+        'acquisitionType' => AssetAcquisitionTypeEnum::BRAND_NEW->value,
+    ];
+
+    $response = $this->patch(TestCase::fullLink("/companies/{$this->company->id}/assets/{$asset->id}?type=details"), $updatePayload);
+
+    $response->assertStatus(Response::HTTP_OK);
+    expect($response->getData()->success)->toBeTrue();
+    expect($response->getData()->message)->toBe('Asset has been updated');
 });

@@ -327,6 +327,7 @@ final class CreateAssetDTO
     public function setVendorId(string $vendor_id): self
     {
         $this->vendor_id = $vendor_id;
+
         return $this;
     }
 
@@ -345,6 +346,7 @@ final class CreateAssetDTO
     public function setAcquisitionType(string $acquisition_type): self
     {
         $this->acquisition_type = $acquisition_type;
+
         return $this;
     }
 
@@ -363,6 +365,7 @@ final class CreateAssetDTO
     public function setCondition(string $condition): self
     {
         $this->condition = $condition;
+
         return $this;
     }
 

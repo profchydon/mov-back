@@ -77,5 +77,4 @@ class SessionController extends Controller
             'auth_token' => $user->createToken('auth_token')->plainTextToken,
         ];
     }
-
 }

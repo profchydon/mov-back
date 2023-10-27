@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\Constant\UserRoleConstant;
-use App\Events\User\UserInvitationCreatedEvent;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Log;
 
 class UserRole extends Model
 {
@@ -36,6 +33,5 @@ class UserRole extends Model
 
     protected static function booted()
     {
-
     }
 }

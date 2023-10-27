@@ -13,10 +13,8 @@ class CreateSSOUserDTO
     private string $email;
     private string $password;
 
-
     public function __construct()
     {
-
     }
 
     public function setFirstName(string $first_name)
@@ -66,5 +64,4 @@ class CreateSSOUserDTO
     {
         return $this->password;
     }
-
 }

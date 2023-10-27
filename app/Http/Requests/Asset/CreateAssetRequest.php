@@ -28,7 +28,7 @@ class CreateAssetRequest extends FormRequest
             'serial_number' => 'required|string',
             'purchase_price' => ['required', 'decimal:2,4'],
             'purchase_date' => 'nullable|date',
-            'office_id' => ['required', Rule::exists('offices', 'id')],
+            'office_id' => ['required', Rule::exists('offices', 'id')->where('company_id', $company->id)],
             'currency' => ['required', Rule::exists('currencies', 'code')],
         ];
     }
