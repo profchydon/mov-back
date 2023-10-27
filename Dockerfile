@@ -43,11 +43,18 @@ RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
 # Copy code to /var/www
-COPY --chown=www:www-data . /var/www
+# COPY --chown=www:www-data . /var/www
+
+COPY . /src
+
+RUN rm -rf /var/www && mv /src /var/www &&\
+    find /var/www/ -type d -exec chmod 755 {} \; &&\
+    find /var/www/ -type f -exec chmod 644 {} \; &&\
+    chmod -R 777 /var/www/storage /var/www/storage/logs
 
 # add root to www group
-RUN chown -R 777 /var/www/storage
-RUN chmod -R ug+w /var/www/storage
+# RUN chown -R 777 /var/www/storage
+# RUN chmod -R ug+w /var/www/storage
 # RUN chmod -R 777 /var/www/storage
 
 # Copy nginx/php/supervisor configs
