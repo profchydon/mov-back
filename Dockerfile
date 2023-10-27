@@ -1,13 +1,18 @@
+
 FROM php:8.1-fpm
 
-# setup user as root
 USER root
 
+# Set working directory
 WORKDIR /var/www
 ENV TZ=Africa/Lagos
 
+# Add docker php ext repo
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
+# Install php extensions
+RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
+    install-php-extensions mbstring pdo_mysql zip exif pcntl gd memcached pdo pdo_pgsql
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -26,32 +31,44 @@ RUN apt-get update && apt-get install -y \
     libmemcached-dev \
     nginx
 
-# Install php extensions
-RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions mbstring pdo_mysql zip exif pcntl gd memcached pdo pdo_pgsql
+# Install supervisor
+RUN apt-get install -y supervisor
 
-# Copy files
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Add user for laravel application
+# RUN groupadd -g 1000 www
+# RUN useradd -u 1000 -ms /bin/bash -g www www
+
+# Copy code to /var/www
 COPY . /var/www
+
+RUN chmod +rwx /var/www
+
+RUN chmod -R 777 /var/www /var/www/storage
+
+# add root to www group
+# RUN chown -R www:www-data /var/www/storage
+# RUN chmod -R ug+w /var/www/storage
+# RUN chmod -R 777 /var/www/storage
 
 # Copy nginx/php/supervisor configs
 RUN cp ./docker/supervisord.conf /etc/supervisord.conf
 RUN cp ./docker/php.ini /usr/local/etc/php/conf.d/php.ini
 RUN cp ./docker/nginx.conf /etc/nginx/sites-enabled/default
 
-RUN chmod +rwx /var/www
-
-RUN chmod -R 777 /var/www
-
-# setup composer and laravel
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# PHP Error Log Files
+RUN mkdir /var/log/php
+RUN touch /var/log/php/errors.log && chmod 777 /var/log/php/errors.log
 
 # Deployment steps
-RUN composer install --ignore-platform-reqs --working-dir="/var/www"
-RUN composer dump-autoload --working-dir="/var/www"
-
+RUN composer install --ignore-platform-reqs
 RUN chmod +x /var/www/docker/run.sh
 
 EXPOSE 80
-
 ENTRYPOINT ["/var/www/docker/run.sh"]
-
+# CMD ["chmod", "-R", "777", "/var/www/storage"]
