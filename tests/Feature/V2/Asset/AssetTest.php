@@ -91,7 +91,7 @@ test('update asset details', function () {
         'acquisitionType' => AssetAcquisitionTypeEnum::BRAND_NEW->value,
     ];
 
-    $response = $this->patch(TestCase::fullLink("/companies/{$this->company->id}/assets/{$asset->id}?type=details"), $updatePayload);
+    $response = $this->withToken($this->token)->patch(TestCase::fullLink("/companies/{$this->company->id}/assets/{$asset->id}?type=details"), $updatePayload);
 
     $response->assertStatus(Response::HTTP_OK);
     expect($response->getData()->success)->toBeTrue();
