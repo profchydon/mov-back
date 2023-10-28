@@ -6,6 +6,8 @@ use App\Common\JWTHandler;
 use App\Common\SerializePermission;
 use App\Domains\Constant\UserConstant;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Company\CompanyResource;
+use App\Http\Resources\User\UserResource;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -69,10 +71,13 @@ class SessionController extends Controller
 
         $userRoles = $user->roles()->with('permissions')->get();
 
+        $userCompany = $user->userCompanies()->with('company')->first();
+
         $serializePermission = new SerializePermission($userRoles);
 
         return [
-            'user' => $user,
+            'user' => new UserResource($user),
+            'company' => new CompanyResource($userCompany?->company),
             'permissions' => $serializePermission->stringifyPermission(),
             'auth_token' => $user->createToken('auth_token')->plainTextToken,
         ];
