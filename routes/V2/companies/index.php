@@ -16,6 +16,8 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::post('/sole-admin', 'soleAdminUser')->name('companies.sole.admin');
 
         Route::resource('departments', \App\Http\Controllers\DepartmentController::class);
+
+        Route::get('/users', 'getCompanyUsers')->name('get.company.users');
     });
 
 
