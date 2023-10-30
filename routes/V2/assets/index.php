@@ -6,7 +6,7 @@ use App\Http\Controllers\V2\AssetTypeController;
 use Illuminate\Support\Facades\Route;
 
 // Asset
-Route::controller(AssetController::class)->prefix('companies')->group(function () {
+Route::middleware(['auth:sanctum'])->controller(AssetController::class)->prefix('companies')->group(function () {
     Route::post('{company}/assets', 'create')->name('create.company.asset');
     Route::post('{company}/assets/csv-upload', 'createFromCSV(')->name('create.company.csv-upload.assets');
     Route::post('{company}/assets/bulk', 'createBulk')->name('create.company.bulk.assets');

@@ -74,7 +74,7 @@ class SessionController extends Controller
         $userCompany = $user->userCompanies()->with('company')->first();
 
         $serializePermission = new SerializePermission($userRoles);
-
+        
         return [
             'user' => new UserResource($user),
             'company' => new CompanyResource($userCompany?->company),
