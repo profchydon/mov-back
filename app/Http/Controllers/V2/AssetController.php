@@ -232,7 +232,7 @@ class AssetController extends Controller
 
         if ($request->input('status') != null) {
             $user = $request->user();
-            if (!$user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)) {
+            if (!$user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value, PermissionTypes::ASSET_CREATE_ACCESS->value])) {
                 return $this->error(Response::HTTP_BAD_REQUEST, __('messages.only-admins-can-approve'));
             }
 
