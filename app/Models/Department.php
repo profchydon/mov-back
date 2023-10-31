@@ -5,11 +5,12 @@ namespace App\Models;
 use App\Domains\Constant\DepartmentConstant;
 use App\Traits\QueryFormatter;
 use App\Traits\UsesUUID;
+use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Department extends BaseModel
 {
-    use UsesUUID, QueryFormatter;
+    use UsesUUID, QueryFormatter, GetsTableName;
 
     protected static $searchable = [
         'name',
@@ -28,4 +29,10 @@ class Department extends BaseModel
     {
         return $this->belongsTo(User::class, 'head_id');
     }
+
+    public function members(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'head_id');
+    }
+
 }

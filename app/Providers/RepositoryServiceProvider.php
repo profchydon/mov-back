@@ -22,6 +22,7 @@ use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
+use App\Repositories\Contracts\UserDepartmentRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserRoleRepositoryInterface;
@@ -36,6 +37,7 @@ use App\Repositories\RoleRepository;
 use App\Repositories\SubscriptionRepository;
 use App\Repositories\TenantRepository;
 use App\Repositories\UserCompanyRepository;
+use App\Repositories\UserDepartmentRepository;
 use App\Repositories\UserInvitationRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserRoleRepository;
@@ -78,5 +80,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(DepartmentRepositoryInterface::class, DepartmentRepository::class);
         $this->app->singleton(VendorRepositoryInterface::class, VendorRepository::class);
         $this->app->singleton(UserRoleRepositoryInterface::class, UserRoleRepository::class);
+        $this->app->singleton(UserDepartmentRepositoryInterface::class, UserDepartmentRepository::class);
     }
 }

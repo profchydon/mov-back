@@ -4,6 +4,7 @@
 use App\Http\Controllers\V2\CompanyController;
 use App\Http\Controllers\V2\CompanyOfficeController;
 use App\Http\Controllers\V2\SubscriptionController;
+use App\Http\Controllers\V2\DepartmentController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(CompanyController::class)->prefix('companies')->group(function () {
@@ -15,7 +16,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::post('/invitees', 'inviteCompanyUsers')->name('companies.invite.users');
         Route::post('/sole-admin', 'soleAdminUser')->name('companies.sole.admin');
 
-        Route::resource('departments', \App\Http\Controllers\DepartmentController::class);
+        Route::resource('departments', DepartmentController::class);
 
         Route::get('/users', 'getCompanyUsers')->name('get.company.users');
     });

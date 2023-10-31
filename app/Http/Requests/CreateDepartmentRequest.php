@@ -13,6 +13,7 @@ class CreateDepartmentRequest extends FormRequest
         return [
             'name' => ['required', new HumanNameRule(), Rule::unique('departments', 'name')->where('company_id', $this->route('company')->id)],
             'head_id' => ['sometimes', 'nullable', Rule::exists('users', 'id')->whereNull('deleted_at')],
+            'members' => ['sometimes', 'nullable', 'array'],
         ];
     }
 }
