@@ -5,17 +5,15 @@ namespace App\Models;
 use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Events\Subscription\SubscriptionActivatedEvent;
-use App\Traits\GetsTableName;
+use App\Traits\HasCompany;
 use App\Traits\UsesUUID;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Subscription extends Model
+class Subscription extends BaseModel
 {
-    use UsesUUID, HasFactory, SoftDeletes, GetsTableName;
+    use UsesUUID, SoftDeletes, HasCompany;
 
     protected $guarded = [
         SubscriptionConstant::ID,
@@ -39,14 +37,6 @@ class Subscription extends Model
     public function plan(): BelongsTo
     {
         return $this->belongsTo(Plan::class, SubscriptionConstant::PLAN_ID);
-    }
-
-    /**
-     * Get the company that owns this subscription.
-     */
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class, SubscriptionConstant::COMPANY_ID);
     }
 
     /**

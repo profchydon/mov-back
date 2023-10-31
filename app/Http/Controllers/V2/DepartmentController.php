@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers\V2;
 
-use App\Domains\Constant\UserDepartmentConstant;
-use App\Models\Company;
-use App\Models\Department;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Http\Controllers\Controller;
 use App\Domains\DTO\CreateDepartmentDTO;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
+use App\Models\Company;
+use App\Models\Department;
 use App\Repositories\Contracts\DepartmentRepositoryInterface;
 use App\Repositories\Contracts\UserDepartmentRepositoryInterface;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class DepartmentController extends Controller
 {
@@ -41,14 +38,13 @@ class DepartmentController extends Controller
 
         $department = $this->departmentRepository->create($departmentDTO);
 
-        if ($department) {
-             /**
+        if ($department && !empty($request->members)) {
+            /**
              * @var array
              */
             $members = $request->members;
 
             $coo = $this->userDepartmentRepository->addBulkUserstoDepartment($members, $company->id, $department->id);
-
         }
 
         return $this->response(Response::HTTP_CREATED, __('record-created'), $department);

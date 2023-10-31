@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Traits\DTOToArray;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseRepository
 {
@@ -121,6 +122,11 @@ abstract class BaseRepository
         return $model->delete();
     }
 
+    public function delete(Model $model)
+    {
+        $model->deleteOrFail();
+    }
+
     public function update($column, $value, $data)
     {
         return $this->model->where($column, $value)->update($data);
@@ -137,7 +143,7 @@ abstract class BaseRepository
 
         $model->update($updateData);
 
-        return $model;
+        return $model->fresh();
     }
 
     public function updateByUuid(string $uuid, $updateData)

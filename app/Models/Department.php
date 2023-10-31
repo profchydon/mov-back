@@ -3,14 +3,13 @@
 namespace App\Models;
 
 use App\Domains\Constant\DepartmentConstant;
-use App\Traits\QueryFormatter;
+use App\Traits\HasCompany;
 use App\Traits\UsesUUID;
-use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Department extends BaseModel
 {
-    use UsesUUID, QueryFormatter, GetsTableName;
+    use UsesUUID, HasCompany;
 
     protected static $searchable = [
         'name',
@@ -19,11 +18,6 @@ class Department extends BaseModel
     protected $hidden = [
         DepartmentConstant::HEAD_ID,
     ];
-
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class, 'company_id');
-    }
 
     public function head(): BelongsTo
     {
@@ -34,5 +28,4 @@ class Department extends BaseModel
     {
         return $this->belongsTo(User::class, 'head_id');
     }
-
 }

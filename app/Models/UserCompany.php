@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Domains\Constant\UserCompanyConstant;
 use App\Domains\Constant\UserConstant;
+use App\Traits\HasCompany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class UserCompany extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasCompany;
 
     protected $guarded = [
         UserCompanyConstant::ID,
@@ -29,10 +30,5 @@ class UserCompany extends Model
     public function user()
     {
         return $this->belongsTo(User::class, UserConstant::USER_ID);
-    }
-
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
     }
 }
