@@ -14,7 +14,7 @@ class UserDepartmentRepository extends BaseRepository implements UserDepartmentR
         return UserDepartment::class;
     }
 
-    public function addBulkUserstoDepartment(array $members, string $company_id, string $department_id): bool
+    public function addBulkUserstoDepartment(?array $members, string $company_id, string $department_id): bool
     {
         try {
             DB::transaction(function () use ($members, $company_id, $department_id) {
