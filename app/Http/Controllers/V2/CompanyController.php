@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Company\AddCompanyDetailsRequest;
 use App\Http\Requests\Company\CreateCompanyRequest;
 use App\Http\Requests\InviteUserRequest;
+use App\Http\Resources\User\UserResource;
 use App\Models\Company;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\RoleRepositoryInterface;
@@ -186,5 +187,12 @@ class CompanyController extends Controller
         ]);
 
         return $this->response(Response::HTTP_CREATED, __('messages.company-sole-admin'));
+    }
+
+    public function getCompanyUsers(Company $company)
+    {
+        $users = $company->users;
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fecthed'), $users);
     }
 }

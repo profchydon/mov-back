@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Domains\Auth\PermissionTypes;
+use App\Domains\Auth\RoleTypes;
+use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\AssetMakeConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Domains\DTO\Asset\UpdateAssetDTO;
@@ -49,14 +52,28 @@ class AssetController extends Controller
     {
         Log::info('Asset Creation Request Received', $request->all());
 
-        $createAssetDto = $request->createAssetDTO()
-            ->setCompanyId($company->id)
-            ->setTenantId($company->tenant_id)
-            ->toArray();
+        try {
+            $createAssetDto = $request->createAssetDTO()
+                ->setCompanyId($company->id)
+                ->setTenantId($company->tenant_id);
 
-        $asset = $this->assetRepository->create($createAssetDto);
+            $user = $request->user();
+            if ($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)) {
+                $createAssetDto->setStatus(AssetStatusEnum::AVAILABLE->value);
+            }
 
-        return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $asset);
+            $asset = $this->assetRepository->create($createAssetDto->toArray());
+
+            return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $asset);
+        } catch (\ErrorException $exception) {
+            Log::info('Asset Creation Error', $request->all());
+
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __($exception->getMessage()));
+        } catch (Exception $exception) {
+            Log::info('Asset Creation Error', $request->all());
+
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __($exception->getMessage()));
+        }
     }
 
     public function createBulk(Company $company, CreateAssetFromArrayRequest $request)
@@ -213,6 +230,18 @@ class AssetController extends Controller
             'next_maintenance_date' => ['nullable', 'date'],
         ]);
 
+        if ($request->input('status') != null) {
+            $user = $request->user();
+            if (!$user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value, PermissionTypes::ASSET_CREATE_ACCESS->value])) {
+                return $this->error(Response::HTTP_BAD_REQUEST, __('messages.only-admins-can-approve'));
+            }
+
+            if($asset->status != AssetStatusEnum::PENDING_APPROVAL->value){
+                return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-status-update'));
+            }
+        }
+
+
         $image = $request->file('image');
         if ($image) {
             $this->uploadAssetImage($request->image, $asset);
@@ -232,7 +261,8 @@ class AssetController extends Controller
             ->setAcquisitionType($request->input('acquisition_type'))
             ->setCondition($request->input('condition'))
             ->setMaintenanceCycle($request->input('maintenance_cycle'))
-            ->setNextMaintenanceDate($request->input('next_maintenance_date'));
+            ->setNextMaintenanceDate($request->input('next_maintenance_date'))
+            ->setStatus($request->input('status'));
 
         $this->assetRepository->updateById($asset->id, $dto->toSynthensizedArray());
 
