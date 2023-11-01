@@ -10,16 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserRole extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasFactory;
 
     protected $guarded = [
 
     ];
-
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class, UserRoleConstant::COMPANY_ID);
-    }
 
     public function role(): BelongsTo
     {

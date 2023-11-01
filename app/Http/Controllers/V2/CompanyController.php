@@ -14,7 +14,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Company\AddCompanyDetailsRequest;
 use App\Http\Requests\Company\CreateCompanyRequest;
 use App\Http\Requests\InviteUserRequest;
-use App\Http\Resources\User\UserResource;
 use App\Models\Company;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\RoleRepositoryInterface;

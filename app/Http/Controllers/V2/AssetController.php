@@ -4,7 +4,6 @@ namespace App\Http\Controllers\V2;
 
 use App\Domains\Auth\PermissionTypes;
 use App\Domains\Auth\RoleTypes;
-use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\AssetMakeConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Domains\DTO\Asset\UpdateAssetDTO;
@@ -236,7 +235,7 @@ class AssetController extends Controller
                 return $this->error(Response::HTTP_BAD_REQUEST, __('messages.only-admins-can-approve'));
             }
 
-            if($asset->status != AssetStatusEnum::PENDING_APPROVAL->value){
+            if ($asset->status != AssetStatusEnum::PENDING_APPROVAL->value) {
                 return $this->error(Response::HTTP_BAD_REQUEST, __('messages.wrong-status-update'));
             }
         }
