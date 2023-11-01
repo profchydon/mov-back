@@ -20,7 +20,7 @@ class CreateAssetFromArrayRequest extends FormRequest
             'assets.*.serial_number' => 'required|string',
             'assets.*.purchase_price' => ['required', 'decimal:2,4'],
             'assets.*.purchase_date' => 'nullable|date',
-            'assets.*.office_id' => ['required', Rule::exists('offices', 'id')->where('company_id', $company->id)],
+            'assets.*.office_id' => ['sometimes', Rule::exists('offices', 'id')->where('company_id', $company->id)],
             'assets.*.currency' => ['required', Rule::exists('currencies', 'code')],
         ];
     }
