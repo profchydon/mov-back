@@ -98,6 +98,8 @@ it('deletes office', function () {
         'company_id' => $this->company->id,
     ]);
 
+    $officeCount = OfficeArea::count();
+
     $response = $this->withToken($this->token)->deleteJson(TestCase::fullLink("/offices/{$this->office->id}/areas/{$area->id}"));
     $response->assertNoContent();
     $this->assertLessThan($officeCount, OfficeArea::count());
