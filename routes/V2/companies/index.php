@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\V2\CompanyController;
 use App\Http\Controllers\V2\CompanyOfficeController;
 use App\Http\Controllers\V2\DepartmentController;
