@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Constant\PlanConstant;
-use App\Domains\Constant\PlanPriceConstant;
+use App\Domains\Constant\Plan\PlanConstant;
+use App\Domains\Constant\Plan\PlanPriceConstant;
+use App\Domains\Constant\Plan\PlanProcessorConstant;
 use App\Models\Plan;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
@@ -23,8 +24,6 @@ class PlanSeeder extends Seeder
         foreach ($files as $file) {
             $seedFile = Yaml::parseFile($file->getPathname());
 
-            Log::info($seedFile);
-
             $plan = Plan::updateOrCreate([
                 PlanConstant::NAME => $seedFile['name'],
             ], [
@@ -35,7 +34,7 @@ class PlanSeeder extends Seeder
             ]);
 
             foreach ($seedFile['prices'] as $price) {
-                $plan->prices()->updateOrCreate([
+                $planPrice = $plan->prices()->updateOrCreate([
                     PlanPriceConstant::CURRENCY_CODE => $price['currency_code'],
                     PlanPriceConstant::BILLING_CYCLE => $price['billing_cycle'],
                 ], [
@@ -43,6 +42,18 @@ class PlanSeeder extends Seeder
                     PlanPriceConstant::BILLING_CYCLE => $price['billing_cycle'],
                     PlanPriceConstant::AMOUNT => $price['amount'],
                 ]);
+
+                $processors = $price['processors'] ?? [];
+                foreach ($processors as $processor) {
+                    $planProcessor = $planPrice->processor()->updateOrCreate([
+                        PlanProcessorConstant::PLAN_PROCESSOR_NAME => $processor['name'],
+//                        PlanProcessorConstant::PLAN_ID => $plan->id,
+                    ], [
+                        PlanProcessorConstant::PLAN_PROCESSOR_ID => $processor['id'],
+                    ]);
+
+                    Log::info($planProcessor);
+                }
             }
         }
     }

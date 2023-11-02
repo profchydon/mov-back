@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\PlanFeatureConstant;
+use App\Domains\Constant\Plan\PlanFeatureConstant;
 use App\Traits\GetsTableName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

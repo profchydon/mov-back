@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Constant;
+namespace App\Domains\Constant\Plan;
 
 use App\Domains\Enum\Plan\BillingCycleEnum;
 
