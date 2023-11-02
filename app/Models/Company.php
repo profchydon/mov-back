@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Domains\Constant\CompanyConstant;
+use App\Domains\Constant\DepartmentConstant;
 use App\Domains\Enum\Company\CompanyStatusEnum;
 use App\Events\Company\CompanyCreatedEvent;
 use App\Traits\QueryFormatter;
@@ -59,7 +60,7 @@ class Company extends BaseModel
 
     public function departments()
     {
-        return $this->hasMany(Department::class, 'company_id');
+        return $this->hasMany(Department::class, 'company_id')->orderby(DepartmentConstant::NAME, 'ASC');
     }
 
     public function assets(): HasMany
