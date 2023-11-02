@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Domains\Constant\Plan\PlanPriceConstant;
 use App\Domains\Constant\Plan\PlanProcessorConstant;
 use App\Domains\Enum\Plan\BillingCycleEnum;
+use App\Domains\Enum\Plan\PlanProcessorNameEnum;
 use App\Traits\GetsTableName;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -38,6 +39,10 @@ class PlanPrice extends BaseModel
 
     public function processor()
     {
-        return $this->hasOne(PlanProcessor::class, PlanProcessorConstant::PLAN_PRICE_ID);
+        return $this->hasMany(PlanProcessor::class, PlanProcessorConstant::PLAN_PRICE_ID);
+    }
+
+    public function flutterwaveProcessor(){
+        return $this->processor()->where(PlanProcessorConstant::PLAN_PROCESSOR_NAME, PlanProcessorNameEnum::FLUTTERWAVE);
     }
 }
