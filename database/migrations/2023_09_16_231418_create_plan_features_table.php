@@ -1,7 +1,7 @@
 <?php
 
 use App\Domains\Constant\FeatureConstant;
-use App\Domains\Constant\PlanFeatureConstant;
+use App\Domains\Constant\Plan\PlanFeatureConstant;
 use App\Models\Feature;
 use App\Models\Plan;
 use Illuminate\Database\Migrations\Migration;

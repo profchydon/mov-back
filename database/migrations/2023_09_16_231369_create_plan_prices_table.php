@@ -2,7 +2,7 @@
 
 use App\Domains\Constant\CommonConstant;
 use App\Domains\Constant\FeatureConstant;
-use App\Domains\Constant\PlanPriceConstant;
+use App\Domains\Constant\Plan\PlanPriceConstant;
 use App\Domains\Enum\Plan\BillingCycleEnum;
 use App\Models\Currency;
 use App\Models\Plan;
