@@ -114,11 +114,10 @@ final class CreatePaymentLinkDTO
         return $this->payment_plan;
     }
 
-    public function setPaymentPlan(?string $payment_plan): CreatePaymentLinkDTO
+    public function setPaymentPlan(?string $payment_plan): self
     {
         $this->payment_plan = $payment_plan;
+
         return $this;
     }
-
-
 }

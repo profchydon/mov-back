@@ -34,7 +34,6 @@ class PlanSeeder extends Seeder
             ]);
 
             foreach ($seedFile['prices'] as $price) {
-
                 $planPrice = $plan->prices()->updateOrCreate([
                     PlanPriceConstant::CURRENCY_CODE => $price['currency_code'],
                     PlanPriceConstant::BILLING_CYCLE => $price['billing_cycle'],
@@ -50,12 +49,11 @@ class PlanSeeder extends Seeder
                         PlanProcessorConstant::PLAN_PROCESSOR_NAME => $processor['name'],
 //                        PlanProcessorConstant::PLAN_ID => $plan->id,
                     ], [
-                        PlanProcessorConstant::PLAN_PROCESSOR_ID => $processor['id']
+                        PlanProcessorConstant::PLAN_PROCESSOR_ID => $processor['id'],
                     ]);
 
                     Log::info($planProcessor);
                 }
-
             }
         }
     }

@@ -9,10 +9,8 @@ use App\Models\FeaturePrice;
 use App\Models\Subscription;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Services\V2\FlutterwaveService;
-use App\Services\V2\PaystackService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class SubscriptionRepository extends BaseRepository implements SubscriptionRepositoryInterface
 {
@@ -68,7 +66,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                 'company_id' => $subDTO->getCompanyId(),
                 'tenant_id' => $subDTO->getTenantId(),
                 'payment_link' => $paymentLink->authorization_url ?? $paymentLink->link,
-                'tx_ref' => $paymentLink->reference ?? $paymentLinkDTO->getTxRef()
+                'tx_ref' => $paymentLink->reference ?? $paymentLinkDTO->getTxRef(),
             ]);
         } else {
             $subscription->activate();
