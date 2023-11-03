@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V2;
 use App\Domains\Auth\RoleTypes;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\UserConstant;
+use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\Constant\UserRoleConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserStageEnum;
@@ -194,8 +195,10 @@ class CompanyController extends Controller
 
     public function getCompanyUsers(Company $company)
     {
-        $users = $company->users;
+        $users = $this->userInvitationRepository->get(UserInvitationConstant::COMPANY_ID, $company->id);
 
+        $users = UserInvitation::appendToQueryFromRequestQueryParameters($users);
+        
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $users);
     }
 
