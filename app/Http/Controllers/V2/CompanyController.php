@@ -13,8 +13,11 @@ use App\Exceptions\User\UserAlreadyExistException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Company\AddCompanyDetailsRequest;
 use App\Http\Requests\Company\CreateCompanyRequest;
+use App\Http\Requests\Company\CreateCompanyUserRequest;
+use App\Http\Requests\Company\UpdateCompanyUserRequest;
 use App\Http\Requests\InviteUserRequest;
 use App\Models\Company;
+use App\Models\UserInvitation;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
@@ -28,6 +31,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class CompanyController extends Controller
 {
@@ -192,6 +196,37 @@ class CompanyController extends Controller
     {
         $users = $company->users;
 
-        return $this->response(Response::HTTP_OK, __('messages.record-fecthed'), $users);
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $users);
+    }
+
+    public function addCompanyUser(CreateCompanyUserRequest $request, Company $company)
+    {
+        $user = $request->user();
+        $code = (string) Str::uuid();
+
+        $dto = $request->getDTO();
+
+        $dto->setCompanyId($company->id)
+            ->setInvitedBy($user->id)
+            ->setCode($code);
+
+        $this->userInvitationRepository->create($dto->toArray());
+
+        return $this->response(Response::HTTP_CREATED, __('messages.record-created'));
+    }
+
+    public function deleteCompanyUser(Company $company, UserInvitation $userInvitation){
+        $this->userInvitationRepository->deleteById($userInvitation->id);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-deleted'), );
+    }
+
+    public function updateCompanyUser(UpdateCompanyUserRequest $request, Company $company, UserInvitation $userInvitation)
+    {
+        $dto = $request->getDTO();
+
+        $this->userInvitationRepository->updateById($userInvitation->id, $dto->toSynthensizedArray());
+
+        return $this->response(Response::HTTP_OK, __('messages.record-updated'), );
     }
 }
