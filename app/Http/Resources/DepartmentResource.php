@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Database\Eloquent\Builder;
 
 class DepartmentResource extends JsonResource
 {
@@ -25,6 +26,10 @@ class DepartmentResource extends JsonResource
                 'name' => $this->head?->first_name . ' ' . $this->head?->last_name,
                 'id' => $this->head?->id,
             ] : null,
+            'members' => $this->members->load(['user_departments' => function ($query) {
+                $query->where('department_id', $this->id);
+            }]),
+            'memberCount' => $this->members->count(),
         ];
     }
 }

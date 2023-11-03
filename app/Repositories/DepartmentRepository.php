@@ -30,7 +30,7 @@ class DepartmentRepository implements DepartmentRepositoryInterface
             $department = Department::findOrFail($department);
         }
 
-        return DepartmentResource::make($department->load('head', 'company'));
+        return DepartmentResource::make($department);
     }
 
     public function create(CreateDepartmentDTO $departmentDTO)
