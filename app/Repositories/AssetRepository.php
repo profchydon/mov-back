@@ -2,19 +2,22 @@
 
 namespace App\Repositories;
 
-use App\Domains\Constant\AssetConstant;
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
+use App\Domains\DTO\Asset\AssetMaintenanceDTO;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Imports\AssetImport;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
+use App\Models\AssetMaintenance;
 use App\Models\Company;
 use App\Repositories\Contracts\AssetCheckoutRepositoryInterface;
+use App\Repositories\Contracts\AssetMaintenanceRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 
-class AssetRepository extends BaseRepository implements AssetRepositoryInterface, AssetCheckoutRepositoryInterface
+class AssetRepository extends BaseRepository implements AssetRepositoryInterface, AssetCheckoutRepositoryInterface, AssetMaintenanceRepositoryInterface
 {
     public function model(): string
     {
@@ -89,5 +92,11 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::ARCHIVED->value]);
 
         return $this->first('id', $assetId);
+    }
+
+
+    public function createMaintenanceLog(AssetMaintenanceDTO $maintenanceDTO)
+    {
+       return AssetMaintenance::create($maintenanceDTO->toArray());
     }
 }

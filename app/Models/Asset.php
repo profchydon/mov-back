@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\AssetCheckoutConstant;
-use App\Domains\Constant\AssetConstant;
+use App\Domains\Constant\Asset\AssetCheckoutConstant;
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Events\AssetStatusUpdatedEvent;
 use App\Traits\UsesUUID;

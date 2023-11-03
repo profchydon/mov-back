@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\AssetTypeConstant;
+use App\Domains\Constant\Asset\AssetTypeConstant;
 use App\Domains\Enum\Asset\AssetTypeStatusEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\HasMany;

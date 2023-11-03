@@ -33,3 +33,4 @@ Route::controller(AssetMaintenanceController::class)->prefix('assets/maintenance
 });
 
 Route::resource('asset-checkouts', \App\Http\Controllers\V2\AssetCheckoutController::class);
+Route::resource('asset-maintenance', AssetMaintenanceController::class);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Constant;
+namespace App\Domains\Constant\Asset;
 
 use App\Domains\Enum\Asset\AssetMakeStatusEnum;
 

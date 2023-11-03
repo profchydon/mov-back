@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Domains\Constant\Asset\AssetMaintenanceConstant;
 
 return new class extends Migration {
     /**
@@ -12,6 +13,16 @@ return new class extends Migration {
     {
         Schema::create('asset_maintenances', function (Blueprint $table) {
             $table->id();
+            $table->foreignUuid(AssetMaintenanceConstant::TENANT_ID)->references(AssetMaintenanceConstant::ID)->on(\App\Models\Tenant::getTableName());
+            $table->foreignUuid(AssetMaintenanceConstant::COMPANY_ID)->references(AssetMaintenanceConstant::ID)->on(\App\Models\Company::getTableName());
+            $table->foreignUuid(AssetMaintenanceConstant::ASSET_ID)->references(AssetMaintenanceConstant::ID)->on(\App\Models\Asset::getTableName());
+            $table->string(AssetMaintenanceConstant::GROUP_ID, 13);
+            $table->string(AssetMaintenanceConstant::REASON);
+            $table->foreignUuid(AssetMaintenanceConstant::RECEIVER_ID)->references(AssetMaintenanceConstant::ID)->on(\App\Models\AssetMaintenance::getTableName());
+            $table->dateTime(AssetMaintenanceConstant::SCHEDULED_DATE);
+            $table->dateTime(AssetMaintenanceConstant::RETURN_DATE);
+            $table->enum(AssetMaintenanceConstant::STATUS, \App\Domains\Enum\Asset\AssetMaintenanceStatusEnum::values())->default(\App\Domains\Enum\Asset\AssetCheckoutStatusEnum::CHECKED_OUT->value);
+            $table->text(AssetMaintenanceConstant::COMMENT)->nullable();
             $table->timestamps();
         });
     }

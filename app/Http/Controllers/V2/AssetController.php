@@ -4,7 +4,7 @@ namespace App\Http\Controllers\V2;
 
 use App\Domains\Auth\PermissionTypes;
 use App\Domains\Auth\RoleTypes;
-use App\Domains\Constant\AssetMakeConstant;
+use App\Domains\Constant\Asset\AssetMakeConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Domains\DTO\Asset\UpdateAssetDTO;
 use App\Domains\Enum\Asset\AssetStatusEnum;

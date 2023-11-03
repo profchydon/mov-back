@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Constant\AssetMakeConstant;
+use App\Domains\Constant\Asset\AssetMakeConstant;
 use App\Domains\Constant\CommonConstant;
 use App\Domains\Enum\Asset\AssetMakeStatusEnum;
 use App\Models\Company;
