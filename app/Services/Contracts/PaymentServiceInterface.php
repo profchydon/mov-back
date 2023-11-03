@@ -2,7 +2,7 @@
 
 namespace App\Services\Contracts;
 
-use App\Domains\DTO\Auction\CreatePaymentLinkDTO;
+use App\Domains\DTO\CreatePaymentLinkDTO;
 
 interface PaymentServiceInterface
 {

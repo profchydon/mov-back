@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\PlanConstant;
+use App\Domains\Constant\Plan\PlanConstant;
+use App\Domains\Constant\Plan\PlanProcessorConstant;
+use App\Domains\Enum\Plan\PlanProcessorNameEnum;
 use App\Domains\Enum\Plan\PlanStatusEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -41,5 +43,15 @@ class Plan extends BaseModel
     public function prices(): HasMany
     {
         return $this->hasMany(PlanPrice::class);
+    }
+
+    public function processors()
+    {
+        return $this->hasManyThrough(PlanProcessor::class, PlanPrice::class);
+    }
+
+    public function flutterwaveProcessors()
+    {
+        return $this->processors()->where(PlanProcessorConstant::PLAN_PROCESSOR_NAME, PlanProcessorNameEnum::FLUTTERWAVE);
     }
 }
