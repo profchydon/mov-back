@@ -73,8 +73,13 @@ class CompanyController extends Controller
                     $tenant = $this->tenantRepository->create($request->getTenantDTO()->toArray());
 
                     $ssoData = $createSSOCompany->json()['data'];
+                    $companyInvitationCode = Str::random(32);
 
-                    $companyDto = $request->getCompanyDTO()->setTenantId($tenant->id)->setSsoId($ssoData['company_id']);
+                    $companyDto = $request->getCompanyDTO()
+                                            ->setTenantId($tenant->id)
+                                            ->setSsoId($ssoData['company_id'])
+                                            ->setInvitationCode($companyInvitationCode);
+
                     $userDto = $request->getUserDTO()->setTenantId($tenant->id)->setSsoId($ssoData['user_id']);
 
                     $company = $this->companyRepository->create($companyDto->toArray());
@@ -198,7 +203,7 @@ class CompanyController extends Controller
         $users = $this->userInvitationRepository->get(UserInvitationConstant::COMPANY_ID, $company->id);
 
         $users = UserInvitation::appendToQueryFromRequestQueryParameters($users);
-        
+
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $users);
     }
 
@@ -231,5 +236,12 @@ class CompanyController extends Controller
         $this->userInvitationRepository->updateById($userInvitation->id, $dto->toSynthensizedArray());
 
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), );
+    }
+
+    public function getUserInvitationLink(Company $company)
+    {
+        $link = sprintf('%s/%s', getenv('CORE_COMPANY_USER_INVITATION_URL'), $company[CompanyConstant::INVITATION_CODE]);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-updated'), ['link' => $link]);
     }
 }
