@@ -15,7 +15,7 @@ class CreateUserRoleRequest extends FormRequest
          * @var User
          */
         $user = auth()->user();
-        
+
         return $user->hasAnyPermission([PermissionTypes::ROLE_FULL_ACCESS->value, PermissionTypes::ROLE_CREATE_ACCESS->value]);
     }
 

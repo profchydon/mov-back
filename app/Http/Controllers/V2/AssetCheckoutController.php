@@ -56,7 +56,7 @@ class AssetCheckoutController extends Controller
             return $this->checkoutRepository->checkoutAsset($dto);
         });
 
-        return $this->response(Response::HTTP_OK, __('messages.record-created'), $assets);
+        return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $assets);
     }
 
     public function update(UpdateAssetCheckoutRequest $request, AssetCheckout $asset_checkout)

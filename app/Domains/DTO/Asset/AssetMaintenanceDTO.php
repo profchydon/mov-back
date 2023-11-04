@@ -2,8 +2,6 @@
 
 namespace App\Domains\DTO\Asset;
 
-use App\Models\User;
-use App\Models\Vendor;
 use App\Traits\DTOToArray;
 use Illuminate\Support\Carbon;
 

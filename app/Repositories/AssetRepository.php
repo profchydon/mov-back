@@ -94,9 +94,8 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return $this->first('id', $assetId);
     }
 
-
     public function createMaintenanceLog(AssetMaintenanceDTO $maintenanceDTO)
     {
-       return AssetMaintenance::create($maintenanceDTO->toArray());
+        return AssetMaintenance::create($maintenanceDTO->toArray());
     }
 }

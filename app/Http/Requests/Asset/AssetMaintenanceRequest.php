@@ -8,13 +8,12 @@ use Illuminate\Validation\Rule;
 
 class AssetMaintenanceRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
             'reason' => 'required|string|min:3',
             'receiver_id' => ['required', Rule::exists('users', 'id')],
-            'checkout_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
+            'scheduled_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
             'return_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:checkout_date'],
             'comment' => ['sometimes'],
             'assets' => ['required', 'array', 'min:1'],

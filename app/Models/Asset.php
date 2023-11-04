@@ -94,4 +94,11 @@ class Asset extends BaseModel
             'status' => AssetStatusEnum::CHECKED_OUT,
         ]);
     }
+
+    public function logForMaintainance()
+    {
+        return $this->update([
+            'status' => AssetStatusEnum::UNDER_MAINTENANCE,
+        ]);
+    }
 }

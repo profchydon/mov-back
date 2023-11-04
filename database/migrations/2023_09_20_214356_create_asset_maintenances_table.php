@@ -1,9 +1,9 @@
 <?php
 
+use App\Domains\Constant\Asset\AssetMaintenanceConstant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Domains\Constant\Asset\AssetMaintenanceConstant;
 
 return new class extends Migration {
     /**
@@ -18,10 +18,10 @@ return new class extends Migration {
             $table->foreignUuid(AssetMaintenanceConstant::ASSET_ID)->references(AssetMaintenanceConstant::ID)->on(\App\Models\Asset::getTableName());
             $table->string(AssetMaintenanceConstant::GROUP_ID, 13);
             $table->string(AssetMaintenanceConstant::REASON);
-            $table->foreignUuid(AssetMaintenanceConstant::RECEIVER_ID)->references(AssetMaintenanceConstant::ID)->on(\App\Models\AssetMaintenance::getTableName());
+            $table->foreignUuid(AssetMaintenanceConstant::RECEIVER_ID)->references(AssetMaintenanceConstant::ID)->on(\App\Models\User::getTableName());
             $table->dateTime(AssetMaintenanceConstant::SCHEDULED_DATE);
             $table->dateTime(AssetMaintenanceConstant::RETURN_DATE);
-            $table->enum(AssetMaintenanceConstant::STATUS, \App\Domains\Enum\Asset\AssetMaintenanceStatusEnum::values())->default(\App\Domains\Enum\Asset\AssetCheckoutStatusEnum::CHECKED_OUT->value);
+            $table->enum(AssetMaintenanceConstant::STATUS, \App\Domains\Enum\Asset\AssetMaintenanceStatusEnum::values())->default(\App\Domains\Enum\Asset\AssetMaintenanceStatusEnum::LOGGED->value);
             $table->text(AssetMaintenanceConstant::COMMENT)->nullable();
             $table->timestamps();
         });
