@@ -7,6 +7,17 @@ use App\Domains\Enum\Asset\AssetMaintenanceStatusEnum;
 
 class AssetMaintenance extends BaseModel
 {
+    protected static $searchable = [
+        'reason',
+        'comment',
+    ];
+
+    protected static $filterable = [
+        'receiver' => 'assets_maintenances.receiver_id',
+        'status' => 'asset_maintenances.status',
+        'asset' => 'assets.id',
+    ];
+
     protected $casts = [
         AssetMaintenanceConstant::STATUS => AssetMaintenanceStatusEnum::class,
     ];

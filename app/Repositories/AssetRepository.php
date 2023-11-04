@@ -98,4 +98,13 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
     {
         return AssetMaintenance::create($maintenanceDTO->toArray());
     }
+
+    public function getMaintenanceLogs(Company $company)
+    {
+        $maintenance = $company->asset_maintenance()->orderBy('created_at', 'desc');
+        $maintenance = $maintenance->with('asset');
+        $maintenance = AssetMaintenance::appendToQueryFromRequestQueryParameters($maintenance);
+
+        return $maintenance->simplePaginate();
+    }
 }

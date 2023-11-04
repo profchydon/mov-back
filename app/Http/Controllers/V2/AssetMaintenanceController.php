@@ -6,7 +6,9 @@ use App\Domains\DTO\Asset\AssetMaintenanceDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\AssetMaintenanceRequest;
 use App\Models\Asset;
+use App\Models\Company;
 use App\Repositories\Contracts\AssetMaintenanceRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 
@@ -14,6 +16,13 @@ class AssetMaintenanceController extends Controller
 {
     public function __construct(private readonly AssetMaintenanceRepositoryInterface $maintenanceRepository)
     {
+    }
+
+    public function index(Company $company, Request $request)
+    {
+        $maintenance = $this->maintenanceRepository->getMaintenanceLogs($company);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $maintenance);
     }
 
     public function store(AssetMaintenanceRequest $request)
