@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('companies', function (Blueprint $table) {
-            $table->string(CompanyConstant::INVITATION_CODE)->unique();
+            $table->string(CompanyConstant::INVITATION_CODE)->unique()->nullable();
         });
     }
 
