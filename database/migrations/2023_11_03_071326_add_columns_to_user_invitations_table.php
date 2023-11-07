@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string(UserInvitationConstant::NAME)->nullable();
             $table->string(UserInvitationConstant::JOB_TITLE)->nullable();
             $table->string(UserInvitationConstant::EMPLOYMENT_TYPE)->nullable();
-            $table->foreignUuid(UserInvitationConstant::OFFICE_ID)->references(CommonConstant::ID)->on(Office::getTableName())->nullable();
-            $table->foreignUuid(UserInvitationConstant::DEPARTMENT_ID)->references(CommonConstant::ID)->on(Department::getTableName())->nullable();
+            $table->foreignUuid(UserInvitationConstant::OFFICE_ID)->nullable()->references(CommonConstant::ID)->on(Office::getTableName());
+            $table->foreignUuid(UserInvitationConstant::DEPARTMENT_ID)->nullable()->references(CommonConstant::ID)->on(Department::getTableName());
             $table->string(UserInvitationConstant::TEAM)->nullable();
         });
     }
