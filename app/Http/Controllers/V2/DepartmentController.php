@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\V2;
 
 use App\Domains\DTO\CreateDepartmentDTO;
+use App\Domains\DTO\CreateUserDepartmentDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateDepartmentRequest;
+use App\Http\Requests\CreateUserDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use App\Models\Company;
 use App\Models\Department;
 use App\Repositories\Contracts\DepartmentRepositoryInterface;
 use App\Repositories\Contracts\UserDepartmentRepositoryInterface;
+use App\Repositories\Contracts\UserTeamRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -18,6 +21,7 @@ class DepartmentController extends Controller
     public function __construct(
         private readonly DepartmentRepositoryInterface $departmentRepository,
         private readonly UserDepartmentRepositoryInterface $userDepartmentRepository,
+        private readonly UserTeamRepositoryInterface $userTeamRepository,
     ) {
     }
 
@@ -44,7 +48,7 @@ class DepartmentController extends Controller
              */
             $members = $request->members;
 
-            $coo = $this->userDepartmentRepository->addBulkUserstoDepartment($members, $company->id, $department->id);
+            $this->userDepartmentRepository->addBulkUserstoDepartment($members, $company->id, $department->id);
         }
 
         return $this->response(Response::HTTP_CREATED, __('record-created'), $department);
@@ -82,7 +86,21 @@ class DepartmentController extends Controller
         $departmentUsers = $this->departmentRepository->getDepartmentUsers($company, $department);
 
         return $this->response(Response::HTTP_OK, __('record-fetched'), $departmentUsers);
-
     }
 
+    public function addDepartmentUsers(Company $company, Department $department, CreateUserDepartmentRequest $request)
+    {
+
+        if (!empty($request->members)) {
+
+            $addDeptUsers = $this->userDepartmentRepository->addBulkUserstoDepartment($request->members, $company->id, $department->id);
+
+            if ($addDeptUsers && $request->team_id) {
+
+                $this->userTeamRepository->addBulkUserstoTeam($request->members, $company->id, $request->team_id, $department->id);
+            }
+        }
+
+        return $this->response(Response::HTTP_CREATED, __('record-created'));
+    }
 }

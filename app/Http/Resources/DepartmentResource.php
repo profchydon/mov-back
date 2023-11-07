@@ -34,6 +34,7 @@ class DepartmentResource extends JsonResource
                     $query->where('teams.department_id', $this->id);
                 }]),
             'memberCount' => $this->members->count(),
+            'teamCount' => $this->teams->count(),
         ];
     }
 }

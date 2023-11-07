@@ -18,12 +18,18 @@ class UserDepartmentRepository extends BaseRepository implements UserDepartmentR
     {
         try {
             DB::transaction(function () use ($members, $company_id, $department_id) {
+
                 foreach ($members as $user_id) {
-                    $this->model->create([
-                        UserDepartmentConstant::COMPANY_ID => $company_id,
-                        UserDepartmentConstant::USER_ID => $user_id,
-                        UserDepartmentConstant::DEPARTMENT_ID => $department_id,
-                    ]);
+
+                    $userInDepartment = $this->userExistInDepartment($user_id, $department_id);
+
+                    if (!$userInDepartment) {
+                        $this->model->create([
+                            UserDepartmentConstant::COMPANY_ID => $company_id,
+                            UserDepartmentConstant::USER_ID => $user_id,
+                            UserDepartmentConstant::DEPARTMENT_ID => $department_id,
+                        ]);
+                    }
                 }
             });
 
@@ -31,5 +37,10 @@ class UserDepartmentRepository extends BaseRepository implements UserDepartmentR
         } catch (\Throwable $th) {
             return false;
         }
+    }
+
+    public function userExistInDepartment(string $user_id, string $department_id): bool
+    {
+        return $this->model->where(UserDepartmentConstant::USER_ID, $user_id)->where(UserDepartmentConstant::DEPARTMENT_ID, $department_id)->exists();
     }
 }

@@ -17,8 +17,13 @@ class Team extends BaseModel
     ];
 
     protected $hidden = [
-
+        TeamConstant::TENANT_ID
     ];
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
 
     public function department(): BelongsTo
     {

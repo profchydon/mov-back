@@ -8,10 +8,13 @@ use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTeamRequest;
 use App\Http\Requests\SelectSubscriptionPlanRequest;
+use App\Http\Resources\TeamCollection;
+use App\Http\Resources\TeamResource;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Subscription;
 use App\Models\SubscriptionPayment;
+use App\Models\Team;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Repositories\Contracts\TeamRepositoryInterface;
 use App\Repositories\Contracts\UserTeamRepositoryInterface;
@@ -47,5 +50,11 @@ class TeamController extends Controller
         return $this->response(Response::HTTP_CREATED, __('record-created'), $team);
     }
 
+    public function getTeams(Company $company, Department $department)
+    {
 
+        $teams = $this->teamRepository->getTeams($department);
+
+        return $this->response(Response::HTTP_OK, __('record-fetched'), $teams);
+    }
 }

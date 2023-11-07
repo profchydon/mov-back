@@ -23,10 +23,13 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
 
         Route::get('/users', 'getCompanyUsers')->name('get.company.users');
 
+        Route::get('departments/{department}/users', [DepartmentController::class, 'getDepartmentUsers'])->name('get.department.users');
+        Route::post('/departments/{department}/users', [DepartmentController::class, 'addDepartmentUsers'])->name('add.department.users');
+
         Route::post('/departments/{department}/teams', [TeamController::class, 'createTeam'])->name('create.team');
         Route::get('/departments/{department}/teams', [TeamController::class, 'getTeams'])->name('get.teams');
         Route::get('/departments/{department}/teams/{team}', [TeamController::class, 'getTeam'])->name('get.team');
-        Route::get('departments/{department}/users', [DepartmentController::class, 'getDepartmentUsers'])->name('get.department.users');
+
 
     });
 

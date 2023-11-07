@@ -5,4 +5,6 @@ namespace App\Repositories\Contracts;
 interface UserTeamRepositoryInterface extends BaseRepositoryInterface
 {
     public function addBulkUserstoTeam(array $members, string $company_id, string $team_id, string $department_id);
+
+    public function userExistInTeam(string $user_id, string $team_id);
 }
