@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\UserConstant;
 use App\Domains\Constant\UserDepartmentConstant;
 use App\Domains\Enum\User\UserStatusEnum;
@@ -90,6 +91,26 @@ class User extends Authenticatable
     public function user_departments()
     {
         return $this->hasMany(UserDepartment::class, 'user_id');
+    }
+
+    public function assets()
+    {
+        return $this->hasMany(Asset::class, AssetConstant::ASSIGNED_TO);
+    }
+
+    public function assetCount()
+    {
+        return $this->hasMany(Asset::class, AssetConstant::ASSIGNED_TO)->count();
+    }
+
+    public function teams()
+    {
+        return $this->hasManyThrough(Team::class, UserTeam::class, 'user_id', 'id', 'id', 'team_id');
+    }
+
+    public function user_teams()
+    {
+        return $this->hasMany(UserTeam::class, 'user_id');
     }
 
 }

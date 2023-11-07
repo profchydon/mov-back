@@ -59,4 +59,14 @@ class DepartmentRepository implements DepartmentRepositoryInterface
 
         $department->deleteOrFail();
     }
+
+    public function getDepartmentUsers(Company|string $company, Department|string $department)
+    {
+        if (!($department instanceof  Department)) {
+            $department = Department::findOrFail($department);
+        }
+
+        return $department->members;
+    }
+
 }

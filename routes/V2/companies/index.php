@@ -5,6 +5,7 @@ use App\Http\Controllers\V2\CompanyController;
 use App\Http\Controllers\V2\CompanyOfficeController;
 use App\Http\Controllers\V2\DepartmentController;
 use App\Http\Controllers\V2\SubscriptionController;
+use App\Http\Controllers\V2\TeamController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(CompanyController::class)->prefix('companies')->group(function () {
@@ -19,8 +20,18 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::resource('tags', \App\Http\Controllers\TagController::class);
         Route::resource('departments', DepartmentController::class);
 
+
         Route::get('/users', 'getCompanyUsers')->name('get.company.users');
+
+        Route::post('/departments/{department}/teams', [TeamController::class, 'createTeam'])->name('create.team');
+        Route::get('/departments/{department}/teams', [TeamController::class, 'getTeams'])->name('get.teams');
+        Route::get('/departments/{department}/teams/{team}', [TeamController::class, 'getTeam'])->name('get.team');
+        Route::get('departments/{department}/users', [DepartmentController::class, 'getDepartmentUsers'])->name('get.department.users');
+
     });
+
+
+
 
 
     Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');

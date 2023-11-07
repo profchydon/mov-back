@@ -21,12 +21,14 @@ use App\Repositories\Contracts\PlanRepositoryInterface;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Repositories\Contracts\TagRepositoryInterface;
+use App\Repositories\Contracts\TeamRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserDepartmentRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserRoleRepositoryInterface;
+use App\Repositories\Contracts\UserTeamRepositoryInterface;
 use App\Repositories\Contracts\VendorRepositoryInterface;
 use App\Repositories\DepartmentRepository;
 use App\Repositories\FeatureRepository;
@@ -37,12 +39,14 @@ use App\Repositories\PlanRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SubscriptionRepository;
 use App\Repositories\TagRepository;
+use App\Repositories\TeamRepository;
 use App\Repositories\TenantRepository;
 use App\Repositories\UserCompanyRepository;
 use App\Repositories\UserDepartmentRepository;
 use App\Repositories\UserInvitationRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserRoleRepository;
+use App\Repositories\UserTeamRepository;
 use App\Repositories\VendorRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -84,5 +88,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(UserRoleRepositoryInterface::class, UserRoleRepository::class);
         $this->app->singleton(TagRepositoryInterface::class, TagRepository::class);
         $this->app->singleton(UserDepartmentRepositoryInterface::class, UserDepartmentRepository::class);
+        $this->app->singleton(TeamRepositoryInterface::class, TeamRepository::class);
+        $this->app->singleton(UserTeamRepositoryInterface::class, UserTeamRepository::class);
+
     }
 }

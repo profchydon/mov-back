@@ -76,4 +76,13 @@ class DepartmentController extends Controller
 
         return $this->noContent();
     }
+
+    public function getDepartmentUsers(Company $company, Department $department)
+    {
+        $departmentUsers = $this->departmentRepository->getDepartmentUsers($company, $department);
+
+        return $this->response(Response::HTTP_OK, __('record-fetched'), $departmentUsers);
+
+    }
+
 }

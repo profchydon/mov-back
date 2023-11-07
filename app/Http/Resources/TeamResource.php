@@ -2,14 +2,14 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Department;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Database\Eloquent\Builder;
 
-class DepartmentResource extends JsonResource
+class TeamResource extends JsonResource
 {
-    public $collects = Department::class;
+    public $collects = Team::class;
 
     public function toArray(Request $request): array
     {
@@ -19,20 +19,19 @@ class DepartmentResource extends JsonResource
                 'id' => $this->company_id,
                 'name' => $this->company?->name,
             ],
+            'department' => [
+                'id' => $this->department_id,
+                'name' => $this->department?->name,
+            ],
             'name' => $this->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'head' => $this->head ? [
-                'name' => $this->head?->first_name . ' ' . $this->head?->last_name,
-                'id' => $this->head?->id,
+            'team_lead' => $this->teamLead ? [
+                'name' => $this->teamLead?->first_name . ' ' . $this->teamLead?->last_name,
+                'id' => $this->teamLead?->id,
             ] : null,
             'members' => $this->members
-                ->load(['user_departments' => function ($query) {
-                    $query->where('department_id', $this->id);
-                }])
-                ->load(['teams' => function ($query) {
-                    $query->where('teams.department_id', $this->id);
-                }]),
+                ->load('user_teams'),
             'memberCount' => $this->members->count(),
         ];
     }
