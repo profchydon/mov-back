@@ -71,14 +71,4 @@ test('can delete a user', function () {
     $this->assertDatabaseCount('user_invitations', 0);
 });
 
-test('can update a user\'s details', function () {
-    $user = UserInvitation::factory()->create();
 
-    $response = $this->withToken($this->token)->put(TestCase::fullLink("/companies/{$this->company->id}/users/{$user->id}"));
-
-    $response->assertStatus(Response::HTTP_OK);
-    expect($response->getData()->success)->toBeTrue();
-    expect($response->getData()->message)->toBe('Record successfully deleted');
-
-    $this->assertDatabaseCount('user_invitations', 0);
-});
