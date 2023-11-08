@@ -24,13 +24,13 @@ class UpdateCompanyUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'job_title' => 'required|string',
-            'employment_type' => 'required|string',
-            'role_id' => ['required', Rule::exists('roles', 'id')],
-            'office_id' => ['required', Rule::exists('offices', 'id')],
-            'department_id' => ['required', Rule::exists('departments', 'id')],
+            'name' => 'optional|string',
+            'email' => 'optional|email',
+            'job_title' => 'optional|string',
+            'employment_type' => 'optional|string',
+            'role_id' => ['optional', Rule::exists('roles', 'id')],
+            'office_id' => ['optional', Rule::exists('offices', 'id')],
+            'department_id' => ['optional', Rule::exists('departments', 'id')],
             'team' => 'optional|string'
         ];
     }
