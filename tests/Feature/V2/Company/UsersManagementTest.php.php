@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Department;
 use App\Models\Office;
 use App\Models\Role;
+use App\Models\Team;
 use App\Models\User;
 use App\Models\UserInvitation;
 use Illuminate\Http\Response;
@@ -31,6 +32,8 @@ beforeEach(function () {
 });
 
 test('can invite a new user', function () {
+    $team = Team::factory()->create();
+
     $payload = [
         'name' => fake()->name(),
         'email' => fake()->safeEmail(),
@@ -39,7 +42,7 @@ test('can invite a new user', function () {
         'role_id' => $this->role->id,
         'office_id' => $this->office->id,
         'department_id' => $this->department->id,
-        'team' => fake()->word(),
+        'team' => $team->id,
     ];
 
     $response = $this->withToken($this->token)

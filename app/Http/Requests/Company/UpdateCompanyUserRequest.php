@@ -31,7 +31,7 @@ class UpdateCompanyUserRequest extends FormRequest
             'role_id' => ['optional', Rule::exists('roles', 'id')],
             'office_id' => ['optional', Rule::exists('offices', 'id')],
             'department_id' => ['optional', Rule::exists('departments', 'id')],
-            'team' => 'optional|string'
+            'team_id' => ['optional', Rule::exists('teams', 'id')],
         ];
     }
 
@@ -49,7 +49,7 @@ class UpdateCompanyUserRequest extends FormRequest
             ->setRoleId($this->input('role_id'))
             ->setOfficeId($this->input('office_id'))
             ->setDepartmentId($this->input('department_id'))
-            ->setTeam($this->input('team'));
+            ->setTeamId($this->input('team_id'));
 
         return $dto;
     }

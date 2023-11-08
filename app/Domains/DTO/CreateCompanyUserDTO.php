@@ -15,7 +15,7 @@ class CreateCompanyUserDTO
     private int $role_id;
     private string $office_id;
     private string $department_id;
-    private ?string $team;
+    private ?string $team_id;
     private string $code;
     private string $company_id;
     private string $invited_by;
@@ -98,15 +98,15 @@ class CreateCompanyUserDTO
         return $this->department_id;
     }
 
-    public function setTeam(string $team)
+    public function setTeamId(string $team_id)
     {
-        $this->team = $team;
+        $this->team_id = $team_id;
         return $this;
     }
 
-    public function getTeam()
+    public function getTeamId()
     {
-        return $this->team;
+        return $this->team_id;
     }
     
     public function setCode(string $code)

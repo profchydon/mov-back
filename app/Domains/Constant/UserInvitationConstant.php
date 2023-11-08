@@ -19,7 +19,7 @@ class UserInvitationConstant
     public const EMPLOYMENT_TYPE = 'employment_type';
     public const OFFICE_ID = 'office_id';
     public const DEPARTMENT_ID = 'department_id';
-    public const TEAM = 'team';
+    public const TEAM_ID = 'team_id';
 
     public const STATUS_ENUM = [
         UserInvitationStatusEnum::PENDING,
