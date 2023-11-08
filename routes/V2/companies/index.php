@@ -20,17 +20,14 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::resource('tags', \App\Http\Controllers\TagController::class);
         Route::resource('departments', DepartmentController::class);
 
-
-        Route::get('/users', 'getCompanyUsers')->name('get.company.users');
-
         Route::get('departments/{department}/users', [DepartmentController::class, 'getDepartmentUsers'])->name('get.department.users');
         Route::post('/departments/{department}/users', [DepartmentController::class, 'addDepartmentUsers'])->name('add.department.users');
 
         Route::post('/departments/{department}/teams', [TeamController::class, 'createTeam'])->name('create.team');
         Route::get('/departments/{department}/teams', [TeamController::class, 'getTeams'])->name('get.teams');
         Route::get('/departments/{department}/teams/{team}', [TeamController::class, 'getTeam'])->name('get.team');
-
-
+        
+        Route::get('/invitation-link', 'getUserInvitationLink')->name('get.invitation.link');
     });
 
 
@@ -52,4 +49,14 @@ Route::group(['prefix' => 'offices/{office}'], function () {
     Route::get('areas', [CompanyOfficeController::class, 'getOfficeAreas']);
     Route::put('areas/{officeArea}', [CompanyOfficeController::class, 'updateOfficeArea']);
     Route::delete('areas/{officeArea}', [CompanyOfficeController::class, 'destroyOfficeArea']);
+});
+
+//Routes for users
+Route::group(['prefix' => 'companies/{company}'], function (){
+    Route::middleware(['auth:sanctum'])->controller(CompanyController::class)->group(function (){
+        Route::post('/users', 'addCompanyUser')->name('add.company.user');
+        Route::get('/users', 'getCompanyUsers')->name('get.company.users');
+        Route::delete('/users/{userInvitation}', 'deleteCompanyUser')->name('delete.company.user');
+        Route::put('/users/{userInvitation}', 'updateCompanyUser')->name('update.company.user');
+    });
 });

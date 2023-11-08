@@ -19,6 +19,12 @@ class UserInvitation extends Model
         UserInvitationConstant::ID,
     ];
 
+    protected static $filterable = [
+        'department' => 'user_invitations.department_id',
+        'role' => 'user_invitations.role_id',
+        'office' => 'user_invitations.office_id',
+    ];
+
     public function invitedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'invited_by');
