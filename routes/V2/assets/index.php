@@ -18,6 +18,8 @@ Route::middleware(['auth:sanctum'])->controller(AssetController::class)->prefix(
     Route::patch('{company}/assets/{asset}', 'updateAsset')->name('update.company.asset');
 
     Route::get('{company}/asset-makes', 'getAssetMakes')->name('get.asset.makes');
+
+    Route::post('{company}/stolen-assets', 'markAssetAsStolen')->name('create.company.asset');
 });
 
 

@@ -11,6 +11,7 @@ use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\CreateAssetFromArrayRequest;
 use App\Http\Requests\Asset\CreateAssetRequest;
+use App\Http\Requests\Asset\CreateStolenAsset;
 use App\Models\Asset;
 use App\Models\Company;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
@@ -157,8 +158,6 @@ class AssetController extends Controller
     public function updateAsset(Request $request, Company $company, Asset $asset)
     {
         switch ($request->query('type')) {
-            case 'stolen':
-                return $this->markAssetAsStolen($asset);
             case 'archive':
                 return $this->markAssetAsArchived($asset);
             case 'image':
@@ -176,9 +175,13 @@ class AssetController extends Controller
         }
     }
 
-    private function markAssetAsStolen(Asset $asset)
+    public function markAssetAsStolen(CreateStolenAsset $request, Company $company, Asset $asset)
     {
-        $stolenAsset = $this->assetRepository->markAsStolen($asset->id);
+        $dto = $request->getDTO()
+                        ->setCompanyId($company->id)
+                        ->setAssetId($asset->id);
+
+        $stolenAsset = $this->assetRepository->markAsStolen($asset->id, $dto, $request->file('documents'));
 
         return $this->response(Response::HTTP_OK, __('messages.asset-marked-as-stolen'), $stolenAsset);
     }
