@@ -6,6 +6,7 @@ use App\Domains\Enum\User\UserStageEnum;
 use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -15,7 +16,7 @@ beforeEach(function () {
 
 
 it('can create a company', function () {
-    $email = fake()->email;
+    $email = fake()->safeEmail();
     $phone = fake()->phoneNumber();
 
     $data = [
