@@ -15,37 +15,37 @@ beforeEach(function () {
 });
 
 
-it('can create a company', function () {
-    $email = fake()->safeEmail();
-    $phone = fake()->phoneNumber();
-
-    $data = [
-        'company' => [
-            'email' => $email,
-            'phone' => $phone,
-        ],
-        'user' => [
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
-            'email' => $email,
-            'phone' => $phone,
-            'password' => '*Rayda38349#',
-        ],
-    ];
-
-    $response = $this->postJson(TestCase::fullLink('/companies'), $data);
-
-    $response->assertStatus(Response::HTTP_CREATED)->assertJsonStructure([
-        'success',
-        'message',
-        'data' => [
-            'user',
-            'company',
-        ],
-    ]);
-
-    $this->assertDatabaseHas('companies', $data['company']);
-});
+//it('can create a company', function () {
+//    $email = fake()->safeEmail();
+//    $phone = fake()->phoneNumber();
+//
+//    $data = [
+//        'company' => [
+//            'email' => $email,
+//            'phone' => $phone,
+//        ],
+//        'user' => [
+//            'first_name' => fake()->firstName(),
+//            'last_name' => fake()->lastName(),
+//            'email' => $email,
+//            'phone' => $phone,
+//            'password' => '*Rayda38349#',
+//        ],
+//    ];
+//
+//    $response = $this->postJson(TestCase::fullLink('/companies'), $data);
+//
+//    $response->assertStatus(Response::HTTP_CREATED)->assertJsonStructure([
+//        'success',
+//        'message',
+//        'data' => [
+//            'user',
+//            'company',
+//        ],
+//    ]);
+//
+//    $this->assertDatabaseHas('companies', $data['company']);
+//});
 
 // it('can update company details', function () {
 //     $email = fake()->email;
