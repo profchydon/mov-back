@@ -4,10 +4,12 @@ namespace App\Http\Controllers\V2;
 
 use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\DTO\CreateTeamDTO;
+use App\Domains\DTO\UpdateUserTeamDTO;
 use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTeamRequest;
 use App\Http\Requests\SelectSubscriptionPlanRequest;
+use App\Http\Requests\UpdateUserTeamRequest;
 use App\Http\Resources\TeamCollection;
 use App\Http\Resources\TeamResource;
 use App\Models\Company;
@@ -15,6 +17,7 @@ use App\Models\Department;
 use App\Models\Subscription;
 use App\Models\SubscriptionPayment;
 use App\Models\Team;
+use App\Models\User;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Repositories\Contracts\TeamRepositoryInterface;
 use App\Repositories\Contracts\UserTeamRepositoryInterface;
@@ -57,4 +60,19 @@ class TeamController extends Controller
 
         return $this->response(Response::HTTP_OK, __('record-fetched'), $teams);
     }
+
+    public function updateUserTeams(Company $company, Department $department, User $user, UpdateUserTeamRequest $request)
+    {
+
+        $updateTeamDTO = new UpdateUserTeamDTO();
+        $updateTeamDTO->setTeams($request->teams)
+            ->setCompanyId($company->id)
+            ->setUserId($user->id)
+            ->setDepartmentId($department->id);
+
+        $this->userTeamRepository->updateUserTeams($updateTeamDTO);
+
+        return $this->response(Response::HTTP_OK, __('record-update'));
+    }
+
 }

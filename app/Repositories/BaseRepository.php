@@ -137,6 +137,11 @@ abstract class BaseRepository
         return $this->model->updateOrCreate($condition, $data);
     }
 
+    public function firstOrCreate($condition, $data)
+    {
+        return $this->model->firstOrCreate($condition, $data);
+    }
+
     public function updateById($id, $updateData)
     {
         $model = $this->model::find($id);

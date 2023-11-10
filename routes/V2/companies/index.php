@@ -26,7 +26,9 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::post('/departments/{department}/teams', [TeamController::class, 'createTeam'])->name('create.team');
         Route::get('/departments/{department}/teams', [TeamController::class, 'getTeams'])->name('get.teams');
         Route::get('/departments/{department}/teams/{team}', [TeamController::class, 'getTeam'])->name('get.team');
-        
+
+        Route::put('/departments/{department}/users/{user}/teams', [TeamController::class, 'updateUserTeams'])->name('change.user.team');
+
         Route::get('/invitation-link', 'getUserInvitationLink')->name('get.invitation.link');
     });
 
@@ -53,7 +55,7 @@ Route::group(['prefix' => 'offices/{office}'], function () {
 
 //Routes for users
 Route::group(['prefix' => 'companies/{company}'], function (){
-    Route::middleware(['auth:sanctum'])->controller(CompanyController::class)->group(function (){
+    Route::controller(CompanyController::class)->group(function (){
         Route::post('/users', 'addCompanyUser')->name('add.company.user');
         Route::get('/users', 'getCompanyUsers')->name('get.company.users');
         Route::delete('/users/{userInvitation}', 'deleteCompanyUser')->name('delete.company.user');
