@@ -3,6 +3,7 @@
 namespace App\Repositories\Contracts;
 
 use App\Domains\DTO\Asset\CreateDamagedAssetDTO;
+use App\Domains\DTO\Asset\CreateRetiredAssetDTO;
 use App\Domains\DTO\Asset\CreateStolenAssetDTO;
 use App\Models\Asset;
 use App\Models\Company;
@@ -31,4 +32,6 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
      * @return Asset
      */
     public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset;
+
+    public function markAsRetired(string $assetId, CreateRetiredAssetDTO $dto): Asset;
 }

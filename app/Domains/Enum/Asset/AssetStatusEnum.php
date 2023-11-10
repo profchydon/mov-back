@@ -15,4 +15,5 @@ enum AssetStatusEnum: string
     case ARCHIVED = 'ARCHIVED';
     case STOLEN = 'STOLEN';
     case DAMAGED = 'DAMAGED';
+    case RETIRED = 'RETIRED';
 }
