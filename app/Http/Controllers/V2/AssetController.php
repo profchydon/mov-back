@@ -196,7 +196,7 @@ class AssetController extends Controller
 
         $damagedAsset = $this->assetRepository->markAsDamaged($asset->id, $dto, $request->file('documents'));
 
-        return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-stolen'), $damagedAsset);
+        return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-damaged'), $damagedAsset);
     }
 
     public function markAssetAsRetired(CreateRetiredAssetRequest $request, Company $company, Asset $asset)
@@ -207,7 +207,7 @@ class AssetController extends Controller
 
         $retiredAsset = $this->assetRepository->markAsRetired($asset->id, $dto);
 
-        return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-stolen'), $retiredAsset);
+        return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-retired'), $retiredAsset);
     }
 
     private function markAssetAsArchived(Asset $asset)
