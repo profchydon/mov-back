@@ -47,6 +47,11 @@ class AssetConstant
         AssetStatusEnum::ARCHIVED,
         AssetStatusEnum::CHECKED_OUT,
         AssetStatusEnum::TRANSFERRED,
+        AssetStatusEnum::PENDING_APPROVAL,
+        AssetStatusEnum::AVAILABLE,
+        AssetStatusEnum::STOLEN,
+        AssetStatusEnum::DAMAGED,
+        AssetStatusEnum::RETIRED,
     ];
 
     public const ACQUISITION_TYPE_ENUM = [
