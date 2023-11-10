@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Domains\DTO\Asset\CreateDamagedAssetDTO;
 use App\Domains\DTO\Asset\CreateStolenAssetDTO;
 use App\Models\Asset;
 use App\Models\Company;
@@ -14,7 +15,7 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
     /**
      * @param string $assetId
      * @param CreateStolenAssetDTO $dto
-     * @param Array<UploadedFile> $documents
+     * @param Array<UploadedFile>|null $documents
      * @return Asset
      */
     public function markAsStolen(string $assetId, CreateStolenAssetDTO $dto, ?array $documents): Asset;
@@ -22,4 +23,12 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
     public function markAsArchived(string $assetId): Asset;
 
     public function getCompanyAssets(Company|string $company);
+
+    /**
+     * @param string $assetId
+     * @param CreateDamagedAssetDTO $dto
+     * @param Array<UploadedFile>|null $documents
+     * @return Asset
+     */
+    public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset;
 }

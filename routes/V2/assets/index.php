@@ -19,7 +19,8 @@ Route::middleware(['auth:sanctum'])->controller(AssetController::class)->prefix(
 
     Route::get('{company}/asset-makes', 'getAssetMakes')->name('get.asset.makes');
 
-    Route::post('{company}/stolen-assets', 'markAssetAsStolen')->name('create.company.asset');
+    Route::post('{company}/stolen-assets', 'markAssetAsStolen')->name('mark.stolen.asset');
+    Route::post('{company}/damaged-assets', 'markAssetAsDamaged')->name('mark.damaged.asset');
 });
 
 

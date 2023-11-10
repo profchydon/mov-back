@@ -4,18 +4,21 @@ namespace App\Repositories;
 
 use App\Domains\Constant\AssetConstant;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
+use App\Domains\DTO\Asset\CreateDamagedAssetDTO;
 use App\Domains\DTO\Asset\CreateStolenAssetDTO;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Imports\AssetImport;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
 use App\Models\Company;
+use App\Models\DamagedAsset;
 use App\Models\StolenAsset;
 use App\Repositories\Contracts\AssetCheckoutRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class AssetRepository extends BaseRepository implements AssetRepositoryInterface, AssetCheckoutRepositoryInterface
 {
@@ -105,6 +108,28 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
     public function markAsArchived(string $assetId): Asset
     {
         $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::ARCHIVED->value]);
+
+        return $this->first('id', $assetId);
+    }
+
+    public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset
+    {
+        $damagedAsset = DamagedAsset::create($dto->toArray());
+
+        $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::DAMAGED->value]);
+
+        if ($documents) {
+            foreach ($documents as $key => $document) {
+                $extension = $document->getClientOriginalExtension();
+
+                $fileName = sprintf('%s-%s.%s', time(), Str::uuid(), $extension);
+
+                $path = $document->storeAs('stolen-asset-documents', $fileName, 's3');
+                $path = Storage::disk('s3')->url($path);
+
+                $damagedAsset->documents()->create(['path' => $path]);
+            }
+        }
 
         return $this->first('id', $assetId);
     }

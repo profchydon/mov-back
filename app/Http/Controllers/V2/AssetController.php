@@ -11,6 +11,7 @@ use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\CreateAssetFromArrayRequest;
 use App\Http\Requests\Asset\CreateAssetRequest;
+use App\Http\Requests\Asset\CreateDamagedAssetRequest;
 use App\Http\Requests\Asset\CreateStolenAsset;
 use App\Models\Asset;
 use App\Models\Company;
@@ -183,7 +184,18 @@ class AssetController extends Controller
 
         $stolenAsset = $this->assetRepository->markAsStolen($asset->id, $dto, $request->file('documents'));
 
-        return $this->response(Response::HTTP_OK, __('messages.asset-marked-as-stolen'), $stolenAsset);
+        return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-stolen'), $stolenAsset);
+    }
+
+    public function markAssetAsDamaged(CreateDamagedAssetRequest $request, Company $company, Asset $asset)
+    {
+        $dto = $request->getDTO()
+                        ->setCompanyId($company->id)
+                        ->setAssetId($asset->id);
+
+        $damagedAsset = $this->assetRepository->markAsDamaged($asset->id, $dto, $request->file('documents'));
+
+        return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-stolen'), $damagedAsset);
     }
 
     private function markAssetAsArchived(Asset $asset)
