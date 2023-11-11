@@ -5,17 +5,26 @@ namespace App\Repositories;
 use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
 use App\Domains\DTO\Asset\AssetMaintenanceDTO;
+use App\Domains\DTO\Asset\CreateDamagedAssetDTO;
+use App\Domains\DTO\Asset\CreateRetiredAssetDTO;
+use App\Domains\DTO\Asset\CreateStolenAssetDTO;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Imports\AssetImport;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
 use App\Models\AssetMaintenance;
 use App\Models\Company;
+use App\Models\DamagedAsset;
+use App\Models\RetiredAsset;
+use App\Models\StolenAsset;
 use App\Repositories\Contracts\AssetCheckoutRepositoryInterface;
 use App\Repositories\Contracts\AssetMaintenanceRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class AssetRepository extends BaseRepository implements AssetRepositoryInterface, AssetCheckoutRepositoryInterface, AssetMaintenanceRepositoryInterface
 {
@@ -80,9 +89,26 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return $checkout->load('asset', 'receiver');
     }
 
-    public function markAsStolen(string $assetId): Asset
+    public function markAsStolen(string $assetId, CreateStolenAssetDTO $dto, ?array $documents): Asset
     {
-        $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::STOLEN->value]);
+        DB::transaction(function () use ($assetId, $dto, $documents) {
+            $stolenAsset = StolenAsset::create($dto->toArray());
+
+            $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::STOLEN->value]);
+
+            if ($documents) {
+                foreach ($documents as $key => $document) {
+                    $extension = $document->getClientOriginalExtension();
+
+                    $fileName = sprintf('%s-%s.%s', time(), Str::uuid(), $extension);
+
+                    $path = $document->storeAs('stolen-asset-documents', $fileName, 's3');
+                    $path = Storage::disk('s3')->url($path);
+
+                    $stolenAsset->documents()->create(['path' => $path]);
+                }
+            }
+        });
 
         return $this->first('id', $assetId);
     }
@@ -106,5 +132,41 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         $maintenance = AssetMaintenance::appendToQueryFromRequestQueryParameters($maintenance);
 
         return $maintenance->simplePaginate();
+
+    }
+    
+    public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset
+    {
+        DB::transaction(function () use ($assetId, $dto, $documents) {
+            $damagedAsset = DamagedAsset::create($dto->toArray());
+
+            $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::DAMAGED->value]);
+
+            if ($documents) {
+                foreach ($documents as $key => $document) {
+                    $extension = $document->getClientOriginalExtension();
+
+                    $fileName = sprintf('%s-%s.%s', time(), Str::uuid(), $extension);
+
+                    $path = $document->storeAs('stolen-asset-documents', $fileName, 's3');
+                    $path = Storage::disk('s3')->url($path);
+
+                    $damagedAsset->documents()->create(['path' => $path]);
+                }
+            }
+        });
+
+        return $this->first('id', $assetId);
+    }
+
+    public function markAsRetired(string $assetId, CreateRetiredAssetDTO $dto): Asset
+    {
+        DB::transaction(function () use ($assetId, $dto) {
+            RetiredAsset::create($dto->toArray());
+
+            $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::RETIRED->value]);
+        });
+
+        return $this->first('id', $assetId);
     }
 }

@@ -11,6 +11,9 @@ use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\CreateAssetFromArrayRequest;
 use App\Http\Requests\Asset\CreateAssetRequest;
+use App\Http\Requests\Asset\CreateDamagedAssetRequest;
+use App\Http\Requests\Asset\CreateRetiredAssetRequest;
+use App\Http\Requests\Asset\CreateStolenAsset;
 use App\Models\Asset;
 use App\Models\Company;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
@@ -157,8 +160,6 @@ class AssetController extends Controller
     public function updateAsset(Request $request, Company $company, Asset $asset)
     {
         switch ($request->query('type')) {
-            case 'stolen':
-                return $this->markAssetAsStolen($asset);
             case 'archive':
                 return $this->markAssetAsArchived($asset);
             case 'image':
@@ -176,11 +177,37 @@ class AssetController extends Controller
         }
     }
 
-    private function markAssetAsStolen(Asset $asset)
+    public function markAssetAsStolen(CreateStolenAsset $request, Company $company, Asset $asset)
     {
-        $stolenAsset = $this->assetRepository->markAsStolen($asset->id);
+        $dto = $request->getDTO()
+                        ->setCompanyId($company->id)
+                        ->setAssetId($asset->id);
 
-        return $this->response(Response::HTTP_OK, __('messages.asset-marked-as-stolen'), $stolenAsset);
+        $stolenAsset = $this->assetRepository->markAsStolen($asset->id, $dto, $request->file('documents'));
+
+        return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-stolen'), $stolenAsset);
+    }
+
+    public function markAssetAsDamaged(CreateDamagedAssetRequest $request, Company $company, Asset $asset)
+    {
+        $dto = $request->getDTO()
+                        ->setCompanyId($company->id)
+                        ->setAssetId($asset->id);
+
+        $damagedAsset = $this->assetRepository->markAsDamaged($asset->id, $dto, $request->file('documents'));
+
+        return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-damaged'), $damagedAsset);
+    }
+
+    public function markAssetAsRetired(CreateRetiredAssetRequest $request, Company $company, Asset $asset)
+    {
+        $dto = $request->getDTO()
+                        ->setCompanyId($company->id)
+                        ->setAssetId($asset->id);
+
+        $retiredAsset = $this->assetRepository->markAsRetired($asset->id, $dto);
+
+        return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-retired'), $retiredAsset);
     }
 
     private function markAssetAsArchived(Asset $asset)
