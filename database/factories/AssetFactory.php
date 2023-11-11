@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domains\Constant\AssetConstant;
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Models\AssetType;
 use App\Models\Company;
 use App\Models\Office;

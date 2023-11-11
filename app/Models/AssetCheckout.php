@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\AssetCheckoutConstant;
+use App\Domains\Constant\Asset\AssetCheckoutConstant;
 use App\Domains\Enum\Asset\AssetCheckoutStatusEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domains\Constant\AssetTypeConstant;
+use App\Domains\Constant\Asset\AssetTypeConstant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AssetTypeFactory extends Factory

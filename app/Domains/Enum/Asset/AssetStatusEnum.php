@@ -14,4 +14,5 @@ enum AssetStatusEnum: string
     case TRANSFERRED = 'TRANSFERRED';
     case ARCHIVED = 'ARCHIVED';
     case STOLEN = 'STOLEN';
+    case UNDER_MAINTENANCE = 'UNDER MAINTENANCE';
 }
