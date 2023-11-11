@@ -9,7 +9,7 @@ trait WithActivityLog
 {
     use LogsActivity;
 
-    protected static $recordEvents = ['created', 'retrieved', 'updated', 'deleted'];
+    protected static $recordEvents = ['created', 'updated', 'deleted'];
 
     public function getActivitylogOptions(): LogOptions
     {
