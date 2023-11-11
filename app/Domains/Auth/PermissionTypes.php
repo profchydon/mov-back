@@ -32,4 +32,48 @@ enum PermissionTypes: string
     case ROLE_READ_ACCESS = 'RoleReadAccess';
     case ROLE_DELETE_ACCESS = 'RoleDeleteAccess';
     case ROLE_UPDATE_ACCESS = 'RoleUpdateAccess';
+
+    // Office
+    case OFFICE_FULL_ACCESS = 'OfficeFullAccess';
+    case OFFICE_CREATE_ACCESS = 'OfficeCreateAccess';
+    case OFFICE_READ_ACCESS = 'OfficeReadAccess';
+    case OFFICE_DELETE_ACCESS = 'OfficeDeleteAccess';
+    case OFFICE_UPDATE_ACCESS = 'OfficeUpdateAccess';
+
+     // Audit
+     case AUDIT_FULL_ACCESS = 'AuditFullAccess';
+     case AUDIT_CREATE_ACCESS = 'AuditCreateAccess';
+     case AUDIT_READ_ACCESS = 'AuditReadAccess';
+     case AUDIT_DELETE_ACCESS = 'AuditDeleteAccess';
+     case AUDIT_UPDATE_ACCESS = 'AuditUpdateAccess';
+
+    // Vendor
+    case VENDOR_FULL_ACCESS = 'VendorFullAccess';
+    case VENDOR_CREATE_ACCESS = 'VendorCreateAccess';
+    case VENDOR_READ_ACCESS = 'VendorReadAccess';
+    case VENDOR_DELETE_ACCESS = 'VendorDeleteAccess';
+    case VENDOR_UPDATE_ACCESS = 'VendorUpdateAccess';
+
+    // Department
+    case DEPARTMENT_FULL_ACCESS = 'DepartmentFullAccess';
+    case DEPARTMENT_CREATE_ACCESS = 'DepartmentCreateAccess';
+    case DEPARTMENT_READ_ACCESS = 'DepartmentReadAccess';
+    case DEPARTMENT_DELETE_ACCESS = 'DepartmentDeleteAccess';
+    case DEPARTMENT_UPDATE_ACCESS = 'DepartmentUpdateAccess';
+
+    // Depreciation
+    case DEPRECIATION_FULL_ACCESS = 'DepreciationFullAccess';
+    case DEPRECIATION_CREATE_ACCESS = 'DepreciationCreateAccess';
+    case DEPRECIATION_READ_ACCESS = 'DepreciationReadAccess';
+    case DEPRECIATION_DELETE_ACCESS = 'DepreciationDeleteAccess';
+    case DEPRECIATION_UPDATE_ACCESS = 'DepreciationUpdateAccess';
+
+     // Docuemnt
+     case DOCUMENT_FULL_ACCESS = 'DocumentFullAccess';
+     case DOCUMENT_CREATE_ACCESS = 'DocumentCreateAccess';
+     case DOCUMENT_READ_ACCESS = 'DocumentReadAccess';
+     case DOCUMENT_DELETE_ACCESS = 'DocumentDeleteAccess';
+     case DOCUMENT_UPDATE_ACCESS = 'DocumentUpdateAccess';
 }
+
+

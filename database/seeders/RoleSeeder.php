@@ -19,6 +19,8 @@ class RoleSeeder extends Seeder
             RoleTypes::ADMINISTRATOR,
             RoleTypes::ASSET_MANAGER,
             RoleTypes::TECHNICIAN,
+            RoleTypes::DOCUMENT_MANAGER,
+            RoleTypes::AUDITOR,
             RoleTypes::FINANCE,
             RoleTypes::BASIC,
         ]);
@@ -44,6 +46,16 @@ class RoleSeeder extends Seeder
 
                 case RoleTypes::FINANCE:
                     $permissions = Permission::where('name', PermissionTypes::BILLING_FULL_ACCESS)->get();
+                    $dbRole->syncPermissions($permissions);
+                    break;
+
+                case RoleTypes::AUDITOR:
+                    $permissions = Permission::where('name', PermissionTypes::AUDIT_FULL_ACCESS)->get();
+                    $dbRole->syncPermissions($permissions);
+                    break;
+
+                case RoleTypes::DOCUMENT_MANAGER:
+                    $permissions = Permission::where('name', PermissionTypes::DOCUMENT_FULL_ACCESS)->get();
                     $dbRole->syncPermissions($permissions);
                     break;
 
