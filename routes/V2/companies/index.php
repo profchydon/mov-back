@@ -30,16 +30,16 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::put('/departments/{department}/users/{user}/teams', [TeamController::class, 'updateUserTeams'])->name('change.user.team');
 
         Route::get('/invitation-link', 'getUserInvitationLink')->name('get.invitation.link');
-    });
+    })->middleware(['auth:sanctum', 'user-in-company']);;
 
 
 
 
 
-    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');
+    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription')->middleware(['auth:sanctum', 'user-in-company']);;
     Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->name('get.company.subscriptions');
     Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription');
-    Route::resource('{company}/offices', CompanyOfficeController::class);
+    Route::resource('{company}/offices', CompanyOfficeController::class)->middleware(['auth:sanctum', 'user-in-company']);;
 });
 
 Route::post('subscription_payment/{payment:tx_ref}/confirm', [SubscriptionController::class, 'confirmSubscriptionPayment']);
@@ -51,7 +51,7 @@ Route::group(['prefix' => 'offices/{office}'], function () {
     Route::get('areas', [CompanyOfficeController::class, 'getOfficeAreas']);
     Route::put('areas/{officeArea}', [CompanyOfficeController::class, 'updateOfficeArea']);
     Route::delete('areas/{officeArea}', [CompanyOfficeController::class, 'destroyOfficeArea']);
-});
+})->middleware(['auth:sanctum', 'user-in-company']);;
 
 //Routes for users
 Route::group(['prefix' => 'companies/{company}'], function (){
@@ -61,4 +61,4 @@ Route::group(['prefix' => 'companies/{company}'], function (){
         Route::delete('/users/{userInvitation}', 'deleteCompanyUser')->name('delete.company.user');
         Route::put('/users/{userInvitation}', 'updateCompanyUser')->name('update.company.user');
     });
-});
+})->middleware(['auth:sanctum', 'user-in-company']);;

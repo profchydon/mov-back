@@ -9,4 +9,4 @@ Route::controller(VendorController::class)->prefix('companies/{company}/vendors'
     Route::get('/{vendor}', 'show')->name('get.vendor');
     Route::put('/{vendor}', 'update')->name('update.vendor');
     Route::delete('/{vendor}', 'destroy')->name('delete.vendor');
-});
+})->middleware(['auth:sanctum', 'user-in-company']);
