@@ -17,4 +17,6 @@ interface DepartmentRepositoryInterface
     public function update(Department|string $department, CreateDepartmentDTO $departmentDTO);
 
     public function delete(Department|string $department);
+
+    public function getDepartmentUsers(Company|string $company, Department|string $department);
 }

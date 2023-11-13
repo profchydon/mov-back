@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Constant;
+namespace App\Domains\Constant\Asset;
 
 use App\Domains\Enum\Asset\AssetAcquisitionTypeEnum;
 use App\Domains\Enum\Asset\AssetStatusEnum;
@@ -47,6 +47,11 @@ class AssetConstant
         AssetStatusEnum::ARCHIVED,
         AssetStatusEnum::CHECKED_OUT,
         AssetStatusEnum::TRANSFERRED,
+        AssetStatusEnum::PENDING_APPROVAL,
+        AssetStatusEnum::AVAILABLE,
+        AssetStatusEnum::STOLEN,
+        AssetStatusEnum::DAMAGED,
+        AssetStatusEnum::RETIRED,
     ];
 
     public const ACQUISITION_TYPE_ENUM = [

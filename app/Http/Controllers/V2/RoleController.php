@@ -26,7 +26,7 @@ class RoleController extends Controller
 
     public function fetchPermissions()
     {
-        $permissions = $this->permissionRepository->all();
+        $permissions = $this->permissionRepository->allGroupedBy('category');
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $permissions);
     }

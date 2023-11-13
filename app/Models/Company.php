@@ -72,4 +72,9 @@ class Company extends BaseModel
     {
         return $this->hasMany(Tag::class, 'company_id');
     }
+
+    public function asset_maintenance()
+    {
+        return $this->hasMany(AssetMaintenance::class, 'company_id');
+    }
 }

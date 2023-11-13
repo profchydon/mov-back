@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Constant\AssetTypeConstant;
+use App\Domains\Constant\Asset\AssetTypeConstant;
 use App\Domains\Enum\Asset\AssetTypeStatusEnum;
 use App\Models\AssetType;
 use Illuminate\Database\Seeder;

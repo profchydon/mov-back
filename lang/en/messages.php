@@ -45,5 +45,7 @@ return [
     'onboarding-already-completed' => 'You have already completed the onboarding on Rayda Core',
     'invite-not-found' => 'No invitiation found',
     'only-admins-can-approve' => 'Only admins can approve assets',
-    'wrong-status-update' => 'You can only approve assets with pending status'
+    'wrong-status-update' => 'You can only approve assets with pending status',
+    'asset-marked-as-damaged' => 'You have successfully marked the asset as damaged',
+    'asset-marked-as-retired' => 'You have successfully marked the asset as retired'
 ];

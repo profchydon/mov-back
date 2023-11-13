@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Constant\AssetConstant;
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\CommonConstant;
 use App\Domains\Constant\CurrencyConstant;
 use App\Domains\Enum\Asset\AssetStatusEnum;

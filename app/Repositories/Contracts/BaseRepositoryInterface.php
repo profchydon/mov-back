@@ -38,6 +38,8 @@ interface BaseRepositoryInterface
 
     public function updateOrCreate(array $condition, $data);
 
+    public function firstOrCreate(array $condition, $data);
+
     public function updateById($id, $updateData);
 
     public function updateByUuid(string $uuid, $updateData);

@@ -11,12 +11,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Log;
 
-class UserInvitation extends Model
+class UserInvitation extends BaseModel
 {
     use HasFactory, HasUuids, HasCompany;
 
     protected $guarded = [
         UserInvitationConstant::ID,
+    ];
+
+    protected static $filterable = [
+        'department' => 'user_invitations.department_id',
+        'role' => 'user_invitations.role_id',
+        'office' => 'user_invitations.office_id',
     ];
 
     public function invitedBy(): BelongsTo

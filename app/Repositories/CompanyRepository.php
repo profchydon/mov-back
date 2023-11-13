@@ -3,10 +3,12 @@
 namespace App\Repositories;
 
 use App\Domains\Constant\OfficeConstant;
+use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\DTO\CreateCompanyOfficeDTO;
 use App\Models\Company;
 use App\Models\Office;
 use App\Models\OfficeArea;
+use App\Models\UserInvitation;
 use App\Repositories\Contracts\CompanyOfficeRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use Illuminate\Support\Facades\DB;
@@ -104,5 +106,18 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         }
 
         $officeArea->deleteOrFail();
+    }
+
+    public function getUsers(Company|string $company)
+    {
+        if (!($company instanceof Company)) {
+            $company = Company::findOrFail($company);
+        }
+        
+        $users = UserInvitation::where(UserInvitationConstant::COMPANY_ID, $company->id);
+        
+        $users = UserInvitation::appendToQueryFromRequestQueryParameters($users);
+
+        return $users;
     }
 }
