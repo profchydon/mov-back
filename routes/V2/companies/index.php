@@ -30,23 +30,23 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::put('/departments/{department}/users/{user}/teams', [TeamController::class, 'updateUserTeams'])->name('change.user.team');
 
         Route::get('/invitation-link', 'getUserInvitationLink')->name('get.invitation.link');
-    });
+    })->middleware(['auth:sanctum', 'user-in-company']);
 
 
 
 
 
-    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');
+    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription')->middleware(['auth:sanctum', 'user-in-company']);
     Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->name('get.company.subscriptions');
     Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription');
-    Route::resource('{company}/offices', CompanyOfficeController::class);
+    Route::resource('{company}/offices', CompanyOfficeController::class)->middleware(['auth:sanctum', 'user-in-company']);
 });
 
 Route::post('subscription_payment/{payment:tx_ref}/confirm', [SubscriptionController::class, 'confirmSubscriptionPayment']);
 Route::post('confirm-payment', [SubscriptionController::class, 'confirmPayment'])->name('payment-subscription.callback');
 
 // Route for office areas
-Route::group(['prefix' => 'offices/{office}'], function () {
+Route::group(['prefix' => 'offices/{office}', 'middleware' => ['auth:sanctum', 'user-in-company']], function () {
     Route::post('areas', [CompanyOfficeController::class, 'storeOfficeArea']);
     Route::get('areas', [CompanyOfficeController::class, 'getOfficeAreas']);
     Route::put('areas/{officeArea}', [CompanyOfficeController::class, 'updateOfficeArea']);
@@ -61,4 +61,4 @@ Route::group(['prefix' => 'companies/{company}'], function (){
         Route::delete('/users/{userInvitation}', 'deleteCompanyUser')->name('delete.company.user');
         Route::put('/users/{userInvitation}', 'updateCompanyUser')->name('update.company.user');
     });
-});
+})->middleware(['auth:sanctum', 'user-in-company']);
