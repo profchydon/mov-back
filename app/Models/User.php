@@ -14,11 +14,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasUuids, HasApiTokens, HasFactory, Notifiable, GetsTableName, HasRoles;
+    use HasUuids, HasApiTokens, HasFactory, Notifiable, GetsTableName, HasRoles, CausesActivity;
 
     use HasApiTokens {
         createToken as createBaseToken;
