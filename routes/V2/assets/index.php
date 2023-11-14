@@ -17,6 +17,9 @@ Route::middleware(['auth:sanctum', 'user-in-company'])->controller(AssetControll
     Route::delete('{company}/assets/{asset}', 'deleteAsset')->name('delete.company.asset');
     Route::patch('{company}/assets/{asset}', 'updateAsset')->name('update.company.asset');
 
+
+    Route::get('{company}/asset-overview/{asset}', 'getAssetOverview')->name('get.asset.overview');
+
     Route::get('{company}/asset-makes', 'getAssetMakes')->name('get.asset.makes');
 
     Route::post('{company}/stolen-assets', 'markAssetAsStolen')->name('mark.stolen.asset');

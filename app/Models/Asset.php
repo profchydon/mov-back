@@ -10,10 +10,11 @@ use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Asset extends BaseModel
 {
-    use UsesUUID, HasFactory, SoftDeletes;
+    use UsesUUID, HasFactory, SoftDeletes, LogsActivity;
 
     protected static $searchable = [
         'make',
@@ -66,6 +67,11 @@ class Asset extends BaseModel
     public function office()
     {
         return $this->belongsTo(Office::class, AssetConstant::OFFICE_ID);
+    }
+
+    public function officeArea()
+    {
+        return $this->belongsTo(OfficeArea::class, AssetConstant::OFFICE_AREA_ID);
     }
 
     public function type()
