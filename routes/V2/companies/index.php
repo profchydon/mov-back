@@ -54,11 +54,11 @@ Route::group(['prefix' => 'offices/{office}', 'middleware' => ['auth:sanctum', '
 });
 
 //Routes for users
-Route::group(['prefix' => 'companies/{company}'], function (){
+Route::group(['prefix' => 'companies/{company}', 'middleware' => ['auth:sanctum']], function (){
     Route::controller(CompanyController::class)->group(function (){
         Route::post('/users', 'addCompanyUser')->name('add.company.user');
         Route::get('/users', 'getCompanyUsers')->name('get.company.users');
         Route::delete('/users/{userInvitation}', 'deleteCompanyUser')->name('delete.company.user');
         Route::put('/users/{userInvitation}', 'updateCompanyUser')->name('update.company.user');
     });
-})->middleware(['auth:sanctum', 'user-in-company']);
+});
