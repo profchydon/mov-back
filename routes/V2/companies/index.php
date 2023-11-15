@@ -32,6 +32,8 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::get('/invitation-link', 'getUserInvitationLink')->name('get.invitation.link');
 
         Route::get('/invoices', [\App\Http\Controllers\V2\InvoiceController::class, 'index']);
+        Route::get('/invoices/{invoice:invoice_number}', [\App\Http\Controllers\V2\InvoiceController::class, 'show']);
+        Route::get('/invoices/{invoice:invoice_number}/pdf', [\App\Http\Controllers\V2\InvoiceController::class, 'showPDF']);
     })->middleware(['auth:sanctum', 'user-in-company']);
 
 

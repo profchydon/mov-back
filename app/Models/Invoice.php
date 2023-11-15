@@ -42,4 +42,14 @@ class Invoice extends BaseModel
     {
         return $this->hasMany(InvoiceItem::class, 'invoice_id');
     }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_code', 'code');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
 }
