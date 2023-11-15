@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->uuid(InvoiceItemConstant::ID)->unique()->primary();
             $table->foreignUuid(InvoiceItemConstant::INVOICE_ID)->references(CommonConstant::ID)->on(Invoice::getTableName());
             $table->uuidMorphs(InvoiceItemConstant::ITEM);
-            $table->integer(InvoiceItemConstant::QUANTITY)->unique();
+            $table->integer(InvoiceItemConstant::QUANTITY);
             $table->decimal(InvoiceItemConstant::AMOUNT);
             $table->timestamps();
             $table->softDeletes();
