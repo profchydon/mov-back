@@ -24,7 +24,9 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
 
     public function createRole(CreateUserRoleDTO $dto): Role
     {
-        $role = Role::create($dto->toArray());
+        $data = array_merge(['guard_name' => 'web'], $dto->toArray());
+
+        $role = Role::create($data);
         $permissions = Permission::whereIn('id', $dto->getPermissions())->get();
 
         $role->syncPermissions($permissions);
