@@ -48,8 +48,7 @@ class CompanyController extends Controller
         private readonly SSOServiceInterface $ssoService,
         private readonly UserRoleRepositoryInterface $userRoleRepository,
         private readonly RoleRepositoryInterface $roleRepository,
-        private readonly AssetRepositoryInterface $assetRepository,
-        private readonly UserRepositoryInterface $userRepository,
+        private readonly AssetRepositoryInterface $assetRepository
     ) {
     }
 
