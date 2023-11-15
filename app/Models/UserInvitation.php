@@ -30,6 +30,11 @@ class UserInvitation extends BaseModel
         return $this->belongsTo(User::class, 'invited_by');
     }
 
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
     protected static function booted()
     {
         static::created(function (self $model) {
