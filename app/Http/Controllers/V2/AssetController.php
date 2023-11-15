@@ -150,6 +150,13 @@ class AssetController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $asset);
     }
 
+    public function getAssetOverview(Company $company, Asset $asset)
+    {
+        $asset = $this->assetRepository->firstWithRelation('id', $asset->id, ['image', 'type', 'office', 'officeArea', 'activities']);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $asset);
+    }
+
     public function deleteAsset(Company $company, Asset $asset)
     {
         $asset->delete();

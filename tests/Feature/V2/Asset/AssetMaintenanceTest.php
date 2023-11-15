@@ -1,20 +1,44 @@
 <?php
 
+use App\Domains\Constant\UserConstant;
+use App\Domains\Enum\User\UserStageEnum;
+use App\Models\Company;
+use App\Models\User;
+use App\Models\UserCompany;
+
 beforeEach(function () {
     $this->seed();
     $this->useDatabaseTransactions = true;
+
+    $this->company = Company::factory()->create();
+    $user = User::factory()->create([
+        UserConstant::TENANT_ID => $this->company->tenant_id,
+        UserConstant::STAGE => UserStageEnum::COMPLETED,
+    ]);
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    UserCompany::create([
+        'user_id' => $user->id,
+        'tenant_id' => $this->company->tenant_id,
+        'company_id' => $this->company->id,
+    ]);
+
+    $this->withHeaders([
+        'Authorization' => "Bearer {$token}",
+        'Accept' => 'application/json',
+        'x-company-id' => $this->company->id
+    ]);
 });
 
 test('it can create maintenance log', function(){
-    $company = \App\Models\Company::factory()->create();
     $user = \App\Models\User::factory()->create([
-        \App\Domains\Constant\UserConstant::TENANT_ID => $company->tenant_id,
+        \App\Domains\Constant\UserConstant::TENANT_ID => $this->company->tenant_id,
         \App\Domains\Constant\UserConstant::STAGE => \App\Domains\Enum\User\UserStageEnum::COMPLETED,
     ]);
 
     $assets = \App\Models\Asset::factory(5)->create([
-        'tenant_id' => $company->tenant_id,
-        'company_id' => $company->id,
+        'tenant_id' => $this->company->tenant_id,
+        'company_id' => $this->company->id,
         'status' => \App\Domains\Enum\Asset\AssetStatusEnum::AVAILABLE
     ]);
 
@@ -32,15 +56,15 @@ test('it can create maintenance log', function(){
 });
 
 test('it can get maintenance log', function(){
-    $company = \App\Models\Company::factory()->create();
+    $this->company = \App\Models\Company::factory()->create();
     $user = \App\Models\User::factory()->create([
-        \App\Domains\Constant\UserConstant::TENANT_ID => $company->tenant_id,
+        \App\Domains\Constant\UserConstant::TENANT_ID => $this->company->tenant_id,
         \App\Domains\Constant\UserConstant::STAGE => \App\Domains\Enum\User\UserStageEnum::COMPLETED,
     ]);
 
     $assets = \App\Models\Asset::factory(5)->create([
-        'tenant_id' => $company->tenant_id,
-        'company_id' => $company->id,
+        'tenant_id' => $this->company->tenant_id,
+        'company_id' => $this->company->id,
         'status' => \App\Domains\Enum\Asset\AssetStatusEnum::AVAILABLE
     ]);
 
@@ -54,6 +78,6 @@ test('it can get maintenance log', function(){
     ];
 
     $this->postJson(\Tests\TestCase::fullLink('/asset-maintenances'), $payload);
-    $response = $this->getJson(\Tests\TestCase::fullLink("/companies/{$company->id}/asset-maintenances"), $payload);
+    $response = $this->getJson(\Tests\TestCase::fullLink("/companies/{$this->company->id}/asset-maintenances"), $payload);
     $response->assertOk();
 });

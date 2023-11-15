@@ -2,14 +2,37 @@
 
 namespace Tests\Feature\V2\Company;
 
+use App\Domains\Constant\UserConstant;
+use App\Domains\Enum\User\UserStageEnum;
 use App\Models\Company;
 use App\Models\Office;
+use App\Models\User;
+use App\Models\UserCompany;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 beforeEach(function () {
     $this->seed();
     $this->useDatabaseTransactions = true;
+    $this->company = Company::factory()->create();
+    $user = User::factory()->create([
+        UserConstant::TENANT_ID => $this->company->tenant_id,
+        UserConstant::STAGE => UserStageEnum::COMPLETED,
+    ]);
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    UserCompany::create([
+        'user_id' => $user->id,
+        'tenant_id' => $this->company->tenant_id,
+        'company_id' => $this->company->id,
+    ]);
+
+    $this->withHeaders([
+        'Authorization' => "Bearer {$token}",
+        'Accept' => 'application/json',
+        'x-company-id' => $this->company->id
+    ]);
 });
 
 it('can create office with valid data', function () {
@@ -26,9 +49,10 @@ it('can create office with valid data', function () {
     $officeCount = Office::count();
     $this->assertDatabaseCount('offices', $officeCount);
 
-    $company = Company::factory()->create();
 
-    $response = $this->postJson(TestCase::fullLink("/companies/{$company->id}/offices"), $payload);
+    $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/offices"), $payload);
+
+    Log::info($response->getContent());
     $response->assertCreated();
 
     $this->assertDatabaseCount('offices', $officeCount + 1);
@@ -49,9 +73,7 @@ it('does not create office with invalid data', function () {
     $officeCount = Office::count();
     $this->assertDatabaseCount('offices', $officeCount);
 
-    $company = Company::factory()->create();
-
-    $response = $this->postJson(TestCase::fullLink("/companies/{$company->id}/offices"), $payload);
+    $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/offices"), $payload);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJson([
         'errors' => [
@@ -62,17 +84,16 @@ it('does not create office with invalid data', function () {
 });
 
 it('can edit office with valid data', function () {
-    $company = Company::factory()->create();
 
     $office = Office::factory([
-        'tenant_id' => $company->tenant_id,
-    ])->recycle($company)->create();
+        'tenant_id' => $this->company->tenant_id,
+    ])->recycle($this->company)->create();
 
     $payload = [
         'name' => 'Loki Town',
     ];
 
-    $response = $this->putJson(TestCase::fullLink("/companies/{$company->id}/offices/{$office->id}"), $payload);
+    $response = $this->putJson(TestCase::fullLink("/companies/{$this->company->id}/offices/{$office->id}"), $payload);
     $response->assertOk();
 
     $officeAfterUpdate = $office->fresh();
@@ -82,16 +103,15 @@ it('can edit office with valid data', function () {
 });
 
 it('deletes office', function () {
-    $company = Company::factory()->create();
 
     $office = Office::factory([
-        'tenant_id' => $company->tenant_id,
-    ])->recycle($company)->create();
+        'tenant_id' => $this->company->tenant_id,
+    ])->recycle($this->company)->create();
 
     $officeCount = Office::count();
     $this->assertDatabaseCount('offices', $officeCount);
 
-    $response = $this->deleteJson(TestCase::fullLink("/companies/{$company->id}/offices/{$office->id}"));
+    $response = $this->deleteJson(TestCase::fullLink("/companies/{$this->company->id}/offices/{$office->id}"));
     $response->assertNoContent();
     $this->assertLessThan($officeCount, Office::count());
 });

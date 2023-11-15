@@ -2,22 +2,44 @@
 
 namespace Tests\Feature\V2\Company;
 
+use App\Domains\Constant\UserConstant;
+use App\Domains\Enum\User\UserStageEnum;
 use App\Models\Company;
 use App\Models\Office;
 use App\Models\OfficeArea;
+use App\Models\User;
+use App\Models\UserCompany;
 use Tests\TestCase;
 
 beforeEach(function () {
     $this->seed();
     $this->useDatabaseTransactions = true;
+
+    $this->company = Company::factory()->create();
+    $user = User::factory()->create([
+        UserConstant::TENANT_ID => $this->company->tenant_id,
+        UserConstant::STAGE => UserStageEnum::COMPLETED,
+    ]);
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    UserCompany::create([
+        'user_id' => $user->id,
+        'tenant_id' => $this->company->tenant_id,
+        'company_id' => $this->company->id,
+    ]);
+
+    $this->withHeaders([
+        'Authorization' => "Bearer {$token}",
+        'Accept' => 'application/json',
+        'x-company-id' => $this->company->id
+    ]);
 });
 
 it('can create office area with valid data', function () {
-    $company = Company::factory()->create();
 
     $office = Office::factory([
-        'tenant_id' => $company->tenant_id,
-    ])->recycle($company)->create();
+        'tenant_id' => $this->company->tenant_id,
+    ])->recycle($this->company)->create();
 
 
 
@@ -37,16 +59,15 @@ it('can create office area with valid data', function () {
 
 
 it('can edit office with valid data', function () {
-    $company = Company::factory()->create();
 
     $office = Office::factory([
-        'tenant_id' => $company->tenant_id,
-    ])->recycle($company)->create();
+        'tenant_id' => $this->company->tenant_id,
+    ])->recycle($this->company)->create();
 
     $area = $office->areas()->create([
         'name' => 'Top Floor Corner',
-        'tenant_id' => $company->tenant_id,
-        'company_id' => $company->id,
+        'tenant_id' => $this->company->tenant_id,
+        'company_id' => $this->company->id,
     ]);
 
     $payload = [
@@ -63,19 +84,18 @@ it('can edit office with valid data', function () {
 });
 
 it('deletes office', function () {
-    $company = Company::factory()->create();
 
     $office = Office::factory([
-        'tenant_id' => $company->tenant_id,
-    ])->recycle($company)->create();
+        'tenant_id' => $this->company->tenant_id,
+    ])->recycle($this->company)->create();
 
     $officeCount = Office::count();
     $this->assertDatabaseCount('offices', $officeCount);
 
     $area = $office->areas()->create([
         'name' => 'Top Floor Corner',
-        'tenant_id' => $company->tenant_id,
-        'company_id' => $company->id,
+        'tenant_id' => $this->company->tenant_id,
+        'company_id' => $this->company->id,
     ]);
 
     $response = $this->deleteJson(TestCase::fullLink("/offices/{$office->id}/areas/{$area->id}"));
