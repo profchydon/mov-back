@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Database\Eloquent\Builder;
 
 class DepartmentResource extends JsonResource
 {

@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Domains\Constant\UserDepartmentConstant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class UserDepartment extends BaseModel
 {

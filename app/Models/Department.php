@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Domains\Constant\DepartmentConstant;
-use App\Domains\Constant\UserDepartmentConstant;
 use App\Traits\HasCompany;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +35,4 @@ class Department extends BaseModel
     {
         return $this->hasMany(Team::class);
     }
-
-
 }

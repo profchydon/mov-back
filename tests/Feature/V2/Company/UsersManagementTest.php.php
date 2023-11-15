@@ -73,5 +73,3 @@ test('can delete a user', function () {
 
     $this->assertDatabaseCount('user_invitations', 0);
 });
-
-

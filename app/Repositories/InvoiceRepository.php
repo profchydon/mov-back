@@ -6,14 +6,12 @@ use App\Models\Company;
 use App\Models\Invoice;
 use App\Repositories\Contracts\InvoiceRepositoryInterface;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\Log;
 
 class InvoiceRepository implements InvoiceRepositoryInterface
 {
-
     public function getCompanyInvoices(Company|string $company)
     {
-        if (!($company instanceof  Company)){
+        if (!($company instanceof  Company)) {
             $company = Company::findOrFail($company);
         }
 
@@ -23,24 +21,22 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         return $invoices->paginate();
     }
 
-
     public function getCompanyInvoice(Invoice|string $invoice)
     {
-        if (!($invoice instanceof  Invoice)){
+        if (!($invoice instanceof  Invoice)) {
             $invoice = Company::findOrFail($invoice);
         }
 
         return $invoice->load('currency', 'items.item');
     }
 
-
     public function generateInvoicePDF(Invoice|string $invoice)
     {
-        if (!($invoice instanceof  Invoice)){
+        if (!($invoice instanceof  Invoice)) {
             $invoice = Invoice::findOrFail($invoice);
         }
 
-        $invoice->load( 'items.item', 'company');
+        $invoice->load('items.item', 'company');
 
         $fileName = "invoices/{$invoice->invoice_number}.pdf";
 

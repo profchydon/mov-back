@@ -40,12 +40,12 @@ enum PermissionTypes: string
     case OFFICE_DELETE_ACCESS = 'OfficeDeleteAccess';
     case OFFICE_UPDATE_ACCESS = 'OfficeUpdateAccess';
 
-     // Audit
-     case AUDIT_FULL_ACCESS = 'AuditFullAccess';
-     case AUDIT_CREATE_ACCESS = 'AuditCreateAccess';
-     case AUDIT_READ_ACCESS = 'AuditReadAccess';
-     case AUDIT_DELETE_ACCESS = 'AuditDeleteAccess';
-     case AUDIT_UPDATE_ACCESS = 'AuditUpdateAccess';
+    // Audit
+    case AUDIT_FULL_ACCESS = 'AuditFullAccess';
+    case AUDIT_CREATE_ACCESS = 'AuditCreateAccess';
+    case AUDIT_READ_ACCESS = 'AuditReadAccess';
+    case AUDIT_DELETE_ACCESS = 'AuditDeleteAccess';
+    case AUDIT_UPDATE_ACCESS = 'AuditUpdateAccess';
 
     // Vendor
     case VENDOR_FULL_ACCESS = 'VendorFullAccess';
@@ -68,12 +68,10 @@ enum PermissionTypes: string
     case DEPRECIATION_DELETE_ACCESS = 'DepreciationDeleteAccess';
     case DEPRECIATION_UPDATE_ACCESS = 'DepreciationUpdateAccess';
 
-     // Docuemnt
-     case DOCUMENT_FULL_ACCESS = 'DocumentFullAccess';
-     case DOCUMENT_CREATE_ACCESS = 'DocumentCreateAccess';
-     case DOCUMENT_READ_ACCESS = 'DocumentReadAccess';
-     case DOCUMENT_DELETE_ACCESS = 'DocumentDeleteAccess';
-     case DOCUMENT_UPDATE_ACCESS = 'DocumentUpdateAccess';
+    // Docuemnt
+    case DOCUMENT_FULL_ACCESS = 'DocumentFullAccess';
+    case DOCUMENT_CREATE_ACCESS = 'DocumentCreateAccess';
+    case DOCUMENT_READ_ACCESS = 'DocumentReadAccess';
+    case DOCUMENT_DELETE_ACCESS = 'DocumentDeleteAccess';
+    case DOCUMENT_UPDATE_ACCESS = 'DocumentUpdateAccess';
 }
-
-

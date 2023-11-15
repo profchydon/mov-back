@@ -9,8 +9,6 @@ use App\Domains\Enum\Plan\PlanStatusEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ramsey\Uuid\Uuid;
-use Spatie\Activitylog\LogOptions;
 
 class Plan extends BaseModel
 {
@@ -48,6 +46,6 @@ class Plan extends BaseModel
 
     public function invoice_type()
     {
-        return "plan";
+        return 'plan';
     }
 }

@@ -36,6 +36,6 @@ class Feature extends Model
 
     public function invoice_type()
     {
-        return "add on";
+        return 'add on';
     }
 }

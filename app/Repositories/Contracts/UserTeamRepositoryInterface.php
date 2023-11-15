@@ -3,9 +3,6 @@
 namespace App\Repositories\Contracts;
 
 use App\Domains\DTO\UpdateUserTeamDTO;
-use App\Models\Company;
-use App\Models\Department;
-use App\Models\User;
 
 interface UserTeamRepositoryInterface extends BaseRepositoryInterface
 {

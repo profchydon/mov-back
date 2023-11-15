@@ -27,9 +27,10 @@ final class InvoiceDTO
         return $this->tenant_id;
     }
 
-    public function setTenantId(string $tenant_id): InvoiceDTO
+    public function setTenantId(string $tenant_id): self
     {
         $this->tenant_id = $tenant_id;
+
         return $this;
     }
 
@@ -38,9 +39,10 @@ final class InvoiceDTO
         return $this->company_id;
     }
 
-    public function setCompanyId(string $company_id): InvoiceDTO
+    public function setCompanyId(string $company_id): self
     {
         $this->company_id = $company_id;
+
         return $this;
     }
 
@@ -49,9 +51,10 @@ final class InvoiceDTO
         return $this->due_at;
     }
 
-    public function setDueAt(Carbon $due_at): InvoiceDTO
+    public function setDueAt(Carbon $due_at): self
     {
         $this->due_at = $due_at;
+
         return $this;
     }
 
@@ -60,9 +63,10 @@ final class InvoiceDTO
         return $this->sub_total;
     }
 
-    public function setSubTotal(float $sub_total): InvoiceDTO
+    public function setSubTotal(float $sub_total): self
     {
         $this->sub_total = $sub_total;
+
         return $this;
     }
 
@@ -71,9 +75,10 @@ final class InvoiceDTO
         return $this->tax;
     }
 
-    public function setTax(float $tax): InvoiceDTO
+    public function setTax(float $tax): self
     {
         $this->tax = $tax;
+
         return $this;
     }
 
@@ -82,9 +87,10 @@ final class InvoiceDTO
         return $this->currency_code;
     }
 
-    public function setCurrencyCode(string $currency_code): InvoiceDTO
+    public function setCurrencyCode(string $currency_code): self
     {
         $this->currency_code = $currency_code;
+
         return $this;
     }
 
@@ -93,9 +99,10 @@ final class InvoiceDTO
         return $this->status;
     }
 
-    public function setStatus(string $status): InvoiceDTO
+    public function setStatus(string $status): self
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -104,9 +111,10 @@ final class InvoiceDTO
         return $this->paid_at;
     }
 
-    public function setPaidAt(Carbon $paid_at): InvoiceDTO
+    public function setPaidAt(Carbon $paid_at): self
     {
         $this->paid_at = $paid_at;
+
         return $this;
     }
 
@@ -115,7 +123,7 @@ final class InvoiceDTO
         return $this->billable;
     }
 
-    public function setBillable(Model $billable): InvoiceDTO
+    public function setBillable(Model $billable): self
     {
         $this->billable = $billable;
         $this->billable_id = $billable->id;
@@ -133,5 +141,4 @@ final class InvoiceDTO
     {
         return $this->billable_id;
     }
-
 }

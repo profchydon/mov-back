@@ -3,7 +3,6 @@
 use App\Domains\Constant\InvoiceConstant;
 use App\Domains\Enum\Invoice\InvoiceStatusEnum;
 use App\Models\Company;
-use App\Models\Currency;
 use App\Models\Tenant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

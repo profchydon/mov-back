@@ -5,8 +5,6 @@ namespace App\Models;
 use App\Domains\Constant\InvoiceConstant;
 use App\Domains\Enum\Invoice\InvoiceStatusEnum;
 use App\Traits\UsesUUID;
-use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Uuid;
 
 class Invoice extends BaseModel
 {
@@ -20,14 +18,14 @@ class Invoice extends BaseModel
         InvoiceConstant::ID => 'string',
         InvoiceConstant::STATUS => InvoiceStatusEnum::class,
         InvoiceConstant::DUE_AT => 'datetime',
-        InvoiceConstant::PAID_AT => 'datetime'
+        InvoiceConstant::PAID_AT => 'datetime',
     ];
 
     public static function boot()
     {
         parent::boot();
         static::creating(function (self $model) {
-            $invoiceNumber = chunk_split(strtoupper(uniqid("in")), 5, '-');
+            $invoiceNumber = chunk_split(strtoupper(uniqid('in')), 5, '-');
             $invoiceNumber = trim($invoiceNumber, '-');
             $model->invoice_number = $invoiceNumber;
         });

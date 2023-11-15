@@ -13,7 +13,6 @@ class InvoiceController extends Controller
 {
     public function __construct(private InvoiceRepositoryInterface $invoiceRepository)
     {
-
     }
 
     public function index(Company $company, Request $request)

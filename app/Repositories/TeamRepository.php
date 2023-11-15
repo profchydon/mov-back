@@ -2,11 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Domains\Constant\TeamConstant;
 use App\Domains\DTO\CreateTeamDTO;
 use App\Http\Resources\TeamCollection;
 use App\Http\Resources\TeamResource;
-use App\Models\Company;
 use App\Models\Department;
 use App\Models\Team;
 use App\Repositories\Contracts\TeamRepositoryInterface;
@@ -37,6 +35,4 @@ class TeamRepository implements TeamRepositoryInterface
 
         return TeamCollection::make($teams);
     }
-
-
 }

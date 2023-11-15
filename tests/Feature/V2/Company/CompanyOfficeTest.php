@@ -31,7 +31,7 @@ beforeEach(function () {
     $this->withHeaders([
         'Authorization' => "Bearer {$token}",
         'Accept' => 'application/json',
-        'x-company-id' => $this->company->id
+        'x-company-id' => $this->company->id,
     ]);
 });
 
@@ -84,7 +84,6 @@ it('does not create office with invalid data', function () {
 });
 
 it('can edit office with valid data', function () {
-
     $office = Office::factory([
         'tenant_id' => $this->company->tenant_id,
     ])->recycle($this->company)->create();
@@ -103,7 +102,6 @@ it('can edit office with valid data', function () {
 });
 
 it('deletes office', function () {
-
     $office = Office::factory([
         'tenant_id' => $this->company->tenant_id,
     ])->recycle($this->company)->create();

@@ -4,7 +4,6 @@ namespace App\Domains\DTO\Invoice;
 
 use App\Traits\DTOToArray;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 final class InvoiceItemDTO
 {
@@ -22,9 +21,10 @@ final class InvoiceItemDTO
         return $this->invoice_id;
     }
 
-    public function setInvoiceId(string $invoice_id): InvoiceItemDTO
+    public function setInvoiceId(string $invoice_id): self
     {
         $this->invoice_id = $invoice_id;
+
         return $this;
     }
 
@@ -33,9 +33,10 @@ final class InvoiceItemDTO
         return $this->quantity;
     }
 
-    public function setQuantity(float $quantity): InvoiceItemDTO
+    public function setQuantity(float $quantity): self
     {
         $this->quantity = $quantity;
+
         return $this;
     }
 
@@ -44,9 +45,10 @@ final class InvoiceItemDTO
         return $this->amount;
     }
 
-    public function setAmount(float $amount): InvoiceItemDTO
+    public function setAmount(float $amount): self
     {
         $this->amount = $amount;
+
         return $this;
     }
 
@@ -55,14 +57,12 @@ final class InvoiceItemDTO
         return $this->item;
     }
 
-    public function setItem(Model $item): InvoiceItemDTO
+    public function setItem(Model $item): self
     {
         $this->item = $item;
         $this->item_id = $item->id;
         $this->item_type = $item::class;
+
         return $this;
     }
-
-
-
 }
