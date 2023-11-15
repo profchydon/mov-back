@@ -30,6 +30,8 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::put('/departments/{department}/users/{user}/teams', [TeamController::class, 'updateUserTeams'])->name('change.user.team');
 
         Route::get('/invitation-link', 'getUserInvitationLink')->name('get.invitation.link');
+
+        Route::get('/invoices', [\App\Http\Controllers\V2\InvoiceController::class, 'index']);
     })->middleware(['auth:sanctum', 'user-in-company']);
 
 
