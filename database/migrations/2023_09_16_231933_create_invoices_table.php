@@ -20,14 +20,13 @@ return new class extends Migration {
             $table->foreignUuid(InvoiceConstant::TENANT_ID)->references(InvoiceConstant::ID)->on(Tenant::getTableName());
             $table->foreignUuid(InvoiceConstant::COMPANY_ID)->references(InvoiceConstant::ID)->on(Company::getTableName());
             $table->string(InvoiceConstant::INVOICE_NUMBER)->unique();
-            $table->dateTime(InvoiceConstant::DATE_ISSUED)->default(now());
-            $table->dateTime(InvoiceConstant::DUE_DATE)->nullable();
+            $table->dateTime(InvoiceConstant::DUE_AT)->nullable();
             $table->dateTime(InvoiceConstant::PAID_AT)->nullable();
             $table->decimal(InvoiceConstant::SUB_TOTAL);
             $table->decimal(InvoiceConstant::TAX)->default(0.00);
-            $table->foreignIdFor(Currency::class, InvoiceConstant::CURRENCY_ID);
-            $table->string(InvoiceConstant::TRANSACTION_REF);
+            $table->string(InvoiceConstant::CURRENCY_CODE);
             $table->enum(InvoiceConstant::STATUS, InvoiceStatusEnum::values())->default(InvoiceStatusEnum::PENDING->value);
+            $table->uuidMorphs(InvoiceConstant::BILLABLE);
             $table->timestamps();
             $table->softDeletes();
         });

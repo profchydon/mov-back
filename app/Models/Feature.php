@@ -28,4 +28,8 @@ class Feature extends Model
     {
         return $this->hasMany(FeaturePrice::class, 'feature_id');
     }
+
+    public function currencyPrice(string $currency_code){
+        return $this->hasOne(FeaturePrice::class, 'feature_id')->where('currency_code', $currency_code);
+    }
 }
