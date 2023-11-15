@@ -39,11 +39,12 @@ class AssetController extends Controller
      * @param CompanyRepositoryInterface $companyRepository
      */
     public function __construct(
-        private readonly AssetRepositoryInterface $assetRepository,
-        private readonly CompanyRepositoryInterface $companyRepository,
+        private readonly AssetRepositoryInterface     $assetRepository,
+        private readonly CompanyRepositoryInterface   $companyRepository,
         private readonly AssetMakeRepositoryInterface $assetMakeRepository,
-        private readonly FileRepositoryInterface $fileRepository
-    ) {
+        private readonly FileRepositoryInterface      $fileRepository
+    )
+    {
     }
 
     /**
@@ -80,7 +81,9 @@ class AssetController extends Controller
 
     public function createBulk(Company $company, CreateAssetFromArrayRequest $request)
     {
-        $assets = collect($request->assets)->transform(function ($asset) use ($company) {
+        $user = $request->user();
+
+        $assets = collect($request->assets)->transform(function ($asset) use ($company, $user) {
             $dto = new CreateAssetDTO();
             $dto->setTenantId($company->tenant_id)
                 ->setCompanyId($company->id)
@@ -97,6 +100,11 @@ class AssetController extends Controller
                 ->setNextMaintenanceDate(Arr::get($asset, 'next_maintenance_date', null))
                 ->setIsInsured(Arr::get($asset, 'is_insured', false))
                 ->setStatus(Arr::get($asset, 'status', AssetStatusEnum::PENDING_APPROVAL->value));
+
+
+            if ($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)) {
+                $dto->setStatus(AssetStatusEnum::AVAILABLE->value);
+            }
 
             return $this->assetRepository->create($dto->toArray());
         });
@@ -183,8 +191,8 @@ class AssetController extends Controller
     public function markAssetAsStolen(CreateStolenAsset $request, Company $company, Asset $asset)
     {
         $dto = $request->getDTO()
-                        ->setCompanyId($company->id)
-                        ->setAssetId($asset->id);
+            ->setCompanyId($company->id)
+            ->setAssetId($asset->id);
 
         $stolenAsset = $this->assetRepository->markAsStolen($asset->id, $dto, $request->file('documents'));
 
@@ -194,8 +202,8 @@ class AssetController extends Controller
     public function markAssetAsDamaged(CreateDamagedAssetRequest $request, Company $company, Asset $asset)
     {
         $dto = $request->getDTO()
-                        ->setCompanyId($company->id)
-                        ->setAssetId($asset->id);
+            ->setCompanyId($company->id)
+            ->setAssetId($asset->id);
 
         $damagedAsset = $this->assetRepository->markAsDamaged($asset->id, $dto, $request->file('documents'));
 
@@ -205,8 +213,8 @@ class AssetController extends Controller
     public function markAssetAsRetired(CreateRetiredAssetRequest $request, Company $company, Asset $asset)
     {
         $dto = $request->getDTO()
-                        ->setCompanyId($company->id)
-                        ->setAssetId($asset->id);
+            ->setCompanyId($company->id)
+            ->setAssetId($asset->id);
 
         $retiredAsset = $this->assetRepository->markAsRetired($asset->id, $dto);
 
