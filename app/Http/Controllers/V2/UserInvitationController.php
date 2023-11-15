@@ -35,7 +35,7 @@ class UserInvitationController extends Controller
 
     public function findUserInvitation($code)
     {
-        $invitation = $this->userInvitationRepository->first(UserInvitationConstant::CODE, $code);
+        $invitation = $this->userInvitationRepository->firstWithRelation(UserInvitationConstant::CODE, $code, ['role']);
 
         if (!$invitation) {
             return $this->error(Response::HTTP_NOT_FOUND, __('messages.invite-not-found'));
