@@ -36,7 +36,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
 
 
 
-    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription')->middleware(['auth:sanctum', 'user-in-company']);
+    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');
     Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->name('get.company.subscriptions');
     Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription');
     Route::resource('{company}/offices', CompanyOfficeController::class)->middleware(['auth:sanctum', 'user-in-company']);
