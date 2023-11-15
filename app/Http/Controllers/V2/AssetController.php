@@ -80,7 +80,7 @@ class AssetController extends Controller
 
     public function createBulk(Company $company, CreateAssetFromArrayRequest $request)
     {
-        $assetDTOs = collect($request->assets)->transform(function ($asset) use ($company) {
+        $assets = collect($request->assets)->transform(function ($asset) use ($company) {
             $dto = new CreateAssetDTO();
             $dto->setTenantId($company->tenant_id)
                 ->setCompanyId($company->id)
@@ -98,14 +98,10 @@ class AssetController extends Controller
                 ->setIsInsured(Arr::get($asset, 'is_insured', false))
                 ->setStatus(Arr::get($asset, 'status', AssetStatusEnum::PENDING_APPROVAL->value));
 
-            return $dto;
+            return $this->assetRepository->create($dto->toArray());
         });
 
-        $assetDTOs->each(function ($dto) {
-            dispatch(fn () => $this->assetRepository->create($dto->toArray()));
-        });
-
-        return $this->response(Response::HTTP_ACCEPTED, __("{$assetDTOs->count()} assets being created"));
+        return $this->response(Response::HTTP_ACCEPTED, __("{$assets->count()} assets created"), $assets);
     }
 
     /**
