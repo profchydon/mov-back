@@ -16,7 +16,7 @@ class UserBelongsToCompany
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if(app()->environment('testing')){
+        if (app()->environment('testing')) {
             return $next($request);
 
             // TODO: Update tests to have company users so we can yank this off

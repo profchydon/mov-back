@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Asset;
+namespace App\Http\Requests;
 
-use App\Domains\DTO\Asset\CreateStolenAssetDTO;
+use App\Domains\DTO\CreateUserRoleDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateStolenAsset extends FormRequest
+class UpdateUserRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,19 +23,18 @@ class CreateStolenAsset extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|date',
-            'comment' => 'required|string',
-            'documents' => 'nullable|array',
-            'documents.*' => 'nullable|file',
+            'name' => 'required|string',
+            'permissions' => 'required|array',
+            'permissions.*' => 'integer',
         ];
     }
 
-    public function getDTO(): CreateStolenAssetDTO
+    public function getDTO(): CreateUserRoleDTO
     {
-        $dto = new CreateStolenAssetDTO();
+        $dto = new CreateUserRoleDTO();
 
-        $dto->setDate($this->input('date'))
-            ->setComment($this->input('comment'));
+        $dto->setName($this->input('name'))
+            ->setPermissions($this->input('permissions'));
 
         return $dto;
     }

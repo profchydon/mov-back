@@ -11,11 +11,16 @@ class Country extends Model
     use HasFactory, GetsTableName;
 
     protected $casts = [
-      'states' => 'json',
+        'states' => 'json',
     ];
 
     public static function boot()
     {
         parent::boot();
+    }
+
+    public function currency()
+    {
+        return $this->hasOne(Currency::class, 'code', 'currency_code');
     }
 }

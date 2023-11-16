@@ -113,9 +113,9 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         if (!($company instanceof Company)) {
             $company = Company::findOrFail($company);
         }
-        
-        $users = UserInvitation::where(UserInvitationConstant::COMPANY_ID, $company->id);
-        
+
+        $users = UserInvitation::with(['role', 'team', 'department', 'office'])->where(UserInvitationConstant::COMPANY_ID, $company->id);
+
         $users = UserInvitation::appendToQueryFromRequestQueryParameters($users);
 
         return $users;

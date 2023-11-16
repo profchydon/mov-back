@@ -2,26 +2,16 @@
 
 namespace App\Http\Controllers\V2;
 
-use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\DTO\CreateTeamDTO;
 use App\Domains\DTO\UpdateUserTeamDTO;
-use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTeamRequest;
-use App\Http\Requests\SelectSubscriptionPlanRequest;
 use App\Http\Requests\UpdateUserTeamRequest;
-use App\Http\Resources\TeamCollection;
-use App\Http\Resources\TeamResource;
 use App\Models\Company;
 use App\Models\Department;
-use App\Models\Subscription;
-use App\Models\SubscriptionPayment;
-use App\Models\Team;
 use App\Models\User;
-use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Repositories\Contracts\TeamRepositoryInterface;
 use App\Repositories\Contracts\UserTeamRepositoryInterface;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class TeamController extends Controller
@@ -30,7 +20,7 @@ class TeamController extends Controller
     {
     }
 
-    public function createTeam(Company $company, Department $department,  CreateTeamRequest $request)
+    public function createTeam(Company $company, Department $department, CreateTeamRequest $request)
     {
         $teamDTO = new CreateTeamDTO();
         $teamDTO->setCompanyId($company->id)
@@ -55,7 +45,6 @@ class TeamController extends Controller
 
     public function getTeams(Company $company, Department $department)
     {
-
         $teams = $this->teamRepository->getTeams($department);
 
         return $this->response(Response::HTTP_OK, __('record-fetched'), $teams);
@@ -63,7 +52,6 @@ class TeamController extends Controller
 
     public function updateUserTeams(Company $company, Department $department, User $user, UpdateUserTeamRequest $request)
     {
-
         $updateTeamDTO = new UpdateUserTeamDTO();
         $updateTeamDTO->setTeams($request->teams)
             ->setCompanyId($company->id)
@@ -74,5 +62,4 @@ class TeamController extends Controller
 
         return $this->response(Response::HTTP_OK, __('record-update'));
     }
-
 }

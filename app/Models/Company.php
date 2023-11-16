@@ -16,6 +16,8 @@ class Company extends BaseModel
 {
     use UsesUUID, SoftDeletes, QueryFormatter;
 
+    protected $with = ['country.currency'];
+
     protected $guarded = [
         CompanyConstant::ID,
     ];
@@ -76,5 +78,10 @@ class Company extends BaseModel
     public function asset_maintenance()
     {
         return $this->hasMany(AssetMaintenance::class, 'company_id');
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country', 'name');
     }
 }
