@@ -1,30 +1,124 @@
-- name: United States
-  code: USD
-  symbol: $
-- name: Eurozone
-  code: EUR
-  symbol: €
-- name: Japan
-  code: JPY
-  symbol: ¥
-- name: United Kingdom
-  code: GBP
-  symbol: £
-- name: China
-  code: CNY
-  symbol: ¥
-- name: India
-  code: INR
-  symbol: ₹
-- name: Canada
-  code: CAD
-  symbol: $
-- name: Australia
-  code: AUD
-  symbol: $
-- name: South Africa
-  code: ZAR
-  symbol: R
-- name: Nigeria
+- name: Algerian Dinar
+  code: DZD
+  country_code: DZ
+  symbol: DA
+
+- name: Nigerian Naira
   code: NGN
+  country_code: NG
   symbol: ₦
+
+- name: South African Rand
+  code: ZAR
+  country_code: ZA
+  symbol: R
+
+- name: Egyptian Pound
+  code: EGP
+  country_code: EG
+  symbol: E£
+
+- name: Kenyan Shilling
+  code: KES
+  country_code: KE
+  symbol: KSh
+
+- name: Ethiopian Birr
+  code: ETB
+  country_code: ET
+  symbol: Br
+
+- name: Moroccan Dirham
+  code: MAD
+  country_code: MA
+  symbol: DH
+
+- name: Sudanese Pound
+  code: SDG
+  country_code: SD
+  symbol: SDG
+
+- name: Ghanaian Cedi
+  code: GHS
+  country_code: GH
+  symbol: GH₵
+
+- name: Ivorian Franc
+  code: XOF
+  country_code: CI
+  symbol: CFA
+
+- name: Euro
+  code: EUR
+  country_code: EU
+  symbol: €
+
+- name: British Pound Sterling
+  code: GBP
+  country_code: GB
+  symbol: £
+
+- name: Swiss Franc
+  code: CHF
+  country_code: CH
+  symbol: CHF
+
+- name: Swedish Krona
+  code: SEK
+  country_code: SE
+  symbol: kr
+
+- name: Russian Ruble
+  code: RUB
+  country_code: RU
+  symbol: ₽
+
+- name: United States Dollar
+  code: USD
+  country_code: US
+  symbol: $
+
+- name: Canadian Dollar
+  code: CAD
+  country_code: CA
+  symbol: CA$
+
+- name: Mexican Peso
+  code: MXN
+  country_code: MX
+  symbol: Mex$
+
+- name: Brazilian Real
+  code: BRL
+  country_code: BR
+  symbol: R$
+
+- name: Argentine Peso
+  code: ARS
+  country_code: AR
+  symbol: $
+
+- name: Japanese Yen
+  code: JPY
+  country_code: JP
+  symbol: ¥
+
+- name: Chinese Yuan
+  code: CNY
+  country_code: CN
+  symbol: ¥
+
+- name: Indian Rupee
+  code: INR
+  country_code: IN
+  symbol: ₹
+
+- name: South Korean Won
+  code: KRW
+  country_code: KR
+  symbol: ₩
+
+- name: Singapore Dollar
+  code: SGD
+  country_code: SG
+  symbol: S$

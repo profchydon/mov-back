@@ -20,8 +20,10 @@ class CreateCompanyUserDTO
     private string $company_id;
     private string $invited_by;
 
-    public function setName(string $name){
+    public function setName(string $name)
+    {
         $this->name = $name;
+
         return $this;
     }
 
@@ -45,6 +47,7 @@ class CreateCompanyUserDTO
     public function setJobTitle(string $job_title)
     {
         $this->job_title = $job_title;
+
         return $this;
     }
 
@@ -56,6 +59,7 @@ class CreateCompanyUserDTO
     public function setEmploymentType(string $employment_type)
     {
         $this->employment_type = $employment_type;
+
         return $this;
     }
 
@@ -79,6 +83,7 @@ class CreateCompanyUserDTO
     public function setOfficeId(string $office_id)
     {
         $this->office_id = $office_id;
+
         return $this;
     }
 
@@ -90,6 +95,7 @@ class CreateCompanyUserDTO
     public function setDepartmentId(string $department_id)
     {
         $this->department_id = $department_id;
+
         return $this;
     }
 
@@ -101,6 +107,7 @@ class CreateCompanyUserDTO
     public function setTeamId(string $team_id)
     {
         $this->team_id = $team_id;
+
         return $this;
     }
 
@@ -108,7 +115,7 @@ class CreateCompanyUserDTO
     {
         return $this->team_id;
     }
-    
+
     public function setCode(string $code)
     {
         $this->code = $code;

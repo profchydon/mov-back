@@ -6,7 +6,6 @@ use App\Domains\Auth\RoleTypes;
 use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\UserConstant;
-use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\Constant\UserRoleConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserStageEnum;
@@ -225,7 +224,8 @@ class CompanyController extends Controller
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'));
     }
 
-    public function deleteCompanyUser(Company $company, UserInvitation $userInvitation){
+    public function deleteCompanyUser(Company $company, UserInvitation $userInvitation)
+    {
         $this->userInvitationRepository->deleteById($userInvitation->id);
 
         return $this->response(Response::HTTP_OK, __('messages.record-deleted'), );

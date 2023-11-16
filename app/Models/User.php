@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Domains\Constant\AssetConstant;
 use App\Domains\Constant\UserConstant;
-use App\Domains\Constant\UserDepartmentConstant;
 use App\Domains\Enum\User\UserStatusEnum;
 use App\Events\UserCreatedEvent;
 use App\Events\UserDeactivatedEvent;
@@ -113,5 +112,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserTeam::class, 'user_id');
     }
-
 }

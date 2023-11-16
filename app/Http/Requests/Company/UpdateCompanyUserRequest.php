@@ -41,7 +41,7 @@ class UpdateCompanyUserRequest extends FormRequest
     public function getDTO(): CreateCompanyUserDTO
     {
         $dto = new CreateCompanyUserDTO();
-        
+
         $dto->setName($this->input('name'))
             ->setEmail($this->input('email'))
             ->setJobTitle($this->input('job_title'))
