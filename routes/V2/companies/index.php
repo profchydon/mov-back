@@ -60,5 +60,6 @@ Route::group(['prefix' => 'companies/{company}'], function (){
         Route::get('/users', 'getCompanyUsers')->name('get.company.users');
         Route::delete('/users/{userInvitation}', 'deleteCompanyUser')->name('delete.company.user');
         Route::put('/users/{userInvitation}', 'updateCompanyUser')->name('update.company.user');
+        Route::get('/users/{userInvitation}', 'getCompanyUserDetails')->name('get.company.user');
     });
 });
