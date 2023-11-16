@@ -7,7 +7,7 @@ Route::middleware(['auth:sanctum', 'user-in-company'])->controller(RoleControlle
     Route::get('/user-roles', 'fetchUserRoles')->name('fetch.user.roles')->withoutMiddleware(['auth:sanctum', 'user-in-company']);
     Route::post('/user-roles', 'createUserRole')->name('create.user.role');
     Route::get('/user-roles/{role}', 'fetchRoleDetails')->name('fetch.user.role');
-    Route::put('/user-roles/{role}', 'updateRole')->name('fetch.user.role');
+    Route::put('/user-roles/{role}', 'updateRole')->name('update.user.role');
 });
 
 Route::get('/permissions', [RoleController::class, 'fetchPermissions'])->name('fetch.permissions')->middleware(['auth:sanctum', 'user-in-company']);
