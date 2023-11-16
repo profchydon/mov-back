@@ -200,7 +200,7 @@ class CompanyController extends Controller
 
     public function getCompanyUsers(Company $company)
     {
-        $users = $company->users;
+        $users = $this->companyRepository->getUsers($company);
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $users);
     }

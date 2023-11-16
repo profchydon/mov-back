@@ -35,6 +35,21 @@ class UserInvitation extends BaseModel
         return $this->belongsTo(Role::class, 'role_id');
     }
 
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function office(): BelongsTo
+    {
+        return $this->belongsTo(Office::class);
+    }
+
     protected static function booted()
     {
         static::created(function (self $model) {
