@@ -38,7 +38,7 @@ return [
     "headers" => [
         'company_id' => [
             'invalid' => "Invalid Company ID provided in request header",
-            "missing" => "Company ID missing in request header, provide company_id in your header"
+            "missing" => "Company ID missing in request header, provide company_id as x-company-id in your request header"
         ]
         ],
     'company-sole-admin' => 'You have been set as the company\'s sole admin',
