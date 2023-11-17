@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Domains\Constant\Asset\AssetCheckoutConstant;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\AssetCheckoutRequest;
@@ -9,6 +10,7 @@ use App\Http\Requests\Asset\UpdateAssetCheckoutRequest;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
 use App\Repositories\Contracts\AssetCheckoutRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 
@@ -18,10 +20,11 @@ class AssetCheckoutController extends Controller
     {
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $checkout = AssetCheckout::with('asset')->orderBy('group_id');
-        $checkout = $checkout->paginate()->groupBy('group_id');
+        $company_id = $request->header('x-company-id');
+        $checkout = AssetCheckout::where(AssetCheckoutConstant::COMPANY_ID, $company_id)->with('asset', 'receiver')->orderBy('created_at', 'DESC');
+        $checkout = $checkout->paginate();
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $checkout);
     }
@@ -38,7 +41,7 @@ class AssetCheckoutController extends Controller
         $assets = collect($request->assets);
         $assets = $assets->transform(fn ($asset) => Asset::find($asset));
 
-        $groupId = strtolower(uniqid());
+        $groupId = strtoupper(substr($request->reason, 0, 3) . "-" . rand ( 1000000 , 9999999 ));
 
         $assets = $assets->transform(function ($asset) use ($request, $groupId) {
             $dto = new AssetCheckoutDTO();

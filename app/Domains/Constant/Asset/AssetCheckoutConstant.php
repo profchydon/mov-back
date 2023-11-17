@@ -13,6 +13,7 @@ class AssetCheckoutConstant
     public const RECEIVER = 'receiver';
     public const RECEIVER_TYPE = 'receiver_type';
     public const RECEIVER_ID = 'receiver_id';
+    public const CHECKOUT_BY = 'checkout_by';
     public const CHECKOUT_DATE = 'checkout_date';
     public const RETURN_DATE = 'return_date';
     public const COMMENT = 'comment';
