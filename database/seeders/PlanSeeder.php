@@ -6,6 +6,7 @@ use App\Domains\Constant\Plan\PlanConstant;
 use App\Domains\Constant\Plan\PlanPriceConstant;
 use App\Domains\Constant\Plan\PlanProcessorConstant;
 use App\Models\Plan;
+use App\Models\PlanProcessor;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
