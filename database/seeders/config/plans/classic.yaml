@@ -23,9 +23,8 @@ prices:
     processors:
       - name: flutterwave
         id: 60137
-    # processors:
-    #   - name: stripe
-    #     id: 59367
+    # - name: stripe
+    #   id: 59367
   - currency_code: NGN
     billing_cycle: YEARLY
     amount: 1440000
@@ -38,6 +37,5 @@ prices:
     processors:
       - name: flutterwave
         id: 60138
-    # processors:
     #   - name: stripe
     #     id: 59367

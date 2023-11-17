@@ -53,6 +53,13 @@ class SubscriptionController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $subscription);
     }
 
+    public function getActiveSubscription(Company $company, Subscription $subscription)
+    {
+        $subscription = $this->subscriptionRepository->getCompanySubscription($company);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $subscription);
+    }
+
     public function getSubscriptions(Company $company)
     {
         $subscriptions = $company->subscriptions()->get();

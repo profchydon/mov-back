@@ -24,6 +24,16 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         return Subscription::class;
     }
 
+    public function getCompanySubscription(string|Company $company)
+    {
+        if(!($company instanceof  Company)){
+            $company = Company::findOrFail($company);
+        }
+
+        $subscription = $company->activeSubscription()->with(['payment', 'plan.prices', 'addOns.feature.prices']);
+        return $subscription->first();
+    }
+
     public function createSubscription(CreateSubscriptionDTO $subDTO)
     {
         DB::beginTransaction();
