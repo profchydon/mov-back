@@ -28,9 +28,6 @@ prices:
         id: 60139
   - currency_code: NGN
     billing_cycle: YEARLY
-    processors:
-      - name: flutterwave
-        id: 60067
     amount: 4800000
     processors:
       - name: flutterwave
