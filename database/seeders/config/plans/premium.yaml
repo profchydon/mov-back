@@ -17,12 +17,24 @@ prices:
   - currency_code: NGN
     billing_cycle: MONTHLY
     amount: 400000
+    processors:
+      - name: flutterwave
+        id: 60066
   - currency_code: USD
     billing_cycle: MONTHLY
     amount: 1000
+    processors:
+      - name: flutterwave
+        id: 60139
   - currency_code: NGN
     billing_cycle: YEARLY
     amount: 4800000
+    processors:
+      - name: flutterwave
+        id: 60067
   - currency_code: USD
     billing_cycle: YEARLY
     amount: 12000
+    processors:
+      - name: flutterwave
+        id: 60140
