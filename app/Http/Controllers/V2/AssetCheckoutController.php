@@ -24,7 +24,7 @@ class AssetCheckoutController extends Controller
     {
         $company_id = $request->header('x-company-id');
         $checkout = AssetCheckout::where(AssetCheckoutConstant::COMPANY_ID, $company_id)->with('asset', 'receiver')->orderBy('created_at', 'DESC');
-        $checkout = $checkout->paginate()->groupBy('group_id');
+        $checkout = $checkout->paginate();
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $checkout);
     }
