@@ -23,7 +23,7 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
 
     public function markAsArchived(string $assetId): Asset;
 
-    public function getCompanyAssets(Company|string $company);
+    public function getCompanyAssets(Company|string $company, string|null $status);
 
     /**
      * @param string $assetId

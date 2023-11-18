@@ -115,9 +115,11 @@ class AssetController extends Controller
     /**
      * @return JsonResponse
      */
-    public function get(Company $company): JsonResponse
+    public function get(Company $company, Request $request)
     {
-        $assets = $this->assetRepository->getCompanyAssets($company);
+        $status = $request->get('status');
+
+        $assets = $this->assetRepository->getCompanyAssets($company, $status);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assets);
     }

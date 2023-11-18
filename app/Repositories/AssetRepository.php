@@ -33,16 +33,16 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return Asset::class;
     }
 
-    public function getCompanyAssets(Company|string $company)
+    public function getCompanyAssets(Company|string $company, string|null $status)
     {
         if (!($company instanceof  Company)) {
             $company = Company::findOrFail($company);
         }
 
-        $assets = $company->assets();
-        $assets = $assets->with(['type', 'office', 'assignee'])->orderBy('assets.created_at', 'desc');
-        $assets = Asset::appendToQueryFromRequestQueryParameters($assets);
+        $statusArray = $status === null ? AssetStatusEnum::values() : [$status];
 
+        $assets = $company->assets()->status($statusArray)->with(['type', 'office', 'assignee'])->orderBy('assets.created_at', 'desc');
+        $assets = Asset::appendToQueryFromRequestQueryParameters($assets);
         return $assets->paginate();
     }
 
