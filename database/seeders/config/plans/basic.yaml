@@ -1,6 +1,7 @@
 name: Basic
 description: Advanced managing of personnel and vendors
 preceding_plan_name: Free
+rank: 1
 offers:
   - Up to 50 assets
   - Up to 3 seats

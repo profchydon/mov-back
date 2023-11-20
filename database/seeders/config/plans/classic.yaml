@@ -1,6 +1,7 @@
 name: Classic
 description: Popular plan for medium teams
 preceding_plan_name: Basic
+rank: 2
 offers:
   - Up to 250 assets
   - Up to 5 seats

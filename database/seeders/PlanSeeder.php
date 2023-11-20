@@ -33,7 +33,7 @@ class PlanSeeder extends Seeder
             ], [
                 PlanConstant::NAME => $seedFile['name'],
                 PlanConstant::DESCRIPTION => $seedFile['description'],
-                PlanConstant::PRECEDING_PLAN_NAME => $seedFile['preceding_plan_name'] ?? null,
+                PlanConstant::RANK => $seedFile['rank'] ?? null,
                 PlanConstant::OFFERS => $seedFile['offers'],
             ]);
 
@@ -49,14 +49,11 @@ class PlanSeeder extends Seeder
 
                 $processors = $price['processors'] ?? [];
                 foreach ($processors as $processor) {
-                    $planProcessor = $planPrice->processor()->updateOrCreate([
+                    $planPrice->processor()->updateOrCreate([
                         PlanProcessorConstant::PLAN_PROCESSOR_NAME => $processor['name'],
-//                        PlanProcessorConstant::PLAN_ID => $plan->id,
                     ], [
                         PlanProcessorConstant::PLAN_PROCESSOR_ID => $processor['id'],
                     ]);
-
-                    Log::info($planProcessor);
                 }
             }
         }

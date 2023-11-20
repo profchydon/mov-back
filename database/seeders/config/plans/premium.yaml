@@ -1,6 +1,7 @@
 name: Premium
 description: Popular plan for large teams
 preceding_plan_name: Classic
+rank: 3
 offers:
   - Up to 1000 assets
   - Up to 10 seats
