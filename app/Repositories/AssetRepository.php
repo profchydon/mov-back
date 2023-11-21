@@ -35,7 +35,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function getCompanyAssets(Company|string $company)
     {
-        if (!($company instanceof  Company)) {
+        if (!($company instanceof Company)) {
             $company = Company::findOrFail($company);
         }
 
@@ -97,16 +97,10 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
             $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::STOLEN->value]);
 
             if ($documents) {
-                foreach ($documents as $key => $document) {
-                    $extension = $document->getClientOriginalExtension();
-
-                    $fileName = sprintf('%s-%s.%s', time(), Str::uuid(), $extension);
-
-                    $path = $document->storeAs('stolen-asset-documents', $fileName, 's3');
-                    $path = Storage::disk('s3')->url($path);
-
-                    $stolenAsset->documents()->create(['path' => $path]);
-                }
+                collect($documents)->each(function ($document) use ($stolenAsset) {
+                    Storage::disk('s3')->putFileAs('', $document, $document->getClientOriginalName());
+                    $stolenAsset->documents()->create(['path' => $document->getClientOriginalName()]);
+                });
             }
         });
 
@@ -134,7 +128,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return $maintenance->simplePaginate();
 
     }
-    
+
     public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset
     {
         DB::transaction(function () use ($assetId, $dto, $documents) {
@@ -143,16 +137,10 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
             $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::DAMAGED->value]);
 
             if ($documents) {
-                foreach ($documents as $key => $document) {
-                    $extension = $document->getClientOriginalExtension();
-
-                    $fileName = sprintf('%s-%s.%s', time(), Str::uuid(), $extension);
-
-                    $path = $document->storeAs('stolen-asset-documents', $fileName, 's3');
-                    $path = Storage::disk('s3')->url($path);
-
-                    $damagedAsset->documents()->create(['path' => $path]);
-                }
+                collect($documents)->each(function ($document) use ($damagedAsset) {
+                    Storage::disk('s3')->putFileAs('', $document, $document->getClientOriginalName());
+                    $damagedAsset->documents()->create(['path' => $document->getClientOriginalName()]);
+                });
             }
         });
 
@@ -168,5 +156,23 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         });
 
         return $this->first('id', $assetId);
+    }
+
+    public function getCompanyStolenAssets(Company|string $company)
+    {
+       if(! ($company instanceof  Company)){
+           $company = Company::findOrFail($company);
+       }
+
+       return $company->stolenAssets()->with(['asset', 'documents'])->simplePaginate();
+    }
+
+    public function getCompanyDamagedAssets(Company|string $company)
+    {
+        if(! ($company instanceof  Company)){
+            $company = Company::findOrFail($company);
+        }
+
+        return $company->damagedAssets()->with(['asset', 'documents'])->simplePaginate();
     }
 }

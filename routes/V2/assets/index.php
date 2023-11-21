@@ -23,8 +23,10 @@ Route::middleware(['auth:sanctum', 'user-in-company'])->controller(AssetControll
     Route::get('{company}/asset-makes', 'getAssetMakes')->name('get.asset.makes');
 
     Route::post('{company}/stolen-assets', 'markAssetAsStolen')->name('mark.stolen.asset');
+    Route::get('{company}/stolen-assets', 'getStolenAssets')->name('get.stolen.asset');
     Route::post('{company}/damaged-assets', 'markAssetAsDamaged')->name('mark.damaged.asset');
-    Route::post('{company}/retired-assets', 'markAssetAsRetired')->name('mark.retired.asset');
+    Route::get('{company}/damaged-assets', 'getDamagedAssets')->name('get.damaged.asset');
+    Route::post('{company}/assets/{asset}/retired-assets', 'markAssetAsRetired')->name('mark.retired.asset');
 });
 
 
