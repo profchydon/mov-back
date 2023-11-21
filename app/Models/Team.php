@@ -17,7 +17,7 @@ class Team extends BaseModel
     ];
 
     protected $hidden = [
-        TeamConstant::TENANT_ID
+        TeamConstant::TENANT_ID,
     ];
 
     public function company(): BelongsTo
@@ -39,6 +39,4 @@ class Team extends BaseModel
     {
         return $this->hasManyThrough(User::class, UserTeam::class, 'team_id', 'id', 'id', 'user_id');
     }
-
-
 }

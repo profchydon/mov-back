@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\V2\AssetController;
+use App\Http\Controllers\V2\AssetCheckoutController;
 use App\Http\Controllers\V2\AssetMaintenanceController;
 use App\Http\Controllers\V2\AssetTypeController;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,7 @@ Route::middleware(['auth:sanctum', 'user-in-company'])->controller(AssetControll
     Route::get('{company}/stolen-assets', 'getStolenAssets')->name('get.stolen.asset');
     Route::post('{company}/damaged-assets', 'markAssetAsDamaged')->name('mark.damaged.asset');
     Route::get('{company}/damaged-assets', 'getDamagedAssets')->name('get.damaged.asset');
-    Route::post('{company}/assets/{asset}/retired-assets', 'markAssetAsRetired')->name('mark.retired.asset');
+    Route::post('{company}/retired-assets', 'markAssetAsRetired')->name('mark.retired.asset');
 });
 
 
@@ -41,7 +42,9 @@ Route::controller(AssetTypeController::class)->prefix('assets/type')->group(func
 Route::controller(AssetMaintenanceController::class)->prefix('assets/maintenance')->group(function () {
 })->middleware(['auth:sanctum', 'user-in-company']);
 
-Route::resource('asset-checkouts', \App\Http\Controllers\V2\AssetCheckoutController::class)->middleware(['auth:sanctum', 'user-in-company']);
+
+Route::get('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'index'])->middleware(['auth:sanctum', 'user-in-company']);
+Route::post('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'store'])->middleware(['auth:sanctum', 'user-in-company']);
 
 Route::post('asset-maintenances', [AssetMaintenanceController::class, 'store'])->middleware(['auth:sanctum', 'user-in-company']);
 Route::get('companies/{company}/asset-maintenances', [AssetMaintenanceController::class, 'index'])->middleware(['auth:sanctum', 'user-in-company']);

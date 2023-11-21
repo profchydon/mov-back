@@ -29,7 +29,7 @@ class CreateStolenAsset extends FormRequest
             'date' => 'required|date_format:Y-m-d',
             'comment' => 'required|string',
             'documents' => 'nullable|array',
-            'documents.*' => 'nullable|file'
+            'documents.*' => 'nullable|file',
         ];
     }
 

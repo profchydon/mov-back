@@ -16,7 +16,7 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
     /**
      * @param string $assetId
      * @param CreateStolenAssetDTO $dto
-     * @param Array<UploadedFile>|null $documents
+     * @param array<UploadedFile>|null $documents
      * @return Asset
      */
     public function markAsStolen(string $assetId, CreateStolenAssetDTO $dto, ?array $documents): Asset;
@@ -33,7 +33,7 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
     /**
      * @param string $assetId
      * @param CreateDamagedAssetDTO $dto
-     * @param Array<UploadedFile>|null $documents
+     * @param array<UploadedFile>|null $documents
      * @return Asset
      */
     public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset;

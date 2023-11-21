@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\V2;
 
 use App\Domains\Auth\RoleTypes;
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\UserConstant;
-use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\Constant\UserRoleConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserStageEnum;
@@ -19,6 +19,7 @@ use App\Http\Requests\Company\UpdateCompanyUserRequest;
 use App\Http\Requests\InviteUserRequest;
 use App\Models\Company;
 use App\Models\UserInvitation;
+use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
@@ -29,6 +30,7 @@ use App\Repositories\Contracts\UserRoleRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -45,6 +47,7 @@ class CompanyController extends Controller
         private readonly SSOServiceInterface $ssoService,
         private readonly UserRoleRepositoryInterface $userRoleRepository,
         private readonly RoleRepositoryInterface $roleRepository,
+        private readonly AssetRepositoryInterface $assetRepository
     ) {
     }
 
@@ -221,7 +224,8 @@ class CompanyController extends Controller
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'));
     }
 
-    public function deleteCompanyUser(Company $company, UserInvitation $userInvitation){
+    public function deleteCompanyUser(Company $company, UserInvitation $userInvitation)
+    {
         $this->userInvitationRepository->deleteById($userInvitation->id);
 
         return $this->response(Response::HTTP_OK, __('messages.record-deleted'), );
@@ -241,5 +245,18 @@ class CompanyController extends Controller
         $link = sprintf('%s/%s', getenv('CORE_COMPANY_USER_INVITATION_URL'), $company[CompanyConstant::INVITATION_CODE]);
 
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), ['link' => $link]);
+    }
+
+    public function getCompanyUserDetails(Request $request, Company $company, UserInvitation $userInvitation){
+        $user = $this->userRepository->first(UserConstant::EMAIL, $userInvitation->email);
+
+        $assets = $this->assetRepository->get(AssetConstant::ASSIGNED_TO, $user->id);
+
+        $data = [
+            'details' => $userInvitation,
+            'assets' => $assets
+        ];
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $data);
     }
 }

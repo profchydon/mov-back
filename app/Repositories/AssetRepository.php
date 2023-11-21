@@ -23,8 +23,8 @@ use App\Repositories\Contracts\AssetRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AssetRepository extends BaseRepository implements AssetRepositoryInterface, AssetCheckoutRepositoryInterface, AssetMaintenanceRepositoryInterface
 {
@@ -126,7 +126,6 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         $maintenance = AssetMaintenance::appendToQueryFromRequestQueryParameters($maintenance);
 
         return $maintenance->simplePaginate();
-
     }
 
     public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset

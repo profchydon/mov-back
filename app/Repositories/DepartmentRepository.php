@@ -68,5 +68,4 @@ class DepartmentRepository implements DepartmentRepositoryInterface
 
         return $department->members;
     }
-
 }

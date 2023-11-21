@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\V2;
 
 use App\Domains\DTO\CreateDepartmentDTO;
-use App\Domains\DTO\CreateUserDepartmentDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateDepartmentRequest;
 use App\Http\Requests\CreateUserDepartmentRequest;
@@ -90,13 +89,10 @@ class DepartmentController extends Controller
 
     public function addDepartmentUsers(Company $company, Department $department, CreateUserDepartmentRequest $request)
     {
-
         if (!empty($request->members)) {
-
             $addDeptUsers = $this->userDepartmentRepository->addBulkUserstoDepartment($request->members, $company->id, $department->id);
 
             if ($addDeptUsers && $request->team_id) {
-
                 $this->userTeamRepository->addBulkUserstoTeam($request->members, $company->id, $request->team_id, $department->id);
             }
         }

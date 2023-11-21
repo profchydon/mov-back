@@ -92,6 +92,5 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(UserDepartmentRepositoryInterface::class, UserDepartmentRepository::class);
         $this->app->singleton(TeamRepositoryInterface::class, TeamRepository::class);
         $this->app->singleton(UserTeamRepositoryInterface::class, UserTeamRepository::class);
-
     }
 }

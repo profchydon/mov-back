@@ -60,5 +60,4 @@ class UpdateUserTeamDTO
     {
         return $this->department_id;
     }
-
 }
