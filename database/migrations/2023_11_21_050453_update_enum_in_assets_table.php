@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('assets', function (Blueprint $table) {
-            $enumValues = "'" . \Illuminate\Support\Arr::join(\App\Domains\Enum\Asset\AssetStatusEnum::values(), "','") . "'";
+        if(! app()->environment('testing')){
+            Schema::table('assets', function (Blueprint $table) {
+                $enumValues = "'" . \Illuminate\Support\Arr::join(\App\Domains\Enum\Asset\AssetStatusEnum::values(), "','") . "'";
 
-            \Illuminate\Support\Facades\DB::statement("ALTER TABLE assets MODIFY status ENUM({$enumValues})");
-        });
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE assets MODIFY status ENUM({$enumValues})");
+            });
+        }
     }
 
     /**
