@@ -60,8 +60,13 @@ class AssetController extends Controller
                 ->setCompanyId($company->id)
                 ->setTenantId($company->tenant_id);
 
+            if ($request->assignee) {
+                $createAssetDto->setAssignedDate(now());
+            }
+
             $user = $request->user();
-            if ($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)) {
+
+            if ($user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value, PermissionTypes::ASSET_CREATE_ACCESS->value])) {
                 $createAssetDto->setStatus(AssetStatusEnum::AVAILABLE->value);
             }
 
@@ -101,8 +106,7 @@ class AssetController extends Controller
                 ->setIsInsured(Arr::get($asset, 'is_insured', false))
                 ->setStatus(Arr::get($asset, 'status', AssetStatusEnum::PENDING_APPROVAL->value));
 
-
-            if ($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)) {
+            if ($user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value, PermissionTypes::ASSET_CREATE_ACCESS->value])) {
                 $dto->setStatus(AssetStatusEnum::AVAILABLE->value);
             }
 

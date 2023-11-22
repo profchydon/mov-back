@@ -28,6 +28,8 @@ final class CreateAssetDTO
     private string $vendor_id;
     private string $acquisition_type;
     private string $condition;
+    private ?string $assigned_to;
+    private ?string $assigned_date;
 
     public function __construct()
     {
@@ -375,5 +377,43 @@ final class CreateAssetDTO
     public function getCondition()
     {
         return $this->condition;
+    }
+
+    /**
+     * @param string $assigned_to
+     * @return CreateAssetDTO
+     */
+    public function setAssignedTo(?string $assigned_to): self
+    {
+        $this->assigned_to = $assigned_to;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssignedDate()
+    {
+        return $this->assigned_to;
+    }
+
+    /**
+     * @param string $assigned_date
+     * @return CreateAssetDTO
+     */
+    public function setAssignedDate(?string $assigned_date): self
+    {
+        $this->assigned_date = $assigned_date;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssignedTo()
+    {
+        return $this->assigned_date;
     }
 }
