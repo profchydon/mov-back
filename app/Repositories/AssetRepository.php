@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Domains\Constant\Asset\AssetCheckoutConstant;
 use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
 use App\Domains\DTO\Asset\AssetMaintenanceDTO;
@@ -71,6 +72,13 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function getAssetCheckouts(Asset|string $asset)
     {
+    }
+
+    public function getGroupAssetCheckout(AssetCheckout|string $groupId)
+    {
+        $checkout = AssetCheckout::with('asset', 'receiver', 'checkedOutBy')->where(AssetCheckoutConstant::GROUP_ID, $groupId);
+
+        return $checkout->paginate();
     }
 
     public function getCheckouts()

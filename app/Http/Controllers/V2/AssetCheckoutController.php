@@ -9,6 +9,7 @@ use App\Http\Requests\Asset\AssetCheckoutRequest;
 use App\Http\Requests\Asset\UpdateAssetCheckoutRequest;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
+use App\Models\Company;
 use App\Repositories\Contracts\AssetCheckoutRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -67,5 +68,12 @@ class AssetCheckoutController extends Controller
         $asset_checkout = $this->checkoutRepository->updateAssetCheckout($asset_checkout, $request->updateAssetDTO());
 
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), $asset_checkout);
+    }
+
+    public function getGroupAssetCheckout(Company $company, AssetCheckout|string $groupId)
+    {
+        $asset_checkouts = $this->checkoutRepository->getGroupAssetCheckout($groupId);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $asset_checkouts);
     }
 }
