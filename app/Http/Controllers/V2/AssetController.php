@@ -194,26 +194,40 @@ class AssetController extends Controller
         }
     }
 
-    public function markAssetAsStolen(CreateStolenAsset $request, Company $company, Asset $asset)
+    public function markAssetAsStolen(CreateStolenAsset $request, Company $company)
     {
         $dto = $request->getDTO()
             ->setCompanyId($company->id)
-            ->setAssetId($asset->id);
+            ->setAssetId($request->asset_id);
 
-        $stolenAsset = $this->assetRepository->markAsStolen($asset->id, $dto, $request->file('documents'));
+        $stolenAsset = $this->assetRepository->markAsStolen($request->asset_id, $dto, $request->file('documents'));
 
         return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-stolen'), $stolenAsset);
+    }
+
+    public function getStolenAssets(Request $request, Company $company)
+    {
+        $stolenAsset = $this->assetRepository->getCompanyStolenAssets($company);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $stolenAsset);
     }
 
     public function markAssetAsDamaged(CreateDamagedAssetRequest $request, Company $company, Asset $asset)
     {
         $dto = $request->getDTO()
             ->setCompanyId($company->id)
-            ->setAssetId($asset->id);
+            ->setAssetId($request->asset_id);
 
-        $damagedAsset = $this->assetRepository->markAsDamaged($asset->id, $dto, $request->file('documents'));
+        $damagedAsset = $this->assetRepository->markAsDamaged($request->asset_id, $dto, $request->file('documents'));
 
         return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-damaged'), $damagedAsset);
+    }
+
+    public function getDamagedAssets(Request $request, Company $company)
+    {
+        $stolenAsset = $this->assetRepository->getCompanyDamagedAssets($company);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $stolenAsset);
     }
 
     public function markAssetAsRetired(CreateRetiredAssetRequest $request, Company $company, Asset $asset)
