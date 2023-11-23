@@ -20,6 +20,7 @@ use App\Http\Requests\InviteUserRequest;
 use App\Models\Company;
 use App\Models\UserInvitation;
 use App\Repositories\Contracts\AssetRepositoryInterface;
+use App\Repositories\Contracts\CompanyOfficeRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
@@ -47,7 +48,8 @@ class CompanyController extends Controller
         private readonly SSOServiceInterface $ssoService,
         private readonly UserRoleRepositoryInterface $userRoleRepository,
         private readonly RoleRepositoryInterface $roleRepository,
-        private readonly AssetRepositoryInterface $assetRepository
+        private readonly AssetRepositoryInterface $assetRepository,
+        private readonly CompanyOfficeRepositoryInterface $companyOfficeRepository
     ) {
     }
 
@@ -179,6 +181,8 @@ class CompanyController extends Controller
             $user->update(['stage' => UserStageEnum::SUBSCRIPTION_PLAN->value]);
         }
 
+        $this->companyOfficeRepository->createCompanyOffice($request->companyOfficeDTO());
+        
         return $this->response(Response::HTTP_OK, __('messages.company-updated'));
     }
 
