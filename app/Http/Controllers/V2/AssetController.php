@@ -60,8 +60,13 @@ class AssetController extends Controller
                 ->setCompanyId($company->id)
                 ->setTenantId($company->tenant_id);
 
+            if ($request->assignee) {
+                $createAssetDto->setAssignedDate(now());
+            }
+
             $user = $request->user();
-            if ($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)) {
+
+            if ($user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value, PermissionTypes::ASSET_CREATE_ACCESS->value])) {
                 $createAssetDto->setStatus(AssetStatusEnum::AVAILABLE->value);
             }
 
@@ -101,8 +106,7 @@ class AssetController extends Controller
                 ->setIsInsured(Arr::get($asset, 'is_insured', false))
                 ->setStatus(Arr::get($asset, 'status', AssetStatusEnum::PENDING_APPROVAL->value));
 
-
-            if ($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)) {
+            if ($user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value, PermissionTypes::ASSET_CREATE_ACCESS->value])) {
                 $dto->setStatus(AssetStatusEnum::AVAILABLE->value);
             }
 
@@ -115,9 +119,11 @@ class AssetController extends Controller
     /**
      * @return JsonResponse
      */
-    public function get(Company $company): JsonResponse
+    public function get(Company $company, Request $request)
     {
-        $assets = $this->assetRepository->getCompanyAssets($company);
+        $status = $request->get('status');
+
+        $assets = $this->assetRepository->getCompanyAssets($company, $status);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assets);
     }
@@ -188,26 +194,40 @@ class AssetController extends Controller
         }
     }
 
-    public function markAssetAsStolen(CreateStolenAsset $request, Company $company, Asset $asset)
+    public function markAssetAsStolen(CreateStolenAsset $request, Company $company)
     {
         $dto = $request->getDTO()
             ->setCompanyId($company->id)
-            ->setAssetId($asset->id);
+            ->setAssetId($request->asset_id);
 
-        $stolenAsset = $this->assetRepository->markAsStolen($asset->id, $dto, $request->file('documents'));
+        $stolenAsset = $this->assetRepository->markAsStolen($request->asset_id, $dto, $request->file('documents'));
 
         return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-stolen'), $stolenAsset);
+    }
+
+    public function getStolenAssets(Request $request, Company $company)
+    {
+        $stolenAsset = $this->assetRepository->getCompanyStolenAssets($company);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $stolenAsset);
     }
 
     public function markAssetAsDamaged(CreateDamagedAssetRequest $request, Company $company, Asset $asset)
     {
         $dto = $request->getDTO()
             ->setCompanyId($company->id)
-            ->setAssetId($asset->id);
+            ->setAssetId($request->asset_id);
 
-        $damagedAsset = $this->assetRepository->markAsDamaged($asset->id, $dto, $request->file('documents'));
+        $damagedAsset = $this->assetRepository->markAsDamaged($request->asset_id, $dto, $request->file('documents'));
 
         return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-damaged'), $damagedAsset);
+    }
+
+    public function getDamagedAssets(Request $request, Company $company)
+    {
+        $stolenAsset = $this->assetRepository->getCompanyDamagedAssets($company);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $stolenAsset);
     }
 
     public function markAssetAsRetired(CreateRetiredAssetRequest $request, Company $company, Asset $asset)

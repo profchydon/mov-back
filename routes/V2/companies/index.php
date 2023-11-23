@@ -32,7 +32,6 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::get('/invitation-link', 'getUserInvitationLink')->name('get.invitation.link');
     })->middleware(['auth:sanctum', 'user-in-company']);
 
-
     Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');
     Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->name('get.company.subscriptions');
     Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription');
