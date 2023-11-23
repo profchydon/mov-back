@@ -6,6 +6,7 @@ use App\Domains\Constant\Asset\AssetCheckoutConstant;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\AssetCheckoutRequest;
+use App\Http\Requests\Asset\AssetReturnRequest;
 use App\Http\Requests\Asset\UpdateAssetCheckoutRequest;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
@@ -39,12 +40,15 @@ class AssetCheckoutController extends Controller
 
     public function store(AssetCheckoutRequest $request)
     {
+
         $assets = collect($request->assets);
         $assets = $assets->transform(fn ($asset) => Asset::find($asset));
 
         $groupId = strtoupper(substr($request->reason, 0, 3) . "-" . rand ( 1000000 , 9999999 ));
 
         $assets = $assets->transform(function ($asset) use ($request, $groupId) {
+
+            $user = $request->user();
             $dto = new AssetCheckoutDTO();
             $dto->setTenantId($asset->tenant_id)
                 ->setCompanyId($asset->company_id)
@@ -55,7 +59,8 @@ class AssetCheckoutController extends Controller
                 ->setReceiverId($request->receiver_id)
                 ->setReturnDate(Carbon::createFromFormat('Y-m-d', $request->return_date))
                 ->setCheckoutDate(Carbon::createFromFormat('Y-m-d', $request->checkout_date))
-                ->setGroupId($groupId);
+                ->setGroupId($groupId)
+                ->setCheckoutBy($user->id);
 
             return $this->checkoutRepository->checkoutAsset($dto);
         });
@@ -75,5 +80,22 @@ class AssetCheckoutController extends Controller
         $asset_checkouts = $this->checkoutRepository->getGroupAssetCheckout($groupId);
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $asset_checkouts);
+    }
+
+    public function returnAssetsInGroup(Company $company, AssetCheckout|string $groupId, AssetReturnRequest $request)
+    {
+        $data = [
+            AssetCheckoutConstant::RETURN_NOTE => $request->return_note,
+            AssetCheckoutConstant::DATE_RETURNED => $request->date_returned,
+            AssetCheckoutConstant::RETURN_BY => $request->user()->id,
+        ];
+
+        $asset_checkouts = $this->checkoutRepository->returnAssetsInGroup($groupId, $request->assets, $data);
+
+        if (!$asset_checkouts) {
+            return $this->error(Response::HTTP_INTERNAL_SERVER_ERROR, __('messages.error-encountered'));
+        }
+
+        return $this->response(Response::HTTP_OK, __('messages.record-updated'), $asset_checkouts);
     }
 }

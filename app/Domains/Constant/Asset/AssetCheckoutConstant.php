@@ -18,6 +18,7 @@ class AssetCheckoutConstant
     public const RETURN_DATE = 'return_date';
     public const COMMENT = 'comment';
     public const DATE_RETURNED = 'date_returned';
+    public const RETURN_BY = 'return_by';
     public const RETURN_NOTE = 'return_note';
     public const STATUS = 'status';
 }
