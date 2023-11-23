@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\AssetCheckoutRequest;
 use App\Http\Requests\Asset\AssetReturnRequest;
 use App\Http\Requests\Asset\UpdateAssetCheckoutRequest;
+use App\Http\Resources\Asset\AssetCheckoutCollection;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
 use App\Models\Company;
@@ -26,7 +27,10 @@ class AssetCheckoutController extends Controller
     {
         $company_id = $request->header('x-company-id');
         $checkout = AssetCheckout::where(AssetCheckoutConstant::COMPANY_ID, $company_id)->with('asset', 'receiver', 'checkedOutBy')->orderBy('created_at', 'DESC');
+
         $checkout = $checkout->paginate();
+
+        $checkout = AssetCheckoutCollection::make($checkout);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $checkout);
     }

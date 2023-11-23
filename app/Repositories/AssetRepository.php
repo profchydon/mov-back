@@ -11,6 +11,7 @@ use App\Domains\DTO\Asset\CreateRetiredAssetDTO;
 use App\Domains\DTO\Asset\CreateStolenAssetDTO;
 use App\Domains\Enum\Asset\AssetCheckoutStatusEnum;
 use App\Domains\Enum\Asset\AssetStatusEnum;
+use App\Http\Resources\Asset\AssetCheckoutCollection;
 use App\Imports\AssetImport;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
@@ -80,7 +81,9 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
     {
         $checkout = AssetCheckout::with('asset', 'receiver', 'checkedOutBy')->where(AssetCheckoutConstant::GROUP_ID, $groupId);
 
-        return $checkout->paginate();
+        $checkout = $checkout->paginate();
+
+        return AssetCheckoutCollection::make($checkout);
     }
 
     public function getCheckouts()
@@ -88,6 +91,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         $checkout = AssetCheckout::with('asset')->orderBy('group_id');
 
         return $checkout->paginate()->groupBy('group_id');
+        
     }
 
     public function getAssetCheckout(AssetCheckout|string $checkout)
