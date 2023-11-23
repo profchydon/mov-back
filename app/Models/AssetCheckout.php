@@ -36,4 +36,9 @@ class AssetCheckout extends BaseModel
     {
         return $this->morphTo();
     }
+
+    public function checkedOutBy()
+    {
+        return $this->belongsTo(User::class, 'checkout_by');
+    }
 }
