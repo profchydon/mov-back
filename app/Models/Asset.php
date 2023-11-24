@@ -9,6 +9,7 @@ use App\Events\AssetStatusUpdatedEvent;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -123,6 +124,8 @@ class Asset extends BaseModel
         ]);
     }
 
-
+    public function company(): BelongsTo {
+        return $this->belongsTo(Company::class);
+    }
 
 }
