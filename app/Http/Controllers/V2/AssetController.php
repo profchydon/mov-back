@@ -14,8 +14,10 @@ use App\Http\Requests\Asset\CreateAssetRequest;
 use App\Http\Requests\Asset\CreateDamagedAssetRequest;
 use App\Http\Requests\Asset\CreateRetiredAssetRequest;
 use App\Http\Requests\Asset\CreateStolenAsset;
+use App\Http\Requests\Asset\ReAssignAssetRequest;
 use App\Models\Asset;
 use App\Models\Company;
+use App\Models\User;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
@@ -327,4 +329,28 @@ class AssetController extends Controller
 
         return $this->response(Response::HTTP_OK, __('messages.asset-updated'), $asset);
     }
+
+
+    public function assignAsset(Company $company, Asset $asset, User $user)
+    {
+        $asset->assignee()->associate($user);
+        $asset->save();
+        return $this->response(Response::HTTP_OK, __('messages.asset-assigned'), $asset);
+    }
+
+    public function unAssignAsset(Company $company, Asset $asset, User $user)
+    {
+        $asset->assignee()->dissociate($user);
+        $asset->save();
+        return $this->response(Response::HTTP_OK, __('messages.asset-unassigned'), $asset);
+    }
+
+    public function reAssignAsset(Company $company, Asset $asset, ReAssignAssetRequest $request)
+    {
+        $asset->assignee()->dissociate($request->from);
+        $asset->assignee()->associate($request->to);
+        $asset->save();
+        return $this->response(Response::HTTP_OK, __('messages.asset-reassigned'), $asset);
+    }
+
 }
