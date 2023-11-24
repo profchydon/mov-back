@@ -77,9 +77,11 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
     {
     }
 
-    public function getGroupAssetCheckout(AssetCheckout|string $groupId)
+    public function getGroupAssetCheckout(AssetCheckout|string $groupId, string|null $status)
     {
-        $checkout = AssetCheckout::with('asset', 'receiver', 'checkedOutBy')->where(AssetCheckoutConstant::GROUP_ID, $groupId);
+        $statusArray = $status === null ? AssetCheckoutStatusEnum::values() : [$status];
+
+        $checkout = AssetCheckout::status($statusArray)->with('asset', 'receiver', 'checkedOutBy')->where(AssetCheckoutConstant::GROUP_ID, $groupId);
 
         $checkout = $checkout->paginate();
 
@@ -91,7 +93,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         $checkout = AssetCheckout::with('asset')->orderBy('group_id');
 
         return $checkout->paginate()->groupBy('group_id');
-        
+
     }
 
     public function getAssetCheckout(AssetCheckout|string $checkout)

@@ -41,4 +41,14 @@ class AssetCheckout extends BaseModel
     {
         return $this->belongsTo(User::class, 'checkout_by');
     }
+
+    public function scopeStatus($query, array $status)
+    {
+        return $query->whereIn(AssetCheckoutConstant::STATUS, $status);
+    }
+
+    public function scopeNotstatus($query, array $status)
+    {
+        return $query->whereNotIn(AssetCheckoutConstant::STATUS, $status);
+    }
 }

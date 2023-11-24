@@ -79,9 +79,10 @@ class AssetCheckoutController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), $asset_checkout);
     }
 
-    public function getGroupAssetCheckout(Company $company, AssetCheckout|string $groupId)
+    public function getGroupAssetCheckout(Company $company, AssetCheckout|string $groupId, Request $request)
     {
-        $asset_checkouts = $this->checkoutRepository->getGroupAssetCheckout($groupId);
+        $status = $request->get('status');
+        $asset_checkouts = $this->checkoutRepository->getGroupAssetCheckout($groupId, $status);
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $asset_checkouts);
     }
