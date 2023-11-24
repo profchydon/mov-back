@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Domains\Auth\PermissionTypes;
+use App\Mail\UpcomingAssetMaintenanceEmail;
 use App\Models\Asset;
+use App\Models\Company;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -29,25 +32,37 @@ class UpcomingAssetMaintenance extends Command
      */
     public function handle()
     {
-        //
+        $this->sendSevenDaysToMaintenanceNotification();
     }
 
-    private function sendSevenDaysToMaintenanceNotification() {
-        $now = Carbon::now();
+    private function sendSevenDaysToMaintenanceNotification()
+    {
+        $sevenDays = date('Y-m-d', strtotime('+7 days'));
+        $eightDays = date('Y-m-d', strtotime('+8 days'));
 
         $companies = DB::table('assets')
-                 ->select('company_id', DB::raw('count(*) as total'))
-                 ->where('next_maintenance_date', $now->addDays(7))
-                 ->groupBy('company_id')
-                 ->get();
-    
-        foreach($companies as $companyId){
+            ->select('company_id')
+            ->where('next_maintenance_date', '>=', $sevenDays)
+            ->where('next_maintenance_date', '<', $eightDays)
+            ->groupBy('company_id')
+            ->get();
+
+        foreach ($companies as $companyId) {
             $assets = Asset::with(['company'])
-                    ->where('next_maintenance_date', $now->addDays(7))
-                    ->where('company_id', $companies)->get();
+                ->where('next_maintenance_date', '>=', $sevenDays)
+                ->where('next_maintenance_date', '<', $eightDays)
+                ->where('company_id', $companyId)
+                ->get();
 
-            Mail::to($invitation->email)->queue(new CompanyUserInvitationEmail($invitation));
+            $company = Company::with('users')->where('id', $companyId)->first();
 
+            $users = $company->users->filter(
+                fn ($user) => $user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value])
+            )->values();
+
+            foreach ($users as $user) {
+                Mail::to($user->email)->queue(new UpcomingAssetMaintenanceEmail($user, $assets, '7 days'));
+            }
         }
     }
 }
