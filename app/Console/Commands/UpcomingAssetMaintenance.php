@@ -6,7 +6,6 @@ use App\Domains\Auth\PermissionTypes;
 use App\Mail\UpcomingAssetMaintenanceEmail;
 use App\Models\Asset;
 use App\Models\Company;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -18,14 +17,14 @@ class UpcomingAssetMaintenance extends Command
      *
      * @var string
      */
-    protected $signature = 'upcoming-asset-maintenance:days';
+    protected $signature = 'upcoming-asset-maintenance';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Send upcoming asset maintenance email notification seven days to the maintenance date';
+    protected $description = 'Send upcoming asset maintenance email notification seven days and 48hrs to the maintenance date';
 
     /**
      * Execute the console command.

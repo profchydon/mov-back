@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('upcoming-asset-maintenance:days')->daily();
+        $schedule->command('upcoming-asset-maintenance')->daily();
+        $schedule->command('overdue-asset-maintenance')->daily();
     }
 
     /**

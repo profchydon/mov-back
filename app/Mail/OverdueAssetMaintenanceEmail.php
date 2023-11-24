@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Models\Asset;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UpcomingAssetMaintenanceEmail extends Mailable
+class OverdueAssetMaintenanceEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -20,9 +19,8 @@ class UpcomingAssetMaintenanceEmail extends Mailable
      * Create a new message instance.
      * @param User $user
      * @param Collection $assets
-     * @param string $duration
      */
-    public function __construct(public User $user, public Collection $assets, public string $duration){}
+    public function __construct(public User $user, public Collection $assets){}
 
     /**
      * Get the message envelope.
@@ -30,7 +28,7 @@ class UpcomingAssetMaintenanceEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Upcoming Asset Maintenance',
+            subject: 'Overdue Asset Maintenance',
         );
     }
 
@@ -40,11 +38,10 @@ class UpcomingAssetMaintenanceEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.assets.upcoming_maintenance',
+            view: 'emails.assets.overdue_maintenance',
             with: [
                 'assets' => $this->assets,
                 'user' => $this->user,
-                'duration' => $this->duration
             ]
         );
     }
