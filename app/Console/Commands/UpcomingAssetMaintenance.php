@@ -18,7 +18,7 @@ class UpcomingAssetMaintenance extends Command
      *
      * @var string
      */
-    protected $signature = 'upcoming-asset-maintenance:seven-days';
+    protected $signature = 'upcoming-asset-maintenance:days';
 
     /**
      * The console command description.
@@ -33,6 +33,10 @@ class UpcomingAssetMaintenance extends Command
     public function handle()
     {
         $this->sendSevenDaysToMaintenanceNotification();
+
+        $this->send48HToMaintenanceNotification();
+
+        return 0;
     }
 
     private function sendSevenDaysToMaintenanceNotification()
@@ -51,6 +55,37 @@ class UpcomingAssetMaintenance extends Command
             $assets = Asset::with(['company'])
                 ->where('next_maintenance_date', '>=', $sevenDays)
                 ->where('next_maintenance_date', '<', $eightDays)
+                ->where('company_id', $companyId)
+                ->get();
+
+            $company = Company::with('users')->where('id', $companyId)->first();
+
+            $users = $company->users->filter(
+                fn ($user) => $user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value])
+            )->values();
+
+            foreach ($users as $user) {
+                Mail::to($user->email)->queue(new UpcomingAssetMaintenanceEmail($user, $assets, '7 days'));
+            }
+        }
+    }
+
+    private function send48HToMaintenanceNotification()
+    {
+        $twoDays = date('Y-m-d', strtotime('+2 days'));
+        $threeDays = date('Y-m-d', strtotime('+3 days'));
+
+        $companies = DB::table('assets')
+            ->select('company_id')
+            ->where('next_maintenance_date', '>=', $twoDays)
+            ->where('next_maintenance_date', '<', $threeDays)
+            ->groupBy('company_id')
+            ->get();
+
+        foreach ($companies as $companyId) {
+            $assets = Asset::with(['company'])
+                ->where('next_maintenance_date', '>=', $twoDays)
+                ->where('next_maintenance_date', '<', $threeDays)
                 ->where('company_id', $companyId)
                 ->get();
 
