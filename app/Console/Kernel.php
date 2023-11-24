@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('upcoming-asset-maintenance')->daily();
         $schedule->command('overdue-asset-maintenance')->daily();
+
+        $schedule->command('upcoming-return-asset:days')->daily();
     }
 
     /**
