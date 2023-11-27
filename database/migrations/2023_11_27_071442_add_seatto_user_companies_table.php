@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('user_companies', function (Blueprint $table) {
-            $table->boolean(\App\Domains\Constant\UserCompanyConstant::HAS_SEAT)->default(false);
+            $table->boolean(\App\Domains\Constant\UserCompanyConstant::HAS_SEAT)->after(\App\Domains\Constant\UserCompanyConstant::STATUS)->default(false);
         });
     }
 

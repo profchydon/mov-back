@@ -16,7 +16,7 @@ class SeatController extends Controller
 {
     public function index(Company $company, Request $request)
     {
-        $users = $company->usersWithSeats()->simplePaginate();
+        $users = UserCompany::with(['user'])->where('has_seats', true)->simplePaginate();
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $users);
     }

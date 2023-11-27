@@ -60,11 +60,6 @@ class Company extends BaseModel
         return $this->users()->having('has_seats', true);
     }
 
-    public function usersWithSeatsAlt()
-    {
-        return $this->users()->where('has_seats', true);
-    }
-
     public function offices(): HasMany
     {
         return $this->hasMany(Office::class, 'company_id');
