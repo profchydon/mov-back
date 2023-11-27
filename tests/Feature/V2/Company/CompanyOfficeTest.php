@@ -14,6 +14,9 @@ use Tests\TestCase;
 
 beforeEach(function () {
     $this->seed();
+    $this->company = Company::factory()->create();
+    $this->user = User::factory()->create();
+    $this->token = $this->user->createToken('auth_token')->plainTextToken;
     $this->useDatabaseTransactions = true;
     $this->company = Company::factory()->create();
     $user = User::factory()->create([
@@ -48,7 +51,6 @@ it('can create office with valid data', function () {
 
     $officeCount = Office::count();
     $this->assertDatabaseCount('offices', $officeCount);
-
 
     $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/offices"), $payload);
 
