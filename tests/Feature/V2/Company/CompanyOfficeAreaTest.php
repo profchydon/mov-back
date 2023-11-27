@@ -12,7 +12,8 @@ use App\Models\UserCompany;
 use Tests\TestCase;
 
 beforeEach(function () {
-    $this->seed();
+    $this->artisan('db:seed --class=CountrySeeder');
+    $this->artisan('db:seed --class=CurrencySeeder');
     $this->company = Company::factory()->create();
     $this->office = Office::factory([
         'tenant_id' => $this->company->tenant_id,

@@ -7,7 +7,8 @@ use App\Models\User;
 use App\Models\UserCompany;
 
 beforeEach(function () {
-    $this->seed();
+    $this->artisan('db:seed --class=CountrySeeder');
+    $this->artisan('db:seed --class=CurrencySeeder');
     $this->useDatabaseTransactions = true;
 
     $this->company = Company::factory()->create();
