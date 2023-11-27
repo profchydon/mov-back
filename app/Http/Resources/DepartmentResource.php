@@ -10,9 +10,9 @@ class DepartmentResource extends JsonResource
 {
     public $collects = Department::class;
 
-    public function toArray(Request $request): array
+    public function toArray(Request $request)
     {
-        return [
+        $resourceArray = [
             'id' => $this->id,
             'company' => [
                 'id' => $this->company_id,
@@ -21,19 +21,45 @@ class DepartmentResource extends JsonResource
             'name' => $this->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'head' => $this->head ? [
+        ];
+
+         // Check if 'head' relationship was loaded in the query
+        if ($this->relationLoaded('head')) {
+            $resourceArray['head'] = [
                 'name' => $this->head?->first_name . ' ' . $this->head?->last_name,
                 'id' => $this->head?->id,
-            ] : null,
-            'members' => $this->members
+            ];
+        } else {
+            $resourceArray['head'] = null;
+        }
+
+        // Check if 'members' relationship was loaded in the query
+        if ($this->relationLoaded('members')) {
+            $resourceArray['members'] = $this->members
                 ->load(['user_departments' => function ($query) {
                     $query->where('department_id', $this->id);
                 }])
                 ->load(['teams' => function ($query) {
                     $query->where('teams.department_id', $this->id);
-                }]),
-            'memberCount' => $this->members->count(),
-            'teamCount' => $this->teams->count(),
-        ];
+                }]);
+
+            $resourceArray['memberCount'] = $this->members->count();
+        } else {
+            $resourceArray['members'] = null;
+            $resourceArray['memberCount'] = null;
+        }
+
+         // Check if 'teams' relationship was loaded in the query
+        if ($this->relationLoaded('teams')) {
+            $resourceArray['teams'] = $this->teams->each(function() {
+
+            });
+            $resourceArray['teamCount'] = $this->teams->count();
+        } else {
+            $resourceArray['teams'] = null;
+            $resourceArray['teamCount'] = null;
+        }
+
+        return $resourceArray;
     }
 }

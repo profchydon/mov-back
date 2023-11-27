@@ -27,6 +27,8 @@ class UserConstant
     public const STAGE = 'stage';
     public const LAST_LOGIN = 'last_login';
     public const JOB_TITLE = 'job_title';
+    public const EMPLOYMENT_TYPE = 'employment_type';
+    public const OFFICE_ID = 'office_id';
     public const EMAIL_VERIFIED_AT = 'email_verified_at';
 
     public const CREATED_AT = 'created_at';

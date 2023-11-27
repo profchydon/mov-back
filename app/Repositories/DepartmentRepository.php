@@ -11,24 +11,26 @@ use App\Repositories\Contracts\DepartmentRepositoryInterface;
 
 class DepartmentRepository implements DepartmentRepositoryInterface
 {
-    public function getDepartments(Company|string $company)
+    public function getDepartments(Company|string $company, $relation = [])
     {
         if (!($company instanceof  Company)) {
             $company = Department::findOrFail($company);
         }
 
-        $departments = $company->departments()->with('head');
+        $departments = $company->departments()->with($relation);
         $departments = Department::appendToQueryFromRequestQueryParameters($departments);
         $departments = $departments->paginate();
 
         return DepartmentCollection::make($departments);
     }
 
-    public function get(Department|string $department)
+    public function get(Department|string $department, $relation = [])
     {
-        if (!($department instanceof  Department)) {
-            $department = Department::findOrFail($department);
-        }
+        // if (!($department instanceof  Department)) {
+        //     $department = Department::findOrFail($department);
+        // }
+
+        $department = Department::whereId($department->id)->with($relation)->first();
 
         return DepartmentResource::make($department);
     }

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\AssetConstant;
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\UserConstant;
 use App\Domains\Enum\User\UserStatusEnum;
 use App\Events\UserCreatedEvent;
@@ -56,6 +56,11 @@ class User extends Authenticatable
     public function userCompanies()
     {
         return $this->hasMany(UserCompany::class, UserConstant::USER_ID);
+    }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class);
     }
 
     public function roles()

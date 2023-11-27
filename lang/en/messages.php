@@ -50,5 +50,6 @@ return [
     'only-admins-can-approve' => 'Only admins can approve assets',
     'wrong-status-update' => 'You can only approve assets with pending status',
     'asset-marked-as-damaged' => 'You have successfully marked the asset as damaged',
-    'asset-marked-as-retired' => 'You have successfully marked the asset as retired'
+    'asset-marked-as-retired' => 'You have successfully marked the asset as retired',
+    'user.invitation.sent' => 'User invitation was successfully sent.',
 ];

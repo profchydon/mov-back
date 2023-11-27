@@ -17,6 +17,7 @@ use App\Http\Requests\Company\CreateCompanyRequest;
 use App\Http\Requests\Company\CreateCompanyUserRequest;
 use App\Http\Requests\Company\UpdateCompanyUserRequest;
 use App\Http\Requests\InviteUserRequest;
+use App\Http\Resources\Company\CompanyUserCollection;
 use App\Models\Company;
 use App\Models\UserInvitation;
 use App\Repositories\Contracts\AssetRepositoryInterface;
@@ -182,7 +183,7 @@ class CompanyController extends Controller
         }
 
         $this->companyOfficeRepository->createCompanyOffice($request->companyOfficeDTO());
-        
+
         return $this->response(Response::HTTP_OK, __('messages.company-updated'));
     }
 
@@ -207,7 +208,11 @@ class CompanyController extends Controller
 
     public function getCompanyUsers(Company $company)
     {
-        $users = $company->users;
+        $users = $company->users->load('departments', 'teams', 'office');
+
+        // $users = $users->paginate();
+
+        // $users = CompanyUserCollection::make($users);
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $users);
     }
@@ -225,7 +230,7 @@ class CompanyController extends Controller
 
         $this->userInvitationRepository->create($dto->toArray());
 
-        return $this->response(Response::HTTP_CREATED, __('messages.record-created'));
+        return $this->response(Response::HTTP_CREATED, __('messages.user.invitation.sent'));
     }
 
     public function deleteCompanyUser(Company $company, UserInvitation $userInvitation)

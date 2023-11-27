@@ -26,7 +26,13 @@ class DepartmentController extends Controller
 
     public function index(Company $company, Request $request)
     {
-        $departments = $this->departmentRepository->getDepartments($company);
+
+        $relation = [];
+        $request->get('members') ? array_push($relation, 'members') : '';
+        $request->get('teams') ? array_push($relation, 'teams') : '';
+        $request->get('head') ? array_push($relation, 'head') : '';
+
+        $departments = $this->departmentRepository->getDepartments($company, $relation);
 
         return $this->response(Response::HTTP_OK, __('record_fetched'), $departments);
     }
@@ -53,9 +59,15 @@ class DepartmentController extends Controller
         return $this->response(Response::HTTP_CREATED, __('record-created'), $department);
     }
 
-    public function show(Company $company, Department $department)
+    public function show(Company $company, Department $department,  Request $request)
     {
-        $department = $this->departmentRepository->get($department);
+
+        $relation = [];
+        $request->get('members') ? array_push($relation, 'members') : '';
+        $request->get('teams') ? array_push($relation, 'teams') : '';
+        $request->get('head') ? array_push($relation, 'head') : '';
+
+        $department = $this->departmentRepository->get($department, $relation);
 
         return $this->response(Response::HTTP_OK, __('record-fetched'), $department);
     }
