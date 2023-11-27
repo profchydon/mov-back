@@ -20,6 +20,10 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::resource('tags', \App\Http\Controllers\TagController::class);
         Route::resource('departments', DepartmentController::class);
 
+        Route::post('seats', [\App\Http\Controllers\V2\SeatController::class, 'store']);
+        Route::get('seats', [\App\Http\Controllers\V2\SeatController::class, 'index']);
+        Route::delete('seats', [\App\Http\Controllers\V2\SeatController::class, 'delete']);
+
         Route::get('departments/{department}/users', [DepartmentController::class, 'getDepartmentUsers'])->name('get.department.users');
         Route::post('/departments/{department}/users', [DepartmentController::class, 'addDepartmentUsers'])->name('add.department.users');
 
