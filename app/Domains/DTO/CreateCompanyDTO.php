@@ -143,6 +143,7 @@ class CreateCompanyDTO
     public function setInvitationCode(string $invitation_code)
     {
         $this->invitation_code = $invitation_code;
+
         return $this;
     }
 

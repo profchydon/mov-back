@@ -32,10 +32,6 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::get('/invitation-link', 'getUserInvitationLink')->name('get.invitation.link');
     })->middleware(['auth:sanctum', 'user-in-company']);
 
-
-
-
-
     Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');
     Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->name('get.company.subscriptions');
     Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription');
@@ -54,11 +50,12 @@ Route::group(['prefix' => 'offices/{office}', 'middleware' => ['auth:sanctum', '
 });
 
 //Routes for users
-Route::group(['prefix' => 'companies/{company}', 'middleware' => ['auth:sanctum']], function (){
-    Route::controller(CompanyController::class)->group(function (){
+Route::group(['prefix' => 'companies/{company}', 'middleware' => ['auth:sanctum']], function () {
+    Route::controller(CompanyController::class)->group(function () {
         Route::post('/users', 'addCompanyUser')->name('add.company.user');
         Route::get('/users', 'getCompanyUsers')->name('get.company.users');
         Route::delete('/users/{userInvitation}', 'deleteCompanyUser')->name('delete.company.user');
         Route::put('/users/{userInvitation}', 'updateCompanyUser')->name('update.company.user');
+        Route::get('/users/{userInvitation}', 'getCompanyUserDetails')->name('get.company.user');
     });
 });

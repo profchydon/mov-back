@@ -6,7 +6,6 @@ use App\Domains\Enum\User\UserStageEnum;
 use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 beforeEach(function () {

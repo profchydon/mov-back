@@ -12,20 +12,10 @@ class Currency extends Model
 {
     use HasFactory, GetsTableName;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $guarded = [
         CurrencyConstant::ID,
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         CurrencyConstant::STATUS => CurrencyStatusEnum::class,
     ];

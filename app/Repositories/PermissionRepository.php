@@ -12,11 +12,10 @@ class PermissionRepository extends BaseRepository implements PermissionRepositor
         return Permission::class;
     }
 
-    public function allGroupedBy() {
-
+    public function allGroupedBy()
+    {
         return Permission::query()
                 ->get()
                 ->groupBy('category');
-
     }
 }

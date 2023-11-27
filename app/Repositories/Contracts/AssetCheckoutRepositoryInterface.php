@@ -17,4 +17,10 @@ interface AssetCheckoutRepositoryInterface
     public function getAssetCheckouts(Asset|string $asset);
 
     public function getAssetCheckout(AssetCheckout|string $checkout);
+
+    public function getGroupAssetCheckout(AssetCheckout|string $groupId, string|null $status);
+
+    public function returnAssetsInGroup(AssetCheckout|string $groupId, array $assets, array $data);
+
+
 }

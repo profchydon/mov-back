@@ -30,6 +30,7 @@ class CreateAssetRequest extends FormRequest
             'purchase_date' => 'nullable|date',
             'office_id' => ['required', Rule::exists('offices', 'id')->where('company_id', $company->id)],
             'currency' => ['required', Rule::exists('currencies', 'code')],
+            'assigned_to' => ['nullable', Rule::exists('users', 'id')],
         ];
     }
 
@@ -49,6 +50,8 @@ class CreateAssetRequest extends FormRequest
             ->setMaintenanceCycle($this->input('maintenance_cycle', null))
             ->setNextMaintenanceDate($this->input('next_maintenance_date', null))
             ->setIsInsured($this->input('is_insured', false))
+            ->setAssignedTo($this->input('assignee', null))
+            ->setMaintenanceCycle($this->input('maintenance_cycle', null))
             ->setCompanyId($company->id)
             ->setStatus(AssetStatusEnum::PENDING_APPROVAL->value);
 

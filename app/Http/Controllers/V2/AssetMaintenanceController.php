@@ -28,7 +28,7 @@ class AssetMaintenanceController extends Controller
     public function store(AssetMaintenanceRequest $request)
     {
         $assets = collect($request->assets);
-        $assets = $assets->transform(fn($asset) => Asset::find($asset));
+        $assets = $assets->transform(fn ($asset) => Asset::find($asset));
 
         $groupId = strtolower(uniqid());
         $assets = $assets->transform(function ($asset) use ($request, $groupId) {

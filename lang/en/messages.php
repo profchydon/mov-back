@@ -35,10 +35,13 @@ return [
     'provide-asset-image' => 'Provide an asset image',
     'asset-image-updated' => 'You have successfully updated the asset image',
     'asset-updated' => 'Asset has been updated',
+    'asset-assigned' => 'Asset has been assigned',
+    'asset-unassigned' => 'Asset has been unassigned',
+    'asset-reassigned' => 'Asset has been reassigned',
     "headers" => [
         'company_id' => [
             'invalid' => "Invalid Company ID provided in request header",
-            "missing" => "Company ID missing in request header, provide company_id in your header"
+            "missing" => "Company ID missing in request header, provide company_id as x-company-id in your request header"
         ]
         ],
     'company-sole-admin' => 'You have been set as the company\'s sole admin',
