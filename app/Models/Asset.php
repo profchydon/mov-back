@@ -9,6 +9,7 @@ use App\Events\AssetStatusUpdatedEvent;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -54,7 +55,7 @@ class Asset extends BaseModel
         return $query->where(AssetConstant::STATUS, AssetStatusEnum::AVAILABLE);
     }
 
-    public function scopeAchieved(Builder $query): Builder
+    public function scopeArchieved(Builder $query): Builder
     {
         return $query->where(AssetConstant::STATUS, AssetStatusEnum::ARCHIVED);
     }
@@ -62,6 +63,21 @@ class Asset extends BaseModel
     public function scopeCheckedOut(Builder $query): Builder
     {
         return $query->where(AssetConstant::STATUS, AssetStatusEnum::CHECKED_OUT);
+    }
+
+    public function scopeDamaged(Builder $query): Builder
+    {
+        return $query->where(AssetConstant::STATUS, AssetStatusEnum::DAMAGED);
+    }
+
+    public function scopeCreatedToday(Builder $query): Builder
+    {
+        return $query->where(AssetConstant::ADDED_AT, now()->day());
+    }
+
+    public function scopeStatus($query, array $status)
+    {
+        return $query->whereIn(AssetConstant::STATUS, $status);
     }
 
     public function office()
@@ -107,4 +123,9 @@ class Asset extends BaseModel
             'status' => AssetStatusEnum::UNDER_MAINTENANCE,
         ]);
     }
+
+    public function company(): BelongsTo {
+        return $this->belongsTo(Company::class);
+    }
+
 }

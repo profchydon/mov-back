@@ -2,13 +2,16 @@
 
 namespace App\Repositories;
 
+use App\Domains\Constant\Asset\AssetCheckoutConstant;
 use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\DTO\Asset\AssetCheckoutDTO;
 use App\Domains\DTO\Asset\AssetMaintenanceDTO;
 use App\Domains\DTO\Asset\CreateDamagedAssetDTO;
 use App\Domains\DTO\Asset\CreateRetiredAssetDTO;
 use App\Domains\DTO\Asset\CreateStolenAssetDTO;
+use App\Domains\Enum\Asset\AssetCheckoutStatusEnum;
 use App\Domains\Enum\Asset\AssetStatusEnum;
+use App\Http\Resources\Asset\AssetCheckoutCollection;
 use App\Imports\AssetImport;
 use App\Models\Asset;
 use App\Models\AssetCheckout;
@@ -25,6 +28,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\Eloquent\Collection;
 
 class AssetRepository extends BaseRepository implements AssetRepositoryInterface, AssetCheckoutRepositoryInterface, AssetMaintenanceRepositoryInterface
 {
@@ -33,16 +37,16 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return Asset::class;
     }
 
-    public function getCompanyAssets(Company|string $company)
+    public function getCompanyAssets(Company|string $company, string|null $status)
     {
-        if (!($company instanceof  Company)) {
+        if (!($company instanceof Company)) {
             $company = Company::findOrFail($company);
         }
 
-        $assets = $company->assets();
-        $assets = $assets->with(['type', 'office', 'assignee'])->orderBy('assets.created_at', 'desc');
-        $assets = Asset::appendToQueryFromRequestQueryParameters($assets);
+        $statusArray = $status === null ? AssetStatusEnum::values() : [$status];
 
+        $assets = $company->assets()->status($statusArray)->with(['type', 'office', 'assignee'])->orderBy('assets.created_at', 'desc');
+        $assets = Asset::appendToQueryFromRequestQueryParameters($assets);
         return $assets->paginate();
     }
 
@@ -73,11 +77,23 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
     {
     }
 
+    public function getGroupAssetCheckout(AssetCheckout|string $groupId, string|null $status)
+    {
+        $statusArray = $status === null ? AssetCheckoutStatusEnum::values() : [$status];
+
+        $checkout = AssetCheckout::status($statusArray)->with('asset', 'receiver', 'checkedOutBy')->where(AssetCheckoutConstant::GROUP_ID, $groupId);
+
+        $checkout = $checkout->paginate();
+
+        return AssetCheckoutCollection::make($checkout);
+    }
+
     public function getCheckouts()
     {
         $checkout = AssetCheckout::with('asset')->orderBy('group_id');
 
         return $checkout->paginate()->groupBy('group_id');
+
     }
 
     public function getAssetCheckout(AssetCheckout|string $checkout)
@@ -97,16 +113,10 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
             $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::STOLEN->value]);
 
             if ($documents) {
-                foreach ($documents as $key => $document) {
-                    $extension = $document->getClientOriginalExtension();
-
-                    $fileName = sprintf('%s-%s.%s', time(), Str::uuid(), $extension);
-
-                    $path = $document->storeAs('stolen-asset-documents', $fileName, 's3');
-                    $path = Storage::disk('s3')->url($path);
-
-                    $stolenAsset->documents()->create(['path' => $path]);
-                }
+                collect($documents)->each(function ($document) use ($stolenAsset) {
+                    Storage::disk('s3')->putFileAs('', $document, $document->getClientOriginalName());
+                    $stolenAsset->documents()->create(['path' => $document->getClientOriginalName()]);
+                });
             }
         });
 
@@ -142,16 +152,10 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
             $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::DAMAGED->value]);
 
             if ($documents) {
-                foreach ($documents as $key => $document) {
-                    $extension = $document->getClientOriginalExtension();
-
-                    $fileName = sprintf('%s-%s.%s', time(), Str::uuid(), $extension);
-
-                    $path = $document->storeAs('stolen-asset-documents', $fileName, 's3');
-                    $path = Storage::disk('s3')->url($path);
-
-                    $damagedAsset->documents()->create(['path' => $path]);
-                }
+                collect($documents)->each(function ($document) use ($damagedAsset) {
+                    Storage::disk('s3')->putFileAs('', $document, $document->getClientOriginalName());
+                    $damagedAsset->documents()->create(['path' => $document->getClientOriginalName()]);
+                });
             }
         });
 
@@ -167,5 +171,55 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         });
 
         return $this->first('id', $assetId);
+    }
+
+    public function getCompanyStolenAssets(Company|string $company)
+    {
+        if (!($company instanceof  Company)) {
+            $company = Company::findOrFail($company);
+        }
+
+        return $company->stolenAssets()->with(['asset', 'documents'])->simplePaginate();
+    }
+
+    public function getCompanyDamagedAssets(Company|string $company)
+    {
+        if (!($company instanceof  Company)) {
+            $company = Company::findOrFail($company);
+        }
+
+        return $company->damagedAssets()->with(['asset', 'documents'])->simplePaginate();
+    }
+
+    public function returnAssetsInGroup(AssetCheckout|string $groupId, array $assets, array $data)
+    {
+        $checkoutGroup = AssetCheckout::where(AssetCheckoutConstant::GROUP_ID, $groupId)->whereIn(AssetCheckoutConstant::ASSET_ID, $assets)->get();
+
+        if (!$checkoutGroup) {
+            return false;
+        }
+
+        try {
+
+            DB::transaction(function () use ($checkoutGroup, $data) {
+
+                $checkoutGroup->each(function (AssetCheckout $assetCheckout) use ($data) {
+
+                    $assetCheckout->update([
+                        AssetCheckoutConstant::STATUS => AssetCheckoutStatusEnum::RETURNED,
+                        AssetCheckoutConstant::DATE_RETURNED => $data[AssetCheckoutConstant::DATE_RETURNED],
+                        AssetCheckoutConstant::RETURN_NOTE => $data[AssetCheckoutConstant::RETURN_NOTE],
+                        AssetCheckoutConstant::RETURN_BY => $data[AssetCheckoutConstant::RETURN_BY],
+                    ]);
+
+                    $this->update('id', $assetCheckout->asset_id, [AssetConstant::STATUS => AssetStatusEnum::AVAILABLE->value]);
+                });
+            });
+
+            return true;
+        } catch (\Throwable $th) {
+
+            return false;
+        }
     }
 }

@@ -10,4 +10,4 @@ Route::middleware(['auth:sanctum', 'user-in-company'])->controller(RoleControlle
     Route::put('/user-roles/{role}', 'updateRole')->name('update.user.role');
 });
 
-Route::get('/permissions', [RoleController::class, 'fetchPermissions'])->name('fetch.permissions')->middleware(['auth:sanctum', 'user-in-company']);
+Route::get('/permissions', [RoleController::class, 'fetchPermissions'])->name('fetch.permissions')->middleware(['auth:sanctum']);

@@ -15,6 +15,11 @@ class StolenAsset extends Model
         StolenAssetConstant::ID,
     ];
 
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class, 'asset_id');
+    }
+
     public function documents()
     {
         return $this->morphMany(File::class, 'fileable');

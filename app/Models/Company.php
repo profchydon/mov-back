@@ -93,6 +93,16 @@ class Company extends BaseModel
         return $this->hasMany(Invoice::class, 'company_id');
     }
     
+    public function stolenAssets()
+    {
+        return $this->hasMany(StolenAsset::class, 'company_id');
+    }
+
+    public function damagedAssets()
+    {
+        return $this->hasMany(DamagedAsset::class, 'company_id');
+    }
+
     public function country()
     {
         return $this->belongsTo(Country::class, 'country', 'name');
