@@ -17,6 +17,7 @@ use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use App\Repositories\Contracts\DepartmentRepositoryInterface;
 use App\Repositories\Contracts\FeatureRepositoryInterface;
 use App\Repositories\Contracts\FileRepositoryInterface;
+use App\Repositories\Contracts\InvoiceRepositoryInterface;
 use App\Repositories\Contracts\OTPRepositoryInterface;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Contracts\PlanRepositoryInterface;
@@ -36,6 +37,7 @@ use App\Repositories\CurrencyRepository;
 use App\Repositories\DepartmentRepository;
 use App\Repositories\FeatureRepository;
 use App\Repositories\FileRepository;
+use App\Repositories\InvoiceRepository;
 use App\Repositories\OTPRepository;
 use App\Repositories\PermissionRepository;
 use App\Repositories\PlanRepository;
@@ -94,6 +96,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(UserDepartmentRepositoryInterface::class, UserDepartmentRepository::class);
         $this->app->singleton(TeamRepositoryInterface::class, TeamRepository::class);
         $this->app->singleton(UserTeamRepositoryInterface::class, UserTeamRepository::class);
+        $this->app->singleton(InvoiceRepositoryInterface::class, InvoiceRepository::class);
         $this->app->singleton(CurrencyRepositoryInterface::class, CurrencyRepository::class);
     }
 }

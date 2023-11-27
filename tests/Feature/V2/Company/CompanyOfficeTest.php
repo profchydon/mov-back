@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 beforeEach(function () {
-    $this->seed();
+    $this->artisan('db:seed --class=CountrySeeder');
+    $this->artisan('db:seed --class=CurrencySeeder');
     $this->company = Company::factory()->create();
     $this->user = User::factory()->create();
     $this->token = $this->user->createToken('auth_token')->plainTextToken;

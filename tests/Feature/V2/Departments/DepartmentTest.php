@@ -8,7 +8,8 @@ use App\Models\User;
 use Tests\TestCase;
 
 beforeEach(function () {
-    $this->seed();
+    $this->artisan('db:seed --class=CountrySeeder');
+    $this->artisan('db:seed --class=CurrencySeeder');
     $this->user = User::factory()->create();
     $this->token = $this->user->createToken('auth_token')->plainTextToken;
     $this->useDatabaseTransactions = true;

@@ -1,6 +1,7 @@
 name: Classic
 description: Popular plan for medium teams
 preceding_plan_name: Basic
+rank: 2
 offers:
   - Up to 250 assets
   - Up to 5 seats
@@ -20,9 +21,11 @@ prices:
   - currency_code: USD
     billing_cycle: MONTHLY
     amount: 300
-    # processors:
-    #   - name: stripe
-    #     id: 59367
+    processors:
+      - name: flutterwave
+        id: 60137
+    # - name: stripe
+    #   id: 59367
   - currency_code: NGN
     billing_cycle: YEARLY
     amount: 1440000
@@ -32,6 +35,8 @@ prices:
   - currency_code: USD
     billing_cycle: YEARLY
     amount: 3600
-    # processors:
+    processors:
+      - name: flutterwave
+        id: 60138
     #   - name: stripe
     #     id: 59367

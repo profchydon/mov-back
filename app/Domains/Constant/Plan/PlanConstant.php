@@ -13,6 +13,7 @@ class PlanConstant
     public const NAME = 'name';
     public const DESCRIPTION = 'description';
     public const PRECEDING_PLAN_NAME = 'preceding_plan_name';
+    public const RANK = 'rank';
     public const STATUS = 'status';
     public const OFFERS = 'offers';
     public const CREATED_AT = 'created_at';

@@ -9,7 +9,6 @@ use App\Domains\Enum\Plan\PlanStatusEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ramsey\Uuid\Uuid;
 
 class Plan extends BaseModel
 {
@@ -24,16 +23,6 @@ class Plan extends BaseModel
         PlanConstant::STATUS => PlanStatusEnum::class,
         PlanConstant::OFFERS => 'json',
     ];
-
-    public function newUniqueId()
-    {
-        return (string) Uuid::uuid4();
-    }
-
-    public function uniqueIds()
-    {
-        return ['id'];
-    }
 
     public function subscriptions(): HasMany
     {
@@ -53,5 +42,10 @@ class Plan extends BaseModel
     public function flutterwaveProcessors()
     {
         return $this->processors()->where(PlanProcessorConstant::PLAN_PROCESSOR_NAME, PlanProcessorNameEnum::FLUTTERWAVE);
+    }
+
+    public function invoice_type()
+    {
+        return 'plan';
     }
 }

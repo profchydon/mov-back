@@ -1,5 +1,6 @@
 name: Free
 description: Popular plan for small teams
+rank: 0
 offers:
   - Up to 10 assets
   - Only 1 seat

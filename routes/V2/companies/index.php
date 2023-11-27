@@ -34,10 +34,15 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::put('/departments/{department}/users/{user}/teams', [TeamController::class, 'updateUserTeams'])->name('change.user.team');
 
         Route::get('/invitation-link', 'getUserInvitationLink')->name('get.invitation.link');
+
+        Route::get('/invoices', [\App\Http\Controllers\V2\InvoiceController::class, 'index']);
+        Route::get('/invoices/{invoice:invoice_number}', [\App\Http\Controllers\V2\InvoiceController::class, 'show']);
+        Route::get('/invoices/{invoice:invoice_number}/pdf', [\App\Http\Controllers\V2\InvoiceController::class, 'showPDF']);
     })->middleware(['auth:sanctum', 'user-in-company']);
 
     Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');
     Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->name('get.company.subscriptions');
+    Route::get('/{company}/active-subscription', [SubscriptionController::class, 'getActiveSubscription'])->name('get.company.active-subscription');
     Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription');
     Route::resource('{company}/offices', CompanyOfficeController::class)->middleware(['auth:sanctum', 'user-in-company']);
     Route::middleware(['auth:sanctum'])->resource('{company}/offices', CompanyOfficeController::class);

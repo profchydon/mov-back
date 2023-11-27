@@ -45,7 +45,6 @@ Route::middleware(['auth:sanctum'])->controller(AssetTypeController::class)->pre
 Route::controller(AssetMaintenanceController::class)->prefix('assets/maintenance')->group(function () {
 })->middleware(['auth:sanctum', 'user-in-company']);
 
-
 Route::get('companies/{company}/asset-checkouts/group/{groupId}', [AssetCheckoutController::class, 'getGroupAssetCheckout'])->middleware(['auth:sanctum', 'user-in-company']);
 Route::get('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'index'])->middleware(['auth:sanctum', 'user-in-company']);
 Route::post('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'store'])->middleware(['auth:sanctum', 'user-in-company']);

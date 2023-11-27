@@ -1,6 +1,7 @@
 name: Premium
 description: Popular plan for large teams
 preceding_plan_name: Classic
+rank: 3
 offers:
   - Up to 1000 assets
   - Up to 10 seats
@@ -23,12 +24,18 @@ prices:
   - currency_code: USD
     billing_cycle: MONTHLY
     amount: 1000
+    processors:
+      - name: flutterwave
+        id: 60139
   - currency_code: NGN
     billing_cycle: YEARLY
+    amount: 4800000
     processors:
       - name: flutterwave
         id: 60067
-    amount: 4800000
   - currency_code: USD
     billing_cycle: YEARLY
     amount: 12000
+    processors:
+      - name: flutterwave
+        id: 60140

@@ -4,12 +4,15 @@ namespace App\Models;
 
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\DepartmentConstant;
+use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\Enum\Company\CompanyStatusEnum;
+use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Events\Company\CompanyCreatedEvent;
 use App\Traits\QueryFormatter;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends BaseModel
@@ -50,6 +53,11 @@ class Company extends BaseModel
         return $this->hasMany(Subscription::class);
     }
 
+    public function activeSubscription(): HasOne
+    {
+        return $this->hasOne(Subscription::class)->where(SubscriptionConstant::STATUS, SubscriptionStatusEnum::ACTIVE);
+    }
+
     public function users(): HasManyThrough
     {
         return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id');
@@ -85,7 +93,11 @@ class Company extends BaseModel
         return $this->hasMany(AssetMaintenance::class, 'company_id');
     }
 
-
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'company_id');
+    }
+    
     public function stolenAssets()
     {
         return $this->hasMany(StolenAsset::class, 'company_id');
