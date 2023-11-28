@@ -19,6 +19,7 @@ use App\Http\Requests\Company\UpdateCompanyUserRequest;
 use App\Http\Requests\InviteUserRequest;
 use App\Http\Resources\Company\CompanyUserCollection;
 use App\Models\Company;
+use App\Models\User;
 use App\Models\UserInvitation;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyOfficeRepositoryInterface;
@@ -256,16 +257,11 @@ class CompanyController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), ['link' => $link]);
     }
 
-    public function getCompanyUserDetails(Request $request, Company $company, UserInvitation $userInvitation){
-        $user = $this->userRepository->first(UserConstant::EMAIL, $userInvitation->email);
+    public function getCompanyUserDetails(Request $request, Company $company, User $user)
+    {
 
-        $assets = $this->assetRepository->get(AssetConstant::ASSIGNED_TO, $user->id);
+        $user = $user->load('assets', 'departments', 'teams', 'office', 'roles');
 
-        $data = [
-            'details' => $userInvitation,
-            'assets' => $assets
-        ];
-
-        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $data);
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $user);
     }
 }

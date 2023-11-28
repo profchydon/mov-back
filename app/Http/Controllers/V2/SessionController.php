@@ -75,6 +75,10 @@ class SessionController extends Controller
 
         $serializePermission = new SerializePermission($userRoles);
 
+        $user->update([
+            UserConstant::LAST_LOGIN => now()
+        ]);
+
         return [
             'user' => new UserResource($user),
             'company' => new CompanyResource($userCompany?->company),
