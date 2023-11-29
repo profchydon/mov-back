@@ -4,6 +4,7 @@ namespace App\Http\Requests\Asset;
 
 use App\Domains\DTO\Asset\CreateRetiredAssetDTO;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateRetiredAssetRequest extends FormRequest
 {
@@ -12,7 +13,7 @@ class CreateRetiredAssetRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +26,7 @@ class CreateRetiredAssetRequest extends FormRequest
         return [
             'date' => 'required|date',
             'reason' => 'required|string',
+            'asset_id' => ['required', Rule::exists('assets', 'id')]
         ];
     }
 
@@ -33,8 +35,9 @@ class CreateRetiredAssetRequest extends FormRequest
         $dto = new CreateRetiredAssetDTO();
 
         $dto->setDate($this->input('date'))
-            ->setReason($this->input('reason'));
-
+            ->setReason($this->input('reason'))
+            ->setAssetId($this->input('asset_id'));
+            
         return $dto;
     }
 }

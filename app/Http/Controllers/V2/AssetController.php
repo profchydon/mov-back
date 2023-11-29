@@ -232,13 +232,12 @@ class AssetController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $stolenAsset);
     }
 
-    public function markAssetAsRetired(CreateRetiredAssetRequest $request, Company $company, Asset $asset)
+    public function markAssetAsRetired(CreateRetiredAssetRequest $request, Company $company)
     {
         $dto = $request->getDTO()
-            ->setCompanyId($company->id)
-            ->setAssetId($asset->id);
+            ->setCompanyId($company->id);
 
-        $retiredAsset = $this->assetRepository->markAsRetired($asset->id, $dto);
+        $retiredAsset = $this->assetRepository->markAsRetired($dto);
 
         return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-retired'), $retiredAsset);
     }
