@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Domains\Constant\UserCompanyConstant;
+use App\Domains\Constant\UserConstant;
+use App\Domains\Constant\UserDepartmentConstant;
 use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\Constant\UserRoleConstant;
+use App\Domains\Constant\UserTeamConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserInvitationStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\AcceptUserInvitationRequest;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
+use App\Repositories\Contracts\UserDepartmentRepositoryInterface;
 use App\Repositories\Contracts\UserInvitationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserRoleRepositoryInterface;
+use App\Repositories\Contracts\UserTeamRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
 use Exception;
 use Illuminate\Http\Response;
@@ -30,6 +36,8 @@ class UserInvitationController extends Controller
         private readonly SSOServiceInterface $ssoService,
         private readonly UserRoleRepositoryInterface $userRoleRepository,
         private readonly RoleRepositoryInterface $roleRepository,
+        private readonly UserDepartmentRepositoryInterface $userDepartmentRepository,
+        private readonly UserTeamRepositoryInterface $userTeamRepository,
     ) {
     }
 
@@ -66,25 +74,45 @@ class UserInvitationController extends Controller
             $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code, $invitation) {
                 $ssoData = $createSSOUser->json()['data'];
 
-                $userDto = $request->getUserDTO()->setTenantId($company->tenant_id)->setSsoId($ssoData['id']);
+                $userDto = $request->getUserDTO()
+                    ->setEmploymentType($invitation->employment_type, null)
+                    ->setOfficeId($invitation->office_id, null)
+                    ->setTenantId($company->tenant_id)
+                    ->setSsoId($ssoData['id']);
 
                 $user = $this->userRepository->create($userDto->toArray());
 
                 $this->userCompanyRepository->create([
-                    'tenant_id' => $company->tenant_id,
-                    'company_id' => $company->id,
-                    'user_id' => $user->id,
-                    'status' => UserCompanyStatusEnum::ACTIVE->value,
+                    UserCompanyConstant::TENANT_ID => $company->tenant_id,
+                    UserCompanyConstant::COMPANY_ID => $company->id,
+                    UserCompanyConstant::USER_ID => $user->id,
+                    UserCompanyConstant::STATUS => UserCompanyStatusEnum::ACTIVE->value,
                 ]);
 
                 //Assign role to user
-                $role = $this->roleRepository->first('id', $invitation->role_id);
-
                 $this->userRoleRepository->create([
                     UserRoleConstant::USER_ID => $user->id,
                     UserRoleConstant::COMPANY_ID => $company->id,
-                    UserRoleConstant::ROLE_ID => $role->id,
+                    UserRoleConstant::ROLE_ID => $invitation->role_id,
                 ]);
+
+                if ($invitation->department_id !== null) {
+
+                    $this->userDepartmentRepository->create([
+                        UserDepartmentConstant::USER_ID => $user->id,
+                        UserDepartmentConstant::COMPANY_ID => $company->id,
+                        UserDepartmentConstant::DEPARTMENT_ID => $invitation->department_id,
+                    ]);
+
+                    if ($invitation->team_id !== null) {
+                        $this->userTeamRepository->create([
+                            UserTeamConstant::USER_ID => $user->id,
+                            UserTeamConstant::COMPANY_ID => $company->id,
+                            UserTeamConstant::DEPARTMENT_ID => $invitation->department_id,
+                            UserTeamConstant::TEAM_ID => $invitation->team_id,
+                        ]);
+                    }
+                }
 
                 $this->userInvitationRepository->update(
                     UserInvitationConstant::CODE,

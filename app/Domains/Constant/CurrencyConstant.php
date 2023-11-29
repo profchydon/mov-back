@@ -10,6 +10,7 @@ class CurrencyConstant
     public const NAME = 'name';
     public const CODE = 'code';
     public const SYMBOL = 'symbol';
+    public const COUNTRY_CODE = 'country_code';
     public const STATUS = 'status';
     public const CREATED_AT = 'created_at';
 

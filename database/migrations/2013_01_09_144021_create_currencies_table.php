@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string(CurrencyConstant::NAME);
             $table->string(CurrencyConstant::CODE)->unique();
             $table->string(CurrencyConstant::SYMBOL);
-            $table->enum(CurrencyConstant::STATUS, CurrencyStatusEnum::values())->default(CurrencyStatusEnum::INACTIVE->value);
+            $table->enum(CurrencyConstant::STATUS, CurrencyStatusEnum::values())->default(CurrencyStatusEnum::ACTIVE->value);
             $table->timestamps();
         });
     }

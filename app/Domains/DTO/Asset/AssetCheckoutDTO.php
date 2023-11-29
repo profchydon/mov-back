@@ -22,6 +22,7 @@ final class AssetCheckoutDTO
     private ?Carbon $return_date;
     private ?string $comment;
     private ?string $status;
+    private string $checkout_by;
 
     const REVEIVER_TYPE = [
         'users' => User::class,
@@ -158,6 +159,18 @@ final class AssetCheckoutDTO
     public function setStatus(?string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getCheckoutBy(): ?string
+    {
+        return $this->checkout_by;
+    }
+
+    public function setCheckoutBy(string $checkout_by): self
+    {
+        $this->checkout_by = $checkout_by;
 
         return $this;
     }

@@ -9,6 +9,6 @@ class PlanRepository implements PlanRepositoryInterface
 {
     public function getPlans()
     {
-        return Plan::with('prices.currency')->paginate();
+        return Plan::with('prices.currency')->orderBy('rank', 'asc')->paginate();
     }
 }

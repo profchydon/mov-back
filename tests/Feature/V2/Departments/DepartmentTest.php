@@ -4,14 +4,20 @@ namespace Tests\Feature\V2\Departments;
 
 use App\Models\Company;
 use App\Models\Department;
+use App\Models\User;
 use Tests\TestCase;
 
 beforeEach(function () {
-    $this->seed();
+    $this->artisan('db:seed --class=CountrySeeder');
+    $this->artisan('db:seed --class=CurrencySeeder');
+    $this->user = User::factory()->create();
+    $this->token = $this->user->createToken('auth_token')->plainTextToken;
     $this->useDatabaseTransactions = true;
 });
 
 it('can create department area with valid data', function () {
+    $company = Company::factory()->create();
+
     $departmentCount = Department::count();
     $this->assertDatabaseCount('departments', $departmentCount);
 
@@ -19,8 +25,7 @@ it('can create department area with valid data', function () {
         'name' => 'Jenkins',
     ];
 
-    $company = Company::factory()->create();
-    $response = $this->postJson(TestCase::fullLink("/companies/$company->id/departments"), $payload);
+    $response = $this->withToken($this->token)->postJson(TestCase::fullLink("/companies/$company->id/departments"), $payload);
     $response->assertCreated();
 
     $this->assertDatabaseCount('departments', $departmentCount + 1);
@@ -34,7 +39,7 @@ it('can edit department with valid data', function () {
         'name' => 'new name',
     ];
 
-    $response = $this->putJson(TestCase::fullLink("/companies/$department->company_id/departments/{$department->id}"), $payload);
+    $response = $this->withToken($this->token)->putJson(TestCase::fullLink("/companies/$department->company_id/departments/{$department->id}"), $payload);
     $response->assertOk();
 
     $departmentAfterUpdate = $department->fresh();
@@ -51,7 +56,7 @@ it('can delete department', function () {
     $this->assertDatabaseCount('departments', $departmentCount);
 
 
-    $response = $this->deleteJson(TestCase::fullLink("/companies/$department->company_id/departments/{$department->id}"));
+    $response = $this->withToken($this->token)->deleteJson(TestCase::fullLink("/companies/$department->company_id/departments/{$department->id}"));
     $response->assertNoContent();
     $this->assertLessThan($departmentCount, Department::count());
 });

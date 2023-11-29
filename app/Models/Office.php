@@ -37,4 +37,14 @@ class Office extends BaseModel
     {
         return $this->hasMany(OfficeArea::class, 'office_id');
     }
+
+    public function assets(): HasMany
+    {
+        return $this->hasMany(Asset::class);
+    }
+
+    public function assetsCount(): int
+    {
+        return $this->assets->count();
+    }
 }

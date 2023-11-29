@@ -8,9 +8,9 @@ use App\Models\Department;
 
 interface DepartmentRepositoryInterface
 {
-    public function getDepartments(Company|string $company);
+    public function getDepartments(Company|string $company, $relation = []);
 
-    public function get(Department|string $department);
+    public function get(Department|string $department, $relation = []);
 
     public function create(CreateDepartmentDTO $departmentDTO);
 

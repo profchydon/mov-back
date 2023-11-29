@@ -24,14 +24,14 @@ class CreateCompanyUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => 'nullable|string',
             'email' => 'required|email',
-            'job_title' => 'required|string',
-            'employment_type' => 'required|string',
+            'job_title' => 'nullable|string',
+            'employment_type' => 'nullable|string',
             'role_id' => ['required', Rule::exists('roles', 'id')],
-            'office_id' => ['required', Rule::exists('offices', 'id')],
-            'department_id' => ['required', Rule::exists('departments', 'id')],
-            'team_id' => ['required', Rule::exists('teams', 'id')],
+            'office_id' => ['nullable', Rule::exists('offices', 'id')],
+            'department_id' => ['nullable', Rule::exists('departments', 'id')],
+            'team_id' => ['nullable', Rule::exists('teams', 'id')],
         ];
     }
 
@@ -42,14 +42,13 @@ class CreateCompanyUserRequest extends FormRequest
     {
         $dto = new CreateCompanyUserDTO();
 
-        $dto->setName($this->input('name'))
-            ->setEmail($this->input('email'))
-            ->setJobTitle($this->input('job_title'))
-            ->setEmploymentType($this->input('employment_type'))
+        $dto->setEmail($this->input('email'))
+            ->setJobTitle($this->input('job_title', ''))
+            ->setEmploymentType($this->input('employment_type', ''))
             ->setRoleId($this->input('role_id'))
-            ->setOfficeId($this->input('office_id'))
-            ->setDepartmentId($this->input('department_id'))
-            ->setTeamId($this->input('team_id'));
+            ->setOfficeId($this->input('office_id', ''))
+            ->setDepartmentId($this->input('department_id', ''))
+            ->setTeamId($this->input('team_id', ''));
 
         return $dto;
     }

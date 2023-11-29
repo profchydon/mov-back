@@ -18,9 +18,7 @@ class UserDepartmentRepository extends BaseRepository implements UserDepartmentR
     {
         try {
             DB::transaction(function () use ($members, $company_id, $department_id) {
-
                 foreach ($members as $user_id) {
-
                     $userInDepartment = $this->userExistInDepartment($user_id, $department_id);
 
                     if (!$userInDepartment) {

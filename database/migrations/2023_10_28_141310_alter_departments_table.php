@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('departments', function (Blueprint $table) {
-//            $table->dropUnique('departments_head_id_unique');
+        //    $table->dropUnique('departments_head_id_unique');
         });
     }
 

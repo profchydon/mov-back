@@ -4,6 +4,7 @@ namespace App\Http\Requests\Asset;
 
 use App\Domains\DTO\Asset\CreateStolenAssetDTO;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateStolenAsset extends FormRequest
 {
@@ -22,11 +23,13 @@ class CreateStolenAsset extends FormRequest
      */
     public function rules(): array
     {
+        $company = $this->route('company');
         return [
-            'date' => 'required|date',
+            'asset_id' => ['required', Rule::exists('assets', 'id')->where('company_id', $company->id)],
+            'date' => 'required|date_format:Y-m-d',
             'comment' => 'required|string',
             'documents' => 'nullable|array',
-            'documents.*' => 'nullable|file'
+            'documents.*' => 'nullable|file',
         ];
     }
 

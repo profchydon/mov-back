@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\V2;
 
 use App\Domains\Auth\RoleTypes;
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\UserConstant;
-use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\Constant\UserRoleConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserStageEnum;
@@ -17,8 +17,12 @@ use App\Http\Requests\Company\CreateCompanyRequest;
 use App\Http\Requests\Company\CreateCompanyUserRequest;
 use App\Http\Requests\Company\UpdateCompanyUserRequest;
 use App\Http\Requests\InviteUserRequest;
+use App\Http\Resources\Company\CompanyUserCollection;
 use App\Models\Company;
+use App\Models\User;
 use App\Models\UserInvitation;
+use App\Repositories\Contracts\AssetRepositoryInterface;
+use App\Repositories\Contracts\CompanyOfficeRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\TenantRepositoryInterface;
@@ -29,6 +33,7 @@ use App\Repositories\Contracts\UserRoleRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -45,6 +50,8 @@ class CompanyController extends Controller
         private readonly SSOServiceInterface $ssoService,
         private readonly UserRoleRepositoryInterface $userRoleRepository,
         private readonly RoleRepositoryInterface $roleRepository,
+        private readonly AssetRepositoryInterface $assetRepository,
+        private readonly CompanyOfficeRepositoryInterface $companyOfficeRepository
     ) {
     }
 
@@ -176,6 +183,8 @@ class CompanyController extends Controller
             $user->update(['stage' => UserStageEnum::SUBSCRIPTION_PLAN->value]);
         }
 
+        $this->companyOfficeRepository->createCompanyOffice($request->companyOfficeDTO());
+
         return $this->response(Response::HTTP_OK, __('messages.company-updated'));
     }
 
@@ -200,7 +209,11 @@ class CompanyController extends Controller
 
     public function getCompanyUsers(Company $company)
     {
-        $users = $company->users;
+        $users = $company->users->load('departments', 'teams', 'office');
+
+        // $users = $users->paginate();
+
+        // $users = CompanyUserCollection::make($users);
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $users);
     }
@@ -218,10 +231,11 @@ class CompanyController extends Controller
 
         $this->userInvitationRepository->create($dto->toArray());
 
-        return $this->response(Response::HTTP_CREATED, __('messages.record-created'));
+        return $this->response(Response::HTTP_CREATED, __('messages.user.invitation.sent'));
     }
 
-    public function deleteCompanyUser(Company $company, UserInvitation $userInvitation){
+    public function deleteCompanyUser(Company $company, UserInvitation $userInvitation)
+    {
         $this->userInvitationRepository->deleteById($userInvitation->id);
 
         return $this->response(Response::HTTP_OK, __('messages.record-deleted'), );
@@ -241,5 +255,13 @@ class CompanyController extends Controller
         $link = sprintf('%s/%s', getenv('CORE_COMPANY_USER_INVITATION_URL'), $company[CompanyConstant::INVITATION_CODE]);
 
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), ['link' => $link]);
+    }
+
+    public function getCompanyUserDetails(Request $request, Company $company, User $user)
+    {
+
+        $user = $user->load('assets', 'departments', 'teams', 'office', 'roles');
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $user);
     }
 }

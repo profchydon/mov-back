@@ -12,7 +12,14 @@ use App\Models\UserCompany;
 use Tests\TestCase;
 
 beforeEach(function () {
-    $this->seed();
+    $this->artisan('db:seed --class=CountrySeeder');
+    $this->artisan('db:seed --class=CurrencySeeder');
+    $this->company = Company::factory()->create();
+    $this->office = Office::factory([
+        'tenant_id' => $this->company->tenant_id,
+    ])->recycle($this->company)->create();
+    $this->user = User::factory()->create();
+    $this->token = $this->user->createToken('auth_token')->plainTextToken;
     $this->useDatabaseTransactions = true;
 
     $this->company = Company::factory()->create();
@@ -31,16 +38,14 @@ beforeEach(function () {
     $this->withHeaders([
         'Authorization' => "Bearer {$token}",
         'Accept' => 'application/json',
-        'x-company-id' => $this->company->id
+        'x-company-id' => $this->company->id,
     ]);
 });
 
 it('can create office area with valid data', function () {
-
     $office = Office::factory([
         'tenant_id' => $this->company->tenant_id,
     ])->recycle($this->company)->create();
-
 
 
     $officeCount = OfficeArea::count();
@@ -49,17 +54,14 @@ it('can create office area with valid data', function () {
         'name' => 'Jenkins',
     ];
 
-    $response = $this->postJson(TestCase::fullLink("/offices/{$office->id}/areas"), $payload);
+    $response = $this->withToken($this->token)->postJson(TestCase::fullLink("/offices/{$this->office->id}/areas"), $payload);
     $response->assertCreated();
 
     $this->assertDatabaseCount('office_areas', $officeCount + 1);
     $this->assertDatabaseHas('office_areas', $payload);
 });
 
-
-
 it('can edit office with valid data', function () {
-
     $office = Office::factory([
         'tenant_id' => $this->company->tenant_id,
     ])->recycle($this->company)->create();
@@ -74,7 +76,7 @@ it('can edit office with valid data', function () {
         'name' => 'Floor Corner',
     ];
 
-    $response = $this->putJson(TestCase::fullLink("/offices/{$office->id}/areas/{$area->id}"), $payload);
+    $response = $this->withToken($this->token)->putJson(TestCase::fullLink("/offices/{$this->office->id}/areas/{$area->id}"), $payload);
     $response->assertOk();
 
     $areaAfterUpdate = $area->fresh();
@@ -84,7 +86,6 @@ it('can edit office with valid data', function () {
 });
 
 it('deletes office', function () {
-
     $office = Office::factory([
         'tenant_id' => $this->company->tenant_id,
     ])->recycle($this->company)->create();
@@ -98,7 +99,9 @@ it('deletes office', function () {
         'company_id' => $this->company->id,
     ]);
 
-    $response = $this->deleteJson(TestCase::fullLink("/offices/{$office->id}/areas/{$area->id}"));
+    $officeCount = OfficeArea::count();
+
+    $response = $this->withToken($this->token)->deleteJson(TestCase::fullLink("/offices/{$this->office->id}/areas/{$area->id}"));
     $response->assertNoContent();
     $this->assertLessThan($officeCount, OfficeArea::count());
 });

@@ -12,7 +12,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('upcoming-asset-maintenance')->daily();
+        $schedule->command('overdue-asset-maintenance')->daily();
+
+        $schedule->command('upcoming-return-asset:days')->daily();
+        $schedule->command('asset-return-overdue')->daily();
     }
 
     /**

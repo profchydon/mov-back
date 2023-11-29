@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string(CommonConstant::NAME)->unique();
             $table->string(CommonConstant::CODE)->unique();
             $table->json(CommonConstant::STATES);
+            $table->string(CommonConstant::CURRENY_CODE)->default('USD');
             $table->string(CommonConstant::STATUS)->default(CommonConstant::INACTIVE);
             $table->timestamps();
         });

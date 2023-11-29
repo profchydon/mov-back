@@ -16,22 +16,28 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
     /**
      * @param string $assetId
      * @param CreateStolenAssetDTO $dto
-     * @param Array<UploadedFile>|null $documents
+     * @param array<UploadedFile>|null $documents
      * @return Asset
      */
     public function markAsStolen(string $assetId, CreateStolenAssetDTO $dto, ?array $documents): Asset;
 
     public function markAsArchived(string $assetId): Asset;
 
-    public function getCompanyAssets(Company|string $company);
+    public function getCompanyAssets(Company|string $company, string|null $status);
+
+    public function getCompanyStolenAssets(Company|string $company);
+
+    public function getCompanyDamagedAssets(Company|string $company);
+
 
     /**
      * @param string $assetId
      * @param CreateDamagedAssetDTO $dto
-     * @param Array<UploadedFile>|null $documents
+     * @param array<UploadedFile>|null $documents
      * @return Asset
      */
     public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset;
 
-    public function markAsRetired(string $assetId, CreateRetiredAssetDTO $dto): Asset;
+    public function markAsRetired(CreateRetiredAssetDTO $dto): Asset;
+
 }

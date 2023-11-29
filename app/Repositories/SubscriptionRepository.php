@@ -4,8 +4,13 @@ namespace App\Repositories;
 
 use App\Domains\DTO\CreatePaymentLinkDTO;
 use App\Domains\DTO\CreateSubscriptionDTO;
+use App\Domains\DTO\Invoice\InvoiceDTO;
+use App\Domains\DTO\Invoice\InvoiceItemDTO;
+use App\Domains\Enum\Invoice\InvoiceStatusEnum;
 use App\Models\Company;
+use App\Models\Feature;
 use App\Models\FeaturePrice;
+use App\Models\Invoice;
 use App\Models\Subscription;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Services\V2\FlutterwaveService;
@@ -17,6 +22,16 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
     public function model(): string
     {
         return Subscription::class;
+    }
+
+    public function getCompanySubscription(string|Company $company)
+    {
+        if(!($company instanceof  Company)){
+            $company = Company::findOrFail($company);
+        }
+
+        $subscription = $company->activeSubscription()->with(['payment', 'plan.prices', 'addOns.feature.prices']);
+        return $subscription->first();
     }
 
     public function createSubscription(CreateSubscriptionDTO $subDTO)
@@ -42,16 +57,20 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             ->where('billing_cycle', $subDTO->getBillingCycle())
             ->firstOrFail();
 
-        if ($planPrice->amount > 0) {
+        $totalAmount = $planPrice->amount ?? 0;
+
+        if ($totalAmount > 0) {
             $addOnAmount = FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
                 ->where('currency_code', $subDTO->getCurrency())
                 ->sum('price');
 
             $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
 
+            $totalAmount += $addOnAmount;
+
             $paymentLinkDTO = new CreatePaymentLinkDTO();
             $paymentLinkDTO->setCurrency($subDTO->getCurrency())
-                ->setAmount($planPrice->amount + $addOnAmount)
+                ->setAmount($totalAmount)
                 ->setPaymentPlan($planProcessor->plan_processor_id)
                 ->setRedirectUrl($subDTO->getRedirectURI())
                 ->setCustomer(Company::find($subDTO->getCompanyId()))
@@ -71,6 +90,42 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         } else {
             $subscription->activate();
         }
+
+        $invoiceDTO = new InvoiceDTO();
+        $invoiceDTO->setTenantId($subDTO->getTenantId())
+            ->setCompanyId($subDTO->getCompanyId())
+            ->setCurrencyCode($subDTO->getCurrency())
+            ->setBillable($subscription)
+            ->setSubTotal($totalAmount)
+            ->setDueAt(now()->addHours(6));
+
+        if ($totalAmount < 1) {
+            $invoiceDTO->setPaidAt(now())
+                ->setStatus(InvoiceStatusEnum::PAID->value);
+        }
+
+        $invoice = Invoice::create($invoiceDTO->toSynthensizedArray());
+
+        $invoiceItemDTO = new InvoiceItemDTO();
+        $invoiceItemDTO->setAmount($planPrice->amount ?? 0)
+            ->setItem($subscription->plan)
+            ->setQuantity(1);
+
+        $invoice->items()->create($invoiceItemDTO->toSynthensizedArray());
+
+        $features = Feature::find($subDTO->getAddOnIds());
+
+        $features->each(function ($feature) use ($subDTO, $invoice) {
+            $price = $feature->currencyPrice($subDTO->getCurrency())->firstOrFail();
+
+            $dto = new InvoiceItemDTO();
+            $dto->setQuantity(1)
+                ->setAmount($price->price)
+                ->setItem($feature)
+                ->setInvoiceId($invoice);
+
+            $invoice->items()->create($dto->toSynthensizedArray());
+        });
 
         DB::commit();
 

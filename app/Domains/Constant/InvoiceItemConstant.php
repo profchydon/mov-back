@@ -11,9 +11,9 @@ class InvoiceItemConstant
 {
     public const ID = 'id';
     public const INVOICE_ID = 'invoice_id';
-    public const PLAN_ID = 'plan_id';
-    public const FEATURE_ID = 'feature_id';
-    public const TYPE = 'type';
+    public const ITEM = 'item';
+    public const ITEM_TYPE = 'item_type';
+    public const ITEM_ID = 'item_id';
     public const QUANTITY = 'quantity';
     public const AMOUNT = 'amount';
     public const CREATED_AT = 'created_at';

@@ -14,8 +14,10 @@ use App\Http\Requests\Asset\CreateAssetRequest;
 use App\Http\Requests\Asset\CreateDamagedAssetRequest;
 use App\Http\Requests\Asset\CreateRetiredAssetRequest;
 use App\Http\Requests\Asset\CreateStolenAsset;
+use App\Http\Requests\Asset\ReAssignAssetRequest;
 use App\Models\Asset;
 use App\Models\Company;
+use App\Models\User;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
@@ -60,8 +62,13 @@ class AssetController extends Controller
                 ->setCompanyId($company->id)
                 ->setTenantId($company->tenant_id);
 
+            if ($request->assignee) {
+                $createAssetDto->setAssignedDate(now());
+            }
+
             $user = $request->user();
-            if ($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)) {
+
+            if ($user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value, PermissionTypes::ASSET_CREATE_ACCESS->value])) {
                 $createAssetDto->setStatus(AssetStatusEnum::AVAILABLE->value);
             }
 
@@ -101,8 +108,7 @@ class AssetController extends Controller
                 ->setIsInsured(Arr::get($asset, 'is_insured', false))
                 ->setStatus(Arr::get($asset, 'status', AssetStatusEnum::PENDING_APPROVAL->value));
 
-
-            if ($user->hasAnyRole(RoleTypes::ADMINISTRATOR->value, RoleTypes::ASSET_MANAGER->value)) {
+            if ($user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value, PermissionTypes::ASSET_CREATE_ACCESS->value])) {
                 $dto->setStatus(AssetStatusEnum::AVAILABLE->value);
             }
 
@@ -115,9 +121,11 @@ class AssetController extends Controller
     /**
      * @return JsonResponse
      */
-    public function get(Company $company): JsonResponse
+    public function get(Company $company, Request $request)
     {
-        $assets = $this->assetRepository->getCompanyAssets($company);
+        $status = $request->get('status');
+
+        $assets = $this->assetRepository->getCompanyAssets($company, $status);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $assets);
     }
@@ -156,7 +164,7 @@ class AssetController extends Controller
 
     public function getAssetOverview(Company $company, Asset $asset)
     {
-        $asset = $this->assetRepository->firstWithRelation('id', $asset->id, ['image', 'type', 'office', 'officeArea', 'activities']);
+        $asset = $this->assetRepository->firstWithRelation('id', $asset->id, ['image', 'type', 'office', 'officeArea', 'activities', 'assignee']);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $asset);
     }
@@ -188,35 +196,48 @@ class AssetController extends Controller
         }
     }
 
-    public function markAssetAsStolen(CreateStolenAsset $request, Company $company, Asset $asset)
+    public function markAssetAsStolen(CreateStolenAsset $request, Company $company)
     {
         $dto = $request->getDTO()
             ->setCompanyId($company->id)
-            ->setAssetId($asset->id);
+            ->setAssetId($request->asset_id);
 
-        $stolenAsset = $this->assetRepository->markAsStolen($asset->id, $dto, $request->file('documents'));
+        $stolenAsset = $this->assetRepository->markAsStolen($request->asset_id, $dto, $request->file('documents'));
 
         return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-stolen'), $stolenAsset);
+    }
+
+    public function getStolenAssets(Request $request, Company $company)
+    {
+        $stolenAsset = $this->assetRepository->getCompanyStolenAssets($company);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $stolenAsset);
     }
 
     public function markAssetAsDamaged(CreateDamagedAssetRequest $request, Company $company, Asset $asset)
     {
         $dto = $request->getDTO()
             ->setCompanyId($company->id)
-            ->setAssetId($asset->id);
+            ->setAssetId($request->asset_id);
 
-        $damagedAsset = $this->assetRepository->markAsDamaged($asset->id, $dto, $request->file('documents'));
+        $damagedAsset = $this->assetRepository->markAsDamaged($request->asset_id, $dto, $request->file('documents'));
 
         return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-damaged'), $damagedAsset);
     }
 
-    public function markAssetAsRetired(CreateRetiredAssetRequest $request, Company $company, Asset $asset)
+    public function getDamagedAssets(Request $request, Company $company)
+    {
+        $stolenAsset = $this->assetRepository->getCompanyDamagedAssets($company);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $stolenAsset);
+    }
+
+    public function markAssetAsRetired(CreateRetiredAssetRequest $request, Company $company)
     {
         $dto = $request->getDTO()
-            ->setCompanyId($company->id)
-            ->setAssetId($asset->id);
+            ->setCompanyId($company->id);
 
-        $retiredAsset = $this->assetRepository->markAsRetired($asset->id, $dto);
+        $retiredAsset = $this->assetRepository->markAsRetired($dto);
 
         return $this->response(Response::HTTP_CREATED, __('messages.asset-marked-as-retired'), $retiredAsset);
     }
@@ -307,4 +328,28 @@ class AssetController extends Controller
 
         return $this->response(Response::HTTP_OK, __('messages.asset-updated'), $asset);
     }
+
+
+    public function assignAsset(Company $company, Asset $asset, User $user)
+    {
+        $asset->assignee()->associate($user);
+        $asset->save();
+        return $this->response(Response::HTTP_OK, __('messages.asset-assigned'), $asset);
+    }
+
+    public function unAssignAsset(Company $company, Asset $asset, User $user)
+    {
+        $asset->assignee()->dissociate($user);
+        $asset->save();
+        return $this->response(Response::HTTP_OK, __('messages.asset-unassigned'), $asset);
+    }
+
+    public function reAssignAsset(Company $company, Asset $asset, ReAssignAssetRequest $request)
+    {
+        $asset->assignee()->dissociate($request->from);
+        $asset->assignee()->associate($request->to);
+        $asset->save();
+        return $this->response(Response::HTTP_OK, __('messages.asset-reassigned'), $asset);
+    }
+
 }

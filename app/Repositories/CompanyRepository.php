@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Domains\Constant\OfficeConstant;
 use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\DTO\CreateCompanyOfficeDTO;
+use App\Http\Resources\Office\OfficeResource;
 use App\Models\Company;
 use App\Models\Office;
 use App\Models\OfficeArea;
@@ -55,7 +56,11 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
             $office = Office::findOrFail($office);
         }
 
-        return $office->load('areas');
+        $office->assetCount = count($office->assets);
+
+        return new OfficeResource($office);
+
+        // return $office->load('areas');
     }
 
     public function deleteCompanyOffice(Office|string $office)
@@ -113,9 +118,9 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         if (!($company instanceof Company)) {
             $company = Company::findOrFail($company);
         }
-        
-        $users = UserInvitation::where(UserInvitationConstant::COMPANY_ID, $company->id);
-        
+
+        $users = UserInvitation::with(['role', 'team', 'department', 'office'])->where(UserInvitationConstant::COMPANY_ID, $company->id);
+
         $users = UserInvitation::appendToQueryFromRequestQueryParameters($users);
 
         return $users;

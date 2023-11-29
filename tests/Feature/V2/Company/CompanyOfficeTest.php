@@ -13,7 +13,11 @@ use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 beforeEach(function () {
-    $this->seed();
+    $this->artisan('db:seed --class=CountrySeeder');
+    $this->artisan('db:seed --class=CurrencySeeder');
+    $this->company = Company::factory()->create();
+    $this->user = User::factory()->create();
+    $this->token = $this->user->createToken('auth_token')->plainTextToken;
     $this->useDatabaseTransactions = true;
     $this->company = Company::factory()->create();
     $user = User::factory()->create([
@@ -31,7 +35,7 @@ beforeEach(function () {
     $this->withHeaders([
         'Authorization' => "Bearer {$token}",
         'Accept' => 'application/json',
-        'x-company-id' => $this->company->id
+        'x-company-id' => $this->company->id,
     ]);
 });
 
@@ -48,7 +52,6 @@ it('can create office with valid data', function () {
 
     $officeCount = Office::count();
     $this->assertDatabaseCount('offices', $officeCount);
-
 
     $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/offices"), $payload);
 
@@ -84,7 +87,6 @@ it('does not create office with invalid data', function () {
 });
 
 it('can edit office with valid data', function () {
-
     $office = Office::factory([
         'tenant_id' => $this->company->tenant_id,
     ])->recycle($this->company)->create();
@@ -103,7 +105,6 @@ it('can edit office with valid data', function () {
 });
 
 it('deletes office', function () {
-
     $office = Office::factory([
         'tenant_id' => $this->company->tenant_id,
     ])->recycle($this->company)->create();

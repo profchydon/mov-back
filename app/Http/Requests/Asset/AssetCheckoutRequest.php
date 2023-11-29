@@ -19,8 +19,8 @@ class AssetCheckoutRequest extends FormRequest
                     ['required', Rule::exists($this->input('receiver_type'), 'id')]
                 ),
             ],
-            'checkout_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
-            'return_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:checkout_date'],
+            'checkout_date' => ['required', 'after_or_equal:today'],
+            'return_date' => ['required', 'after_or_equal:checkout_date'],
             'comment' => ['sometimes'],
             'assets' => ['required', 'array', 'min:1'],
             'assets.*' => ['required', Rule::exists('assets', 'id')->where('status', AssetStatusEnum::AVAILABLE)],
