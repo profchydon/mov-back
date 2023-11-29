@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(CompanyController::class)->prefix('companies')->group(function () {
     Route::post('/', 'create')->name('companies.create');
 
-    Route::controller(CompanyController::class)->prefix('{company}')->group(function () {
+    Route::controller(CompanyController::class)->prefix('{company}')->middleware(['auth:sanctum', 'user-in-company'])->group(function () {
         Route::put('/', 'addCompanyDetails')->name('companies.update');
 
         Route::post('/invitees', 'inviteCompanyUsers')->name('companies.invite.users');
@@ -29,7 +29,9 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
 
         Route::post('/departments/{department}/teams', [TeamController::class, 'createTeam'])->name('create.team');
         Route::get('/departments/{department}/teams', [TeamController::class, 'getTeams'])->name('get.teams');
+        Route::get('/departments/teams/group', [TeamController::class, 'getTeamsInDepts'])->name('get.teams.in.depts');
         Route::get('/departments/{department}/teams/{team}', [TeamController::class, 'getTeam'])->name('get.team');
+
 
         Route::put('/departments/{department}/users/{user}/teams', [TeamController::class, 'updateUserTeams'])->name('change.user.team');
 
@@ -38,7 +40,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::get('/invoices', [\App\Http\Controllers\V2\InvoiceController::class, 'index']);
         Route::get('/invoices/{invoice:invoice_number}', [\App\Http\Controllers\V2\InvoiceController::class, 'show']);
         Route::get('/invoices/{invoice:invoice_number}/pdf', [\App\Http\Controllers\V2\InvoiceController::class, 'showPDF']);
-    })->middleware(['auth:sanctum', 'user-in-company']);
+    });
 
     Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');
     Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->name('get.company.subscriptions');

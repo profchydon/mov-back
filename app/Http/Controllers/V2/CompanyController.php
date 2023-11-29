@@ -97,6 +97,7 @@ class CompanyController extends Controller
                         'company_id' => $company->id,
                         'user_id' => $user->id,
                         'status' => UserCompanyStatusEnum::ACTIVE->value,
+                        'has_seat' => true,
                     ]);
 
                     //Assign admin role to user
@@ -209,7 +210,7 @@ class CompanyController extends Controller
 
     public function getCompanyUsers(Company $company)
     {
-        $users = $company->users->load('departments', 'teams', 'office');
+        $users = $company->users->load('departments', 'teams', 'office', 'roles');
 
         // $users = $users->paginate();
 
