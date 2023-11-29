@@ -162,15 +162,15 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return $this->first('id', $assetId);
     }
 
-    public function markAsRetired(string $assetId, CreateRetiredAssetDTO $dto): Asset
+    public function markAsRetired(CreateRetiredAssetDTO $dto): Asset
     {
-        DB::transaction(function () use ($assetId, $dto) {
+        DB::transaction(function () use ($dto) {
             RetiredAsset::create($dto->toArray());
 
-            $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::RETIRED->value]);
+            $this->update('id', $dto->getAssetId(), [AssetConstant::STATUS => AssetStatusEnum::RETIRED->value]);
         });
 
-        return $this->first('id', $assetId);
+        return $this->first('id', $dto->getAssetId());
     }
 
     public function getCompanyStolenAssets(Company|string $company)

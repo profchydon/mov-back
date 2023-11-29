@@ -38,6 +38,6 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
      */
     public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset;
 
-    public function markAsRetired(string $assetId, CreateRetiredAssetDTO $dto): Asset;
+    public function markAsRetired(CreateRetiredAssetDTO $dto): Asset;
 
 }
