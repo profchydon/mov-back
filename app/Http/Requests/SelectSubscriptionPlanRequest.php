@@ -55,7 +55,6 @@ class SelectSubscriptionPlanRequest extends FormRequest
             ->setStartDate($startDate)
             ->setEndDate($endDate)
             ->setRedirectURI($this->input('redirect_uri'))
-            ->setStatus(SubscriptionStatusEnum::ACTIVE->value)
             ->setCurrency($this->input('currency'))
             ->setAddOnIds($this->input('add-on-ids'));
 
