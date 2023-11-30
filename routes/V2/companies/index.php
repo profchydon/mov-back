@@ -14,12 +14,11 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
 
     Route::post('/', 'create')->name('companies.create');
     Route::put('{company}', 'addCompanyDetails')->name('companies.update');
-    Route::post('/invitees', 'inviteCompanyUsers')->name('companies.invite.users');
+    Route::post('{company}/invitees', 'inviteCompanyUsers')->name('companies.invite.users');
+    Route::post('{company}/sole-admin', 'soleAdminUser')->name('companies.sole.admin');
 
     Route::controller(CompanyController::class)->prefix('{company}')->middleware(['auth:sanctum', 'user-in-company'])->group(function () {
 
-
-        Route::post('/sole-admin', 'soleAdminUser')->name('companies.sole.admin');
 
         Route::resource('tags', TagController::class);
         Route::resource('departments', DepartmentController::class);

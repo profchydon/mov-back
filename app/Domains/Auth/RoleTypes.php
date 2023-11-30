@@ -4,11 +4,9 @@ namespace App\Domains\Auth;
 
 enum RoleTypes: string
 {
+    case SUPER_ADMINISTRATOR = 'Super Administrator';
     case ADMINISTRATOR = 'Administrator';
-    case ASSET_MANAGER = 'Asset Manager';
-    case DOCUMENT_MANAGER = 'Document Manager';
-    case TECHNICIAN = 'Technician';
-    case AUDITOR = 'Auditor';
-    case FINANCE = 'Finance';
+    case MANAGER = 'Manager';
+    case GUEST = 'Guest';
     case BASIC = 'Basic';
 }
