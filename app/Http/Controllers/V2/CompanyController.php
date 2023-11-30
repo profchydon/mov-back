@@ -229,6 +229,12 @@ class CompanyController extends Controller
     public function addCompanyUser(CreateCompanyUserRequest $request, Company $company)
     {
 
+        $emailExist = $this->userRepository->exist(UserConstant::EMAIL, $request->email);
+
+        if ($emailExist) {
+            return $this->error(Response::HTTP_CONFLICT, __('messages.email-exist'));
+        }
+
         $companySubscription = $company->activeSubscription;
         $role = $this->roleRepository->first('id', $request->role_id);
 
