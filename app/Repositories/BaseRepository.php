@@ -132,6 +132,11 @@ abstract class BaseRepository
         return $this->model->where($column, $value)->update($data);
     }
 
+    public function updateMultiple($column, $value, $data)
+    {
+        return $this->model->whereIn($column, $value)->update($data);
+    }
+
     public function updateOrCreate($condition, $data)
     {
         return $this->model->updateOrCreate($condition, $data);
