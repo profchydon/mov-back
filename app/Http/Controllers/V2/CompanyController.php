@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\V2;
 
 use App\Domains\Auth\RoleTypes;
-use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\UserConstant;
 use App\Domains\Constant\UserRoleConstant;
@@ -97,6 +96,7 @@ class CompanyController extends Controller
                         'company_id' => $company->id,
                         'user_id' => $user->id,
                         'status' => UserCompanyStatusEnum::ACTIVE->value,
+                        'has_seat' => true,
                     ]);
 
                     //Assign admin role to user
@@ -183,7 +183,13 @@ class CompanyController extends Controller
             $user->update(['stage' => UserStageEnum::SUBSCRIPTION_PLAN->value]);
         }
 
-        $this->companyOfficeRepository->createCompanyOffice($request->companyOfficeDTO());
+        $office = $this->companyOfficeRepository->createCompanyOffice($request->companyOfficeDTO());
+
+        if ($office) {
+            $user->update([
+                UserConstant::OFFICE_ID => $office->id,
+            ]);
+        }
 
         return $this->response(Response::HTTP_OK, __('messages.company-updated'));
     }
@@ -209,7 +215,7 @@ class CompanyController extends Controller
 
     public function getCompanyUsers(Company $company)
     {
-        $users = $company->users->load('departments', 'teams', 'office');
+        $users = $company->users->load('departments', 'teams', 'office', 'roles');
 
         // $users = $users->paginate();
 
@@ -220,6 +226,13 @@ class CompanyController extends Controller
 
     public function addCompanyUser(CreateCompanyUserRequest $request, Company $company)
     {
+        $companySubscription = $company->activeSubscription;
+        $role = $this->roleRepository->first('id', $request->role_id);
+
+        if ($companySubscription->plan->name === 'Free' && ($role->name !== RoleTypes::BASIC->value)) {
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.upgrade-plan-users'));
+        }
+
         $user = $request->user();
         $code = (string) Str::uuid();
 
@@ -241,13 +254,13 @@ class CompanyController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.record-deleted'), );
     }
 
-    public function updateCompanyUser(UpdateCompanyUserRequest $request, Company $company, UserInvitation $userInvitation)
+    public function updateCompanyUser(Company $company, User $user, UpdateCompanyUserRequest $request)
     {
-        $dto = $request->getDTO();
+        $updateCompanyUserDTO = $request->getDTO()->setCompanyId($company->id)->setUserId($user->id);
 
-        $this->userInvitationRepository->updateById($userInvitation->id, $dto->toSynthensizedArray());
+        $this->companyRepository->updateCompanyUser($user, $updateCompanyUserDTO);
 
-        return $this->response(Response::HTTP_OK, __('messages.record-updated'), );
+        return $this->response(Response::HTTP_OK, __('messages.record-updated'), $updateCompanyUserDTO);
     }
 
     public function getUserInvitationLink(Company $company)
@@ -259,7 +272,6 @@ class CompanyController extends Controller
 
     public function getCompanyUserDetails(Request $request, Company $company, User $user)
     {
-
         $user = $user->load('assets', 'departments', 'teams', 'office', 'roles');
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $user);

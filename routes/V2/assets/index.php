@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\V2\AssetController;
 use App\Http\Controllers\V2\AssetCheckoutController;
+use App\Http\Controllers\V2\AssetController;
 use App\Http\Controllers\V2\AssetMaintenanceController;
 use App\Http\Controllers\V2\AssetTypeController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +16,7 @@ Route::middleware(['auth:sanctum', 'user-in-company'])->controller(AssetControll
 
     Route::get('{company}/assets/{asset}', 'getAsset')->name('get.company.asset');
     Route::delete('{company}/assets/{asset}', 'deleteAsset')->name('delete.company.asset');
+    Route::patch('{company}/assets', 'updateMultipleAsset')->name('update.multiple.company.asset');
     Route::patch('{company}/assets/{asset}', 'updateAsset')->name('update.company.asset');
     Route::get('{company}/assets/{asset}/users/{user}/assign', 'assignAsset')->name('assign.company.asset');
     Route::get('{company}/assets/{asset}/users/{user}/unassign', 'unAssignAsset')->name('unassign.company.asset');

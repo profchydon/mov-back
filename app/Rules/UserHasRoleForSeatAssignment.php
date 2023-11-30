@@ -9,7 +9,6 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class UserHasRoleForSeatAssignment implements ValidationRule
 {
-
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $user = User::findOrFail($value);

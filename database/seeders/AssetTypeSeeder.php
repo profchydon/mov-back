@@ -15,11 +15,12 @@ class AssetTypeSeeder extends Seeder
     public function run(): void
     {
         $types = [
-            'Mobile Phone',
-            'Laptop',
-            'Desktop',
-            'Vehicle',
-            'Furniture',
+            'Computer & Equipment',
+            'Furniture & Fixtures',
+            'Machinery & Equipment',
+            'Vehicles',
+            'Building & Real Estate',
+            'Others',
         ];
 
         foreach ($types as $type) {

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,7 +12,7 @@ return new class extends Migration
     {
         Schema::table('plans', function (Blueprint $table) {
             $table->dropColumn(\App\Domains\Constant\Plan\PlanConstant::PRECEDING_PLAN_NAME);
-            $table->unsignedInteger(\App\Domains\Constant\Plan\PlanConstant::RANK)->unique()->after(\App\Domains\Constant\Plan\PlanConstant::DESCRIPTION);
+            $table->unsignedInteger(\App\Domains\Constant\Plan\PlanConstant::RANK)->nullable()->unique()->after(\App\Domains\Constant\Plan\PlanConstant::DESCRIPTION);
         });
     }
 

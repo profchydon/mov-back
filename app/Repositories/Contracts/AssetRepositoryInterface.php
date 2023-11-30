@@ -29,7 +29,6 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
 
     public function getCompanyDamagedAssets(Company|string $company);
 
-
     /**
      * @param string $assetId
      * @param CreateDamagedAssetDTO $dto
@@ -39,5 +38,4 @@ interface AssetRepositoryInterface extends BaseRepositoryInterface
     public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset;
 
     public function markAsRetired(CreateRetiredAssetDTO $dto): Asset;
-
 }

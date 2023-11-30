@@ -16,6 +16,7 @@ use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Services\V2\FlutterwaveService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SubscriptionRepository extends BaseRepository implements SubscriptionRepositoryInterface
 {
@@ -26,11 +27,12 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
     public function getCompanySubscription(string|Company $company)
     {
-        if(!($company instanceof  Company)){
+        if (!($company instanceof  Company)) {
             $company = Company::findOrFail($company);
         }
 
         $subscription = $company->activeSubscription()->with(['payment', 'plan.prices', 'addOns.feature.prices']);
+
         return $subscription->first();
     }
 
@@ -96,7 +98,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             ->setCompanyId($subDTO->getCompanyId())
             ->setCurrencyCode($subDTO->getCurrency())
             ->setBillable($subscription)
-            ->setSubTotal($totalAmount)
+            ->setSubTotal($totalAmount ?? 0)
             ->setDueAt(now()->addHours(6));
 
         if ($totalAmount < 1) {
@@ -104,14 +106,16 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                 ->setStatus(InvoiceStatusEnum::PAID->value);
         }
 
-        $invoice = Invoice::create($invoiceDTO->toSynthensizedArray());
+        // Log::info("Info Details", $invoiceDTO->toArray());
+
+        $invoice = Invoice::create($invoiceDTO->toArray());
 
         $invoiceItemDTO = new InvoiceItemDTO();
         $invoiceItemDTO->setAmount($planPrice->amount ?? 0)
             ->setItem($subscription->plan)
             ->setQuantity(1);
 
-        $invoice->items()->create($invoiceItemDTO->toSynthensizedArray());
+        $invoice->items()->create($invoiceItemDTO->toArray());
 
         $features = Feature::find($subDTO->getAddOnIds());
 
@@ -124,7 +128,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                 ->setItem($feature)
                 ->setInvoiceId($invoice);
 
-            $invoice->items()->create($dto->toSynthensizedArray());
+            $invoice->items()->create($dto->toArray());
         });
 
         DB::commit();

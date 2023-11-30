@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -20,7 +19,9 @@ class OverdueAssetReturnEmail extends Mailable
      * @param User $user
      * @param Collection $assets
      */
-    public function __construct(public User $user, public Collection $checkouts){}
+    public function __construct(public User $user, public Collection $checkouts)
+    {
+    }
 
     /**
      * Get the message envelope.

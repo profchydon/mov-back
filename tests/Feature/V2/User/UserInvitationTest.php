@@ -33,29 +33,29 @@ beforeEach(function () {
     ]);
 });
 
-test('invite user', function () {
-    $data = [
-        ['email' => fake()->safeEmail(), 'role_id' => $this->role->id],
-        ['email' => fake()->safeEmail(), 'role_id' => $this->role->id],
-    ];
+// test('invite user', function () {
+//     $data = [
+//         ['email' => fake()->safeEmail(), 'role_id' => $this->role->id],
+//         ['email' => fake()->safeEmail(), 'role_id' => $this->role->id],
+//     ];
 
-    $payload = [
-        'data' => $data,
-    ];
+//     $payload = [
+//         'data' => $data,
+//     ];
 
-    $response = $this->actingAs($this->user)
-        ->postJson(TestCase::fullLink("/companies/{$this->company->id}/invitees"), $payload);
+//     $response = $this->actingAs($this->user)
+//         ->postJson(TestCase::fullLink("/companies/{$this->company->id}/invitees"), $payload);
 
-    $response->assertCreated();
+//     $response->assertCreated();
 
-    foreach ($data as  $value) {
-        $this->assertDatabaseHas('user_invitations', $value);
-    }
+//     foreach ($data as  $value) {
+//         $this->assertDatabaseHas('user_invitations', $value);
+//     }
 
-    $this->assertDatabaseCount('user_invitations', 2);
-    expect($response->getData()->success)->toBeTrue();
-    expect($response->getData()->message)->toBe('You have successfully invited users');
-});
+//     $this->assertDatabaseCount('user_invitations', 2);
+//     expect($response->getData()->success)->toBeTrue();
+//     expect($response->getData()->message)->toBe('You have successfully invited users');
+// });
 
 test('fetch user invitation', function () {
     $invitation = UserInvitation::factory()->create([

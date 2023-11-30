@@ -19,12 +19,16 @@ class PermissionSeeder extends Seeder
             ['name' => PermissionTypes::ASSET_CREATE_ACCESS, 'display' => 'Permission to Create Asset', 'category' => 'Asset Management'],
             ['name' => PermissionTypes::ASSET_READ_ACCESS, 'display' => 'Permission to View Asset', 'category' => 'Asset Management'],
             ['name' => PermissionTypes::ASSET_UPDATE_ACCESS, 'display' => 'Permission to Update Asset', 'category' => 'Asset Management'],
-            ['name' => PermissionTypes::ASSET_TRANSFER_ACCESS, 'display' => 'Permission to Transfer Asset', 'category' => 'Asset Management'],
+            ['name' => PermissionTypes::ASSET_DELETE_ACCESS, 'display' => 'Permission to Delete Asset', 'category' => 'Asset Management'],
+            ['name' => PermissionTypes::ASSET_ASSIGN_ACCESS, 'display' => 'Permission to Assign Asset', 'category' => 'Asset Management'],
+            ['name' => PermissionTypes::ASSET_CHECKOUT_ACCESS, 'display' => 'Permission to Checkout Asset', 'category' => 'Asset Management'],
+            ['name' => PermissionTypes::ASSET_MAINTAINANCE_ACCESS, 'display' => 'Permission to Maintain Asset', 'category' => 'Asset Management'],
 
             ['name' => PermissionTypes::BILLING_FULL_ACCESS, 'display' => 'Full Access to Billing', 'category' => 'Billing Management'],
             ['name' => PermissionTypes::BILLING_CREATE_ACCESS, 'display' => 'Permission to Create Billing', 'category' => 'Billing Management'],
-            ['name' => PermissionTypes::BILLING_UPDATE_ACCESS, 'display' => 'Permission to Update Billing', 'category' => 'Billing Management'],
             ['name' => PermissionTypes::BILLING_READ_ACCESS, 'display' => 'Permission to View Billing', 'category' => 'Billing Management'],
+            ['name' => PermissionTypes::BILLING_UPDATE_ACCESS, 'display' => 'Permission to Update Billing', 'category' => 'Billing Management'],
+            ['name' => PermissionTypes::BILLING_DELETE_ACCESS, 'display' => 'Permission to Delete Billing', 'category' => 'Billing Management'],
 
             ['name' => PermissionTypes::ACCOUNT_FULL_ACCESS, 'display' => 'Full Access to Users', 'category' => 'User Management'],
             ['name' => PermissionTypes::ACCOUNT_CREATE_ACCESS, 'display' => 'Permission to Create Users', 'category' => 'User Management'],
@@ -47,6 +51,7 @@ class PermissionSeeder extends Seeder
             ['name' => PermissionTypes::AUDIT_FULL_ACCESS, 'display' => 'Full Access to Audit & Reports', 'category' => 'Audit & Report Management'],
             ['name' => PermissionTypes::AUDIT_CREATE_ACCESS, 'display' => 'Permission to Create Audit & Reports', 'category' => 'Audit & Report Management'],
             ['name' => PermissionTypes::AUDIT_READ_ACCESS, 'display' => 'Permission to View Audit & Reports', 'category' => 'Audit & Report Management'],
+            ['name' => PermissionTypes::AUDIT_UPDATE_ACCESS, 'display' => 'Permission to Update Audit & Reports', 'category' => 'Audit & Report Management'],
             ['name' => PermissionTypes::AUDIT_DELETE_ACCESS, 'display' => 'Permission to Delete Audit & Reports', 'category' => 'Audit & Report Management'],
 
             ['name' => PermissionTypes::VENDOR_FULL_ACCESS, 'display' => 'Full Access to Vendors', 'category' => 'Vendor Management'],
@@ -66,6 +71,12 @@ class PermissionSeeder extends Seeder
             ['name' => PermissionTypes::DOCUMENT_READ_ACCESS, 'display' => 'Permission to View Documents', 'category' => 'Document Management'],
             ['name' => PermissionTypes::DOCUMENT_UPDATE_ACCESS, 'display' => 'Permission to Update Documents', 'category' => 'Document Management'],
             ['name' => PermissionTypes::DOCUMENT_DELETE_ACCESS, 'display' => 'Permission to Delete Documents', 'category' => 'Document Management'],
+
+            ['name' => PermissionTypes::INSURANCE_FULL_ACCESS, 'display' => 'Full Access to Insurance', 'category' => 'Insurance Management'],
+            ['name' => PermissionTypes::INSURANCE_CREATE_ACCESS, 'display' => 'Permission to Create Insurance', 'category' => 'Insurance Management'],
+            ['name' => PermissionTypes::INSURANCE_READ_ACCESS, 'display' => 'Permission to View Insurance', 'category' => 'Insurance Management'],
+            ['name' => PermissionTypes::INSURANCE_UPDATE_ACCESS, 'display' => 'Permission to Update Insurance', 'category' => 'Insurance Management'],
+            ['name' => PermissionTypes::INSURANCE_DELETE_ACCESS, 'display' => 'Permission to Delete Insurance', 'category' => 'Insurance Management'],
         ]);
 
         $permissions->each(function ($permission) {

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Domains\Auth\RoleTypes;
 use App\Domains\Constant\UserCompanyConstant;
-use App\Domains\Constant\UserConstant;
 use App\Domains\Constant\UserDepartmentConstant;
 use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\Constant\UserRoleConstant;
@@ -81,12 +81,14 @@ class UserInvitationController extends Controller
                     ->setSsoId($ssoData['id']);
 
                 $user = $this->userRepository->create($userDto->toArray());
+                $role = $invitation->role;
 
                 $this->userCompanyRepository->create([
                     UserCompanyConstant::TENANT_ID => $company->tenant_id,
                     UserCompanyConstant::COMPANY_ID => $company->id,
                     UserCompanyConstant::USER_ID => $user->id,
                     UserCompanyConstant::STATUS => UserCompanyStatusEnum::ACTIVE->value,
+                    UserCompanyConstant::HAS_SEAT => $role->name === RoleTypes::BASIC->value ? false : true,
                 ]);
 
                 //Assign role to user
@@ -97,7 +99,6 @@ class UserInvitationController extends Controller
                 ]);
 
                 if ($invitation->department_id !== null) {
-
                     $this->userDepartmentRepository->create([
                         UserDepartmentConstant::USER_ID => $user->id,
                         UserDepartmentConstant::COMPANY_ID => $company->id,

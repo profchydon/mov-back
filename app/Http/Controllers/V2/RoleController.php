@@ -57,7 +57,7 @@ class RoleController extends Controller
 
     public function updateRole(UpdateUserRoleRequest $request, Company $company, Role $role)
     {
-        if($role->company_id != $company->id){
+        if ($role->company_id != $company->id) {
             return $this->error(Response::HTTP_FORBIDDEN, __('messages.action-not-allowed'));
         }
 

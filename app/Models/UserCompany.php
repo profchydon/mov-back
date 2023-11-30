@@ -8,7 +8,6 @@ use App\Traits\HasCompany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Query\Builder;
 
 class UserCompany extends Model
@@ -42,14 +41,14 @@ class UserCompany extends Model
     public function assignSeat()
     {
         return $this->update([
-            UserCompanyConstant::HAS_SEAT => true
+            UserCompanyConstant::HAS_SEAT => true,
         ]);
     }
 
     public function revokeSeat()
     {
         return $this->update([
-            UserCompanyConstant::HAS_SEAT => false
+            UserCompanyConstant::HAS_SEAT => false,
         ]);
     }
 }
