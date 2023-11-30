@@ -10,7 +10,7 @@ class GetDeptsTeamsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'departments' => ['required', 'array', Rule::exists('departments', 'id')],
+            'departments' => ['sometimes', 'array', Rule::exists('departments', 'id')],
         ];
     }
 }

@@ -89,7 +89,7 @@ class UserInvitationController extends Controller
                     UserCompanyConstant::COMPANY_ID => $company->id,
                     UserCompanyConstant::USER_ID => $user->id,
                     UserCompanyConstant::STATUS => UserCompanyStatusEnum::ACTIVE->value,
-                    UserCompanyConstant::HAS_SEAT => $role?->name === RoleTypes::BASIC ? false : true,
+                    UserCompanyConstant::HAS_SEAT => $role->name === RoleTypes::BASIC->value ? false : true,
                 ]);
 
                 //Assign role to user

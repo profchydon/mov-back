@@ -52,4 +52,5 @@ return [
     'asset-marked-as-damaged' => 'You have successfully marked the asset as damaged',
     'asset-marked-as-retired' => 'You have successfully marked the asset as retired',
     'user.invitation.sent' => 'User invitation was successfully sent.',
+    'upgrade-plan-users' => 'Your current free plan only allows you to add users with Basic role. Upgrade your plan to support paid roles.',
 ];
