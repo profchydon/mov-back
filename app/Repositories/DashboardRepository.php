@@ -23,30 +23,27 @@ class DashboardRepository implements DashboardRepositoryInterface
         $query = Asset::appendToQueryFromRequestQueryParameters($query);
         $data->assetCount = $query->count();
 
-        $query = $company->assets()
-            ->whereYear('created_at', now()->year)
+        $assetQuery = $company->assets();
+
+        $query = $assetQuery->whereYear('created_at', now()->year)
             ->groupBy(DB::raw('MONTH(created_at)'))
             ->orderBy(DB::raw('MONTH(created_at)'))
             ->selectRaw('MONTH(created_at) as month, COUNT(*) as count');
         $query = Asset::appendToQueryFromRequestQueryParameters($query);
         $data->assetsCountByMonth = $query->get();
 
-        $query = $company->assets()
-            ->groupBy('status')
-            ->select('status', DB::raw('COUNT(*) as count'));
+        $query = $assetQuery->groupBy('status')->select('status', DB::raw('COUNT(*) as count'));
         $query = Asset::appendToQueryFromRequestQueryParameters($query);
         $data->assetConditions = $query->get();
 
-        $query = $company->assets()->with('type')->groupBy('type_id')->select('type_id', DB::raw('COUNT(*) as count'));
+        $query = $assetQuery->with('type')->groupBy('type_id')->select('type_id', DB::raw('COUNT(*) as count'));
         $query = Asset::appendToQueryFromRequestQueryParameters($query);
         $data->assetCategories = $query->get();
 
-        $query = $company->assets();
-        $query = Asset::appendToQueryFromRequestQueryParameters($query);
+        $query = Asset::appendToQueryFromRequestQueryParameters($assetQuery);
         $data->assetSum = $query->sum('purchase_price');
 
-        $query = $company->assets();
-        $query = Asset::appendToQueryFromRequestQueryParameters($query);
+        $query = Asset::appendToQueryFromRequestQueryParameters($assetQuery);
         $data->assetAverage = $query->average('purchase_price');
 
         $query = Activity::where('subject_type', Asset::class)->where('event', 'created');
