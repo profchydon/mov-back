@@ -19,11 +19,10 @@ class DashboardRepository implements DashboardRepositoryInterface
 
         $data = new Fluent();
 
-        $query = $company->assets();
-        $query = Asset::appendToQueryFromRequestQueryParameters($query);
-        $data->assetCount = $query->count();
-
         $assetQuery = $company->assets();
+
+        $query = Asset::appendToQueryFromRequestQueryParameters($assetQuery);
+        $data->assetCount = $query->count();
 
         $query = $assetQuery->whereYear('created_at', now()->year)
             ->groupBy(DB::raw('MONTH(created_at)'))
