@@ -10,6 +10,7 @@ use App\Domains\Constant\UserConstant;
 use App\Domains\Constant\UserRoleConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserStageEnum;
+use App\Domains\Enum\User\UserStatusEnum;
 use App\Exceptions\Company\CompanyAlreadyExistException;
 use App\Exceptions\User\UserAlreadyExistException;
 use App\Http\Controllers\Controller;
@@ -84,9 +85,9 @@ class CompanyController extends Controller
                     $companyInvitationCode = Str::random(32);
 
                     $companyDto = $request->getCompanyDTO()
-                                            ->setTenantId($tenant->id)
-                                            ->setSsoId($ssoData['company_id'])
-                                            ->setInvitationCode($companyInvitationCode);
+                        ->setTenantId($tenant->id)
+                        ->setSsoId($ssoData['company_id'])
+                        ->setInvitationCode($companyInvitationCode);
 
                     $userDto = $request->getUserDTO()->setTenantId($tenant->id)->setSsoId($ssoData['user_id']);
 
@@ -260,7 +261,7 @@ class CompanyController extends Controller
     {
         $this->userInvitationRepository->deleteById($userInvitation->id);
 
-        return $this->response(Response::HTTP_OK, __('messages.record-deleted'), );
+        return $this->response(Response::HTTP_OK, __('messages.record-deleted'),);
     }
 
     public function updateCompanyUser(Company $company, User $user, UpdateCompanyUserRequest $request)
@@ -270,6 +271,38 @@ class CompanyController extends Controller
         $this->companyRepository->updateCompanyUser($user, $updateCompanyUserDTO);
 
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), $updateCompanyUserDTO);
+    }
+
+    public function suspendCompanyUser(Company $company, User $user)
+    {
+
+        // if ($user->isSuspended()) {
+        //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.user-already-suspended'), $user);
+        // }
+
+        $user = $this->userRepository->update(UserConstant::ID, $user->id, [UserConstant::STATUS => UserStatusEnum::INACTIVE->value]);
+
+        if (!$user) {
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'), $user);
+        }
+
+        return $this->response(Response::HTTP_OK, __('messages.user-suspended'), $user);
+    }
+
+    public function unSuspendCompanyUser(Company $company, User $user)
+    {
+
+        // if ($user->isActive()) {
+        //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.user-already-active'), $user);
+        // }
+
+        $user = $this->userRepository->update(UserConstant::ID, $user->id, [UserConstant::STATUS => UserStatusEnum::ACTIVE->value]);
+
+        if (!$user) {
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'), $user);
+        }
+
+        return $this->response(Response::HTTP_OK, __('messages.user-unsuspended'), $user);
     }
 
     public function getUserInvitationLink(Company $company)
