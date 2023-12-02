@@ -3,12 +3,14 @@
 namespace App\Repositories;
 
 use App\Domains\Constant\OfficeConstant;
+use App\Domains\Constant\UserConstant;
 use App\Domains\Constant\UserDepartmentConstant;
 use App\Domains\Constant\UserInvitationConstant;
 use App\Domains\Constant\UserRoleConstant;
 use App\Domains\Constant\UserTeamConstant;
 use App\Domains\DTO\CreateCompanyOfficeDTO;
 use App\Domains\DTO\UpdateCompanyUserDTO;
+use App\Domains\Enum\User\UserStatusEnum;
 use App\Http\Resources\Office\OfficeResource;
 use App\Models\Company;
 use App\Models\Office;
@@ -203,5 +205,24 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         } catch (\Throwable $th) {
             return false;
         }
+    }
+
+    public function suspendCompanyUser(User|string $user)
+    {
+        if (!($user instanceof User)) {
+            $user = User::findOrFail($user);
+        }
+
+        return $user->update([UserConstant::STATUS => UserStatusEnum::INACTIVE->value]);
+
+    }
+
+    public function unSuspendCompanyUser(User|string $user)
+    {
+        if (!($user instanceof User)) {
+            $user = User::findOrFail($user);
+        }
+
+        return $user->update([UserConstant::STATUS => UserStatusEnum::ACTIVE->value]);
     }
 }

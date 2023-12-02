@@ -77,6 +77,8 @@ Route::group(['prefix' => 'companies/{company}', 'middleware' => ['auth:sanctum'
         Route::delete('/users/{user}', 'deleteCompanyUser')->name('delete.company.user');
         Route::post('/users/{user}/suspend', 'suspendCompanyUser')->name('suspend.company.user');
         Route::post('/users/{user}/unsuspend', 'unSuspendCompanyUser')->name('unsuspend.company.user');
+        Route::post('/users/suspend', 'suspendCompanyUsers')->name('suspend.company.users');
+        Route::post('/users/unsuspend', 'unSuspendCompanyUsers')->name('unsuspend.company.users');
         // Route::put('/users/{userInvitation}', 'updateCompanyUser')->name('update.company.user');
 
     });

@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Company\AddCompanyDetailsRequest;
 use App\Http\Requests\Company\CreateCompanyRequest;
 use App\Http\Requests\Company\CreateCompanyUserRequest;
+use App\Http\Requests\Company\SuspendCompanyUserRequest;
 use App\Http\Requests\Company\UpdateCompanyUserRequest;
 use App\Http\Requests\InviteUserRequest;
 use App\Http\Resources\Company\CompanyUserCollection;
@@ -279,7 +280,7 @@ class CompanyController extends Controller
         //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.user-already-suspended'), $user);
         // }
 
-        $user = $this->userRepository->update(UserConstant::ID, $user->id, [UserConstant::STATUS => UserStatusEnum::INACTIVE->value]);
+        $user = $this->companyRepository->suspendCompanyUser($user);
 
         if (!$user) {
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'), $user);
@@ -295,13 +296,32 @@ class CompanyController extends Controller
         //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.user-already-active'), $user);
         // }
 
-        $user = $this->userRepository->update(UserConstant::ID, $user->id, [UserConstant::STATUS => UserStatusEnum::ACTIVE->value]);
+        $user = $this->companyRepository->unSuspendCompanyUser($user);
 
         if (!$user) {
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'), $user);
         }
 
         return $this->response(Response::HTTP_OK, __('messages.user-unsuspended'), $user);
+    }
+
+    public function suspendCompanyUsers(Company $company, SuspendCompanyUserRequest $request)
+    {
+        foreach ($request->users as $user) {
+            $this->companyRepository->suspendCompanyUser($user);
+        }
+
+        return $this->response(Response::HTTP_OK, __('messages.user-suspended'));
+    }
+
+    public function unSuspendCompanyUsers(Company $company, SuspendCompanyUserRequest $request)
+    {
+
+        $request->users->each(function ($user) {
+            $this->companyRepository->unSuspendCompanyUser($user);
+        });
+
+        return $this->response(Response::HTTP_OK, __('messages.user-unsuspended'));
     }
 
     public function getUserInvitationLink(Company $company)
