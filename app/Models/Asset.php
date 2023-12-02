@@ -26,6 +26,8 @@ class Asset extends BaseModel
         'condition' => 'assets.condition',
         'type' => 'assets.type_id',
         'assignee' => 'assets.assigned_to',
+        'created' => 'assets.created_at',
+        'currency' => 'assets.currency',
     ];
 
     protected $hidden = [
@@ -124,8 +126,8 @@ class Asset extends BaseModel
         ]);
     }
 
-    public function company(): BelongsTo {
+    public function company(): BelongsTo
+    {
         return $this->belongsTo(Company::class);
     }
-
 }

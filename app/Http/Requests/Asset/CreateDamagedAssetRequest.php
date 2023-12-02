@@ -8,7 +8,6 @@ use Illuminate\Validation\Rule;
 
 class CreateDamagedAssetRequest extends FormRequest
 {
-
     public function rules(): array
     {
         $company = $this->route('company');

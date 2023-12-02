@@ -9,7 +9,6 @@ use App\Models\Plan;
 use App\Models\PlanProcessor;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\Yaml\Yaml;
 
 class PlanSeeder extends Seeder

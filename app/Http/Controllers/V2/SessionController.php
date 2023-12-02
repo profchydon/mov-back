@@ -76,7 +76,7 @@ class SessionController extends Controller
         $serializePermission = new SerializePermission($userRoles);
 
         $user->update([
-            UserConstant::LAST_LOGIN => now()
+            UserConstant::LAST_LOGIN => now(),
         ]);
 
         return [

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\V2;
 
 use App\Domains\Auth\RoleTypes;
-use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\Plan\PlanConstant;
 use App\Domains\Constant\UserConstant;
@@ -314,7 +313,6 @@ class CompanyController extends Controller
 
     public function getCompanyUserDetails(Request $request, Company $company, User $user)
     {
-
         $user = $user->load('assets', 'departments', 'teams', 'office', 'roles');
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $user);

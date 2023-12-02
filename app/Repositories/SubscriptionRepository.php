@@ -27,11 +27,12 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
     public function getCompanySubscription(string|Company $company)
     {
-        if(!($company instanceof  Company)){
+        if (!($company instanceof  Company)) {
             $company = Company::findOrFail($company);
         }
 
         $subscription = $company->activeSubscription()->with(['payment', 'plan.prices', 'addOns.feature.prices']);
+
         return $subscription->first();
     }
 

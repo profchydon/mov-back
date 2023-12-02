@@ -4,10 +4,10 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\V2\CompanyController;
 use App\Http\Controllers\V2\CompanyOfficeController;
 use App\Http\Controllers\V2\DepartmentController;
+use App\Http\Controllers\V2\InvoiceController;
+use App\Http\Controllers\V2\SeatController;
 use App\Http\Controllers\V2\SubscriptionController;
 use App\Http\Controllers\V2\TeamController;
-use App\Http\Controllers\V2\SeatController;
-use App\Http\Controllers\V2\InvoiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(CompanyController::class)->prefix('companies')->group(function () {
@@ -51,6 +51,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
     Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription');
     Route::resource('{company}/offices', CompanyOfficeController::class)->middleware(['auth:sanctum', 'user-in-company']);
     Route::middleware(['auth:sanctum'])->resource('{company}/offices', CompanyOfficeController::class);
+    Route::get('{company}/dashboard', [\App\Http\Controllers\V2\DashboardController::class, 'index']);
 });
 
 Route::post('subscription_payment/{payment:tx_ref}/confirm', [SubscriptionController::class, 'confirmSubscriptionPayment']);
@@ -74,7 +75,6 @@ Route::group(['prefix' => 'companies/{company}', 'middleware' => ['auth:sanctum'
         Route::get('/users/{user}', 'getCompanyUserDetails')->name('get.company.user');
         Route::put('/users/{user}', 'updateCompanyUser')->name('update.company.user');
         Route::delete('/users/{user}', 'deleteCompanyUser')->name('delete.company.user');
-
         Route::post('/users/{user}/suspend', 'suspendCompanyUser')->name('suspend.company.user');
         Route::post('/users/{user}/unsuspend', 'unSuspendCompanyUser')->name('unsuspend.company.user');
         // Route::put('/users/{userInvitation}', 'updateCompanyUser')->name('update.company.user');

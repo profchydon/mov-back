@@ -137,7 +137,6 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
 
     public function updateCompanyUser(User|string $user, UpdateCompanyUserDTO $updateCompanyUserDTO)
     {
-
         if (!($user instanceof User)) {
             $user = User::findOrFail($user);
         }
@@ -153,7 +152,6 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
 
                 //Update roles
                 foreach ($dto['roles'] as $role) {
-
                     $condition = [
                         UserRoleConstant::USER_ID => $dto['user_id'],
                         UserRoleConstant::COMPANY_ID => $dto['company_id'],
@@ -165,7 +163,6 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
 
                 //Update departments
                 foreach ($dto['departments'] as $department) {
-
                     $condition = [
                         UserDepartmentConstant::USER_ID => $dto['user_id'],
                         UserDepartmentConstant::COMPANY_ID => $dto['company_id'],
@@ -177,7 +174,6 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
 
                 //Update teams
                 foreach ($dto['teams'] as $team) {
-
                     $condition = [
                         UserTeamConstant::USER_ID => $dto['user_id'],
                         UserTeamConstant::COMPANY_ID => $dto['company_id'],

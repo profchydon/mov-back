@@ -26,7 +26,7 @@ class CreateRetiredAssetRequest extends FormRequest
         return [
             'date' => 'required|date',
             'reason' => 'required|string',
-            'asset_id' => ['required', Rule::exists('assets', 'id')]
+            'asset_id' => ['required', Rule::exists('assets', 'id')],
         ];
     }
 
@@ -37,7 +37,7 @@ class CreateRetiredAssetRequest extends FormRequest
         $dto->setDate($this->input('date'))
             ->setReason($this->input('reason'))
             ->setAssetId($this->input('asset_id'));
-            
+
         return $dto;
     }
 }

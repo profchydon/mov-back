@@ -2,10 +2,8 @@
 
 namespace App\Mail;
 
-use App\Models\Asset;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -22,7 +20,9 @@ class UpcomingAssetMaintenanceEmail extends Mailable
      * @param Collection $assets
      * @param string $duration
      */
-    public function __construct(public User $user, public Collection $assets, public string $duration){}
+    public function __construct(public User $user, public Collection $assets, public string $duration)
+    {
+    }
 
     /**
      * Get the message envelope.
@@ -44,7 +44,7 @@ class UpcomingAssetMaintenanceEmail extends Mailable
             with: [
                 'assets' => $this->assets,
                 'user' => $this->user,
-                'duration' => $this->duration
+                'duration' => $this->duration,
             ]
         );
     }

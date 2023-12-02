@@ -24,7 +24,7 @@ class AssetCheckoutResource extends JsonResource
             'returnBy' => $this->return_by,
             'returnDate' => $this->return_date,
             'dateReturned' => $this->date_returned,
-            'receiver' => $this->receiver && $this->receiver_type === "App\Models\User"  ? [
+            'receiver' => $this->receiver && $this->receiver_type === "App\Models\User" ? [
                 'id' => $this->receiver?->id,
                 'name' => $this->receiver?->first_name . ' ' . $this->receiver?->last_name,
             ] : [
@@ -46,12 +46,12 @@ class AssetCheckoutResource extends JsonResource
                 'currency' => $this->asset?->currency,
                 'status' => $this->asset?->status,
                 'office' => $this->asset?->office ? [
-                    'id' =>  $this->asset?->office?->id,
+                    'id' => $this->asset?->office?->id,
                     'name' => $this->asset?->office?->name,
                     'address' => $this->asset?->office?->address,
                 ] : null,
                 'assignee' => $this->asset?->assignee ? [
-                    'id' =>  $this->asset?->assignee?->id,
+                    'id' => $this->asset?->assignee?->id,
                     'firstName' => $this->asset?->assignee?->first_name,
                     'lastName' => $this->asset?->assignee?->last_name,
                 ] : null,

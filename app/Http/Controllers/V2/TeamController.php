@@ -66,10 +66,8 @@ class TeamController extends Controller
 
     public function getTeamsInDepts(Company $company, GetDeptsTeamsRequest $request)
     {
-
         $teams = $this->teamRepository->getTeamsInDepts($company, $request->departments);
 
         return $this->response(Response::HTTP_OK, __('record-fetched'), $teams);
     }
-
 }

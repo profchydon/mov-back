@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\V2\AssetController;
 use App\Http\Controllers\V2\AssetCheckoutController;
+use App\Http\Controllers\V2\AssetController;
 use App\Http\Controllers\V2\AssetMaintenanceController;
 use App\Http\Controllers\V2\AssetTypeController;
 use Illuminate\Support\Facades\Route;

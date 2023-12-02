@@ -25,6 +25,7 @@ use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\FileRepositoryInterface;
 use App\Rules\HumanNameRule;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -43,12 +44,11 @@ class AssetController extends Controller
      * @param CompanyRepositoryInterface $companyRepository
      */
     public function __construct(
-        private readonly AssetRepositoryInterface     $assetRepository,
-        private readonly CompanyRepositoryInterface   $companyRepository,
+        private readonly AssetRepositoryInterface $assetRepository,
+        private readonly CompanyRepositoryInterface $companyRepository,
         private readonly AssetMakeRepositoryInterface $assetMakeRepository,
-        private readonly FileRepositoryInterface      $fileRepository
-    )
-    {
+        private readonly FileRepositoryInterface $fileRepository
+    ) {
     }
 
     /**
@@ -331,11 +331,11 @@ class AssetController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.asset-updated'), $asset);
     }
 
-
     public function assignAsset(Company $company, Asset $asset, User $user)
     {
         $asset->assignee()->associate($user);
         $asset->save();
+
         return $this->response(Response::HTTP_OK, __('messages.asset-assigned'), $asset);
     }
 
@@ -343,6 +343,7 @@ class AssetController extends Controller
     {
         $asset->assignee()->dissociate($user);
         $asset->save();
+
         return $this->response(Response::HTTP_OK, __('messages.asset-unassigned'), $asset);
     }
 
@@ -351,6 +352,7 @@ class AssetController extends Controller
         $asset->assignee()->dissociate($request->from);
         $asset->assignee()->associate($request->to);
         $asset->save();
+
         return $this->response(Response::HTTP_OK, __('messages.asset-reassigned'), $asset);
     }
 
