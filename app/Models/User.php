@@ -127,5 +127,4 @@ class User extends Authenticatable
     {
         return $this->status == UserStatusEnum::INACTIVE;
     }
-
 }

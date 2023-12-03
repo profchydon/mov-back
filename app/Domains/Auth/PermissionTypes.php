@@ -78,10 +78,10 @@ enum PermissionTypes: string
     case DOCUMENT_DELETE_ACCESS = 'DocumentDeleteAccess';
     case DOCUMENT_UPDATE_ACCESS = 'DocumentUpdateAccess';
 
-     // Insurance
-     case INSURANCE_FULL_ACCESS = 'InsuranceFullAccess';
-     case INSURANCE_CREATE_ACCESS = 'InsuranceCreateAccess';
-     case INSURANCE_READ_ACCESS = 'InsuranceReadAccess';
-     case INSURANCE_DELETE_ACCESS = 'InsuranceDeleteAccess';
-     case INSURANCE_UPDATE_ACCESS = 'InsuranceUpdateAccess';
+    // Insurance
+    case INSURANCE_FULL_ACCESS = 'InsuranceFullAccess';
+    case INSURANCE_CREATE_ACCESS = 'InsuranceCreateAccess';
+    case INSURANCE_READ_ACCESS = 'InsuranceReadAccess';
+    case INSURANCE_DELETE_ACCESS = 'InsuranceDeleteAccess';
+    case INSURANCE_UPDATE_ACCESS = 'InsuranceUpdateAccess';
 }

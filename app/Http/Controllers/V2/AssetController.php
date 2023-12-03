@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\V2;
 
 use App\Domains\Auth\PermissionTypes;
-use App\Domains\Auth\RoleTypes;
 use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\Asset\AssetMakeConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
@@ -356,12 +355,12 @@ class AssetController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.asset-reassigned'), $asset);
     }
 
-    public function updateMultipleAsset(UpdateMultipleAssetsRequest $request) {
-
+    public function updateMultipleAsset(UpdateMultipleAssetsRequest $request)
+    {
         $status = $request->get('status');
 
         $data = [
-            AssetConstant::STATUS => $status
+            AssetConstant::STATUS => $status,
         ];
 
         $assets = $this->assetRepository->updateMultiple(AssetConstant::ID, $request->assets, $data);
@@ -371,7 +370,5 @@ class AssetController extends Controller
         }
 
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), $assets);
-
     }
-
 }

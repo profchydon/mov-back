@@ -15,7 +15,6 @@ use App\Http\Resources\Office\OfficeResource;
 use App\Models\Company;
 use App\Models\Office;
 use App\Models\OfficeArea;
-use App\Models\Team;
 use App\Models\User;
 use App\Models\UserDepartment;
 use App\Models\UserInvitation;
@@ -144,9 +143,7 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         }
 
         try {
-
             DB::transaction(function () use ($user, $updateCompanyUserDTO) {
-
                 $dto = $updateCompanyUserDTO->toArray();
 
                 //Update user
@@ -214,7 +211,6 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         }
 
         return $user->update([UserConstant::STATUS => UserStatusEnum::INACTIVE->value]);
-
     }
 
     public function unSuspendCompanyUser(User|string $user)

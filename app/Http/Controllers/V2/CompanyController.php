@@ -4,12 +4,10 @@ namespace App\Http\Controllers\V2;
 
 use App\Domains\Auth\RoleTypes;
 use App\Domains\Constant\CompanyConstant;
-use App\Domains\Constant\Plan\PlanConstant;
 use App\Domains\Constant\UserConstant;
 use App\Domains\Constant\UserRoleConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserStageEnum;
-use App\Domains\Enum\User\UserStatusEnum;
 use App\Exceptions\Company\CompanyAlreadyExistException;
 use App\Exceptions\User\UserAlreadyExistException;
 use App\Http\Controllers\Controller;
@@ -190,7 +188,7 @@ class CompanyController extends Controller
 
         if ($office) {
             $user->update([
-                UserConstant::OFFICE_ID => $office->id
+                UserConstant::OFFICE_ID => $office->id,
             ]);
         }
 
@@ -229,7 +227,6 @@ class CompanyController extends Controller
 
     public function addCompanyUser(CreateCompanyUserRequest $request, Company $company)
     {
-
         $emailExist = $this->userRepository->exist(UserConstant::EMAIL, $request->email);
 
         if ($emailExist) {
@@ -261,7 +258,7 @@ class CompanyController extends Controller
     {
         $this->userInvitationRepository->deleteById($userInvitation->id);
 
-        return $this->response(Response::HTTP_OK, __('messages.record-deleted'),);
+        return $this->response(Response::HTTP_OK, __('messages.record-deleted'), );
     }
 
     public function updateCompanyUser(Company $company, User $user, UpdateCompanyUserRequest $request)
@@ -275,7 +272,6 @@ class CompanyController extends Controller
 
     public function suspendCompanyUser(Company $company, User $user)
     {
-
         // if ($user->isSuspended()) {
         //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.user-already-suspended'), $user);
         // }
@@ -291,7 +287,6 @@ class CompanyController extends Controller
 
     public function unSuspendCompanyUser(Company $company, User $user)
     {
-
         // if ($user->isActive()) {
         //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.user-already-active'), $user);
         // }
@@ -316,7 +311,6 @@ class CompanyController extends Controller
 
     public function unSuspendCompanyUsers(Company $company, SuspendCompanyUserRequest $request)
     {
-
         $request->users->each(function ($user) {
             $this->companyRepository->unSuspendCompanyUser($user);
         });

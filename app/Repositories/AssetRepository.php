@@ -74,6 +74,14 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function getAssetCheckouts(Asset|string $asset)
     {
+        if (!($asset instanceof Asset)) {
+            $asset = Asset::findOrFail($asset);
+        }
+
+        $checkouts = $asset->checkouts();
+        $checkouts = AssetCheckout::appendToQueryFromRequestQueryParameters($checkouts);
+
+        return $checkouts->paginate();
     }
 
     public function getGroupAssetCheckout(AssetCheckout|string $groupId, string|null $status)

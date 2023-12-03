@@ -26,5 +26,4 @@ class SuspendCompanyUserRequest extends FormRequest
             'users' => ['required', 'array', Rule::exists('users', 'id')],
         ];
     }
-
 }

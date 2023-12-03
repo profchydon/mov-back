@@ -42,6 +42,4 @@ class TeamRepository implements TeamRepositoryInterface
     {
         return Team::where(TeamConstant::COMPANY_ID, $company->id)->whereIn(TeamConstant::DEPARTMENT_ID, $departments)->get();
     }
-
-
 }

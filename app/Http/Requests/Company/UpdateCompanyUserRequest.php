@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Company;
 
-use App\Domains\DTO\CreateCompanyUserDTO;
 use App\Domains\DTO\UpdateCompanyUserDTO;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
