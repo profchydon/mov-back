@@ -60,7 +60,7 @@ class Company extends BaseModel
 
     public function users(): HasManyThrough
     {
-        return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id');
+        return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id')->whereNull('user_companies.deleted_at');
     }
 
     public function usersWithSeats()

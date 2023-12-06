@@ -12,7 +12,9 @@ interface CompanyRepositoryInterface extends BaseRepositoryInterface
 
     public function updateCompanyUser(User|string $user, UpdateCompanyUserDTO $updateUserTeamDTO);
 
-    public function suspendCompanyUser(User|string $user);
+    public function suspendCompanyUser(Company|string $company, User|string $user);
 
-    public function unSuspendCompanyUser(User|string $user);
+    public function unSuspendCompanyUser(Company|string $company, User|string $user);
+
+    public function deleteCompanyUser(Company|string $company, User|string $user);
 }
