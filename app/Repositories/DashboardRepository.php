@@ -24,12 +24,12 @@ class DashboardRepository implements DashboardRepositoryInterface
         $query = Asset::appendToQueryFromRequestQueryParameters($assetQuery);
         $data->assetCount = $query->count();
 
-        $query = $assetQuery->whereYear('created_at', now()->year)
-            ->groupBy(DB::raw('MONTH(created_at)'))
-            ->orderBy(DB::raw('MONTH(created_at)'))
-            ->selectRaw('MONTH(created_at) as month, COUNT(*) as count');
-        $query = Asset::appendToQueryFromRequestQueryParameters($query);
-        $data->assetsCountByMonth = $query->get();
+        // $query = $assetQuery->whereYear('created_at', now()->year)
+        //     ->groupBy(DB::raw('MONTH(created_at)'))
+        //     ->orderBy(DB::raw('MONTH(created_at)'))
+        //     ->selectRaw('MONTH(created_at) as month, COUNT(*) as count');
+        // $query = Asset::appendToQueryFromRequestQueryParameters($query);
+        // $data->assetsCountByMonth = $query->get();
 
         $query = $assetQuery->groupBy('status')->select('status', DB::raw('COUNT(*) as count'));
         $query = Asset::appendToQueryFromRequestQueryParameters($query);
