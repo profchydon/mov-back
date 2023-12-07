@@ -117,4 +117,9 @@ class Company extends BaseModel
     {
         return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id')->where('user_companies.has_seat', true);
     }
+
+    public function vendors()
+    {
+        return $this->hasMany(Vendor::class, 'company_id');
+    }
 }

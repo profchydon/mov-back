@@ -8,6 +8,7 @@ use App\Http\Requests\CreateVendorRequest;
 use App\Models\Company;
 use App\Models\Vendor;
 use App\Repositories\Contracts\VendorRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class VendorController extends Controller
@@ -28,15 +29,19 @@ class VendorController extends Controller
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $vendor);
     }
 
-    public function index(Company $company)
+    public function index(Company $company, Request $request)
     {
-        $vendors = $this->vendorRepository->get(VendorConstant::COMPANY_ID, $company->id);
+        $relation = [];
+        $request->get('assets') ? array_push($relation, 'assets') : '';
 
-        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $vendors);
+        $departments = $this->vendorRepository->getVendors($company, $relation);
+
+        return $this->response(Response::HTTP_OK, __('record_fetched'), $departments);
     }
 
     public function show(Company $company, Vendor $vendor)
     {
+        $vendor = $vendor->load('assets');
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $vendor);
     }
 
