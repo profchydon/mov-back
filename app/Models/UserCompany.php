@@ -51,4 +51,9 @@ class UserCompany extends Model
             UserCompanyConstant::HAS_SEAT => false,
         ]);
     }
+
+    public function scopeSeats($query)
+    {
+        return $query->whereIn(UserCompanyConstant::HAS_SEAT, true);
+    }
 }
