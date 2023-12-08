@@ -25,9 +25,9 @@ class DashboardRepository implements DashboardRepositoryInterface
 
         $assetQuery = $company->assets();
         $query = $assetQuery->whereYear('created_at', now()->year)
-            ->groupBy(DB::raw('MONTH(created_at)'))
-            ->orderBy(DB::raw('MONTH(created_at)'))
-            ->selectRaw('MONTH(created_at) as month, COUNT(*) as count');
+            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
+            ->orderBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
+            ->selectRaw('EXTRACT(MONTH FROM created_at) as month, COUNT(*) as count');
         $query = Asset::appendToQueryFromRequestQueryParameters($query);
         $data->assetsCountByMonth = $query->get();
 
@@ -48,6 +48,16 @@ class DashboardRepository implements DashboardRepositoryInterface
         $assetQuery = $company->assets();
         $query = Asset::appendToQueryFromRequestQueryParameters($assetQuery);
         $data->assetAverage = $query->average('purchase_price');
+
+//        $assetQuery = $company->assets();
+//
+//        $assets = $assetQuery->with('office')->groupBy('offices.country');
+////        $assets
+////        $assets = $assets->join('companies', 'companies.id', '=', 'assets.company_id',);
+////        $assets = $assets->groupBy('companies.country', 'companies.id');
+//////        $assets->get();
+////        $assets = $assetQuery->groupBy('companies.country');
+//        $data->assetCountries = $assets->get();
 
         $query = Activity::where('subject_type', Asset::class)->where('event', 'created');
         $query = $query->whereIn('subject_id', $company->assets()->orderBy('created_at', 'desc')->limit(20)->pluck('id'));
