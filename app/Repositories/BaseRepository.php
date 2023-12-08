@@ -122,6 +122,16 @@ abstract class BaseRepository
         return $model->delete();
     }
 
+    public function softDeleteById($id, $data = [])
+    {
+
+        $data['deleted_at'] = now();
+
+        $model = $this->model::find($id);
+
+        return $model->update($data);
+    }
+
     public function delete(Model $model)
     {
         $model->deleteOrFail();

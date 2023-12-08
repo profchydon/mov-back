@@ -120,6 +120,6 @@ class Company extends BaseModel
 
     public function vendors()
     {
-        return $this->hasMany(Vendor::class, 'company_id');
+        return $this->hasMany(Vendor::class, 'company_id')->whereNull('deleted_at');
     }
 }

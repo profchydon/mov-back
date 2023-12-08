@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V2;
 
 use App\Domains\Constant\VendorConstant;
+use App\Domains\Enum\VendorStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateVendorRequest;
 use App\Models\Company;
@@ -57,7 +58,7 @@ class VendorController extends Controller
 
     public function destroy(Company $company, Vendor $vendor)
     {
-        $this->vendorRepository->deleteById($vendor->id);
+        $this->vendorRepository->softDeleteById($vendor->id, [VendorConstant::STATUS => VendorStatusEnum::INACTIVE->value]);
 
         return $this->response(Response::HTTP_OK, __('messages.record-deleted'));
     }
