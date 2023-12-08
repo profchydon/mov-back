@@ -37,7 +37,9 @@ class DashboardRepository implements DashboardRepositoryInterface
         $data->assetConditions = $query->get();
 
         $assetQuery = $company->assets();
-        $query = $assetQuery->with('type')->groupBy('type_id')->select('type_id', DB::raw('COUNT(*) as count'));
+        $query = $assetQuery->with('type')
+            ->groupBy('type_id')
+            ->selectRaw('type_id, COUNT(*) as count, SUM(purchase_price) as sum');
         $query = Asset::appendToQueryFromRequestQueryParameters($query);
         $data->assetCategories = $query->get();
 
