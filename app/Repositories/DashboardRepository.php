@@ -51,10 +51,6 @@ class DashboardRepository implements DashboardRepositoryInterface
 
         $assetQuery = $company->assets();
         $assets = $assetQuery->with('office')->get()->groupBy('office.country');
-////        $assets = $assets->join('companies', 'companies.id', '=', 'assets.company_id',);
-////        $assets = $assets->groupBy('companies.country', 'companies.id');
-//////        $assets->get();
-////        $assets = $assetQuery->groupBy('companies.country');
         $data->assetCountries = $assets;
 
         $query = Activity::where('subject_type', Asset::class)->where('event', 'created');
