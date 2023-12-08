@@ -49,15 +49,13 @@ class DashboardRepository implements DashboardRepositoryInterface
         $query = Asset::appendToQueryFromRequestQueryParameters($assetQuery);
         $data->assetAverage = $query->average('purchase_price');
 
-//        $assetQuery = $company->assets();
-//
-//        $assets = $assetQuery->with('office')->groupBy('offices.country');
-////        $assets
+        $assetQuery = $company->assets();
+        $assets = $assetQuery->with('office')->get()->groupBy('office.country');
 ////        $assets = $assets->join('companies', 'companies.id', '=', 'assets.company_id',);
 ////        $assets = $assets->groupBy('companies.country', 'companies.id');
 //////        $assets->get();
 ////        $assets = $assetQuery->groupBy('companies.country');
-//        $data->assetCountries = $assets->get();
+        $data->assetCountries = $assets;
 
         $query = Activity::where('subject_type', Asset::class)->where('event', 'created');
         $query = $query->whereIn('subject_id', $company->assets()->orderBy('created_at', 'desc')->limit(20)->pluck('id'));
