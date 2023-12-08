@@ -26,9 +26,7 @@ use App\Repositories\Contracts\AssetRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Database\Eloquent\Collection;
 
 class AssetRepository extends BaseRepository implements AssetRepositoryInterface, AssetCheckoutRepositoryInterface, AssetMaintenanceRepositoryInterface
 {
@@ -47,6 +45,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
         $assets = $company->assets()->status($statusArray)->with(['type', 'office', 'assignee'])->orderBy('assets.created_at', 'desc');
         $assets = Asset::appendToQueryFromRequestQueryParameters($assets);
+
         return $assets->paginate();
     }
 
@@ -75,6 +74,14 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function getAssetCheckouts(Asset|string $asset)
     {
+        if (!($asset instanceof Asset)) {
+            $asset = Asset::findOrFail($asset);
+        }
+
+        $checkouts = $asset->checkouts();
+        $checkouts = AssetCheckout::appendToQueryFromRequestQueryParameters($checkouts);
+
+        return $checkouts->paginate();
     }
 
     public function getGroupAssetCheckout(AssetCheckout|string $groupId, string|null $status)
@@ -93,7 +100,6 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         $checkout = AssetCheckout::with('asset')->orderBy('group_id');
 
         return $checkout->paginate()->groupBy('group_id');
-
     }
 
     public function getAssetCheckout(AssetCheckout|string $checkout)
@@ -200,11 +206,8 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         }
 
         try {
-
             DB::transaction(function () use ($checkoutGroup, $data) {
-
                 $checkoutGroup->each(function (AssetCheckout $assetCheckout) use ($data) {
-
                     $assetCheckout->update([
                         AssetCheckoutConstant::STATUS => AssetCheckoutStatusEnum::RETURNED,
                         AssetCheckoutConstant::DATE_RETURNED => $data[AssetCheckoutConstant::DATE_RETURNED],
@@ -218,7 +221,6 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
             return true;
         } catch (\Throwable $th) {
-
             return false;
         }
     }

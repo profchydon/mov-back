@@ -26,7 +26,6 @@ class DepartmentController extends Controller
 
     public function index(Company $company, Request $request)
     {
-
         $relation = [];
         $request->get('members') ? array_push($relation, 'members') : '';
         $request->get('teams') ? array_push($relation, 'teams') : '';
@@ -59,9 +58,8 @@ class DepartmentController extends Controller
         return $this->response(Response::HTTP_CREATED, __('record-created'), $department);
     }
 
-    public function show(Company $company, Department $department,  Request $request)
+    public function show(Company $company, Department $department, Request $request)
     {
-
         $relation = [];
         $request->get('members') ? array_push($relation, 'members') : '';
         $request->get('teams') ? array_push($relation, 'teams') : '';

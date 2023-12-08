@@ -23,7 +23,7 @@ class DepartmentResource extends JsonResource
             'updated_at' => $this->updated_at,
         ];
 
-         // Check if 'head' relationship was loaded in the query
+        // Check if 'head' relationship was loaded in the query
         if ($this->relationLoaded('head')) {
             $resourceArray['head'] = [
                 'name' => $this->head?->first_name . ' ' . $this->head?->last_name,
@@ -49,10 +49,9 @@ class DepartmentResource extends JsonResource
             $resourceArray['memberCount'] = null;
         }
 
-         // Check if 'teams' relationship was loaded in the query
+        // Check if 'teams' relationship was loaded in the query
         if ($this->relationLoaded('teams')) {
-            $resourceArray['teams'] = $this->teams->each(function() {
-
+            $resourceArray['teams'] = $this->teams->each(function () {
             });
             $resourceArray['teamCount'] = $this->teams->count();
         } else {

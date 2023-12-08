@@ -9,14 +9,13 @@ use Illuminate\Validation\Rule;
 
 class AssignSeatToUserRequest extends FormRequest
 {
-
     public function rules(): array
     {
         $company = $this->route('company');
 
         return [
-            'user_ids' => ['required','array', 'min:1'],
-            'user_ids.*' => ['required', Rule::exists('user_companies', 'user_id')->where('company_id', $company->id)->where('status', UserCompanyStatusEnum::ACTIVE), new UserHasRoleForSeatAssignment()]
+            'user_ids' => ['required', 'array', 'min:1'],
+            'user_ids.*' => ['required', Rule::exists('user_companies', 'user_id')->where('company_id', $company->id)->where('status', UserCompanyStatusEnum::ACTIVE), new UserHasRoleForSeatAssignment()],
         ];
     }
 }

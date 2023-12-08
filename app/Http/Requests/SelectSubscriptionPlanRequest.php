@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use App\Domains\Constant\Plan\PlanPriceConstant;
 use App\Domains\DTO\CreateSubscriptionDTO;
 use App\Domains\Enum\Plan\BillingCycleEnum;
-use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;

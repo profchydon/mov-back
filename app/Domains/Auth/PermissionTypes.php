@@ -10,7 +10,9 @@ enum PermissionTypes: string
     case ASSET_READ_ACCESS = 'AssetReadAccess';
     case ASSET_UPDATE_ACCESS = 'AssetUpdateAccess';
     case ASSET_DELETE_ACCESS = 'AssetDeleteAccess';
-    case ASSET_TRANSFER_ACCESS = 'AssetTransferAccess';
+    case ASSET_ASSIGN_ACCESS = 'AssetAssignAccess';
+    case ASSET_CHECKOUT_ACCESS = 'AssetCheckoutAccess';
+    case ASSET_MAINTAINANCE_ACCESS = 'AssetMaintainanceAccess';
 
     // Billing
     case BILLING_FULL_ACCESS = 'BillingFullAccess';
@@ -25,6 +27,7 @@ enum PermissionTypes: string
     case ACCOUNT_CREATE_ACCESS = 'AccountCreateAccess';
     case ACCOUNT_UPDATE_ACCESS = 'AccountUpdateAccess';
     case ACCOUNT_DELETE_ACCESS = 'AccountDeleteAccess';
+    case ACCOUNT_SEAT_ACCESS = 'AccountSeatAccess';
 
     // Role
     case ROLE_FULL_ACCESS = 'RoleFullAccess';
@@ -74,4 +77,11 @@ enum PermissionTypes: string
     case DOCUMENT_READ_ACCESS = 'DocumentReadAccess';
     case DOCUMENT_DELETE_ACCESS = 'DocumentDeleteAccess';
     case DOCUMENT_UPDATE_ACCESS = 'DocumentUpdateAccess';
+
+    // Insurance
+    case INSURANCE_FULL_ACCESS = 'InsuranceFullAccess';
+    case INSURANCE_CREATE_ACCESS = 'InsuranceCreateAccess';
+    case INSURANCE_READ_ACCESS = 'InsuranceReadAccess';
+    case INSURANCE_DELETE_ACCESS = 'InsuranceDeleteAccess';
+    case INSURANCE_UPDATE_ACCESS = 'InsuranceUpdateAccess';
 }

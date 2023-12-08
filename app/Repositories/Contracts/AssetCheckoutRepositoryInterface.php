@@ -21,6 +21,4 @@ interface AssetCheckoutRepositoryInterface
     public function getGroupAssetCheckout(AssetCheckout|string $groupId, string|null $status);
 
     public function returnAssetsInGroup(AssetCheckout|string $groupId, array $assets, array $data);
-
-
 }

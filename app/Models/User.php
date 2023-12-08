@@ -117,4 +117,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserTeam::class, 'user_id');
     }
+
+    public function isActive(): bool
+    {
+        return $this->status == UserStatusEnum::ACTIVE;
+    }
+
+    public function isSuspended()
+    {
+        return $this->status == UserStatusEnum::INACTIVE;
+    }
 }

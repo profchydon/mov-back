@@ -16,6 +16,7 @@ class AssetMaintenance extends BaseModel
         'receiver' => 'assets_maintenances.receiver_id',
         'status' => 'asset_maintenances.status',
         'asset' => 'assets.id',
+        'created' => 'assets.created_at',
     ];
 
     protected $casts = [

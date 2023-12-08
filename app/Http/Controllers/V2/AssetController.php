@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V2;
 
 use App\Domains\Auth\PermissionTypes;
-use App\Domains\Auth\RoleTypes;
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\Asset\AssetMakeConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Domains\DTO\Asset\UpdateAssetDTO;
@@ -15,6 +15,7 @@ use App\Http\Requests\Asset\CreateDamagedAssetRequest;
 use App\Http\Requests\Asset\CreateRetiredAssetRequest;
 use App\Http\Requests\Asset\CreateStolenAsset;
 use App\Http\Requests\Asset\ReAssignAssetRequest;
+use App\Http\Requests\Asset\UpdateMultipleAssetsRequest;
 use App\Models\Asset;
 use App\Models\Company;
 use App\Models\User;
@@ -23,6 +24,7 @@ use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\FileRepositoryInterface;
 use App\Rules\HumanNameRule;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -41,12 +43,11 @@ class AssetController extends Controller
      * @param CompanyRepositoryInterface $companyRepository
      */
     public function __construct(
-        private readonly AssetRepositoryInterface     $assetRepository,
-        private readonly CompanyRepositoryInterface   $companyRepository,
+        private readonly AssetRepositoryInterface $assetRepository,
+        private readonly CompanyRepositoryInterface $companyRepository,
         private readonly AssetMakeRepositoryInterface $assetMakeRepository,
-        private readonly FileRepositoryInterface      $fileRepository
-    )
-    {
+        private readonly FileRepositoryInterface $fileRepository
+    ) {
     }
 
     /**
@@ -329,11 +330,11 @@ class AssetController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.asset-updated'), $asset);
     }
 
-
     public function assignAsset(Company $company, Asset $asset, User $user)
     {
         $asset->assignee()->associate($user);
         $asset->save();
+
         return $this->response(Response::HTTP_OK, __('messages.asset-assigned'), $asset);
     }
 
@@ -341,6 +342,7 @@ class AssetController extends Controller
     {
         $asset->assignee()->dissociate($user);
         $asset->save();
+
         return $this->response(Response::HTTP_OK, __('messages.asset-unassigned'), $asset);
     }
 
@@ -349,7 +351,24 @@ class AssetController extends Controller
         $asset->assignee()->dissociate($request->from);
         $asset->assignee()->associate($request->to);
         $asset->save();
+
         return $this->response(Response::HTTP_OK, __('messages.asset-reassigned'), $asset);
     }
 
+    public function updateMultipleAsset(UpdateMultipleAssetsRequest $request)
+    {
+        $status = $request->get('status');
+
+        $data = [
+            AssetConstant::STATUS => $status,
+        ];
+
+        $assets = $this->assetRepository->updateMultiple(AssetConstant::ID, $request->assets, $data);
+
+        if (!$assets) {
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'), $assets);
+        }
+
+        return $this->response(Response::HTTP_OK, __('messages.record-updated'), $assets);
+    }
 }

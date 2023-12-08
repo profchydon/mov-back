@@ -6,6 +6,7 @@ use App\Domains\DTO\CreateTeamDTO;
 use App\Domains\DTO\UpdateUserTeamDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTeamRequest;
+use App\Http\Requests\GetDeptsTeamsRequest;
 use App\Http\Requests\UpdateUserTeamRequest;
 use App\Models\Company;
 use App\Models\Department;
@@ -61,5 +62,12 @@ class TeamController extends Controller
         $this->userTeamRepository->updateUserTeams($updateTeamDTO);
 
         return $this->response(Response::HTTP_OK, __('record-update'));
+    }
+
+    public function getTeamsInDepts(Company $company, GetDeptsTeamsRequest $request)
+    {
+        $teams = $this->teamRepository->getTeamsInDepts($company, $request->departments);
+
+        return $this->response(Response::HTTP_OK, __('record-fetched'), $teams);
     }
 }

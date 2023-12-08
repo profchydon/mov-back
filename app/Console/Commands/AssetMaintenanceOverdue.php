@@ -37,7 +37,8 @@ class AssetMaintenanceOverdue extends Command
         return 0;
     }
 
-    private function sendOverdueAssetMaintenanceNotification(){
+    private function sendOverdueAssetMaintenanceNotification()
+    {
         $now = Carbon::now();
 
         $companies = DB::table('assets')
@@ -63,5 +64,4 @@ class AssetMaintenanceOverdue extends Command
             }
         }
     }
-
 }
