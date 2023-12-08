@@ -185,6 +185,9 @@ class AssetController extends Controller
                 return $this->markAssetAsArchived($asset);
             case 'image':
                 $image = $request->file('image');
+
+                Log::info($image->getClientOriginalName());
+                Log::info("Image satus", !$image);
                 if (!$image) {
                     return $this->error(Response::HTTP_BAD_REQUEST, __('messages.provide-asset-image'));
                 }
