@@ -14,7 +14,7 @@ class DepartmentRepository implements DepartmentRepositoryInterface
     public function getDepartments(Company|string $company, $relation = [])
     {
         if (!($company instanceof  Company)) {
-            $company = Department::findOrFail($company);
+            $company = Company::findOrFail($company);
         }
 
         $departments = $company->departments()->with($relation);

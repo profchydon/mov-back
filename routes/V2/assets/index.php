@@ -23,6 +23,8 @@ Route::middleware(['auth:sanctum', 'user-in-company'])->controller(AssetControll
     Route::get('{company}/assets/{asset}/users/{user}/unassign', 'unAssignAsset')->name('unassign.company.asset');
     Route::post('{company}/assets/{asset}/assign', 'reAssignAsset')->name('reassign.company.asset');
 
+    Route::post('{company}/assets/reassign', 'reassignMultipleAsset')->name('reassign.multiple.company.asset');
+
 
     Route::get('{company}/asset-overview/{asset}', 'getAssetOverview')->name('get.asset.overview');
 

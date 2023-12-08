@@ -60,7 +60,7 @@ class Company extends BaseModel
 
     public function users(): HasManyThrough
     {
-        return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id');
+        return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id')->whereNull('user_companies.deleted_at');
     }
 
     public function usersWithSeats()
@@ -111,5 +111,15 @@ class Company extends BaseModel
     public function country()
     {
         return $this->belongsTo(Country::class, 'country', 'name');
+    }
+
+    public function seats(): HasManyThrough
+    {
+        return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id')->where('user_companies.has_seat', true);
+    }
+
+    public function vendors()
+    {
+        return $this->hasMany(Vendor::class, 'company_id');
     }
 }

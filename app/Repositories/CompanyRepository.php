@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Domains\Constant\OfficeConstant;
+use App\Domains\Constant\UserCompanyConstant;
 use App\Domains\Constant\UserConstant;
 use App\Domains\Constant\UserDepartmentConstant;
 use App\Domains\Constant\UserInvitationConstant;
@@ -10,12 +11,14 @@ use App\Domains\Constant\UserRoleConstant;
 use App\Domains\Constant\UserTeamConstant;
 use App\Domains\DTO\CreateCompanyOfficeDTO;
 use App\Domains\DTO\UpdateCompanyUserDTO;
+use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserStatusEnum;
 use App\Http\Resources\Office\OfficeResource;
 use App\Models\Company;
 use App\Models\Office;
 use App\Models\OfficeArea;
 use App\Models\User;
+use App\Models\UserCompany;
 use App\Models\UserDepartment;
 use App\Models\UserInvitation;
 use App\Models\UserRole;
@@ -204,21 +207,88 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         }
     }
 
-    public function suspendCompanyUser(User|string $user)
+    public function suspendCompanyUser(Company|string $company, User|string $user)
     {
         if (!($user instanceof User)) {
             $user = User::findOrFail($user);
         }
 
-        return $user->update([UserConstant::STATUS => UserStatusEnum::INACTIVE->value]);
+        if (!($company instanceof Company)) {
+            $company = Company::findOrFail($company);
+        }
+
+        try {
+
+            DB::transaction(function () use ($user, $company) {
+
+                $user->update([UserConstant::STATUS => UserStatusEnum::INACTIVE->value]);
+
+                UserCompany::where(UserCompanyConstant::COMPANY_ID, $company->id)->where(UserCompanyConstant::USER_ID, $user->id)->update([
+                    UserCompanyConstant::STATUS => UserCompanyStatusEnum::INACTIVE->value,
+                ]);
+            });
+
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
-    public function unSuspendCompanyUser(User|string $user)
+    public function unSuspendCompanyUser(Company|string $company, User|string $user)
     {
         if (!($user instanceof User)) {
             $user = User::findOrFail($user);
         }
 
-        return $user->update([UserConstant::STATUS => UserStatusEnum::ACTIVE->value]);
+        if (!($company instanceof Company)) {
+            $company = Company::findOrFail($company);
+        }
+
+        try {
+
+            DB::transaction(function () use ($user, $company) {
+
+                $user->update([UserConstant::STATUS => UserStatusEnum::ACTIVE->value]);
+
+                UserCompany::where(UserCompanyConstant::COMPANY_ID, $company->id)->where(UserCompanyConstant::USER_ID, $user->id)->update([
+                    UserCompanyConstant::STATUS => UserCompanyStatusEnum::ACTIVE->value,
+                ]);
+            });
+
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function deleteCompanyUser(Company|string $company, User|string $user)
+    {
+        if (!($user instanceof User)) {
+            $user = User::findOrFail($user);
+        }
+
+        if (!($company instanceof Company)) {
+            $company = Company::findOrFail($company);
+        }
+
+        try {
+
+            DB::transaction(function () use ($user, $company) {
+
+                $user->update([
+                    UserConstant::STATUS => UserStatusEnum::DEACTIVATED->value,
+                    UserConstant::DELETED_AT => now()
+                ]);
+
+                UserCompany::where(UserCompanyConstant::COMPANY_ID, $company->id)->where(UserCompanyConstant::USER_ID, $user->id)->update([
+                    UserCompanyConstant::STATUS => UserCompanyStatusEnum::DEACTIVATED->value,
+                    UserCompanyConstant::DELETED_AT => now()
+                ]);
+            });
+
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 }

@@ -10,9 +10,9 @@ class CreateVendorDTO
     use DTOToArray;
 
     private string $name;
-    private string $email;
-    private string $phone;
-    private string $address;
+    private ?string $email;
+    private ?string $phone;
+    private ?string $address;
     private string $status;
     private string $tenant_id;
     private string $company_id;
@@ -34,7 +34,7 @@ class CreateVendorDTO
         return $this->name;
     }
 
-    public function setEmail(string $email)
+    public function setEmail(?string $email)
     {
         $this->email = $email;
 
@@ -46,7 +46,7 @@ class CreateVendorDTO
         return $this->email;
     }
 
-    public function setPhone(string $phone)
+    public function setPhone(?string $phone)
     {
         $this->phone = $phone;
 
@@ -58,7 +58,7 @@ class CreateVendorDTO
         return $this->phone;
     }
 
-    public function setAddress(string $address)
+    public function setAddress(?string $address)
     {
         $this->address = $address;
 

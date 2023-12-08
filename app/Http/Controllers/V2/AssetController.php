@@ -15,6 +15,7 @@ use App\Http\Requests\Asset\CreateDamagedAssetRequest;
 use App\Http\Requests\Asset\CreateRetiredAssetRequest;
 use App\Http\Requests\Asset\CreateStolenAsset;
 use App\Http\Requests\Asset\ReAssignAssetRequest;
+use App\Http\Requests\Asset\ReAssignMultipleAssetRequest;
 use App\Http\Requests\Asset\UpdateMultipleAssetsRequest;
 use App\Models\Asset;
 use App\Models\Company;
@@ -355,8 +356,25 @@ class AssetController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.asset-reassigned'), $asset);
     }
 
+    public function reassignMultipleAsset(Company $company, Asset $asset, ReAssignMultipleAssetRequest $request)
+    {
+
+        $user = $request->assignee ? $request->assignee : null;
+        $assignedDate = $request->assignee ? now() : null;
+
+        foreach ($request->assets as $asset) {
+            $asset = $this->assetRepository->first(AssetConstant::ID, $asset);
+            $asset?->assignee()->associate($user);
+            $asset->assigned_date = $assignedDate;
+            $asset->save();
+        }
+
+        return $this->response(Response::HTTP_OK, __('messages.asset-reassigned'));
+    }
+
     public function updateMultipleAsset(UpdateMultipleAssetsRequest $request)
     {
+
         $status = $request->get('status');
 
         $data = [

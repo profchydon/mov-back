@@ -54,7 +54,12 @@ return [
     'user.invitation.sent' => 'User invitation was successfully sent.',
     'upgrade-plan-users' => 'Your current free plan only allows you to add users with Basic role. Upgrade your plan to support paid roles.',
     'user-suspended' => 'User suspended successfully.',
+    'users-suspended' => 'Users suspended successfully.',
     'user-already-suspended' => 'User account has already been suspended.',
     'user-already-active' => 'User account is already active.',
     'user-unsuspended' => 'User account is now active.',
+    'users-unsuspended' => "Users' accounts are now active.",
+    'user-deleted' => 'User deleted successfully.',
+    'users-deleted' => 'Users deleted successfully.',
+    'unassign-user-assets' => 'Unassign assets.',
 ];

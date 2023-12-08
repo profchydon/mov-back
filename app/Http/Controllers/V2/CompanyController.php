@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Company\AddCompanyDetailsRequest;
 use App\Http\Requests\Company\CreateCompanyRequest;
 use App\Http\Requests\Company\CreateCompanyUserRequest;
+use App\Http\Requests\Company\DeleteCompanyUserRequest;
 use App\Http\Requests\Company\SuspendCompanyUserRequest;
 use App\Http\Requests\Company\UpdateCompanyUserRequest;
 use App\Http\Requests\InviteUserRequest;
@@ -218,10 +219,6 @@ class CompanyController extends Controller
     {
         $users = $company->users->load('departments', 'teams', 'office', 'roles');
 
-        // $users = $users->paginate();
-
-        // $users = CompanyUserCollection::make($users);
-
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $users);
     }
 
@@ -254,13 +251,6 @@ class CompanyController extends Controller
         return $this->response(Response::HTTP_CREATED, __('messages.user.invitation.sent'));
     }
 
-    public function deleteCompanyUser(Company $company, UserInvitation $userInvitation)
-    {
-        $this->userInvitationRepository->deleteById($userInvitation->id);
-
-        return $this->response(Response::HTTP_OK, __('messages.record-deleted'), );
-    }
-
     public function updateCompanyUser(Company $company, User $user, UpdateCompanyUserRequest $request)
     {
         $updateCompanyUserDTO = $request->getDTO()->setCompanyId($company->id)->setUserId($user->id);
@@ -276,7 +266,7 @@ class CompanyController extends Controller
         //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.user-already-suspended'), $user);
         // }
 
-        $user = $this->companyRepository->suspendCompanyUser($user);
+        $user = $this->companyRepository->suspendCompanyUser($company, $user);
 
         if (!$user) {
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'), $user);
@@ -291,7 +281,7 @@ class CompanyController extends Controller
         //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.user-already-active'), $user);
         // }
 
-        $user = $this->companyRepository->unSuspendCompanyUser($user);
+        $user = $this->companyRepository->unSuspendCompanyUser($company, $user);
 
         if (!$user) {
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'), $user);
@@ -303,19 +293,20 @@ class CompanyController extends Controller
     public function suspendCompanyUsers(Company $company, SuspendCompanyUserRequest $request)
     {
         foreach ($request->users as $user) {
-            $this->companyRepository->suspendCompanyUser($user);
+            $this->companyRepository->suspendCompanyUser($company, $user);
         }
 
-        return $this->response(Response::HTTP_OK, __('messages.user-suspended'));
+        return $this->response(Response::HTTP_OK, __('messages.users-suspended'));
     }
 
     public function unSuspendCompanyUsers(Company $company, SuspendCompanyUserRequest $request)
     {
-        $request->users->each(function ($user) {
-            $this->companyRepository->unSuspendCompanyUser($user);
-        });
 
-        return $this->response(Response::HTTP_OK, __('messages.user-unsuspended'));
+        foreach ($request->users as $user) {
+            $this->companyRepository->unSuspendCompanyUser($company, $user);
+        }
+
+        return $this->response(Response::HTTP_OK, __('messages.users-unsuspended'));
     }
 
     public function getUserInvitationLink(Company $company)
@@ -330,5 +321,34 @@ class CompanyController extends Controller
         $user = $user->load('assets', 'departments', 'teams', 'office', 'roles');
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $user);
+    }
+
+    public function deleteCompanyUser(Company $company, User $user)
+    {
+
+        // if ($user->isSuspended()) {
+        //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.user-already-suspended'), $user);
+        // }
+
+        if ($user?->assets?->count() > 0) {
+            return $this->error(Response::HTTP_OK, __('messages.unassign-user-assets'), $user?->assets);
+        }
+
+        $user = $this->companyRepository->deleteCompanyUser($company, $user);
+
+        if (!$user) {
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'), $user);
+        }
+
+        return $this->response(Response::HTTP_OK, __('messages.user-deleted'), $user);
+    }
+
+    public function deleteCompanyUsers(Company $company, DeleteCompanyUserRequest $request)
+    {
+        foreach ($request->users as $user) {
+            $this->companyRepository->deleteCompanyUser($company, $user);
+        }
+
+        return $this->response(Response::HTTP_OK, __('messages.users-deleted'));
     }
 }
