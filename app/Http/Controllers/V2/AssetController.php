@@ -183,16 +183,6 @@ class AssetController extends Controller
         switch ($request->query('type')) {
             case 'archive':
                 return $this->markAssetAsArchived($asset);
-            case 'image':
-                $image = $request->file('image');
-
-                Log::info($image->getClientOriginalName());
-                Log::info("Image satus", !$image);
-                if (!$image) {
-                    return $this->error(Response::HTTP_BAD_REQUEST, __('messages.provide-asset-image'));
-                }
-
-                return $this->uploadAssetImage($request->image, $asset);
             case 'details':
                 return $this->updateAssetDetails($request, $asset);
 
@@ -254,8 +244,14 @@ class AssetController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.asset-archived'), $archivedAsset);
     }
 
-    private function uploadAssetImage(UploadedFile $image, Asset $asset)
+    public function uploadAssetImage(Request $request, Company $company, Asset $asset)
     {
+        $this->validate($request, [
+            'file' => 'required|image|max:5120'
+        ]);
+
+        $image = $request->file('image');
+
         $extension = $image->getClientOriginalExtension();
 
         $fileName = sprintf('%s-%s.%s', time(), Str::uuid(), $extension);
@@ -270,7 +266,7 @@ class AssetController extends Controller
 
         $asset->image()->create(['path' => $path]);
 
-        return $this->response(Response::HTTP_OK, __('messages.asset-image-updated'));
+        return $this->response(Response::HTTP_OK, __('messages.asset-image-updated'), $asset->load('image'));
     }
 
     private function updateAssetDetails(Request $request, Asset $asset)
