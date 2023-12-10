@@ -45,7 +45,7 @@ class AssetCheckoutController extends Controller
     public function store(AssetCheckoutRequest $request)
     {
         $assets = collect($request->assets);
-        $assets = $assets->transform(fn ($asset) => Asset::find($asset));
+        $assets = $assets->transform(fn($asset) => Asset::find($asset));
 
         $groupId = strtoupper(substr($request->reason, 0, 3) . '-' . rand(1000000, 9999999));
 
@@ -82,6 +82,13 @@ class AssetCheckoutController extends Controller
         $checkouts = $this->checkoutRepository->getAssetCheckouts($asset);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $checkouts);
+    }
+
+    public function getAssetMaintenance(Company $company, Asset $asset)
+    {
+        $maintenance = $this->checkoutRepository->getAssetMaintenance($asset);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $maintenance);
     }
 
     public function getGroupAssetCheckout(Company $company, AssetCheckout|string $groupId, Request $request)

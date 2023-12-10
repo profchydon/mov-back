@@ -84,6 +84,18 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return $checkouts->paginate();
     }
 
+    public function getAssetMaintenance(Asset|string $asset)
+    {
+        if (!($asset instanceof Asset)) {
+            $asset = Asset::findOrFail($asset);
+        }
+
+        $maintenance = $asset->maintenances();
+        $maintenance = AssetCheckout::appendToQueryFromRequestQueryParameters($maintenance);
+
+        return $checkouts->paginate();
+    }
+
     public function getGroupAssetCheckout(AssetCheckout|string $groupId, string|null $status)
     {
         $statusArray = $status === null ? AssetCheckoutStatusEnum::values() : [$status];

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Domains\Constant\Asset\AssetCheckoutConstant;
 use App\Domains\Constant\Asset\AssetConstant;
+use App\Domains\Constant\Asset\AssetMaintenanceConstant;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Events\AssetStatusUpdatedEvent;
 use App\Traits\UsesUUID;
@@ -117,6 +118,11 @@ class Asset extends BaseModel
         return $this->update([
             'status' => AssetStatusEnum::CHECKED_OUT,
         ]);
+    }
+
+    public function maintenances()
+    {
+        return $this->hasMany(AssetMaintenance::class, AssetMaintenanceConstant::ASSET_ID);
     }
 
     public function logForMaintainance()

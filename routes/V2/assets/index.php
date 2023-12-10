@@ -14,6 +14,7 @@ Route::middleware(['auth:sanctum', 'user-in-company'])->controller(AssetControll
     Route::get('{company}/assets/csv-upload', 'getBulkDownloadTemplate')->name('get-template.company.bulk.assets')->withoutMiddleware(\App\Http\Middleware\NormalizeResponseForFrontEndMiddleware::class);
     Route::get('{company}/assets', 'get')->name('get.company.assets');
     Route::get('{company}/assets/{asset}/checkouts', [AssetCheckoutController::class, 'getAssetCheckouts']);
+    Route::get('{company}/assets/{asset}/maintenance', [AssetCheckoutController::class, 'getAssetMaintenance']);
 
     Route::get('{company}/assets/{asset}', 'getAsset')->name('get.company.asset');
     Route::delete('{company}/assets/{asset}', 'deleteAsset')->name('delete.company.asset');
@@ -60,4 +61,4 @@ Route::get('companies/{company}/asset-maintenances', [AssetMaintenanceController
 Route::middleware(['auth:sanctum'])->controller(AssetMaintenanceController::class)->prefix('assets/maintenance')->group(function () {
 });
 
-Route::middleware(['auth:sanctum'])->resource('asset-checkouts', \App\Http\Controllers\V2\AssetCheckoutController::class);
+//Route::middleware(['auth:sanctum'])->resource('asset-checkouts', \App\Http\Controllers\V2\AssetCheckoutController::class);
