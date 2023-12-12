@@ -52,7 +52,7 @@ test('it can create maintenance log', function () {
         'assets' => $assets->pluck('id'),
     ];
 
-    $response = $this->postJson(\Tests\TestCase::fullLink('/asset-maintenances'), $payload);
+    $response = $this->postJson(\Tests\TestCase::fullLink("/company/{$this->company->id}/asset-maintenances"), $payload);
     $response->assertCreated();
 });
 
@@ -78,7 +78,7 @@ test('it can get maintenance log', function () {
         'assets' => $assets->pluck('id'),
     ];
 
-    $this->postJson(\Tests\TestCase::fullLink('/asset-maintenances'), $payload);
+    $this->postJson(\Tests\TestCase::fullLink("/company/{$this->company->id}/asset-maintenances"), $payload);
     $response = $this->getJson(\Tests\TestCase::fullLink("/companies/{$this->company->id}/asset-maintenances"), $payload);
     $response->assertOk();
 });
