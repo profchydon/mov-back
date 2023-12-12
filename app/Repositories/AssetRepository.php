@@ -93,7 +93,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         $maintenance = $asset->maintenances();
         $maintenance = AssetCheckout::appendToQueryFromRequestQueryParameters($maintenance);
 
-        return $checkouts->paginate();
+        return $maintenance->paginate();
     }
 
     public function getGroupAssetCheckout(AssetCheckout|string $groupId, string|null $status)

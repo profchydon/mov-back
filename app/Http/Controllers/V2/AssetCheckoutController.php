@@ -84,13 +84,6 @@ class AssetCheckoutController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $checkouts);
     }
 
-    public function getAssetMaintenance(Company $company, Asset $asset)
-    {
-        $maintenance = $this->checkoutRepository->getAssetMaintenance($asset);
-
-        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $maintenance);
-    }
-
     public function getGroupAssetCheckout(Company $company, AssetCheckout|string $groupId, Request $request)
     {
         $status = $request->get('status');

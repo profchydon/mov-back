@@ -48,4 +48,12 @@ class AssetMaintenanceController extends Controller
 
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $assets);
     }
+
+    public function getAssetMaintenance(Company $company, Asset $asset)
+    {
+        $maintenance = $this->maintenanceRepository->getAssetMaintenance($asset);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $maintenance);
+    }
+
 }
