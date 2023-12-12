@@ -232,8 +232,7 @@ class CompanyController extends Controller
 
         $companySubscription = $company->activeSubscription;
         $role = $this->roleRepository->first('id', $request->role_id);
-
-        if ($companySubscription->plan->name === 'Free' && ($role->name !== RoleTypes::BASIC->value)) {
+        if ($companySubscription?->plan->name === 'Free' && ($role?->name !== RoleTypes::BASIC->value)) {
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.upgrade-plan-users'));
         }
 
