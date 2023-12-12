@@ -25,7 +25,7 @@ class AssetMaintenanceController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $maintenance);
     }
 
-    public function store(AssetMaintenanceRequest $request)
+    public function store(Company $company, AssetMaintenanceRequest $request)
     {
         $assets = collect($request->assets);
         $assets = $assets->transform(fn ($asset) => Asset::find($asset));

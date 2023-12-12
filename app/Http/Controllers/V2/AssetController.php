@@ -247,7 +247,7 @@ class AssetController extends Controller
     public function uploadAssetImage(Request $request, Company $company, Asset $asset)
     {
         $this->validate($request, [
-            'file' => 'required|image|max:5120'
+            'image' => 'required|image|max:5120'
         ]);
 
         $image = $request->file('image');
@@ -261,10 +261,8 @@ class AssetController extends Controller
             $this->fileRepository->deleteById($asset->image->id);
         }
 
-        $path = $image->storeAs('asset-images', $fileName, 's3');
-        $path = Storage::disk('s3')->url($path);
-
-        $asset->image()->create(['path' => $path]);
+        Storage::disk('s3')->putFileAs('', $image, $image->getClientOriginalName());
+        $asset->image()->create(['path' => $image->getClientOriginalName()]);
 
         return $this->response(Response::HTTP_OK, __('messages.asset-image-updated'), $asset->load('image'));
     }
