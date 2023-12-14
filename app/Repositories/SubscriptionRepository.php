@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Domains\DTO\AddonDTO;
 use App\Domains\DTO\CreatePaymentLinkDTO;
 use App\Domains\DTO\CreateSubscriptionDTO;
 use App\Domains\DTO\Invoice\InvoiceDTO;
@@ -27,7 +28,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
     public function getCompanySubscription(string|Company $company)
     {
-        if (!($company instanceof  Company)) {
+        if (!($company instanceof Company)) {
             $company = Company::findOrFail($company);
         }
 
@@ -134,5 +135,73 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         DB::commit();
 
         return $subscription->load('payment');
+    }
+
+    public function addAddOnsToSubsciption(Subscription|string $subscription, AddonDTO $addonDTO)
+    {
+        if (!($subscription instanceof Subscription)) {
+            $subscription = Subscription::findOrFail($subscription);
+        }
+
+        DB::beginTransaction();
+
+        $addOns = $addonDTO->getAddOns()->each(function ($id) use ($subscription) {
+            $subscription->addOns()->create([
+                'feature_id' => $id,
+                ...Arr::except($subscription->toArray(), ['id', 'plan_id', 'invoice_id']),
+            ]);
+        });
+
+        $addonAmount = FeaturePrice::whereIn('feature_id', $addonDTO->getAddOns())
+            ->where('currency_code', $addonDTO->getCurrency())
+            ->sum('price');
+
+        $planPrice = $subscription->plan->prices()
+            ->where('currency_code', $addonDTO->getCurrency())
+            ->where('billing_cycle', $subscription->billing_cycle)
+            ->firstOrFail();
+
+        $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
+
+        $paymentLinkDTO = new CreatePaymentLinkDTO();
+        $paymentLinkDTO->setCurrency($addonDTO->getCurrency())
+            ->setAmount($addonAmount)
+            ->setPaymentPlan($planProcessor->plan_processor_id)
+            ->setRedirectUrl($addonDTO->getRedirectUri())
+            ->setCustomer($subscription->company)
+            ->setMeta([
+                'subscription_id' => $subscription->id,
+                'billing_cycle' => $subscription->billing_cycle,
+            ]);
+
+        $paymentLink = FlutterwaveService::getStandardPaymentLink($paymentLinkDTO);
+
+        $invoiceDTO = new InvoiceDTO();
+        $invoiceDTO->setTenantId($subscription->tenant_id)
+            ->setCompanyId($subscription->company_id)
+            ->setCurrencyCode($addonDTO->getCurrency())
+            ->setBillable($subscription)
+            ->setSubTotal($addonAmount)
+            ->setDueAt(now()->addHours(6));
+
+        $invoice = Invoice::create($invoiceDTO->toArray());
+
+        $features = Feature::find($addonDTO->getAddOns());
+
+        $features->each(function ($feature) use ($addonDTO, $invoice) {
+            $price = $feature->currencyPrice($addonDTO->getCurrency())->firstOrFail();
+
+            $dto = new InvoiceItemDTO();
+            $dto->setQuantity(1)
+                ->setAmount($price->price)
+                ->setItem($feature)
+                ->setInvoiceId($invoice);
+
+            $invoice->items()->create($dto->toArray());
+        });
+
+        DB::commit();
+
+        return $paymentLink;
     }
 }

@@ -2,12 +2,16 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Domains\DTO\AddonDTO;
 use App\Domains\DTO\CreateSubscriptionDTO;
 use App\Models\Company;
+use App\Models\Subscription;
 
 interface SubscriptionRepositoryInterface extends BaseRepositoryInterface
 {
     public function createSubscription(CreateSubscriptionDTO $subscriptionDTO);
+
+    public function addAddOnsToSubsciption(string|Subscription $subscription, AddonDTO $addonDTO);
 
     public function getCompanySubscription(string|Company $company);
 }
