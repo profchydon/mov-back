@@ -21,6 +21,7 @@ class SubscriptionController extends Controller
 
     public function selectSubscriptionPlan(SelectSubscriptionPlanRequest $request, Company $company)
     {
+
         $user = $company->users[0];
 
         if ($user->stage == UserStageEnum::VERIFICATION->value || $user->stage == UserStageEnum::COMPANY_DETAILS) {

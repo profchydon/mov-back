@@ -26,7 +26,12 @@ class SubscriptionPayment extends Model
         parent::booted();
         static::updated(function (self $payment) {
             if ($payment->isComplete()) {
+
                 $payment->subscription->activate();
+                $payment->subscription->invoice->markAsPaid();
+                $payment->subscription->addOns->each(function ($addOn) {
+                    $addOn->activate();
+                });
             }
         });
     }

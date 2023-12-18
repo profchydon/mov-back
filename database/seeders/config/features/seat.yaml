@@ -1,5 +1,5 @@
-name: Users
-description: Get unlimited users for a small fee
+name: Seat
+description: Get unlimited seats for a small fee
 pricing: PAID
 available_as_addon: true
 prices:

@@ -50,4 +50,18 @@ class Invoice extends BaseModel
     {
         return $this->belongsTo(Company::class, 'company_id');
     }
+
+    public function markAsPaid(): bool
+    {
+        return $this->update([
+            InvoiceConstant::STATUS => InvoiceStatusEnum::PAID,
+        ]);
+    }
+
+    public function markAsOverdue(): bool
+    {
+        return $this->update([
+            InvoiceConstant::STATUS => InvoiceStatusEnum::OVERDUE,
+        ]);
+    }
 }

@@ -38,10 +38,12 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
     public function createSubscription(CreateSubscriptionDTO $subDTO)
     {
+
         DB::beginTransaction();
         $subscription = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
 
         if ($subDTO->getAddOnIds()->isNotEmpty()) {
+
             $addons = $subDTO->getAddOnIds()->map(function ($id) use ($subscription) {
                 return [
                     'feature_id' => $id,
@@ -62,9 +64,15 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         $totalAmount = $planPrice->amount ?? 0;
 
         if ($totalAmount > 0) {
-            $addOnAmount = FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
+
+            $addOnAmount  = 0;
+
+            if ($subDTO->getAddOnIds()->isNotEmpty()) {
+
+                $addOnAmount += FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
                 ->where('currency_code', $subDTO->getCurrency())
                 ->sum('price');
+            }
 
             $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
 

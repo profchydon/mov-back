@@ -10,4 +10,5 @@ enum PlanProcessorNameEnum: string
 
     case PAYSTACK = 'paystack';
     case FLUTTERWAVE = 'flutterwave';
+    case STRIPE = 'stripe';
 }
