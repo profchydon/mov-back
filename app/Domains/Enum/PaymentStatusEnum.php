@@ -9,6 +9,6 @@ enum PaymentStatusEnum: string
     use ListsEnumValues;
 
     case PROCESSING = 'Processing';
-    case COMPLETED = 'Cmpleted';
+    case COMPLETED = 'Completed';
     case FAILED = 'Failed';
 }
