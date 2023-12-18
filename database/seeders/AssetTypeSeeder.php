@@ -16,25 +16,24 @@ class AssetTypeSeeder extends Seeder
     public function run(): void
     {
 
-        $count = AssetType::count();
+        $types = [
+            'Computer & Equipment',
+            'Furniture & Fixtures',
+            'Machinery & Equipment',
+            'Vehicles',
+            'Building & Real Estate',
+            'Others',
+        ];
 
-        if ($count == 0) {
+        foreach ($types as $type) {
+            AssetType::updateOrCreate([
+                AssetTypeConstant::NAME => $type,
+            ], [
+                AssetTypeConstant::NAME => $type,
+                AssetTypeConstant::STATUS => AssetTypeStatusEnum::ACTIVE->value,
+            ]);
 
-            $types = [
-                'Computer & Equipment',
-                'Furniture & Fixtures',
-                'Machinery & Equipment',
-                'Vehicles',
-                'Building & Real Estate',
-                'Others',
-            ];
-
-            foreach ($types as $type) {
-                AssetType::create([
-                    AssetTypeConstant::NAME => $type,
-                    AssetTypeConstant::STATUS => AssetTypeStatusEnum::ACTIVE->value,
-                ]);
-            }
         }
+
     }
 }
