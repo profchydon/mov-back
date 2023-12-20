@@ -15,6 +15,7 @@ class AssetMaintenanceConstant
     public const NEXT_MAINTENANCE_DATE = 'next_maintenance_date';
     public const RECEIVER_TYPE = 'receiver_type';
     public const RECEIVER_ID = 'receiver_id';
+    public const RECEIVER = 'receiver';
     public const RETURN_DATE = 'return_date';
     public const COMMENT = 'comment';
     public const STATUS = 'status';

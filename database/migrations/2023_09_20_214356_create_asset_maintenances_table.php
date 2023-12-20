@@ -18,7 +18,8 @@ return new class extends Migration {
             $table->foreignUuid(AssetMaintenanceConstant::ASSET_ID)->references(AssetMaintenanceConstant::ID)->on(\App\Models\Asset::getTableName());
             $table->string(AssetMaintenanceConstant::GROUP_ID, 13);
             $table->string(AssetMaintenanceConstant::REASON);
-            $table->foreignUuid(AssetMaintenanceConstant::RECEIVER_ID)->references(AssetMaintenanceConstant::ID)->on(\App\Models\User::getTableName());
+            // $table->foreignUuid(AssetMaintenanceConstant::RECEIVER_ID)->references(AssetMaintenanceConstant::ID)->on(\App\Models\User::getTableName());
+            $table->nullableUuidMorphs(AssetMaintenanceConstant::RECEIVER);
             // $table->dateTime(AssetMaintenanceConstant::SCHEDULED_DATE);
             $table->dateTime(AssetMaintenanceConstant::RETURN_DATE);
             $table->enum(AssetMaintenanceConstant::STATUS, \App\Domains\Enum\Asset\AssetMaintenanceStatusEnum::values())->default(\App\Domains\Enum\Asset\AssetMaintenanceStatusEnum::LOGGED->value);
