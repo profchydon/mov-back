@@ -1,6 +1,6 @@
 name: Seat
 description: Get unlimited seats for a small fee
-pricing: PAID
+pricing: Paid
 available_as_addon: true
 prices:
   - currency_code: NGN

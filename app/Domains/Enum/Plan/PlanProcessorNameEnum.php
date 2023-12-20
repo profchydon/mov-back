@@ -8,7 +8,7 @@ enum PlanProcessorNameEnum: string
 {
     use ListsEnumValues;
 
-    case PAYSTACK = 'paystack';
-    case FLUTTERWAVE = 'flutterwave';
-    case STRIPE = 'stripe';
+    case PAYSTACK = 'Paystack';
+    case FLUTTERWAVE = 'Flutterwave';
+    case STRIPE = 'Stripe';
 }

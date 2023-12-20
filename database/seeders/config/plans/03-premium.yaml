@@ -16,51 +16,51 @@ offers:
   - Dedicated account manager
 prices:
   - currency_code: NGN
-    billing_cycle: MONTHLY
+    billing_cycle: Monthly
     amount: 80000
     processors:
-      - name: flutterwave
+      - name: Flutterwave
         id: 61147
   - currency_code: USD
-    billing_cycle: MONTHLY
+    billing_cycle: Monthly
     amount: 2000
     processors:
-      - name: stripe
+      - name: Stripe
         id: 60139
   - currency_code: GBP
-    billing_cycle: MONTHLY
+    billing_cycle: Monthly
     amount: 2000
     processors:
-      - name: stripe
+      - name: Stripe
         id: 60139
   - currency_code: EUR
-    billing_cycle: MONTHLY
+    billing_cycle: Monthly
     amount: 2000
     processors:
-      - name: stripe
+      - name: Stripe
         id: 60139
 
   - currency_code: NGN
-    billing_cycle: YEARLY
+    billing_cycle: Yearly
     amount: 864000
     processors:
-      - name: flutterwave
+      - name: Flutterwave
         id: 61148
   - currency_code: USD
-    billing_cycle: YEARLY
+    billing_cycle: Yearly
     amount: 21600
     processors:
-      - name: stripe
+      - name: Stripe
         id: 60139
   - currency_code: GBP
-    billing_cycle: YEARLY
+    billing_cycle: Yearly
     amount: 21600
     processors:
-      - name: stripe
+      - name: Stripe
         id: 60139
   - currency_code: EUR
-    billing_cycle: YEARLY
+    billing_cycle: Yearly
     amount: 21600
     processors:
-      - name: stripe
+      - name: Stripe
         id: 60139

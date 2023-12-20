@@ -8,10 +8,10 @@ enum MaintenanceCycleEnum: string
 {
     use ListsEnumValues;
 
-    case DAILY = 'DAILY';
-    case WEEKLY = 'WEEKLY';
-    case BI_WEEKLY = 'BI-WEEKLY';
-    case MONTHLY = 'MONTHLY';
-    case BI_MONTHLY = 'BI-MONTHLY';
-    case YEARLY = 'YEARLY';
+    case DAILY = 'Daily';
+    case WEEKLY = 'Weekly';
+    case BI_WEEKLY = 'Bi-weekly';
+    case MONTHLY = 'Monthly';
+    case BI_MONTHLY = 'Bi-monthly';
+    case YEARLY = 'Yearly';
 }

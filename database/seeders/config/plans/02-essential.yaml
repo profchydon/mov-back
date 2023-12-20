@@ -15,51 +15,51 @@ offers:
   - Asset checklist
 prices:
   - currency_code: NGN
-    billing_cycle: MONTHLY
+    billing_cycle: Monthly
     amount: 30000
     processors:
-      - name: flutterwave
+      - name: Flutterwave
         id: 61145
   - currency_code: USD
-    billing_cycle: MONTHLY
+    billing_cycle: Monthly
     amount: 500
     processors:
-      - name: stripe
+      - name: Stripe
         id: price_1OOdz9B8pj3G5nb3Sl8UVQNH
   - currency_code: GBP
-    billing_cycle: MONTHLY
+    billing_cycle: Monthly
     amount: 500
     processors:
-      - name: stripe
+      - name: Stripe
         id: price_1OOe3qB8pj3G5nb39gvGweAc
   - currency_code: EUR
-    billing_cycle: MONTHLY
+    billing_cycle: Monthly
     amount: 500
     processors:
-      - name: stripe
+      - name: Stripe
         id: price_1OOeF3B8pj3G5nb3tY7Dhguo
 
   - currency_code: NGN
-    billing_cycle: YEARLY
+    billing_cycle: Yearly
     amount: 324000
     processors:
-      - name: flutterwave
+      - name: Flutterwave
         id: 61146
   - currency_code: USD
-    billing_cycle: YEARLY
+    billing_cycle: Yearly
     amount: 5400
     processors:
-      - name: stripe
+      - name: Stripe
         id: price_1OOeGFB8pj3G5nb3ZF0CnXRg
   - currency_code: GBP
-    billing_cycle: YEARLY
+    billing_cycle: Yearly
     amount: 5400
     processors:
-      - name: stripe
+      - name: Stripe
         id: price_1OOeGeB8pj3G5nb3MmJckLCt
   - currency_code: EUR
-    billing_cycle: YEARLY
+    billing_cycle: Yearly
     amount: 5400
     processors:
-      - name: stripe
+      - name: Stripe
         id: price_1OOeGyB8pj3G5nb3ssyXlyrF

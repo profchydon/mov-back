@@ -1,6 +1,6 @@
 name: Maintenance
 description: We will help you keep your asset in tip tip shape
-pricing: PAID
+pricing: Paid
 available_as_addon: true
 prices:
   - currency_code: NGN

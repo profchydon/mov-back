@@ -1,6 +1,6 @@
 name: Depreciation
 description: See how much your asset will be worth year on year
-pricing: PAID
+pricing: Paid
 available_as_addon: true
 prices:
   - currency_code: NGN

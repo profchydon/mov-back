@@ -166,7 +166,7 @@ class AssetController extends Controller
 
     public function getAssetOverview(Company $company, Asset $asset)
     {
-        $asset = $this->assetRepository->firstWithRelation('id', $asset->id, ['image', 'type', 'office', 'officeArea', 'activities', 'assignee']);
+        $asset = $this->assetRepository->firstWithRelation('id', $asset->id, ['image', 'type', 'office', 'officeArea', 'activities', 'assignee', 'vendor']);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $asset);
     }

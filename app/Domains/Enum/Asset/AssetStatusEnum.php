@@ -9,7 +9,7 @@ enum AssetStatusEnum: string
     use ListsEnumValues;
 
     case PENDING_APPROVAL = 'Pending Approval';
-    case AVAILABLE = 'Availabe';
+    case AVAILABLE = 'Available';
     case CHECKED_OUT = 'Checked Out';
     case TRANSFERRED = 'Transferred';
     case ARCHIVED = 'Archived';

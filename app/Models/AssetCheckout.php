@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Domains\Constant\Asset\AssetCheckoutConstant;
+use App\Domains\Constant\Asset\AssetMaintenanceConstant;
 use App\Domains\Enum\Asset\AssetCheckoutStatusEnum;
+use App\Domains\Enum\Asset\AssetMaintenanceStatusEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -26,6 +28,29 @@ class AssetCheckout extends BaseModel
     protected $hidden = [
         AssetCheckoutConstant::TENANT_ID,
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        // self::created(function (self $checkout) {
+
+        //     if ($checkout->getAttribute(AssetCheckoutConstant::REASON) === 'Maintenance') {
+
+        //         $checkout->asset->maintenances->create([
+        //             AssetMaintenanceConstant::TENANT_ID => $checkout->getAttribute(AssetCheckoutConstant::TENANT_ID),
+        //             AssetMaintenanceConstant::COMPANY_ID => $checkout->getAttribute(AssetCheckoutConstant::COMPANY_ID),
+        //             AssetMaintenanceConstant::GROUP_ID => $checkout->getAttribute(AssetCheckoutConstant::GROUP_ID),
+        //             AssetMaintenanceConstant::REASON => $checkout->getAttribute(AssetCheckoutConstant::REASON),
+        //             AssetMaintenanceConstant::RECEIVER_ID => $checkout->getAttribute(AssetCheckoutConstant::RECEIVER_ID),
+        //             AssetMaintenanceConstant::RETURN_DATE => $checkout->getAttribute(AssetCheckoutConstant::RETURN_DATE),
+        //             AssetMaintenanceConstant::COMMENT => $checkout->getAttribute(AssetCheckoutConstant::COMMENT),
+        //             AssetMaintenanceConstant::STATUS => AssetMaintenanceStatusEnum::LOGGED->value,
+        //         ]);
+
+        //     }
+        // });
+    }
 
     public function asset(): BelongsTo
     {

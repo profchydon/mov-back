@@ -30,6 +30,7 @@ return [
     'role.created' => 'You have successfully created a role',
     'role-exists' => 'The role already exist',
     'asset-deleted' => 'The asset has been deleted',
+    'asset-already-checkedout' => 'Asset has already been checked out.',
     'asset-marked-as-stolen' => 'You have successfully marked the asset as stolen',
     'asset-archived' => 'You have successfully archived the asset',
     'provide-asset-image' => 'Provide an asset image',
