@@ -102,7 +102,7 @@ class CompanyController extends Controller
                     ]);
 
                     //Assign admin role to user
-                    $adminRole = $this->roleRepository->first('name', RoleTypes::ADMINISTRATOR);
+                    $adminRole = $this->roleRepository->first('name', RoleTypes::SUPER_ADMINISTRATOR);
 
                     $this->userRoleRepository->create([
                         UserRoleConstant::USER_ID => $user->id,

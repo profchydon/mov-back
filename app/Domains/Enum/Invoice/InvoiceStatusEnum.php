@@ -8,7 +8,7 @@ enum InvoiceStatusEnum: string
 {
     use ListsEnumValues;
 
-    case PENDING = 'PENDING';
-    case PAID = 'PAID';
-    case OVERDUE = 'OVERDUE';
+    case PENDING = 'Pending';
+    case PAID = 'Paid';
+    case OVERDUE = 'Overdue';
 }

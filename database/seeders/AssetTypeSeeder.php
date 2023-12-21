@@ -6,6 +6,7 @@ use App\Domains\Constant\Asset\AssetTypeConstant;
 use App\Domains\Enum\Asset\AssetTypeStatusEnum;
 use App\Models\AssetType;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class AssetTypeSeeder extends Seeder
 {
@@ -14,6 +15,7 @@ class AssetTypeSeeder extends Seeder
      */
     public function run(): void
     {
+
         $types = [
             'Computer & Equipment',
             'Furniture & Fixtures',
@@ -24,10 +26,14 @@ class AssetTypeSeeder extends Seeder
         ];
 
         foreach ($types as $type) {
-            AssetType::create([
+            AssetType::updateOrCreate([
+                AssetTypeConstant::NAME => $type,
+            ], [
                 AssetTypeConstant::NAME => $type,
                 AssetTypeConstant::STATUS => AssetTypeStatusEnum::ACTIVE->value,
             ]);
+
         }
+
     }
 }

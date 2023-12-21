@@ -34,4 +34,9 @@ class AssetMaintenance extends BaseModel
     {
         return $this->belongsTo(Asset::class, AssetMaintenanceConstant::ASSET_ID);
     }
+
+    public function receiver()
+    {
+        return $this->morphTo();
+    }
 }

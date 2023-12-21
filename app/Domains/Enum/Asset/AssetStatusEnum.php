@@ -8,13 +8,13 @@ enum AssetStatusEnum: string
 {
     use ListsEnumValues;
 
-    case PENDING_APPROVAL = 'PENDING APPROVAL';
-    case AVAILABLE = 'AVAILABLE';
-    case CHECKED_OUT = 'CHECKED OUT';
-    case TRANSFERRED = 'TRANSFERRED';
-    case ARCHIVED = 'ARCHIVED';
-    case STOLEN = 'STOLEN';
-    case UNDER_MAINTENANCE = 'UNDER MAINTENANCE';
-    case DAMAGED = 'DAMAGED';
-    case RETIRED = 'RETIRED';
+    case PENDING_APPROVAL = 'Pending Approval';
+    case AVAILABLE = 'Available';
+    case CHECKED_OUT = 'Checked Out';
+    case TRANSFERRED = 'Transferred';
+    case ARCHIVED = 'Archived';
+    case STOLEN = 'Stolen';
+    case UNDER_MAINTENANCE = 'Under Maintenance';
+    case DAMAGED = 'Damaged';
+    case RETIRED = 'Retired';
 }

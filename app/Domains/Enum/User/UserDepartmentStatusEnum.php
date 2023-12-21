@@ -8,7 +8,7 @@ enum UserDepartmentStatusEnum: string
 {
     use ListsEnumValues;
 
-    case ACTIVE = 'ACTIVE';
-    case INACTIVE = 'INACTIVE';
-    case DEACTIVATED = 'DEACTIVATED';
+    case ACTIVE = 'Active';
+    case INACTIVE = 'Inactive';
+    case DEACTIVATED = 'Deactivated';
 }

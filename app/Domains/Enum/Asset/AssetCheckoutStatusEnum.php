@@ -8,7 +8,7 @@ enum AssetCheckoutStatusEnum: string
 {
     use ListsEnumValues;
 
-    case CHECKED_OUT = 'CHECKED OUT';
-    case OVERDUE = 'OVERDUE';
-    case RETURNED = 'RETURNED';
+    case CHECKED_OUT = 'Checked Out';
+    case OVERDUE = 'Overdue';
+    case RETURNED = 'Returned';
 }

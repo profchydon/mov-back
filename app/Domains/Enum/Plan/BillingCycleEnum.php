@@ -8,6 +8,6 @@ enum BillingCycleEnum: string
 {
     use ListsEnumValues;
 
-    case MONTHLY = 'MONTHLY';
-    case YEARLY = 'YEARLY';
+    case MONTHLY = 'Monthly';
+    case YEARLY = 'Yearly';
 }

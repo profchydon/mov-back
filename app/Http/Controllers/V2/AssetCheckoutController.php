@@ -49,7 +49,8 @@ class AssetCheckoutController extends Controller
 
         $groupId = strtoupper(substr($request->reason, 0, 3) . '-' . rand(1000000, 9999999));
 
-        $assets = $assets->transform(function ($asset) use ($request, $groupId) {
+        $assets->transform(function ($asset) use ($request, $assets, $groupId) {
+
             $user = $request->user();
             $dto = new AssetCheckoutDTO();
             $dto->setTenantId($asset->tenant_id)
@@ -64,7 +65,9 @@ class AssetCheckoutController extends Controller
                 ->setGroupId($groupId)
                 ->setCheckoutBy($user->id);
 
-            return $this->checkoutRepository->checkoutAsset($dto);
+            if (!$asset->checkedOut()) {
+                return $this->checkoutRepository->checkoutAsset($dto);
+            }
         });
 
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $assets);

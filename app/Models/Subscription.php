@@ -9,6 +9,7 @@ use App\Traits\HasCompany;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Subscription extends BaseModel
@@ -45,6 +46,14 @@ class Subscription extends BaseModel
     public function addOns(): HasMany
     {
         return $this->hasMany(SubscriptionAddOn::class);
+    }
+
+    /**
+     * Get the invoice for this subscription.
+     */
+    public function invoice(): HasOne
+    {
+        return $this->hasOne(Invoice::class, 'billable_id');
     }
 
     public function payment()

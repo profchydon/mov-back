@@ -8,6 +8,6 @@ enum FeaturePriceEnum: string
 {
     use ListsEnumValues;
 
-    case FREE = 'FREE';
-    case PAID = 'PAID';
+    case FREE = 'Free';
+    case PAID = 'Paid';
 }

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Domains\DTO\AddonDTO;
 use App\Domains\DTO\CreatePaymentLinkDTO;
 use App\Domains\DTO\CreateSubscriptionDTO;
 use App\Domains\DTO\Invoice\InvoiceDTO;
@@ -14,9 +15,11 @@ use App\Models\Invoice;
 use App\Models\Subscription;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Services\V2\FlutterwaveService;
+use App\Services\V2\StripeService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SubscriptionRepository extends BaseRepository implements SubscriptionRepositoryInterface
 {
@@ -27,7 +30,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
     public function getCompanySubscription(string|Company $company)
     {
-        if (!($company instanceof  Company)) {
+        if (!($company instanceof Company)) {
             $company = Company::findOrFail($company);
         }
 
@@ -38,10 +41,12 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
     public function createSubscription(CreateSubscriptionDTO $subDTO)
     {
+
         DB::beginTransaction();
         $subscription = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
 
         if ($subDTO->getAddOnIds()->isNotEmpty()) {
+
             $addons = $subDTO->getAddOnIds()->map(function ($id) use ($subscription) {
                 return [
                     'feature_id' => $id,
@@ -62,11 +67,22 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         $totalAmount = $planPrice->amount ?? 0;
 
         if ($totalAmount > 0) {
-            $addOnAmount = FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
+
+            $addOnAmount  = 0;
+
+            if ($subDTO->getAddOnIds()->isNotEmpty()) {
+
+                $addOnAmount += FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
                 ->where('currency_code', $subDTO->getCurrency())
                 ->sum('price');
+            }
 
-            $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
+            if(Str::upper($subDTO->getCurrency()) == 'USD'){
+                $planProcessor = $planPrice->swipeProcessor()->firstOrFail();
+            }else{
+                $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
+            }
+
 
             $totalAmount += $addOnAmount;
 
@@ -76,19 +92,26 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                 ->setPaymentPlan($planProcessor->plan_processor_id)
                 ->setRedirectUrl($subDTO->getRedirectURI())
                 ->setCustomer(Company::find($subDTO->getCompanyId()))
+                ->setBillingCycle($subDTO->getBillingCycle())
                 ->setMeta([
                     'subscription_id' => $subscription->id,
                     'billing_cycle' => $subDTO->getBillingCycle(),
                 ]);
 
-            $paymentLink = FlutterwaveService::getStandardPaymentLink($paymentLinkDTO);
+            if(Str::upper($subDTO->getCurrency()) == 'USD'){
+                $paymentLink = StripeService::getStandardPaymentLink($paymentLinkDTO);
+            }else{
+                $paymentLink = FlutterwaveService::getStandardPaymentLink($paymentLinkDTO);
+                $paymentLink = $paymentLink->authorization_url ?? $paymentLink->link;
+            }
 
             $subscription->payment()->create([
                 'company_id' => $subDTO->getCompanyId(),
                 'tenant_id' => $subDTO->getTenantId(),
-                'payment_link' => $paymentLink->authorization_url ?? $paymentLink->link,
+                'payment_link' => $paymentLink,
                 'tx_ref' => $paymentLink->reference ?? $paymentLinkDTO->getTxRef(),
             ]);
+
         } else {
             $subscription->activate();
         }
@@ -134,5 +157,73 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         DB::commit();
 
         return $subscription->load('payment');
+    }
+
+    public function addAddOnsToSubsciption(Subscription|string $subscription, AddonDTO $addonDTO)
+    {
+        if (!($subscription instanceof Subscription)) {
+            $subscription = Subscription::findOrFail($subscription);
+        }
+
+        DB::beginTransaction();
+
+        $addOns = $addonDTO->getAddOns()->each(function ($id) use ($subscription) {
+            $subscription->addOns()->create([
+                'feature_id' => $id,
+                ...Arr::except($subscription->toArray(), ['id', 'plan_id', 'invoice_id']),
+            ]);
+        });
+
+        $addonAmount = FeaturePrice::whereIn('feature_id', $addonDTO->getAddOns())
+            ->where('currency_code', $addonDTO->getCurrency())
+            ->sum('price');
+
+        $planPrice = $subscription->plan->prices()
+            ->where('currency_code', $addonDTO->getCurrency())
+            ->where('billing_cycle', $subscription->billing_cycle)
+            ->firstOrFail();
+
+        $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
+
+        $paymentLinkDTO = new CreatePaymentLinkDTO();
+        $paymentLinkDTO->setCurrency($addonDTO->getCurrency())
+            ->setAmount($addonAmount)
+            ->setPaymentPlan($planProcessor->plan_processor_id)
+            ->setRedirectUrl($addonDTO->getRedirectUri())
+            ->setCustomer($subscription->company)
+            ->setMeta([
+                'subscription_id' => $subscription->id,
+                'billing_cycle' => $subscription->billing_cycle,
+            ]);
+
+        $paymentLink = FlutterwaveService::getStandardPaymentLink($paymentLinkDTO);
+
+        $invoiceDTO = new InvoiceDTO();
+        $invoiceDTO->setTenantId($subscription->tenant_id)
+            ->setCompanyId($subscription->company_id)
+            ->setCurrencyCode($addonDTO->getCurrency())
+            ->setBillable($subscription)
+            ->setSubTotal($addonAmount)
+            ->setDueAt(now()->addHours(6));
+
+        $invoice = Invoice::create($invoiceDTO->toArray());
+
+        $features = Feature::find($addonDTO->getAddOns());
+
+        $features->each(function ($feature) use ($addonDTO, $invoice) {
+            $price = $feature->currencyPrice($addonDTO->getCurrency())->firstOrFail();
+
+            $dto = new InvoiceItemDTO();
+            $dto->setQuantity(1)
+                ->setAmount($price->price)
+                ->setItem($feature)
+                ->setInvoiceId($invoice);
+
+            $invoice->items()->create($dto->toArray());
+        });
+
+        DB::commit();
+
+        return $paymentLink;
     }
 }

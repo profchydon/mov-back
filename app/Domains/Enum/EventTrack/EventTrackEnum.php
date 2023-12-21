@@ -12,4 +12,5 @@ enum EventTrackEnum: string
     case COMPANY_CREATED = 'Company Created';
     case ASSET_CREATED = 'Asset Created';
     case SUBSCRIPTION_ACTIVATED = 'Subscription Activated';
+    case ASSET_CHECKED_OUT = 'Asset Checked Out';
 }

@@ -1,0 +1,68 @@
+name: Premium Plus
+description: Popular plan for large teams
+preceding_plan_name: Premium
+rank: 4
+offers:
+  - Up to 500 assets
+  - Up to 10 seats
+  - Asset register
+  - Unlimited insurance policy
+  - Purchase insurance
+  - Asset audit
+  - Document manager
+  - Manage vendor
+  - Depreciation
+  - Up tp 10 workflow builder
+  - API access
+  - Asset checklist
+  - Dedicated account manager
+prices:
+  - currency_code: NGN
+    billing_cycle: Monthly
+    amount: 150000
+    processors:
+      - name: Flutterwave
+        id: 61149
+  - currency_code: USD
+    billing_cycle: Monthly
+    amount: 5000
+    processors:
+      - name: Stripe
+        id: 60139
+  - currency_code: GBP
+    billing_cycle: Monthly
+    amount: 5000
+    processors:
+      - name: Stripe
+        id: 60139
+  - currency_code: EUR
+    billing_cycle: Monthly
+    amount: 5000
+    processors:
+      - name: Stripe
+        id: 60139
+
+  - currency_code: NGN
+    billing_cycle: Yearly
+    amount: 1620000
+    processors:
+      - name: Flutterwave
+        id: 61150
+  - currency_code: USD
+    billing_cycle: Yearly
+    amount: 54000
+    processors:
+      - name: Stripe
+        id: 60139
+  - currency_code: GBP
+    billing_cycle: Yearly
+    amount: 54000
+    processors:
+      - name: Stripe
+        id: 60139
+  - currency_code: EUR
+    billing_cycle: Yearly
+    amount: 54000
+    processors:
+      - name: Stripe
+        id: 60139
