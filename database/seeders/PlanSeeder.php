@@ -18,8 +18,8 @@ class PlanSeeder extends Seeder
      */
     public function run(): void
     {
-        Plan::truncate();
-        PlanProcessor::truncate();
+//        Plan::truncate();
+//        PlanProcessor::truncate();
 
         $directoryPath = base_path('database/seeders/config/plans');
         $files = File::files($directoryPath);

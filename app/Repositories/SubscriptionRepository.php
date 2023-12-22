@@ -15,9 +15,11 @@ use App\Models\Invoice;
 use App\Models\Subscription;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Services\V2\FlutterwaveService;
+use App\Services\V2\StripeService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SubscriptionRepository extends BaseRepository implements SubscriptionRepositoryInterface
 {
@@ -75,7 +77,12 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                 ->sum('price');
             }
 
-            $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
+            if(Str::upper($subDTO->getCurrency()) == 'USD'){
+                $planProcessor = $planPrice->swipeProcessor()->firstOrFail();
+            }else{
+                $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
+            }
+
 
             $totalAmount += $addOnAmount;
 
@@ -85,19 +92,26 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                 ->setPaymentPlan($planProcessor->plan_processor_id)
                 ->setRedirectUrl($subDTO->getRedirectURI())
                 ->setCustomer(Company::find($subDTO->getCompanyId()))
+                ->setBillingCycle($subDTO->getBillingCycle())
                 ->setMeta([
                     'subscription_id' => $subscription->id,
                     'billing_cycle' => $subDTO->getBillingCycle(),
                 ]);
 
-            $paymentLink = FlutterwaveService::getStandardPaymentLink($paymentLinkDTO);
+            if(Str::upper($subDTO->getCurrency()) == 'USD'){
+                $paymentLink = StripeService::getStandardPaymentLink($paymentLinkDTO);
+            }else{
+                $paymentLink = FlutterwaveService::getStandardPaymentLink($paymentLinkDTO);
+                $paymentLink = $paymentLink->authorization_url ?? $paymentLink->link;
+            }
 
             $subscription->payment()->create([
                 'company_id' => $subDTO->getCompanyId(),
                 'tenant_id' => $subDTO->getTenantId(),
-                'payment_link' => $paymentLink->authorization_url ?? $paymentLink->link,
+                'payment_link' => $paymentLink,
                 'tx_ref' => $paymentLink->reference ?? $paymentLinkDTO->getTxRef(),
             ]);
+
         } else {
             $subscription->activate();
         }
