@@ -23,9 +23,11 @@ class AssetMaintenance extends BaseModel
         AssetMaintenanceConstant::STATUS => AssetMaintenanceStatusEnum::class,
     ];
 
-    protected static function booted()
+    public static function boot()
     {
-        static::created(function (self $maintenance) {
+        parent::boot();
+
+        self::created(function (self $maintenance) {
             $maintenance->asset->logForMaintainance();
         });
     }
