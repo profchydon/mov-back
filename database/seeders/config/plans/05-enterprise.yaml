@@ -16,6 +16,12 @@ offers:
   - API access
   - Asset checklist
   - Dedicated account manager
+features:
+  - name: Asset
+    value: Unlimited
+
+  - name: Seat
+    value: 20
 prices:
   - currency_code: NGN
     billing_cycle: Monthly

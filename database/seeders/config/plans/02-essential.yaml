@@ -13,6 +13,12 @@ offers:
   - Up tp 2 workflow builder
   - API access
   - Asset checklist
+features:
+  - name: Asset
+    value: 100
+
+  - name: Seat
+    value: 3
 prices:
   - currency_code: NGN
     billing_cycle: Monthly

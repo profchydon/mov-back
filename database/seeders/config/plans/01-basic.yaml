@@ -7,6 +7,12 @@ offers:
   - Asset register
   - Purchase insurance
   - Document manager
+features:
+  - name: Asset
+    value: 10
+
+  - name: Seat
+    value: 1
 prices:
   - currency_code: NGN
     billing_cycle: Monthly

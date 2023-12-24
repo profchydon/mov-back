@@ -24,6 +24,9 @@ class CountrySeeder extends Seeder
             if (isset($country['currency_code'])) {
                 $code[CommonConstant::CURRENY_CODE] = $country['currency_code'];
             }
+            if (isset($country['payment_processor'])) {
+                $code[CommonConstant::PAYMENT_PROCESSOR] = $country['payment_processor'];
+            }
             Country::updateOrCreate([
                 CommonConstant::NAME => $country['name'],
             ], $code);

@@ -2477,6 +2477,7 @@
 - name: Nigeria
   code: NG
   currency_code: NGN
+  payment_processor: 'Flutterwave'
   states:
     - Abia
     - Adamawa
@@ -3645,14 +3646,16 @@
 - name: United Kingdom
   code: GB
   currency_code: GBP
+  payment_processor: 'Stripe'
   states:
     - England
     - Northern Ireland
     - Scotland
     - Wales
-- name: United States of America
+- name: United States
   code: US
-  currency_code: EUR
+  currency_code: USD
+  payment_processor: 'Stripe'
   states:
     - Alabama
     - Alaska
