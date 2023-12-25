@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Common\SubscriptionValidator;
 use App\Domains\Auth\RoleTypes;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\UserConstant;
@@ -232,8 +233,18 @@ class CompanyController extends Controller
 
         $companySubscription = $company->activeSubscription;
         $role = $this->roleRepository->first('id', $request->role_id);
-        if ($companySubscription?->plan->name === 'Free' && ($role?->name !== RoleTypes::BASIC->value)) {
-            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.upgrade-plan-users'));
+
+        if (($role?->name !== RoleTypes::BASIC->value)) {
+
+            if ($companySubscription?->plan->name === 'Basic') {
+                return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.upgrade-plan-users'));
+            }
+
+            // Check available seats
+            $subscriptionValidator = new SubscriptionValidator($company);
+            if (!$subscriptionValidator->hasAvailableSeats()) {
+                return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.no-available-seats'));
+            }
         }
 
         $user = $request->user();

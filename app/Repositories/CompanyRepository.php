@@ -34,7 +34,13 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         return Company::class;
     }
 
-    public function createCompanyOffice(CreateCompanyOfficeDTO $companyOfficeDTO)
+    /**
+     * Create a company office.
+     *
+     * @param CreateCompanyOfficeDTO $companyOfficeDTO The DTO containing the office details.
+     * @return Office The newly created office.
+     */
+    public function createCompanyOffice(CreateCompanyOfficeDTO $companyOfficeDTO): Office
     {
         return Office::firstOrCreate($companyOfficeDTO->toArray());
     }

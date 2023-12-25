@@ -44,7 +44,7 @@ return [
             'invalid' => "Invalid Company ID provided in request header",
             "missing" => "Company ID missing in request header, provide company_id as x-company-id in your request header"
         ]
-        ],
+    ],
     'company-sole-admin' => 'You have been set as the company\'s sole admin',
     'onboarding-already-completed' => 'You have already completed the onboarding on Rayda Core',
     'invite-not-found' => 'No invitiation found',
@@ -63,4 +63,5 @@ return [
     'user-deleted' => 'User deleted successfully.',
     'users-deleted' => 'Users deleted successfully.',
     'unassign-user-assets' => 'Unassign assets.',
+    'no-available-seats' => 'You have reached your maximum seat limit. Upgrade your plan to accommodate additional seats or free up a seat by removing a user.',
 ];
