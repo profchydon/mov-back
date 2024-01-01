@@ -13,6 +13,7 @@ use App\Domains\DTO\CreateCompanyOfficeDTO;
 use App\Domains\DTO\UpdateCompanyUserDTO;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserStatusEnum;
+use App\Http\Resources\Company\CompanyUserCollection;
 use App\Http\Resources\Office\OfficeResource;
 use App\Models\Company;
 use App\Models\Office;
@@ -55,6 +56,20 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
             'name' => $name,
             'tenant_id' => $office->tenant_id,
         ]);
+    }
+
+    public function getCompanyUsers(Company|string $company)
+    {
+        if (!($company instanceof  Company)) {
+            $company = Company::findOrFail($company);
+        }
+
+        $users = $company->users()->with(['departments', 'teams', 'office', 'roles']);
+
+        $users = User::appendToQueryFromRequestQueryParameters($users);
+        $users = $users->paginate();
+
+        return CompanyUserCollection::make($users);
     }
 
     public function getCompanyOffices(Company|string $company)

@@ -218,7 +218,12 @@ class CompanyController extends Controller
 
     public function getCompanyUsers(Company $company)
     {
-        $users = $company->users->load('departments', 'teams', 'office', 'roles');
+        // $relation = [];
+        // $request->get('assets') ? array_push($relation, 'assets') : '';
+
+        $users = $this->companyRepository->getCompanyUsers($company);
+
+        // $users = $company->users->load('departments', 'teams', 'office', 'roles');
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $users);
     }

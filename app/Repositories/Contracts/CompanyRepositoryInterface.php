@@ -17,4 +17,6 @@ interface CompanyRepositoryInterface extends BaseRepositoryInterface
     public function unSuspendCompanyUser(Company|string $company, User|string $user);
 
     public function deleteCompanyUser(Company|string $company, User|string $user);
+
+    public function getCompanyUsers(Company|string $company);
 }

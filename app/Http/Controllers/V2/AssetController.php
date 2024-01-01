@@ -126,6 +126,7 @@ class AssetController extends Controller
     public function get(Company $company, Request $request)
     {
         $status = $request->get('status');
+        $exclude = $request->get('exclude');
 
         $assets = $this->assetRepository->getCompanyAssets($company, $status);
 

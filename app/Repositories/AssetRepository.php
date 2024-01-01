@@ -44,6 +44,11 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         $statusArray = $status === null ? AssetStatusEnum::values() : [$status];
 
         $assets = $company->assets()->status($statusArray)->with(['type', 'office', 'assignee'])->orderBy('assets.created_at', 'desc');
+
+        if ($status !== AssetStatusEnum::ARCHIVED->value) {
+            $assets = $assets->excludeArchived();
+        }
+        
         $assets = Asset::appendToQueryFromRequestQueryParameters($assets);
 
         return $assets->paginate();

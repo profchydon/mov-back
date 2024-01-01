@@ -77,12 +77,17 @@ class Asset extends BaseModel
             $this->getAttribute(AssetConstant::NEXT_MAINTENANCE_DATE) === null;
     }
 
+    public function scopeExcludeArchived(Builder $query): Builder
+    {
+        return $query->whereNot(AssetConstant::STATUS, AssetStatusEnum::ARCHIVED);
+    }
+
     public function scopeAvailable(Builder $query): Builder
     {
         return $query->where(AssetConstant::STATUS, AssetStatusEnum::AVAILABLE);
     }
 
-    public function scopeArchieved(Builder $query): Builder
+    public function scopeArchived(Builder $query): Builder
     {
         return $query->where(AssetConstant::STATUS, AssetStatusEnum::ARCHIVED);
     }

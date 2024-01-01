@@ -10,9 +10,10 @@ class CompanyUserResource extends JsonResource
 {
     public $collects = User::class;
 
-    public function toArray(Request $request): array
+    public function toArray(Request $request)
     {
-        return [
+
+        $resourceArray = [
             'id' => $this->id,
             'firstName' => $this->first_name,
             'lastName' => $this->last_name,
@@ -22,20 +23,39 @@ class CompanyUserResource extends JsonResource
             'jobTitle' => $this->job_title,
             'stage' => $this->stage,
             'status' => $this->status,
-            'country' => $this->country ? [
-                'id' => $this->country->id,
-                'name' => $this->country->name,
-            ] : null,
-            'department' => $this->departments ? [
-                'id' => $this->departments->id,
-                'name' => $this->departments->name,
-            ] : null,
-            'teams' => $this->teams ? [
-                'id' => $this->teams->id,
-                'name' => $this->teams->name,
-            ] : null,
-            'memberCount' => $this->departments->count(),
-            'teamCount' => $this->teams->count(),
+            // 'country' => $this->country ? [
+            //     'id' => $this->country->id,
+            //     'name' => $this->country->name,
+            // ] : null,
         ];
+
+        // Check if 'department' relationship was loaded in the query
+        if ($this->relationLoaded('department')) {
+            $resourceArray['department'] = $this->department;
+            $resourceArray['memberCount'] = $this->departments->count();
+        } else {
+            $resourceArray['department'] = null;
+            $resourceArray['memberCount'] = null;
+        }
+
+        // Check if 'department' relationship was loaded in the query
+        if ($this->relationLoaded('teams')) {
+            $resourceArray['teams'] = $this->teams;
+            $resourceArray['teamCount'] = $this->teams->count();
+        } else {
+            $resourceArray['teams'] = null;
+            $resourceArray['teamCount'] = null;
+        }
+
+        if ($this->relationLoaded('office')) {
+            $resourceArray['office'] = [
+                'id' => $this->office?->id,
+                'name' => $this->office?->name,
+            ];
+        } else {
+            $resourceArray['office'] = null;
+        }
+
+        return $resourceArray;
     }
 }
