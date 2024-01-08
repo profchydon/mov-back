@@ -27,7 +27,7 @@ class SessionController extends Controller
     public function authorization(Request $request)
     {
         $clientId = getenv('SSO_CLIENT_ID');
-        $ssoUrl = 'http://localhost:8001';
+        $ssoUrl = getenv('SSO_URL');
         $state = Str::random(40);
         $redirectUrl = getenv('CORE_AUTH_CALLBACK_URL');
         $response_type = 'code';
