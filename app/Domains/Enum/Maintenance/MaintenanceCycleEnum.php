@@ -13,5 +13,6 @@ enum MaintenanceCycleEnum: string
     case BI_WEEKLY = 'Bi-weekly';
     case MONTHLY = 'Monthly';
     case BI_MONTHLY = 'Bi-monthly';
+    case QUARTERLY = 'Quarterly';
     case YEARLY = 'Yearly';
 }
