@@ -11,7 +11,6 @@ use App\Domains\Enum\Plan\PlanStatusEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Feature;
 
 class Plan extends BaseModel
 {
@@ -47,7 +46,8 @@ class Plan extends BaseModel
         return $this->processors()->where(PlanProcessorConstant::PLAN_PROCESSOR_NAME, PlanProcessorNameEnum::FLUTTERWAVE);
     }
 
-    public function swipeProcessers(){
+    public function swipeProcessers()
+    {
         return $this->processors()->where(PlanProcessorConstant::PLAN_PROCESSOR_NAME, PlanProcessorNameEnum::STRIPE);
     }
 
@@ -69,13 +69,14 @@ class Plan extends BaseModel
     public function planSeat()
     {
         $feature = $this->features()->where(FeatureConstant::NAME, 'Seat')->first();
+
         return $this->planFeatures()->where(PlanFeatureConstant::FEATURE_ID, $feature?->id);
     }
 
     public function planAsset()
     {
         $feature = $this->features()->where(FeatureConstant::NAME, 'Asset')->first();
+
         return $this->planFeatures()->where(PlanFeatureConstant::FEATURE_ID, $feature?->id);
     }
-
 }

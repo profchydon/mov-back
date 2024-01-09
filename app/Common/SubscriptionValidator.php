@@ -46,7 +46,7 @@ class SubscriptionValidator
         $activePlan = $this->getActiveSubscriptionPlan();
         $planSeat = $activePlan->planSeat->first();
 
-        return $planSeat ? (int)$planSeat->value : 0;
+        return $planSeat ? (int) $planSeat->value : 0;
     }
 
     /**

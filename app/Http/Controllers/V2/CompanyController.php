@@ -19,10 +19,8 @@ use App\Http\Requests\Company\DeleteCompanyUserRequest;
 use App\Http\Requests\Company\SuspendCompanyUserRequest;
 use App\Http\Requests\Company\UpdateCompanyUserRequest;
 use App\Http\Requests\InviteUserRequest;
-use App\Http\Resources\Company\CompanyUserCollection;
 use App\Models\Company;
 use App\Models\User;
-use App\Models\UserInvitation;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyOfficeRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
@@ -240,7 +238,6 @@ class CompanyController extends Controller
         $role = $this->roleRepository->first('id', $request->role_id);
 
         if (($role?->name !== RoleTypes::BASIC->value)) {
-
             if ($companySubscription?->plan->name === 'Basic') {
                 return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.upgrade-plan-users'));
             }
@@ -316,7 +313,6 @@ class CompanyController extends Controller
 
     public function unSuspendCompanyUsers(Company $company, SuspendCompanyUserRequest $request)
     {
-
         foreach ($request->users as $user) {
             $this->companyRepository->unSuspendCompanyUser($company, $user);
         }
@@ -340,7 +336,6 @@ class CompanyController extends Controller
 
     public function deleteCompanyUser(Company $company, User $user)
     {
-
         // if ($user->isSuspended()) {
         //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.user-already-suspended'), $user);
         // }

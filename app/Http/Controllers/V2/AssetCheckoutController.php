@@ -45,12 +45,11 @@ class AssetCheckoutController extends Controller
     public function store(AssetCheckoutRequest $request)
     {
         $assets = collect($request->assets);
-        $assets = $assets->transform(fn($asset) => Asset::find($asset));
+        $assets = $assets->transform(fn ($asset) => Asset::find($asset));
 
         $groupId = strtoupper(substr($request->reason, 0, 3) . '-' . rand(1000000, 9999999));
 
         $assets->transform(function ($asset) use ($request, $assets, $groupId) {
-
             $user = $request->user();
             $dto = new AssetCheckoutDTO();
             $dto->setTenantId($asset->tenant_id)

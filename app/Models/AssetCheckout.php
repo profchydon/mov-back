@@ -34,9 +34,7 @@ class AssetCheckout extends BaseModel
         parent::boot();
 
         self::created(function (self $checkout) {
-
             if ($checkout->getAttribute(AssetCheckoutConstant::REASON) === 'Maintenance') {
-
                 $checkout->asset->maintenances()->create([
                     AssetMaintenanceConstant::TENANT_ID => $checkout->getAttribute(AssetCheckoutConstant::TENANT_ID),
                     AssetMaintenanceConstant::COMPANY_ID => $checkout->getAttribute(AssetCheckoutConstant::COMPANY_ID),

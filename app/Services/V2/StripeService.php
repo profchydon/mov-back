@@ -11,16 +11,14 @@ use Stripe\Stripe;
 
 class StripeService implements PaymentServiceInterface
 {
-
     public static function getStandardPaymentLink(CreatePaymentLinkDTO $linkDTO)
     {
-
         Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
         $price = Price::create([
             'currency' => Str::lower($linkDTO->getCurrency()),
             'unit_amount' => $linkDTO->getAmountInKobo(),
-            'recurring' =>  ['interval' => Str::lower(Str::substr($linkDTO->getBillingCycle(), 0, -2))], //remove 'ly', from billing cycle.
+            'recurring' => ['interval' => Str::lower(Str::substr($linkDTO->getBillingCycle(), 0, -2))], //remove 'ly', from billing cycle.
             'product_data' => ['name' => $linkDTO->getPaymentPlan()],
         ]);
 

@@ -26,5 +26,4 @@ class DeleteCompanyUserRequest extends FormRequest
             'users' => ['required', 'array', Rule::exists('users', 'id')],
         ];
     }
-
 }

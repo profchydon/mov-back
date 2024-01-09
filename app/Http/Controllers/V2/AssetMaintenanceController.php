@@ -55,5 +55,4 @@ class AssetMaintenanceController extends Controller
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $maintenance);
     }
-
 }

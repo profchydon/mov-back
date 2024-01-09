@@ -41,12 +41,10 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
     public function createSubscription(CreateSubscriptionDTO $subDTO)
     {
-
         DB::beginTransaction();
         $subscription = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
 
         if ($subDTO->getAddOnIds()->isNotEmpty()) {
-
             $addons = $subDTO->getAddOnIds()->map(function ($id) use ($subscription) {
                 return [
                     'feature_id' => $id,
@@ -67,19 +65,17 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         $totalAmount = $planPrice->amount ?? 0;
 
         if ($totalAmount > 0) {
-
-            $addOnAmount  = 0;
+            $addOnAmount = 0;
 
             if ($subDTO->getAddOnIds()->isNotEmpty()) {
-
                 $addOnAmount += FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
                 ->where('currency_code', $subDTO->getCurrency())
                 ->sum('price');
             }
 
-            if(Str::upper($subDTO->getCurrency()) == 'USD'){
+            if (Str::upper($subDTO->getCurrency()) == 'USD') {
                 $planProcessor = $planPrice->swipeProcessor()->firstOrFail();
-            }else{
+            } else {
                 $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
             }
 
@@ -98,9 +94,9 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                     'billing_cycle' => $subDTO->getBillingCycle(),
                 ]);
 
-            if( Str::upper($subDTO->getCurrency()) == 'USD' || Str::upper($subDTO->getCurrency()) == 'GBP' || Str::upper($subDTO->getCurrency()) == 'EUR') {
+            if (Str::upper($subDTO->getCurrency()) == 'USD' || Str::upper($subDTO->getCurrency()) == 'GBP' || Str::upper($subDTO->getCurrency()) == 'EUR') {
                 $paymentLink = StripeService::getStandardPaymentLink($paymentLinkDTO);
-            }else{
+            } else {
                 $paymentLink = FlutterwaveService::getStandardPaymentLink($paymentLinkDTO);
                 $paymentLink = $paymentLink->authorization_url ?? $paymentLink->link;
             }
@@ -111,7 +107,6 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                 'payment_link' => $paymentLink,
                 'tx_ref' => $paymentLink->reference ?? $paymentLinkDTO->getTxRef(),
             ]);
-
         } else {
             $subscription->activate();
         }

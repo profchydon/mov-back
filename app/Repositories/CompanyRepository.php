@@ -239,9 +239,7 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         }
 
         try {
-
             DB::transaction(function () use ($user, $company) {
-
                 $user->update([UserConstant::STATUS => UserStatusEnum::INACTIVE->value]);
 
                 UserCompany::where(UserCompanyConstant::COMPANY_ID, $company->id)->where(UserCompanyConstant::USER_ID, $user->id)->update([
@@ -266,9 +264,7 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         }
 
         try {
-
             DB::transaction(function () use ($user, $company) {
-
                 $user->update([UserConstant::STATUS => UserStatusEnum::ACTIVE->value]);
 
                 UserCompany::where(UserCompanyConstant::COMPANY_ID, $company->id)->where(UserCompanyConstant::USER_ID, $user->id)->update([
@@ -293,17 +289,15 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         }
 
         try {
-
             DB::transaction(function () use ($user, $company) {
-
                 $user->update([
                     UserConstant::STATUS => UserStatusEnum::DEACTIVATED->value,
-                    UserConstant::DELETED_AT => now()
+                    UserConstant::DELETED_AT => now(),
                 ]);
 
                 UserCompany::where(UserCompanyConstant::COMPANY_ID, $company->id)->where(UserCompanyConstant::USER_ID, $user->id)->update([
                     UserCompanyConstant::STATUS => UserCompanyStatusEnum::DEACTIVATED->value,
-                    UserCompanyConstant::DELETED_AT => now()
+                    UserCompanyConstant::DELETED_AT => now(),
                 ]);
             });
 

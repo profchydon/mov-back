@@ -2,13 +2,10 @@
 
 namespace App\Listeners\Asset;
 
-use App\Domains\Enum\EventTrack\EventTrackEnum;
 use App\Events\Asset\AssetCheckedOutEvent;
-use App\Mail\SubscriptionActivationMail;
 use App\Repositories\Contracts\AssetMaintenanceRepositoryInterface;
 use App\Services\V2\EventTrackerService;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class AssetCheckedOutListener
 {
@@ -32,6 +29,4 @@ class AssetCheckedOutListener
 
         return true;
     }
-
-
 }

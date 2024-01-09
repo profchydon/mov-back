@@ -12,7 +12,6 @@ use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -50,7 +49,6 @@ class Asset extends BaseModel
         });
 
         self::updated(function (self $asset) {
-
             if ($asset->isDirty(AssetConstant::STATUS)) {
                 AssetStatusUpdatedEvent::dispatch($asset);
             }

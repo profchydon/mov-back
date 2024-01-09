@@ -30,6 +30,4 @@ class PlanFeature extends BaseModel
     {
         return ['id'];
     }
-
-    
 }

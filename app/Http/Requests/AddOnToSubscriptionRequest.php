@@ -7,10 +7,8 @@ use App\Domains\DTO\AddonDTO;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-
 class AddOnToSubscriptionRequest extends FormRequest
 {
-
     public function rules(): array
     {
         $subscription = $this->route('subscription');

@@ -15,9 +15,10 @@ final class AddonDTO
         return $this->addOns;
     }
 
-    public function setAddOns(array $addOns): AddonDTO
+    public function setAddOns(array $addOns): self
     {
         $this->addOns = collect($addOns);
+
         return $this;
     }
 
@@ -26,9 +27,10 @@ final class AddonDTO
         return $this->currency_code;
     }
 
-    public function setCurrency(string $currency_code): AddonDTO
+    public function setCurrency(string $currency_code): self
     {
         $this->currency_code = $currency_code;
+
         return $this;
     }
 
@@ -37,13 +39,10 @@ final class AddonDTO
         return $this->redirect_uri;
     }
 
-    public function setRedirectUri(string $redirect_uri): AddonDTO
+    public function setRedirectUri(string $redirect_uri): self
     {
         $this->redirect_uri = $redirect_uri;
+
         return $this;
     }
-
-
-
-
 }

@@ -29,7 +29,6 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -248,7 +247,7 @@ class AssetController extends Controller
     public function uploadAssetImage(Request $request, Company $company, Asset $asset)
     {
         $this->validate($request, [
-            'image' => 'required|image|max:5120'
+            'image' => 'required|image|max:5120',
         ]);
 
         $image = $request->file('image');
@@ -356,7 +355,6 @@ class AssetController extends Controller
 
     public function reassignMultipleAsset(Company $company, Asset $asset, ReAssignMultipleAssetRequest $request)
     {
-
         $user = $request->assignee ? $request->assignee : null;
         $assignedDate = $request->assignee ? now() : null;
 
@@ -372,7 +370,6 @@ class AssetController extends Controller
 
     public function updateMultipleAsset(UpdateMultipleAssetsRequest $request)
     {
-
         $status = $request->get('status');
 
         $data = [

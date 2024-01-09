@@ -60,12 +60,11 @@ class PlanSeeder extends Seeder
             }
 
             foreach ($seedFile['features'] as $planFeature) {
-
                 $feature = Feature::where(FeatureConstant::NAME, $planFeature['name'])->first();
 
                 $plan->planFeatures()->updateOrCreate([
                     PlanFeatureConstant::PLAN_ID => $plan->id,
-                    PlanFeatureConstant::FEATURE_ID => $feature->id
+                    PlanFeatureConstant::FEATURE_ID => $feature->id,
                 ], [
                     PlanFeatureConstant::VALUE => $planFeature['value'],
                 ]);

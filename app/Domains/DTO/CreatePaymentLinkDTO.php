@@ -134,11 +134,10 @@ final class CreatePaymentLinkDTO
      * @param string|null $billing_cycle
      * @return CreatePaymentLinkDTO
      */
-    public function setBillingCycle(?string $billing_cycle): CreatePaymentLinkDTO
+    public function setBillingCycle(?string $billing_cycle): self
     {
         $this->billing_cycle = $billing_cycle;
+
         return $this;
     }
-
-
 }

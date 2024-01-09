@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\V2;
 
-use App\Domains\Constant\UserCompanyConstant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RevokeSeatFromUserRequest;
 use App\Http\Requests\User\AssignSeatToUserRequest;
@@ -32,7 +31,7 @@ class SeatController extends Controller
 
         $response = [
             'seats' => $users,
-            'seatLimit' => $planSeat?->value
+            'seatLimit' => $planSeat?->value,
         ];
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $response);
