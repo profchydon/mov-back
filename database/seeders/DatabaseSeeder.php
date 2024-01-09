@@ -22,10 +22,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PermissionSeeder::class);
         $this->call(RoleSeeder::class);
+        $this->call(FeatureSeeder::class);
         $this->call(PlanSeeder::class);
         $this->call(CountrySeeder::class);
         $this->call(CurrencySeeder::class);
-        $this->call(FeatureSeeder::class);
         $this->call(AssetTypeSeeder::class);
         // // $this->call(CompanySeeder::class);
         // $this->call(InvoiceSeeder::class);

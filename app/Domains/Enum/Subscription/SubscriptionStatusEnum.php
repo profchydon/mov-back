@@ -8,7 +8,7 @@ enum SubscriptionStatusEnum: string
 {
     use ListsEnumValues;
 
-    case ACTIVE = 'ACTIVE';
-    case INACTIVE = 'INACTIVE';
-    case EXPIRED = 'EXPIRED';
+    case ACTIVE = 'Active';
+    case INACTIVE = 'Inactive';
+    case EXPIRED = 'Expired';
 }

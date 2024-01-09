@@ -43,4 +43,9 @@ class PlanPrice extends BaseModel
     {
         return $this->processor()->where(PlanProcessorConstant::PLAN_PROCESSOR_NAME, PlanProcessorNameEnum::FLUTTERWAVE);
     }
+
+    public function swipeProcessor()
+    {
+        return $this->processor()->where(PlanProcessorConstant::PLAN_PROCESSOR_NAME, PlanProcessorNameEnum::STRIPE);
+    }
 }

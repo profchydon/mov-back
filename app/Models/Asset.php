@@ -5,13 +5,13 @@ namespace App\Models;
 use App\Domains\Constant\Asset\AssetCheckoutConstant;
 use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\Asset\AssetMaintenanceConstant;
+use App\Domains\Enum\Asset\AssetConditionEnum;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Events\AssetStatusUpdatedEvent;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -45,13 +45,39 @@ class Asset extends BaseModel
         parent::boot();
 
         self::created(function ($asset) {
+            // Code for the created event
         });
 
         self::updated(function (self $asset) {
             if ($asset->isDirty(AssetConstant::STATUS)) {
                 AssetStatusUpdatedEvent::dispatch($asset);
             }
+
+            // if (!$asset->hasMissingInformtion()) {
+            //     $asset->update([
+            //         AssetConstant::CONDITION => AssetConditionEnum::WORKING_PERFECTLY,
+            //     ]);
+            // }
         });
+    }
+
+    public function hasMissingInformtion()
+    {
+        return
+            $this->getAttribute(AssetConstant::MAKE) === null ||
+            $this->getAttribute(AssetConstant::MODEL) === null ||
+            $this->getAttribute(AssetConstant::SERIAL_NUMBER) === null ||
+            $this->getAttribute(AssetConstant::TYPE_ID) === null ||
+            $this->getAttribute(AssetConstant::PURCHASE_PRICE) === null ||
+            $this->getAttribute(AssetConstant::PURCHASE_DATE) === null ||
+            $this->getAttribute(AssetConstant::CURRENCY) === null ||
+            $this->getAttribute(AssetConstant::MAINTENANCE_CYCLE) === null ||
+            $this->getAttribute(AssetConstant::NEXT_MAINTENANCE_DATE) === null;
+    }
+
+    public function scopeExcludeArchived(Builder $query): Builder
+    {
+        return $query->whereNot(AssetConstant::STATUS, AssetStatusEnum::ARCHIVED);
     }
 
     public function scopeAvailable(Builder $query): Builder
@@ -59,7 +85,7 @@ class Asset extends BaseModel
         return $query->where(AssetConstant::STATUS, AssetStatusEnum::AVAILABLE);
     }
 
-    public function scopeArchieved(Builder $query): Builder
+    public function scopeArchived(Builder $query): Builder
     {
         return $query->where(AssetConstant::STATUS, AssetStatusEnum::ARCHIVED);
     }
@@ -114,6 +140,11 @@ class Asset extends BaseModel
         return $this->belongsTo(User::class, 'assigned_to');
     }
 
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
+
     public function checkout()
     {
         return $this->update([
@@ -136,5 +167,10 @@ class Asset extends BaseModel
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function checkedOut(): bool
+    {
+        return $this->status === AssetStatusEnum::CHECKED_OUT->value;
     }
 }

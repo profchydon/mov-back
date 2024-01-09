@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V2;
 use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddOnToSubscriptionRequest;
 use App\Http\Requests\SelectSubscriptionPlanRequest;
 use App\Models\Company;
 use App\Models\Subscription;
@@ -48,7 +49,7 @@ class SubscriptionController extends Controller
 
     public function getSubscription(Company $company, Subscription $subscription)
     {
-        $subscription = $this->subscriptionRepository->firstWithRelation(SubscriptionConstant::ID, $subscription->id, ['payment', 'plan']);
+        $subscription = $this->subscriptionRepository->firstWithRelation(SubscriptionConstant::ID, $subscription->id, ['payment', 'plan', 'addOns']);
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $subscription);
     }
@@ -65,5 +66,12 @@ class SubscriptionController extends Controller
         $subscriptions = $company->subscriptions()->get();
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $subscriptions);
+    }
+
+    public function addAddonsToSubscription(Company $company, Subscription $subscription, AddOnToSubscriptionRequest $request)
+    {
+        $payment = $this->subscriptionRepository->addAddOnsToSubsciption($subscription, $request->dto());
+
+        return $this->response(Response::HTTP_OK, 'Payment link generated', $payment);
     }
 }

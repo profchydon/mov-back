@@ -8,7 +8,7 @@ enum AssetAcquisitionTypeEnum: string
 {
     use ListsEnumValues;
 
-    case BRAND_NEW = 'BRAND NEW';
-    case REFURBISHED = 'REFURBISHED';
-    case USED = 'USED';
+    case BRAND_NEW = 'Brand New';
+    case REFURBISHED = 'Refurbished';
+    case USED = 'Used';
 }

@@ -124,7 +124,6 @@ abstract class BaseRepository
 
     public function softDeleteById($id, $data = [])
     {
-
         $data['deleted_at'] = now();
 
         $model = $this->model::find($id);

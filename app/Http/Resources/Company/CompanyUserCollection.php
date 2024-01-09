@@ -7,10 +7,10 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class CompanyUserCollection extends ResourceCollection
 {
-    public function toArray(Request $request): array
+    public function toArray(Request $request)
     {
         return [
-            'data' => CompanyResource::collection($this->collection),
+            'data' => CompanyUserResource::collection($this->collection),
             'total' => $this->total(),
             'per_page' => $this->perPage(),
             'current_page' => $this->currentPage(),

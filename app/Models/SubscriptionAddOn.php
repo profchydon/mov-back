@@ -79,4 +79,11 @@ class SubscriptionAddOn extends Model
     {
         parent::boot();
     }
+
+    public function activate(): bool
+    {
+        return $this->update([
+            SubscriptionAddOnConstant::STATUS => SubscriptionAddOnStatusEnum::ACTIVE,
+        ]);
+    }
 }

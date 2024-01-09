@@ -8,6 +8,6 @@ enum AssetTypeStatusEnum: string
 {
     use ListsEnumValues;
 
-    case ACTIVE = 'ACTIVE';
-    case INACTIVE = 'INACTIVE';
+    case ACTIVE = 'Active';
+    case INACTIVE = 'Inactive';
 }

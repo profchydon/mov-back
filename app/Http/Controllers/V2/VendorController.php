@@ -43,6 +43,7 @@ class VendorController extends Controller
     public function show(Company $company, Vendor $vendor)
     {
         $vendor = $vendor->load('assets');
+
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $vendor);
     }
 

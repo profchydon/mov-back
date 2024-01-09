@@ -1,6 +1,6 @@
 name: Audit
 description: Let us help you audit your assets
-pricing: PAID
+pricing: Paid
 available_as_addon: true
 prices:
   - currency_code: NGN

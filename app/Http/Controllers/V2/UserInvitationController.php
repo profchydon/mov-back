@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Common\SubscriptionValidator;
 use App\Domains\Auth\RoleTypes;
 use App\Domains\Constant\UserCompanyConstant;
 use App\Domains\Constant\UserDepartmentConstant;
@@ -12,6 +13,10 @@ use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserInvitationStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\AcceptUserInvitationRequest;
+use App\Models\Company;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\UserInvitation;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\UserCompanyRepositoryInterface;
 use App\Repositories\Contracts\UserDepartmentRepositoryInterface;
@@ -41,6 +46,13 @@ class UserInvitationController extends Controller
     ) {
     }
 
+    /**
+     * Find a user invitation by code.
+     *
+     * @param string $code The code of the invitation.
+     * @throws \Some_Exception_Class If the invitation is not found.
+     * @return \Some_Return_Value The fetched user invitation.
+     */
     public function findUserInvitation($code)
     {
         $invitation = $this->userInvitationRepository->firstWithRelation(UserInvitationConstant::CODE, $code, ['role']);
@@ -52,6 +64,14 @@ class UserInvitationController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $invitation);
     }
 
+    /**
+     * Accepts a user invitation with the given code and request.
+     *
+     * @param string $code The invitation code
+     * @param AcceptUserInvitationRequest $request The accept user invitation request
+     * @throws Exception If an error occurs during the acceptance process
+     * @return Response The response containing the created record data
+     */
     public function acceptUserInvitation($code, AcceptUserInvitationRequest $request)
     {
         $invitation = $this->userInvitationRepository->first(UserInvitationConstant::CODE, $code);
@@ -72,6 +92,7 @@ class UserInvitationController extends Controller
             }
 
             $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code, $invitation) {
+
                 $ssoData = $createSSOUser->json()['data'];
 
                 $userDto = $request->getUserDTO()
@@ -83,35 +104,21 @@ class UserInvitationController extends Controller
                 $user = $this->userRepository->create($userDto->toArray());
                 $role = $invitation->role;
 
-                $this->userCompanyRepository->create([
-                    UserCompanyConstant::TENANT_ID => $company->tenant_id,
-                    UserCompanyConstant::COMPANY_ID => $company->id,
-                    UserCompanyConstant::USER_ID => $user->id,
-                    UserCompanyConstant::STATUS => UserCompanyStatusEnum::ACTIVE->value,
-                    UserCompanyConstant::HAS_SEAT => $role->name === RoleTypes::BASIC->value ? false : true,
-                ]);
+                // Check available seats
+                if (!$this->hasAvailableSeats($company, $role)) {
+                    $role = $this->roleRepository->first('name', RoleTypes::BASIC->value);
+                }
 
-                //Assign role to user
-                $this->userRoleRepository->create([
-                    UserRoleConstant::USER_ID => $user->id,
-                    UserRoleConstant::COMPANY_ID => $company->id,
-                    UserRoleConstant::ROLE_ID => $invitation->role_id,
-                ]);
+                $this->createUserCompany($company, $user, $role);
+                $this->assignRoleToUser($company, $user, $role);
+
 
                 if ($invitation->department_id !== null) {
-                    $this->userDepartmentRepository->create([
-                        UserDepartmentConstant::USER_ID => $user->id,
-                        UserDepartmentConstant::COMPANY_ID => $company->id,
-                        UserDepartmentConstant::DEPARTMENT_ID => $invitation->department_id,
-                    ]);
+
+                    $this->createUserDepartment($company, $user, $invitation);
 
                     if ($invitation->team_id !== null) {
-                        $this->userTeamRepository->create([
-                            UserTeamConstant::USER_ID => $user->id,
-                            UserTeamConstant::COMPANY_ID => $company->id,
-                            UserTeamConstant::DEPARTMENT_ID => $invitation->department_id,
-                            UserTeamConstant::TEAM_ID => $invitation->team_id,
-                        ]);
+                        $this->createUserTeam($company, $user, $invitation);
                     }
                 }
 
@@ -132,5 +139,109 @@ class UserInvitationController extends Controller
             //operation failed on core, notify sso
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
         }
+    }
+
+    /**
+     * Checks if the company has available seats for a given role.
+     *
+     * @param Company $company The company name.
+     * @param $role The role to check.
+     * @return bool True if the company has available seats or the role is basic, false otherwise.
+     */
+    private function hasAvailableSeats(Company $company, Role $role): bool
+    {
+        // Create a SubscriptionValidator instance for the company
+        $subscriptionValidator = new SubscriptionValidator($company);
+
+        // Check if the company has available seats
+        $hasAvailableSeats = $subscriptionValidator->hasAvailableSeats();
+
+        // Check if the role is basic
+        $isBasicRole = $role->name === RoleTypes::BASIC->value;
+
+        // Return true if the company has available seats or the role is basic
+        return $hasAvailableSeats || $isBasicRole;
+    }
+
+    /**
+     * Create a user company relationship.
+     *
+     * @param Company $company The company object.
+     * @param User $user The user object.
+     * @param $role The role object.
+     * @return void
+     */
+    private function createUserCompany(Company $company, User $user, $role): void
+    {
+        // Determine the has_seat value based on the role type
+        $hasSeat = $role->name === RoleTypes::BASIC->value ? false : true;
+
+        // Create the user company record
+        $this->userCompanyRepository->create([
+            UserCompanyConstant::TENANT_ID => $company->tenant_id,
+            UserCompanyConstant::COMPANY_ID => $company->id,
+            UserCompanyConstant::USER_ID => $user->id,
+            UserCompanyConstant::STATUS => UserCompanyStatusEnum::ACTIVE->value,
+            UserCompanyConstant::HAS_SEAT => $hasSeat,
+        ]);
+    }
+
+
+    /**
+     * Assigns a role to a user for a specific company.
+     *
+     * @param Company $company The company to assign the role to.
+     * @param User $user The user to assign the role to.
+     * @param $role The role to assign.
+     * @return void
+     */
+    private function assignRoleToUser(Company $company, User $user, $role): void
+    {
+        // Create a new user role record with the given user, company, and role IDs.
+        $this->userRoleRepository->create([
+            UserRoleConstant::USER_ID => $user->id,
+            UserRoleConstant::COMPANY_ID => $company->id,
+            UserRoleConstant::ROLE_ID => $role->id,
+        ]);
+    }
+
+
+    /**
+     * Create a user department.
+     *
+     * @param Company $company The company object.
+     * @param User $user The user object.
+     * @param UserInvitation $invitation The user invitation object.
+     * @return void
+     */
+    private function createUserDepartment(Company $company, User $user, UserInvitation $invitation): void
+    {
+        // Create a new user department record in the database
+        $this->userDepartmentRepository->create([
+            UserDepartmentConstant::USER_ID => $user->id,
+            UserDepartmentConstant::COMPANY_ID => $company->id,
+            UserDepartmentConstant::DEPARTMENT_ID => $invitation->department_id,
+        ]);
+    }
+
+
+
+    /**
+     * Creates a user team.
+     *
+     * @param Company $company The company object.
+     * @param User $user The user object.
+     * @param UserInvitation $invitation The user invitation object.
+     * @return void
+     */
+    private function createUserTeam(Company $company, User $user, UserInvitation $invitation): void
+    {
+        // Create the user team using the repository
+        $this->userTeamRepository->create([
+            UserTeamConstant::USER_ID => $user->id,
+            UserTeamConstant::COMPANY_ID => $company->id,
+            UserTeamConstant::DEPARTMENT_ID => $invitation->department_id,
+            UserTeamConstant::TEAM_ID => $invitation->team_id,
+        ]);
     }
 }

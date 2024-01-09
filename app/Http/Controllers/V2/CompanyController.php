@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Common\SubscriptionValidator;
 use App\Domains\Auth\RoleTypes;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\UserConstant;
@@ -18,10 +19,8 @@ use App\Http\Requests\Company\DeleteCompanyUserRequest;
 use App\Http\Requests\Company\SuspendCompanyUserRequest;
 use App\Http\Requests\Company\UpdateCompanyUserRequest;
 use App\Http\Requests\InviteUserRequest;
-use App\Http\Resources\Company\CompanyUserCollection;
 use App\Models\Company;
 use App\Models\User;
-use App\Models\UserInvitation;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyOfficeRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
@@ -102,7 +101,7 @@ class CompanyController extends Controller
                     ]);
 
                     //Assign admin role to user
-                    $adminRole = $this->roleRepository->first('name', RoleTypes::ADMINISTRATOR);
+                    $adminRole = $this->roleRepository->first('name', RoleTypes::SUPER_ADMINISTRATOR);
 
                     $this->userRoleRepository->create([
                         UserRoleConstant::USER_ID => $user->id,
@@ -217,7 +216,12 @@ class CompanyController extends Controller
 
     public function getCompanyUsers(Company $company)
     {
-        $users = $company->users->load('departments', 'teams', 'office', 'roles');
+        // $relation = [];
+        // $request->get('assets') ? array_push($relation, 'assets') : '';
+
+        $users = $this->companyRepository->getCompanyUsers($company);
+
+        // $users = $company->users->load('departments', 'teams', 'office', 'roles');
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $users);
     }
@@ -232,8 +236,17 @@ class CompanyController extends Controller
 
         $companySubscription = $company->activeSubscription;
         $role = $this->roleRepository->first('id', $request->role_id);
-        if ($companySubscription?->plan->name === 'Free' && ($role?->name !== RoleTypes::BASIC->value)) {
-            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.upgrade-plan-users'));
+
+        if (($role?->name !== RoleTypes::BASIC->value)) {
+            if ($companySubscription?->plan->name === 'Basic') {
+                return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.upgrade-plan-users'));
+            }
+
+            // Check available seats
+            $subscriptionValidator = new SubscriptionValidator($company);
+            if (!$subscriptionValidator->hasAvailableSeats()) {
+                return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.no-available-seats'));
+            }
         }
 
         $user = $request->user();
@@ -300,7 +313,6 @@ class CompanyController extends Controller
 
     public function unSuspendCompanyUsers(Company $company, SuspendCompanyUserRequest $request)
     {
-
         foreach ($request->users as $user) {
             $this->companyRepository->unSuspendCompanyUser($company, $user);
         }
@@ -324,7 +336,6 @@ class CompanyController extends Controller
 
     public function deleteCompanyUser(Company $company, User $user)
     {
-
         // if ($user->isSuspended()) {
         //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.user-already-suspended'), $user);
         // }

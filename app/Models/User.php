@@ -121,11 +121,11 @@ class User extends Authenticatable
 
     public function isActive(): bool
     {
-        return $this->status == UserStatusEnum::ACTIVE;
+        return $this->status == UserStatusEnum::ACTIVE->value;
     }
 
     public function isSuspended()
     {
-        return $this->status == UserStatusEnum::INACTIVE;
+        return $this->status == UserStatusEnum::INACTIVE->value;
     }
 }

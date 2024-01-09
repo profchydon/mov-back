@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\V2;
 
-use App\Domains\Constant\UserCompanyConstant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RevokeSeatFromUserRequest;
 use App\Http\Requests\User\AssignSeatToUserRequest;
@@ -18,7 +17,8 @@ class SeatController extends Controller
     public function index(Company $company, Request $request)
     {
         $users = $company->seats;
-        // $users = UserCompany::with(['user'])->where(UserCompanyConstant::COMPANY_ID, $company->id)->where(UserCompanyConstant::HAS_SEAT, true)->get();
+        $plan = $company->activeSubscription->plan;
+        $planSeat = $plan->planSeat->first();
 
         $users = $users->load(['roles', 'departments', 'teams', 'office']);
         // $users = User::appendToQueryFromRequestQueryParameters($users);
@@ -31,7 +31,7 @@ class SeatController extends Controller
 
         $response = [
             'seats' => $users,
-            'seatLimit' => 4
+            'seatLimit' => $planSeat?->value,
         ];
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $response);

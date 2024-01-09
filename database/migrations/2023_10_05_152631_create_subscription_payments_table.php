@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->foreignUuid(SubscriptionPaymentConstant::TENANT_ID)->references(\App\Domains\Constant\CommonConstant::ID)->on(\App\Models\Tenant::getTableName());
             $table->foreignUuid(SubscriptionPaymentConstant::COMPANY_ID)->references(\App\Domains\Constant\CommonConstant::ID)->on(\App\Models\Company::getTableName());
             $table->foreignUuid(SubscriptionPaymentConstant::SUBSCRIPTION_ID)->references(\App\Domains\Constant\CommonConstant::ID)->on(\App\Models\Subscription::getTableName());
-            $table->string(SubscriptionPaymentConstant::PAYMENT_LINK);
+            $table->longText(SubscriptionPaymentConstant::PAYMENT_LINK);
             $table->string(SubscriptionPaymentConstant::TX_REF);
             $table->enum(SubscriptionPaymentConstant::STATUS, \App\Domains\Enum\PaymentStatusEnum::values())->default(\App\Domains\Enum\PaymentStatusEnum::PROCESSING->value);
             $table->timestamps();

@@ -1,18 +1,20 @@
 <?php
 
 use App\Domains\Constant\Asset\AssetConstant;
+use App\Domains\Enum\Maintenance\MaintenanceCycleEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->string(AssetConstant::CONDITION)->nullable();
+            $table->enum(AssetConstant::MAINTENANCE_CYCLE, MaintenanceCycleEnum::values())->nullable()->after('status');
         });
     }
 
@@ -22,7 +24,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->dropColumn(AssetConstant::CONDITION);
+
         });
     }
 };

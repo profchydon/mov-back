@@ -24,7 +24,9 @@ class AssetTypeSeeder extends Seeder
         ];
 
         foreach ($types as $type) {
-            AssetType::create([
+            AssetType::updateOrCreate([
+                AssetTypeConstant::NAME => $type,
+            ], [
                 AssetTypeConstant::NAME => $type,
                 AssetTypeConstant::STATUS => AssetTypeStatusEnum::ACTIVE->value,
             ]);

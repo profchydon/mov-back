@@ -49,6 +49,11 @@ class UserInvitation extends BaseModel
         return $this->belongsTo(Office::class);
     }
 
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
     protected static function booted()
     {
         static::created(function (self $model) {

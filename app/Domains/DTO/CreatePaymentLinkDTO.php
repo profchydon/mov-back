@@ -16,6 +16,7 @@ final class CreatePaymentLinkDTO
     private array $meta = [];
     private array $customer;
     private ?string $payment_plan;
+    private ?string $billing_cycle;
 
     public function __construct()
     {
@@ -117,6 +118,25 @@ final class CreatePaymentLinkDTO
     public function setPaymentPlan(?string $payment_plan): self
     {
         $this->payment_plan = $payment_plan;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBillingCycle(): ?string
+    {
+        return $this->billing_cycle;
+    }
+
+    /**
+     * @param string|null $billing_cycle
+     * @return CreatePaymentLinkDTO
+     */
+    public function setBillingCycle(?string $billing_cycle): self
+    {
+        $this->billing_cycle = $billing_cycle;
 
         return $this;
     }

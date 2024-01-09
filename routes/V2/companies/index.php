@@ -46,6 +46,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
     Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->name('get.company.subscriptions');
     Route::get('/{company}/active-subscription', [SubscriptionController::class, 'getActiveSubscription'])->name('get.company.active-subscription');
     Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription');
+    Route::post('/{company}/subscriptions/{subscription}/add-ons', [SubscriptionController::class, 'addAddonsToSubscription'])->name('get.company.subscription');
     Route::resource('{company}/offices', CompanyOfficeController::class)->middleware(['auth:sanctum', 'user-in-company']);
     Route::middleware(['auth:sanctum'])->resource('{company}/offices', CompanyOfficeController::class);
     Route::get('{company}/dashboard', [\App\Http\Controllers\V2\DashboardController::class, 'index']);

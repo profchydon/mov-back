@@ -13,6 +13,7 @@ use App\Domains\DTO\CreateCompanyOfficeDTO;
 use App\Domains\DTO\UpdateCompanyUserDTO;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Domains\Enum\User\UserStatusEnum;
+use App\Http\Resources\Company\CompanyUserCollection;
 use App\Http\Resources\Office\OfficeResource;
 use App\Models\Company;
 use App\Models\Office;
@@ -34,7 +35,13 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         return Company::class;
     }
 
-    public function createCompanyOffice(CreateCompanyOfficeDTO $companyOfficeDTO)
+    /**
+     * Create a company office.
+     *
+     * @param CreateCompanyOfficeDTO $companyOfficeDTO The DTO containing the office details.
+     * @return Office The newly created office.
+     */
+    public function createCompanyOffice(CreateCompanyOfficeDTO $companyOfficeDTO): Office
     {
         return Office::firstOrCreate($companyOfficeDTO->toArray());
     }
@@ -49,6 +56,20 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
             'name' => $name,
             'tenant_id' => $office->tenant_id,
         ]);
+    }
+
+    public function getCompanyUsers(Company|string $company)
+    {
+        if (!($company instanceof  Company)) {
+            $company = Company::findOrFail($company);
+        }
+
+        $users = $company->users()->with(['departments', 'teams', 'office', 'roles']);
+
+        $users = User::appendToQueryFromRequestQueryParameters($users);
+        $users = $users->paginate();
+
+        return CompanyUserCollection::make($users);
     }
 
     public function getCompanyOffices(Company|string $company)
@@ -218,9 +239,7 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         }
 
         try {
-
             DB::transaction(function () use ($user, $company) {
-
                 $user->update([UserConstant::STATUS => UserStatusEnum::INACTIVE->value]);
 
                 UserCompany::where(UserCompanyConstant::COMPANY_ID, $company->id)->where(UserCompanyConstant::USER_ID, $user->id)->update([
@@ -245,9 +264,7 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         }
 
         try {
-
             DB::transaction(function () use ($user, $company) {
-
                 $user->update([UserConstant::STATUS => UserStatusEnum::ACTIVE->value]);
 
                 UserCompany::where(UserCompanyConstant::COMPANY_ID, $company->id)->where(UserCompanyConstant::USER_ID, $user->id)->update([
@@ -272,17 +289,15 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         }
 
         try {
-
             DB::transaction(function () use ($user, $company) {
-
                 $user->update([
                     UserConstant::STATUS => UserStatusEnum::DEACTIVATED->value,
-                    UserConstant::DELETED_AT => now()
+                    UserConstant::DELETED_AT => now(),
                 ]);
 
                 UserCompany::where(UserCompanyConstant::COMPANY_ID, $company->id)->where(UserCompanyConstant::USER_ID, $user->id)->update([
                     UserCompanyConstant::STATUS => UserCompanyStatusEnum::DEACTIVATED->value,
-                    UserCompanyConstant::DELETED_AT => now()
+                    UserCompanyConstant::DELETED_AT => now(),
                 ]);
             });
 

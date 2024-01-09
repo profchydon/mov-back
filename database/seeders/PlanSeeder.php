@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Domains\Constant\FeatureConstant;
 use App\Domains\Constant\Plan\PlanConstant;
+use App\Domains\Constant\Plan\PlanFeatureConstant;
 use App\Domains\Constant\Plan\PlanPriceConstant;
 use App\Domains\Constant\Plan\PlanProcessorConstant;
+use App\Models\Feature;
 use App\Models\Plan;
 use App\Models\PlanProcessor;
 use Illuminate\Database\Seeder;
@@ -18,8 +21,8 @@ class PlanSeeder extends Seeder
      */
     public function run(): void
     {
-        Plan::truncate();
-        PlanProcessor::truncate();
+//        Plan::truncate();
+//        PlanProcessor::truncate();
 
         $directoryPath = base_path('database/seeders/config/plans');
         $files = File::files($directoryPath);
@@ -54,6 +57,17 @@ class PlanSeeder extends Seeder
                         PlanProcessorConstant::PLAN_PROCESSOR_ID => $processor['id'],
                     ]);
                 }
+            }
+
+            foreach ($seedFile['features'] as $planFeature) {
+                $feature = Feature::where(FeatureConstant::NAME, $planFeature['name'])->first();
+
+                $plan->planFeatures()->updateOrCreate([
+                    PlanFeatureConstant::PLAN_ID => $plan->id,
+                    PlanFeatureConstant::FEATURE_ID => $feature->id,
+                ], [
+                    PlanFeatureConstant::VALUE => $planFeature['value'],
+                ]);
             }
         }
     }

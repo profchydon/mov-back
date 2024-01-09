@@ -23,7 +23,7 @@ class AssetCheckoutRequest extends FormRequest
             'return_date' => ['required', 'after_or_equal:checkout_date'],
             'comment' => ['sometimes'],
             'assets' => ['required', 'array', 'min:1'],
-            'assets.*' => ['required', Rule::exists('assets', 'id')->where('status', AssetStatusEnum::AVAILABLE)],
+            // 'assets.*' => ['required', Rule::exists('assets', 'id')->where('status', AssetStatusEnum::AVAILABLE)],
         ];
     }
 }
