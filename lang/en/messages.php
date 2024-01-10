@@ -12,7 +12,36 @@ return [
     'record-updated' => 'Record Updated successfully',
     'unauthorized' => 'Authorization Failed',
     'unauthenticated' => 'Authentication Failed',
+    'authenticated' => 'Authentication Successful',
     'action-not-allowed' => 'You are not allowed to perform this action',
     'record-deleted' => 'Record successfully deleted',
-    'account-created' => "Account successfully created"
+    'account-created' => 'Account successfully created',
+    'email-exist' => 'Email address exist already',
+    'error-encountered' => 'Error encountered',
+    'email-not-found' => 'No account found with the email',
+    'otp-resent' => 'The OTP has been resent to your email',
+    'otp-validated' => 'The OTP is valid',
+    'otp-invalid' => 'The OTP is not valid',
+    'company-updated' => 'Company details have been updated',
+    'wrong-user-stage' => 'Make sure you complete previous steps',
+    'subscription-selected' => 'Your subscription is successful',
+    'processing' => 'Operation processing',
+    'error-verify-account' => 'Make sure you verify your account',
+    'role.created' => 'You have successfully created a role',
+    'role-exists' => 'The role already exist',
+    'asset-deleted' => 'The asset has been deleted',
+    'asset-marked-as-stolen' => 'You have successfully marked the asset as stolen',
+    'asset-archived' => 'You have successfully archived the asset',
+    'provide-asset-image' => 'Provide an asset image',
+    'asset-image-updated' => 'You have successfully updated the asset image',
+    'asset-updated' => 'Asset has been updated',
+    "headers" => [
+        'company_id' => [
+            'invalid' => "Invalid Company ID provided in request header",
+            "missing" => "Company ID missing in request header, provide company_id in your header"
+        ]
+        ],
+    'company-sole-admin' => 'You have been set as the company\'s sole admin',
+    'onboarding-already-completed' => 'You have already completed the onboarding on Rayda Core',
+    'invite-not-found' => 'No invitiation found',
 ];

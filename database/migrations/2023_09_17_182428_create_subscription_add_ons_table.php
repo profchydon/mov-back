@@ -1,0 +1,41 @@
+<?php
+
+use App\Domains\Constant\CommonConstant;
+use App\Domains\Constant\SubscriptionAddOnConstant;
+use App\Domains\Enum\Subscription\SubscriptionAddOnStatusEnum;
+use App\Models\Company;
+use App\Models\Feature;
+use App\Models\Subscription;
+use App\Models\Tenant;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('subscription_add_ons', function (Blueprint $table) {
+            $table->uuid(SubscriptionAddOnConstant::ID)->unique()->primary();
+            $table->foreignUuid(SubscriptionAddOnConstant::TENANT_ID)->references(CommonConstant::ID)->on(Tenant::getTableName());
+            $table->foreignUuid(SubscriptionAddOnConstant::COMPANY_ID)->references(CommonConstant::ID)->on(Company::getTableName());
+            $table->foreignUuid(SubscriptionAddOnConstant::SUBSCRIPTION_ID)->nullable()->references(CommonConstant::ID)->on(Subscription::getTableName());
+            $table->foreignUuid(SubscriptionAddOnConstant::FEATURE_ID)->nullable()->references(CommonConstant::ID)->on(Feature::getTableName());
+            $table->dateTime(SubscriptionAddOnConstant::START_DATE);
+            $table->dateTime(SubscriptionAddOnConstant::END_DATE);
+            $table->enum(SubscriptionAddOnConstant::STATUS, SubscriptionAddOnStatusEnum::values())->default(SubscriptionAddOnStatusEnum::INACTIVE->value);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('subscription_add_ons');
+    }
+};

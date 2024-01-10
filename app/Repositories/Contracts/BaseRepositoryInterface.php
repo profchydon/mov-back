@@ -22,6 +22,10 @@ interface BaseRepositoryInterface
 
     public function getWithRelation($column, $data, $models = [], $chronological = false);
 
+    public function firstLike($column, $data);
+
+    public function manyLike($column, $data);
+
     public function getMany($column, array $data);
 
     public function getWithTrashed($column, $data);
@@ -32,10 +36,9 @@ interface BaseRepositoryInterface
 
     public function update($column, $value, $data);
 
-    public function updateOrCreate($condition = [], $data);
+    public function updateOrCreate(array $condition, $data);
 
     public function updateById($id, $updateData);
 
     public function updateByUuid(string $uuid, $updateData);
-
 }

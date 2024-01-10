@@ -19,7 +19,7 @@ class RoleSeeder extends Seeder
             RoleTypes::ASSET_MANAGER,
             RoleTypes::TECHNICIAN,
             RoleTypes::FINANCE,
-            RoleTypes::VIEWER,
+            RoleTypes::BASIC,
         ]);
 
         $roles->each(function ($role) {

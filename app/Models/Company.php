@@ -2,117 +2,66 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\AssetConstant;
-use App\Domains\Enum\Asset\AssetAuctionStatusEnum;
-use App\Events\AssetStatusUpdatedEvent;
+use App\Domains\Constant\CompanyConstant;
+use App\Domains\Enum\Company\CompanyStatusEnum;
+use App\Events\Company\CompanyCreatedEvent;
 use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Traits\QueryFormatter;
+use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ramsey\Uuid\Uuid;
 
 class Company extends Model
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName, LogsActivity;
+    use UsesUUID, HasFactory, SoftDeletes, GetsTableName, QueryFormatter;
 
-    public $incrementing = false;
-
-    protected $keyType = 'string';
-
-    protected $with = ['image'];
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $guarded = [
-        AssetConstant::ID,
+        CompanyConstant::ID,
     ];
 
-    /**
-     * Get the asset images that belongs to the asset.
-     */
-    public function assetImages()
-    {
-        return $this->hasMany(AssetImage::class);
-    }
+    protected $hidden = [
+        CompanyConstant::TENANT_ID,
+        // CompanyConstant::SSO_ID,
+    ];
 
-    /**
-     * Get the auction that owns the asset.
-     */
-    public function auction()
-    {
-        return $this->belongsTo(Auction::class, AssetConstant::AUCTION_ID);
-    }
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        AssetConstant::ID => 'string',
-        AssetConstant::COMPANY_ID => 'string',
-        AssetConstant::STATUS => AssetAuctionStatusEnum::class,
+        CompanyConstant::ID => 'string',
+        CompanyConstant::COMPANY_ID => 'string',
+        CompanyConstant::STATUS => CompanyStatusEnum::class,
     ];
 
-    /**
-     * Generate a new UUID for the model.
-     *
-     * @return string
-     */
-    public function newUniqueId()
+    protected static function booted()
     {
-        return (string) Uuid::uuid4();
-    }
-
-    /**
-     * Get the columns that should receive a unique identifier.
-     *
-     * @return array
-     */
-    public function uniqueIds()
-    {
-        return ['id'];
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-        self::deleting(function ($asset) {
-            $asset->assetImages()->each(function ($asset_image) {
-                $asset_image->delete();
-            });
-        });
-
-        self::updated(function (self $asset) {
-            if ($asset->isDirty(AssetConstant::AUCTION_STATUS)) {
-                AssetStatusUpdatedEvent::dispatch($asset);
-            }
+        static::created(function (self $model) {
+            CompanyCreatedEvent::dispatch($model);
         });
     }
 
-    public function image()
+    public function tenant()
     {
-        return $this->morphMany(FileUpload::class, 'uploadable');
+        return $this->belongsTo(Tenant::class, CompanyConstant::TENANT_ID);
     }
 
-    public function bids()
+    public function subscriptions(): HasMany
     {
-        return $this->hasMany(Bid::class, 'asset_id');
+        return $this->hasMany(Subscription::class);
     }
 
-    public function highestBid(): HasOne
+    public function users(): HasManyThrough
     {
-        return $this->hasOne(Bid::class, 'asset_id')->orderBy('price', 'DESC');
+        return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id');
     }
 
-    public function available()
+    public function offices(): HasMany
     {
-        return $this->auction_status == AssetAuctionStatusEnum::NOT_SOLD->value;
+        return $this->hasMany(Office::class, 'company_id');
+    }
+
+    public function assets(): HasMany
+    {
+        return $this->hasMany(Asset::class, 'company_id');
     }
 }

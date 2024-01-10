@@ -1,0 +1,34 @@
+<?php
+
+use App\Domains\Constant\FeatureConstant;
+use App\Domains\Constant\FeaturePriceConstant;
+use App\Models\Currency;
+use App\Models\Feature;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('feature_prices', function (Blueprint $table) {
+            $table->uuid(FeaturePriceConstant::ID)->unique()->primary();
+            $table->foreignUuid(FeaturePriceConstant::FEATURE_ID)->references(FeatureConstant::ID)->on(Feature::getTableName());
+            $table->string(FeaturePriceConstant::CURRENCY_CODE)->references(\App\Domains\Constant\CommonConstant::CODE)->on(Currency::getTableName());
+            $table->double(FeaturePriceConstant::PRICE);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('feature_prices');
+    }
+};

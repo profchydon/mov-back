@@ -1,0 +1,9 @@
+name: Vendor
+description: Manage all your company's vendor in one place
+pricing: FREE
+available_as_addon: true
+prices:
+  - currency_code: NGN
+    price: 50000
+  - currency_code: USD
+    price: 500

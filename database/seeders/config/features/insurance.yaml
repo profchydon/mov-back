@@ -1,0 +1,9 @@
+name: Insurance
+description: Keep track of your insurance policies fo your asset
+pricing: PAID
+available_as_addon: false
+prices:
+  - currency_code: NGN
+    price: 50000
+  - currency_code: USD
+    price: 500

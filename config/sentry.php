@@ -14,7 +14,7 @@ return [
     // Example with dynamic git hash: trim(exec('git --git-dir ' . base_path('.git') . ' log --pretty="%h" -n1 HEAD'))
     'release' => env('SENTRY_RELEASE'),
 
-    // When left empty or `null` the Laravel environment will be used (usually discovered from `APP_ENV` in your `.env`)
+    // When left empty or `null` the Laravel environment will be used (usually discovered from `APP_ENV` in your `.env.old`)
     'environment' => env('SENTRY_ENVIRONMENT'),
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#sample-rate
