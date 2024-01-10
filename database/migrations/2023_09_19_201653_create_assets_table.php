@@ -1,8 +1,9 @@
 <?php
 
-use App\Domains\Constant\AssetConstant;
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\CommonConstant;
 use App\Domains\Constant\CurrencyConstant;
+use App\Domains\Enum\Asset\AssetConditionEnum;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Domains\Enum\Maintenance\MaintenanceCycleEnum;
 use App\Models\AssetType;
@@ -38,8 +39,9 @@ return new class extends Migration {
             $table->dateTime(AssetConstant::ADDED_AT);
             $table->foreignUuid(AssetConstant::ASSIGNED_TO)->nullable()->references(CommonConstant::ID)->on(User::getTableName());
             $table->dateTime(AssetConstant::ASSIGNED_DATE)->nullable();
-            $table->enum(AssetConstant::STATUS, AssetStatusEnum::values());
-            $table->enum(AssetConstant::MAINTENANCE_CYCLE, MaintenanceCycleEnum::values())->nullable();
+            $table->enum(AssetConstant::CONDITION, AssetConditionEnum::values())->nullable()->default(AssetConditionEnum::MISSING_INFORMATION->value);
+            $table->enum(AssetConstant::STATUS, AssetStatusEnum::values())->default(AssetStatusEnum::PENDING_APPROVAL->value);
+            // $table->enum(AssetConstant::MAINTENANCE_CYCLE, MaintenanceCycleEnum::values())->nullable();
             $table->dateTime(AssetConstant::NEXT_MAINTENANCE_DATE)->nullable();
             $table->boolean(AssetConstant::IS_INSURED)->default(false);
             $table->timestamps();

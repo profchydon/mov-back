@@ -2,67 +2,24 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\AssetTypeConstant;
+use App\Domains\Constant\Asset\AssetTypeConstant;
 use App\Domains\Enum\Asset\AssetTypeStatusEnum;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Ramsey\Uuid\Uuid;
 
-class AssetType extends Model
+class AssetType extends BaseModel
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
+    use UsesUUID;
 
-    public $incrementing = false;
 
-    protected $keyType = 'string';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $guarded = [
         AssetTypeConstant::ID,
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         AssetTypeConstant::ID => 'string',
         AssetTypeConstant::STATUS => AssetTypeStatusEnum::class,
     ];
-
-    /**
-     * Generate a new UUID for the model.
-     *
-     * @return string
-     */
-    public function newUniqueId()
-    {
-        return (string) Uuid::uuid4();
-    }
-
-    /**
-     * Get the columns that should receive a unique identifier.
-     *
-     * @return array
-     */
-    public function uniqueIds()
-    {
-        return ['id'];
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-    }
 
     public function assets(): HasMany
     {

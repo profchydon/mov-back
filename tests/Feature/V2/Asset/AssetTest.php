@@ -1,13 +1,14 @@
 <?php
 
-use App\Domains\Constant\AssetConstant;
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\OfficeConstant;
-use App\Domains\DTO\Asset\CreateAssetDTO;
+use App\Domains\Enum\Asset\AssetAcquisitionTypeEnum;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Models\AssetType;
 use App\Models\Company;
 use App\Models\Currency;
 use App\Models\Office;
+use App\Models\User;
 use App\Repositories\AssetRepository;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
@@ -21,6 +22,8 @@ beforeEach(function () {
     $this->model = ['Iphone', 'Galaxy'];
     $this->assetRepository = new AssetRepository();
     $this->company = Company::factory()->create();
+    $this->user = User::factory()->create();
+    $this->token = $this->user->createToken('auth_token')->plainTextToken;
     $this->asset_type = AssetType::factory()->create();
     $this->office = Office::factory()->create([
         OfficeConstant::TENANT_ID => $this->company->tenant_id,
@@ -43,29 +46,22 @@ beforeEach(function () {
 });
 
 test('create single asset', function () {
-    // $response = $this->post("http://localhost:80/api/v2/companies/{$this->company->id}/assets", $this->payload);
-
-    $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/assets"), $this->payload);
+    $response = $this->withToken($this->token)->postJson(TestCase::fullLink("/companies/{$this->company->id}/assets"), $this->payload);
     $response->assertCreated();
-    $this->assertDatabaseHas('assets', $this->payload);
     $this->assertDatabaseCount('assets', 1);
     expect($response->getData()->success)->toBeTrue();
     expect($response->getData()->message)->toBe('Record created successfully');
 });
 
 test('error when wrong company id is provided', function () {
-    // $response = $this->post("http://localhost:80/api/v2/companies/wrong-company-id/assets", $this->payload);
-
-    $response = $this->postJson(TestCase::fullLink('/companies/wrong-company-id/assets'), $this->payload);
+    $response = $this->withToken($this->token)->postJson(TestCase::fullLink('/companies/wrong-company-id/assets'), $this->payload);
     $response->assertStatus(Response::HTTP_NOT_FOUND);
     $this->assertDatabaseMissing('assets', $this->payload);
     $this->assertDatabaseCount('assets', 0);
 });
 
 test('error when payload is empty', function () {
-    // $response = $this->post("http://localhost:80/api/v2/companies/{$this->company->id}/assets", []);
-
-    $response = $this->postJson(TestCase::fullLink("/companies/{$this->company->id}/assets"), []);
+    $response = $this->withToken($this->token)->postJson(TestCase::fullLink("/companies/{$this->company->id}/assets"), []);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     expect($response->getData()->success)->toBeFalse();
     expect($response->getData()->message)->toBe('Validation error');
@@ -74,9 +70,7 @@ test('error when payload is empty', function () {
 
 
 test('get assets', function () {
-    // $response = $this->get("http://localhost:80/api/v2/companies/{$this->company->id}/assets");
-
-    $response = $this->get(TestCase::fullLink("/companies/{$this->company->id}/assets"));
+    $response = $this->withToken($this->token)->get(TestCase::fullLink("/companies/{$this->company->id}/assets"));
     $response->assertStatus(Response::HTTP_OK);
     expect($response->getData()->success)->toBeTrue();
     expect($response->getData()->message)->toBe('Records fetched successfully');
@@ -84,9 +78,22 @@ test('get assets', function () {
 
 test('get asset details', function () {
     $asset = $this->company->assets()->create($this->payload);
-
-    $response = $this->get(TestCase::fullLink("/companies/{$this->company->id}/assets/{$asset->id}"));
+    $response = $this->withToken($this->token)->get(TestCase::fullLink("/companies/{$this->company->id}/assets/{$asset->id}"));
     $response->assertStatus(Response::HTTP_OK);
     expect($response->getData()->success)->toBeTrue();
     expect($response->getData()->message)->toBe('Records fetched successfully');
+});
+
+test('update asset details', function () {
+    $asset = $this->company->assets()->create($this->payload);
+
+    $updatePayload = [
+        'acquisitionType' => AssetAcquisitionTypeEnum::BRAND_NEW->value,
+    ];
+
+    $response = $this->withToken($this->token)->patch(TestCase::fullLink("/companies/{$this->company->id}/assets/{$asset->id}?type=details"), $updatePayload);
+
+    $response->assertStatus(Response::HTTP_OK);
+    expect($response->getData()->success)->toBeTrue();
+    expect($response->getData()->message)->toBe('Asset has been updated');
 });

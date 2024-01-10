@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Traits\DTOToArray;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseRepository
 {
@@ -121,14 +122,38 @@ abstract class BaseRepository
         return $model->delete();
     }
 
+    public function softDeleteById($id, $data = [])
+    {
+        $data['deleted_at'] = now();
+
+        $model = $this->model::find($id);
+
+        return $model->update($data);
+    }
+
+    public function delete(Model $model)
+    {
+        $model->deleteOrFail();
+    }
+
     public function update($column, $value, $data)
     {
         return $this->model->where($column, $value)->update($data);
     }
 
+    public function updateMultiple($column, $value, $data)
+    {
+        return $this->model->whereIn($column, $value)->update($data);
+    }
+
     public function updateOrCreate($condition, $data)
     {
         return $this->model->updateOrCreate($condition, $data);
+    }
+
+    public function firstOrCreate($condition, $data)
+    {
+        return $this->model->firstOrCreate($condition, $data);
     }
 
     public function updateById($id, $updateData)
@@ -137,7 +162,7 @@ abstract class BaseRepository
 
         $model->update($updateData);
 
-        return $model;
+        return $model->fresh();
     }
 
     public function updateByUuid(string $uuid, $updateData)

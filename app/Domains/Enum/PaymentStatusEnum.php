@@ -8,7 +8,7 @@ enum PaymentStatusEnum: string
 {
     use ListsEnumValues;
 
-    case PROCESSING = 'processing';
-    case COMPLETED = 'completed';
-    case FAILED = 'failed';
+    case PROCESSING = 'Processing';
+    case COMPLETED = 'Completed';
+    case FAILED = 'Failed';
 }

@@ -2,32 +2,27 @@
 
 namespace App\Domains\DTO;
 
+use App\Traits\DTOToArray;
 use Illuminate\Database\Eloquent\Model;
 
 final class CreatePaymentLinkDTO
 {
+    use DTOToArray;
+
     private string $tx_ref;
     private float $amount;
     private string $currency;
     private ?string $redirect_url;
     private array $meta = [];
     private array $customer;
+    private ?string $payment_plan;
+    private ?string $billing_cycle;
 
     public function __construct()
     {
         $this->currency = 'NGN';
         $this->tx_ref = uniqid('tx_ref_');
         $this->redirect_url = route('payment-subscription.callback');
-    }
-
-    public function toArray(): array
-    {
-        $values = [];
-        foreach ($this as $key => $value) {
-            $values[$key] = $value;
-        }
-
-        return $values;
     }
 
     public function getTxRef(): string
@@ -111,6 +106,37 @@ final class CreatePaymentLinkDTO
             'phoneNumber' => $customer?->phone,
             'name' => $customer?->name,
         ];
+
+        return $this;
+    }
+
+    public function getPaymentPlan(): ?string
+    {
+        return $this->payment_plan;
+    }
+
+    public function setPaymentPlan(?string $payment_plan): self
+    {
+        $this->payment_plan = $payment_plan;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBillingCycle(): ?string
+    {
+        return $this->billing_cycle;
+    }
+
+    /**
+     * @param string|null $billing_cycle
+     * @return CreatePaymentLinkDTO
+     */
+    public function setBillingCycle(?string $billing_cycle): self
+    {
+        $this->billing_cycle = $billing_cycle;
 
         return $this;
     }

@@ -74,7 +74,7 @@ class SSOService implements SSOServiceInterface
 
         $url = sprintf('%s/api/v1/otp/%s/verify', env('SSO_URL'), $user->otp->sso_id);
 
-        $data = ['otp' => $dto->getOTP()];
+        $data = ['provided_otp' => $dto->getOTP()];
 
         $resp = Http::acceptJson()->put($url, $data);
 
@@ -104,7 +104,6 @@ class SSOService implements SSOServiceInterface
 
     public function createSSOUser(CreateSSOUserDTO $dto, string $ssoCompanyId)
     {
-
         $url = sprintf('%s/api/v1/companies/%s/users', env('SSO_URL'), $ssoCompanyId);
 
         $data = $dto->toArray();

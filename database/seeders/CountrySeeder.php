@@ -16,13 +16,20 @@ class CountrySeeder extends Seeder
         $countries = Yaml::parseFile($file);
 
         foreach ($countries as $country) {
-            Country::updateOrCreate([
-                CommonConstant::NAME => $country['name'],
-            ], [
+            $code = [
                 CommonConstant::NAME => $country['name'],
                 CommonConstant::CODE => $country['code'],
                 CommonConstant::STATES => $country['states'],
-            ]);
+            ];
+            if (isset($country['currency_code'])) {
+                $code[CommonConstant::CURRENY_CODE] = $country['currency_code'];
+            }
+            if (isset($country['payment_processor'])) {
+                $code[CommonConstant::PAYMENT_PROCESSOR] = $country['payment_processor'];
+            }
+            Country::updateOrCreate([
+                CommonConstant::NAME => $country['name'],
+            ], $code);
         }
     }
 }

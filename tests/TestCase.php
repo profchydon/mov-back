@@ -11,7 +11,7 @@ abstract class TestCase extends BaseTestCase
 
     use LazilyRefreshDatabase;
 
-    const BASE = 'api/v2';
+    const BASE = 'https://core-api-dev.rayda.co/api/v2';
 
     public static function fullLink($link): string
     {

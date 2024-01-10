@@ -1,6 +1,6 @@
 name: Asset
 description: Let us help you manage your assets
-pricing: PAID
+pricing: Paid
 available_as_addon: false
 prices:
   - currency_code: NGN

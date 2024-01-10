@@ -66,6 +66,7 @@ class AddCompanyDetailsDTO
     public function setCountry(string $country)
     {
         $this->country = $country;
+
         return $this;
     }
 
@@ -77,6 +78,7 @@ class AddCompanyDetailsDTO
     public function setState(string $state)
     {
         $this->state = $state;
+
         return $this;
     }
 

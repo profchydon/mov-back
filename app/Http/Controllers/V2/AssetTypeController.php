@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\V2;
 
-use App\Domains\Constant\AssetTypeConstant;
+use App\Domains\Constant\Asset\AssetTypeConstant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\CreateAssetTypeRequest;
 use App\Repositories\Contracts\AssetTypeRepositoryInterface;

@@ -8,6 +8,6 @@ enum InvoiceItemTypeEnum: string
 {
     use ListsEnumValues;
 
-    case SUBSCRIPTION = 'SUBSCRIPTION';
-    case ADDON = 'ADDON';
+    case SUBSCRIPTION = 'Subscription';
+    case ADDON = 'Addon';
 }

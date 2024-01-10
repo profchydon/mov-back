@@ -12,6 +12,8 @@ class CommonConstant
     public const STATES = 'states';
     public const STATUS = 'status';
     public const SYMBOL = 'symbol';
+    public const CURRENY_CODE = 'currency_code';
+    public const PAYMENT_PROCESSOR = 'payment_processor';
     public const COUNTRY_ID = 'country_id';
     public const COMPANY_ID = 'company_id';
     public const ACTIVE = 'active';

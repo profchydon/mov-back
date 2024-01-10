@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Domains\Constant\PlanPriceConstant;
+use App\Domains\Constant\Plan\PlanPriceConstant;
 use App\Domains\DTO\CreateSubscriptionDTO;
 use App\Domains\Enum\Plan\BillingCycleEnum;
-use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
@@ -55,7 +54,6 @@ class SelectSubscriptionPlanRequest extends FormRequest
             ->setStartDate($startDate)
             ->setEndDate($endDate)
             ->setRedirectURI($this->input('redirect_uri'))
-            ->setStatus(SubscriptionStatusEnum::ACTIVE->value)
             ->setCurrency($this->input('currency'))
             ->setAddOnIds($this->input('add-on-ids'));
 

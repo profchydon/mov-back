@@ -1,0 +1,72 @@
+name: Premium
+description: Popular plan for medium teams
+preceding_plan_name: Essential
+rank: 3
+offers:
+  - Up to 250 assets
+  - Up to 5 seats
+  - Asset register
+  - Up to 5 insurance policy
+  - Purchase insurance
+  - Document manager
+  - Manage vendor
+  - Up tp 5 workflow builder
+  - API access
+  - Asset checklist
+  - Dedicated account manager
+features:
+  - name: Asset
+    value: 250
+
+  - name: Seat
+    value: 5
+prices:
+  - currency_code: NGN
+    billing_cycle: Monthly
+    amount: 80000
+    processors:
+      - name: Flutterwave
+        id: 61147
+  - currency_code: USD
+    billing_cycle: Monthly
+    amount: 2000
+    processors:
+      - name: Stripe
+        id: 60139
+  - currency_code: GBP
+    billing_cycle: Monthly
+    amount: 2000
+    processors:
+      - name: Stripe
+        id: 60139
+  - currency_code: EUR
+    billing_cycle: Monthly
+    amount: 2000
+    processors:
+      - name: Stripe
+        id: 60139
+
+  - currency_code: NGN
+    billing_cycle: Yearly
+    amount: 864000
+    processors:
+      - name: Flutterwave
+        id: 61148
+  - currency_code: USD
+    billing_cycle: Yearly
+    amount: 21600
+    processors:
+      - name: Stripe
+        id: 60139
+  - currency_code: GBP
+    billing_cycle: Yearly
+    amount: 21600
+    processors:
+      - name: Stripe
+        id: 60139
+  - currency_code: EUR
+    billing_cycle: Yearly
+    amount: 21600
+    processors:
+      - name: Stripe
+        id: 60139

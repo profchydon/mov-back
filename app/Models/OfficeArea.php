@@ -4,26 +4,15 @@ namespace App\Models;
 
 use App\Domains\Constant\OfficeConstant;
 use App\Domains\Enum\Office\OfficeStatusEnum;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
-class OfficeArea extends Model
+class OfficeArea extends BaseModel
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
+    use UsesUUID, SoftDeletes;
 
-    public $incrementing = false;
-
-    protected $keyType = 'string';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $guarded = [
         OfficeConstant::ID,
     ];
@@ -32,11 +21,6 @@ class OfficeArea extends Model
         OfficeConstant::TENANT_ID,
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         OfficeConstant::ID => 'string',
         OfficeConstant::STATUS => OfficeStatusEnum::class,

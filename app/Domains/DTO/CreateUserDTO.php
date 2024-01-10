@@ -19,6 +19,8 @@ class CreateUserDTO
     private string $stage;
     private string $sso_id;
     private ?string $job_title = null;
+    private ?string $employment_type;
+    private ?string $office_id;
 
     public function __construct()
     {
@@ -143,5 +145,29 @@ class CreateUserDTO
     public function getJobTitle()
     {
         return $this->job_title;
+    }
+
+    public function setEmploymentType(?string $employment_type)
+    {
+        $this->employment_type = $employment_type;
+
+        return $this;
+    }
+
+    public function getEmploymentType()
+    {
+        return $this->employment_type;
+    }
+
+    public function setOfficeId(?string $office_id)
+    {
+        $this->office_id = $office_id;
+
+        return $this;
+    }
+
+    public function getOfficeId()
+    {
+        return $this->office_id;
     }
 }

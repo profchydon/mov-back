@@ -4,17 +4,12 @@ namespace App\Models;
 
 use App\Domains\Constant\OfficeConstant;
 use App\Domains\Enum\Office\OfficeStatusEnum;
-use App\Traits\GetsTableName;
-use App\Traits\QueryFormatter;
 use App\Traits\UsesUUID;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Office extends Model
+class Office extends BaseModel
 {
-    use UsesUUID, HasFactory, SoftDeletes, GetsTableName, QueryFormatter;
+    use UsesUUID;
 
     protected $guarded = [
         OfficeConstant::ID,
@@ -41,5 +36,15 @@ class Office extends Model
     public function areas(): HasMany
     {
         return $this->hasMany(OfficeArea::class, 'office_id');
+    }
+
+    public function assets(): HasMany
+    {
+        return $this->hasMany(Asset::class);
+    }
+
+    public function assetsCount(): int
+    {
+        return $this->assets->count();
     }
 }

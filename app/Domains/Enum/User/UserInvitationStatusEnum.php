@@ -8,7 +8,7 @@ enum UserInvitationStatusEnum: string
 {
     use ListsEnumValues;
 
-    case PENDING = 'PENDING';
-    case ACCEPTED = 'ACCEPTED';
-    case REJECTED = 'REJECTED';
+    case PENDING = 'Pending';
+    case ACCEPTED = 'Accepted';
+    case REJECTED = 'Rejected';
 }

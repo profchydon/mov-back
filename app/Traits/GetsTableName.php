@@ -6,7 +6,7 @@ trait GetsTableName
 {
     public static function getTableName()
     {
-        $model = new self();
+        $model = new static();
 
         return $model->getTable();
     }

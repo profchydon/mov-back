@@ -1,0 +1,45 @@
+name: Basic
+description: Popular plan for small
+rank: 1
+offers:
+  - Up to 10 assets
+  - Up to 1 seats
+  - Asset register
+  - Purchase insurance
+  - Document manager
+features:
+  - name: Asset
+    value: 10
+
+  - name: Seat
+    value: 1
+prices:
+  - currency_code: NGN
+    billing_cycle: Monthly
+    amount: 0
+  - currency_code: USD
+    billing_cycle: Monthly
+    amount: 0
+
+  - currency_code: GBP
+    billing_cycle: Monthly
+    amount: 0
+  - currency_code: EUR
+    billing_cycle: Monthly
+    amount: 0
+
+  - currency_code: NGN
+    billing_cycle: Yearly
+    amount: 0
+
+  - currency_code: USD
+    billing_cycle: Yearly
+    amount: 0
+
+  - currency_code: GBP
+    billing_cycle: Yearly
+    amount: 0
+
+  - currency_code: EUR
+    billing_cycle: Yearly
+    amount: 0

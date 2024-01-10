@@ -25,6 +25,11 @@ final class CreateAssetDTO
     private string $tenant_id;
     private ?string $company_id;
     private string $added_at;
+    private string $vendor_id;
+    private string $acquisition_type;
+    private string $condition;
+    private ?string $assigned_to;
+    private ?string $assigned_date;
 
     public function __construct()
     {
@@ -315,5 +320,100 @@ final class CreateAssetDTO
         $this->company_id = $company_id;
 
         return $this;
+    }
+
+    /**
+     * @param string $vendor_id
+     * @return CreateAssetDTO
+     */
+    public function setVendorId(string $vendor_id): self
+    {
+        $this->vendor_id = $vendor_id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVendorId()
+    {
+        return $this->vendor_id;
+    }
+
+    /**
+     * @param string $acquisition_type
+     * @return CreateAssetDTO
+     */
+    public function setAcquisitionType(string $acquisition_type): self
+    {
+        $this->acquisition_type = $acquisition_type;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAcquisitionType()
+    {
+        return $this->acquisition_type;
+    }
+
+    /**
+     * @param string $condition
+     * @return CreateAssetDTO
+     */
+    public function setCondition(string $condition): self
+    {
+        $this->condition = $condition;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCondition()
+    {
+        return $this->condition;
+    }
+
+    /**
+     * @param string $assigned_to
+     * @return CreateAssetDTO
+     */
+    public function setAssignedTo(?string $assigned_to): self
+    {
+        $this->assigned_to = $assigned_to;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssignedDate()
+    {
+        return $this->assigned_to;
+    }
+
+    /**
+     * @param string $assigned_date
+     * @return CreateAssetDTO
+     */
+    public function setAssignedDate(?string $assigned_date): self
+    {
+        $this->assigned_date = $assigned_date;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssignedTo()
+    {
+        return $this->assigned_date;
     }
 }

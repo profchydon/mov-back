@@ -25,7 +25,8 @@ class CompanyConstant
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';
     public const DELETED_AT = 'deleted_at';
-
+    public const INVITATION_CODE = 'invitation_code';
+    public const ACTIVE_SUBSCRIPTION = 'active_subscription';
 
     public const STATUS_ENUM = [
         CompanyStatusEnum::ACTIVE,

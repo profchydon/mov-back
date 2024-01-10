@@ -1,5 +1,6 @@
 - name: Afghanistan
   code: AF
+  currency_code: AFG
   states:
     - Badakhshan
     - Badghis
@@ -37,6 +38,7 @@
     - Zabul
 - name: Albania
   code: AL
+  currency_code: ALB
   states:
     - Berat
     - Dibër
@@ -52,6 +54,7 @@
     - Vlorë
 - name: Algeria
   code: DZ
+  currency_code: DZA
   states:
     - Adrar
     - Aïn Defla
@@ -103,6 +106,7 @@
     - Tlemcen
 - name: Andorra
   code: AD
+  currency_code: AND
   states:
     - Andorra la Vella
     - Canillo
@@ -113,6 +117,7 @@
     - Sant Julià de Lòria
 - name: Angola
   code: AO
+  currency_code: AGO
   states:
     - Bengo
     - Benguela
@@ -134,11 +139,13 @@
     - Zaire
 - name: Antigua and Barbuda
   code: AG
+  currency_code: ATG
   states:
     - Antigua
     - Barbuda
 - name: Argentina
   code: AR
+  currency_code: ARG
   states:
     - Buenos Aires
     - Catamarca
@@ -165,6 +172,7 @@
     - Tucumán
 - name: Armenia
   code: AM
+  currency_code: ARM
   states:
     - Aragatsotn
     - Ararat
@@ -179,6 +187,7 @@
     - Yerevan
 - name: Australia
   code: AU
+  currency_code: AUS
   states:
     - Australian Capital Territory
     - New South Wales
@@ -190,6 +199,7 @@
     - Western Australia
 - name: Austria
   code: AT
+  currency_code: AUT
   states:
     - Burgenland
     - Carinthia
@@ -202,6 +212,7 @@
     - Vorarlberg
 - name: Azerbaijan
   code: AZ
+  currency_code: AZE
   states:
     - Absheron
     - Agdam
@@ -282,6 +293,7 @@
     - Zardab
 - name: Bahamas
   code: BS
+  currency_code: BHS
   states:
     - Acklins
     - Berry Islands
@@ -316,6 +328,7 @@
     - West Grand Bahama
 - name: Bahrain
   code: BH
+  currency_code: BHR
   states:
     - Capital Governorate
     - Muharraq Governorate
@@ -323,6 +336,7 @@
     - Southern Governorate
 - name: Bangladesh
   code: BD
+  currency_code: BGD
   states:
     - Barishal Division
     - Chattogram Division
@@ -334,6 +348,7 @@
     - Sylhet Division
 - name: Barbados
   code: BB
+  currency_code: BRB
   states:
     - Christ Church
     - Saint Andrew
@@ -347,6 +362,7 @@
     - Saint Philip
 - name: Belarus
   code: BY
+  currency_code: BLR
   states:
     - Brest Region
     - Gomel Region
@@ -357,6 +373,7 @@
     - Vitebsk Region
 - name: Belgium
   code: BE
+  currency_code: BEL
   states:
     - Brussels-Capital Region
     - Flemish Brabant
@@ -370,6 +387,7 @@
     - East Flanders
 - name: Belize
   code: BZ
+  currency_code: BLZ
   states:
     - Belize
     - Cayo
@@ -379,6 +397,7 @@
     - Toledo
 - name: Benin
   code: BJ
+  currency_code: BEN
   states:
     - Alibori
     - Atacora
@@ -394,6 +413,7 @@
     - Zou
 - name: Bhutan
   code: BT
+  currency_code: BTN
   states:
     - Bumthang
     - Chhukha
@@ -417,6 +437,7 @@
     - Zhemgang
 - name: Bolivia
   code: BO
+  currency_code: BOL
   states:
     - Chuquisaca
     - Cochabamba
@@ -429,12 +450,14 @@
     - Tarija
 - name: Bosnia and Herzegovina
   code: BA
+  currency_code: BIH
   states:
     - Brčko District
     - Republika Srpska
     - Federation of Bosnia and Herzegovina
 - name: Botswana
   code: BW
+  currency_code: BWA
   states:
     - Central
     - Ghanzi
@@ -447,6 +470,7 @@
     - Southern
 - name: Brazil
   code: BR
+  currency_code: BRA
   states:
     - Acre
     - Alagoas
@@ -477,6 +501,7 @@
     - Tocantins
 - name: Brunei
   code: BN
+  currency_code: BRN
   states:
     - Belait
     - Brunei-Muara
@@ -484,6 +509,7 @@
     - Tutong
 - name: Bulgaria
   code: BG
+  currency_code: BGR
   states:
     - Blagoevgrad
     - Burgas
@@ -515,6 +541,7 @@
     - Yambol
 - name: Burkina Faso
   code: BF
+  currency_code: BFA
   states:
     - Balé
     - Bam
@@ -537,6 +564,7 @@
     - Sud-Ouest
 - name: Burundi
   code: BI
+  currency_code: BDI
   states:
     - Bubanza
     - Bujumbura Mairie
@@ -556,9 +584,9 @@
     - Rumonge
     - Rutana
     - Ruyigi
-    - Kirundo
 - name: Cabo Verde
   code: CV
+  currency_code: CVE
   states:
     - Boa Vista
     - Brava
@@ -581,6 +609,7 @@
     - Tarrafal de São Nicolau
 - name: Cambodia
   code: KH
+  currency_code: KHR
   states:
     - Banteay Meanchey
     - Battambang
@@ -609,6 +638,7 @@
     - Tboung Khmum
 - name: Cameroon
   code: CM
+  currency_code: XAF
   states:
     - Adamawa
     - Centre
@@ -622,6 +652,7 @@
     - West
 - name: Canada
   code: CA
+  currency_code: CAD
   states:
     - Alberta
     - British Columbia
@@ -638,6 +669,7 @@
     - Yukon
 - name: Central African Republic
   code: CF
+  currency_code: XAF
   states:
     - Bamingui-Bangoran
     - Bangui
@@ -658,6 +690,7 @@
     - Vakaga
 - name: Chad
   code: TD
+  currency_code: XAF
   states:
     - Batha
     - Borkou-Ennedi-Tibesti
@@ -682,6 +715,7 @@
     - Wadi Fira
 - name: Chile
   code: CL
+  currency_code: CLP
   states:
     - Antofagasta
     - Araucanía
@@ -701,6 +735,7 @@
     - Valparaíso
 - name: China
   code: CN
+  currency_code: CNY
   states:
     - Anhui
     - Beijing
@@ -738,6 +773,7 @@
     - Zhejiang
 - name: Colombia
   code: CO
+  currency_code: COP
   states:
     - Amazonas
     - Antioquia
@@ -774,12 +810,14 @@
     - Vichada
 - name: Comoros
   code: KM
+  currency_code: KMF
   states:
     - Anjouan
     - Grande Comore
     - Mohéli
 - name: Congo (Brazzaville)
   code: CG
+  currency_code: XAF
   states:
     - Bouenza
     - Brazzaville
@@ -794,6 +832,7 @@
     - Sangha
 - name: Congo (Kinshasa)
   code: CD
+  currency_code: CDF
   states:
     - Bas-Uele
     - Haut-Uele
@@ -818,6 +857,7 @@
     - Tshuapa
 - name: Costa Rica
   code: CR
+  currency_code: CRC
   states:
     - Alajuela
     - Cartago
@@ -828,6 +868,7 @@
     - San José
 - name: Cote d'Ivoire
   code: CI
+  currency_code: XOF
   states:
     - Abidjan
     - Bas-Sassandra
@@ -845,6 +886,7 @@
     - Zanzan
 - name: Croatia
   code: HR
+  currency_code: HRK
   states:
     - Bjelovar-Bilogora
     - Brod-Posavina
@@ -869,6 +911,7 @@
     - Zagreb City
 - name: Cuba
   code: CU
+  currency_code: CUP
   states:
     - Artemisa
     - Camagüey
@@ -888,6 +931,7 @@
     - Villa Clara
 - name: Cyprus
   code: CY
+  currency_code: EUR
   states:
     - Famagusta
     - Kyrenia
@@ -896,6 +940,7 @@
     - Nicosia
 - name: Czechia
   code: CZ
+  currency_code: CZK
   states:
     - Central Bohemia
     - Hradec Králové
@@ -913,6 +958,7 @@
     - Zlín
 - name: Denmark
   code: DK
+  currency_code: DKK
   states:
     - Capital Region
     - Central Denmark Region
@@ -921,6 +967,7 @@
     - South Denmark Region
 - name: Djibouti
   code: DJ
+  currency_code: DJF
   states:
     - Ali Sabieh
     - Arta
@@ -930,6 +977,7 @@
     - Tadjourah
 - name: Dominica
   code: DM
+  currency_code: XCD
   states:
     - Saint Andrew
     - Saint David
@@ -941,6 +989,7 @@
     - Saint Patrick
 - name: Dominican Republic
   code: DO
+  currency_code: DOP
   states:
     - Azua
     - Baoruco
@@ -976,6 +1025,7 @@
     - Valverde
 - name: Ecuador
   code: EC
+  currency_code: USD
   states:
     - Azuay
     - Bolívar
@@ -1003,6 +1053,7 @@
     - Zamora-Chinchipe
 - name: Egypt
   code: EG
+  currency_code: EGP
   states:
     - Alexandria
     - Aswan
@@ -1032,6 +1083,7 @@
     - South Sinai
 - name: El Salvador
   code: SV
+  currency_code: USD
   states:
     - Ahuachapán
     - Cabañas
@@ -1049,6 +1101,7 @@
     - Usulután
 - name: Equatorial Guinea
   code: GQ
+  currency_code: XAF
   states:
     - Annobón
     - Bioko Norte
@@ -1059,6 +1112,7 @@
     - Wele-Nzas
 - name: Eritrea
   code: ER
+  currency_code: ERN
   states:
     - Anseba
     - Central
@@ -1068,6 +1122,7 @@
     - Southern
 - name: Estonia
   code: EE
+  currency_code: EUR
   states:
     - Harju
     - Hiiu
@@ -1086,6 +1141,7 @@
     - Võru
 - name: Eswatini
   code: SZ
+  currency_code: SZL
   states:
     - Hhohho
     - Lubombo
@@ -1093,6 +1149,7 @@
     - Shiselweni
 - name: Ethiopia
   code: ET
+  currency_code: ETB
   states:
     - Addis Ababa
     - Afar
@@ -1109,6 +1166,7 @@
     - Afar
 - name: Fiji
   code: FJ
+  currency_code: FJD
   states:
     - Central Division
     - Eastern Division
@@ -1117,6 +1175,7 @@
     - Western Division
 - name: Finland
   code: FI
+  currency_code: EUR
   states:
     - Åland Islands
     - Central Finland
@@ -1138,6 +1197,7 @@
     - South Savo
 - name: France
   code: FR
+  currency_code: EUR
   states:
     - Auvergne-Rhône-Alpes
     - Bourgogne-Franche-Comté
@@ -1159,6 +1219,7 @@
     - Réunion
 - name: Gabon
   code: GA
+  currency_code: XAF
   states:
     - Estuaire
     - Haut-Ogooué
@@ -1171,6 +1232,7 @@
     - Woleu-Ntem
 - name: Gambia
   code: GM
+  currency_code: GMD
   states:
     - Banjul
     - Central River
@@ -1180,6 +1242,7 @@
     - Western
 - name: Georgia
   code: GE
+  currency_code: GEL
   states:
     - Abkhazia
     - Adjara
@@ -1195,6 +1258,7 @@
     - Tbilisi
 - name: Germany
   code: DE
+  currency_code: EUR
   states:
     - Baden-Württemberg
     - Bavaria
@@ -1214,6 +1278,7 @@
     - Thuringia
 - name: Ghana
   code: GH
+  currency_code: GHS
   states:
     - Ashanti
     - Bono
@@ -1232,6 +1297,7 @@
     - Western North
 - name: Greece
   code: GR
+  currency_code: EUR
   states:
     - Attica
     - Central Greece
@@ -1248,6 +1314,7 @@
     - Western Macedonia
 - name: Grenada
   code: GD
+  currency_code: XCD
   states:
     - Saint Andrew
     - Saint David
@@ -1257,6 +1324,7 @@
     - Saint Patrick
 - name: Guatemala
   code: GT
+  currency_code: GTQ
   states:
     - Alta Verapaz
     - Baja Verapaz
@@ -1282,6 +1350,7 @@
     - Zacapa
 - name: Guinea
   code: GN
+  currency_code: GNF
   states:
     - Boké
     - Conakry
@@ -1293,6 +1362,7 @@
     - Nzérékoré
 - name: Guinea-Bissau
   code: GW
+  currency_code: XOF
   states:
     - Bafatá
     - Biombo
@@ -1305,6 +1375,7 @@
     - Tombali
 - name: Guyana
   code: GY
+  currency_code: GYD
   states:
     - Barima-Waini
     - Cuyuni-Mazaruni
@@ -1318,6 +1389,7 @@
     - Upper Takutu-Upper Essequibo
 - name: Haiti
   code: HT
+  currency_code: HTG
   states:
     - Artibonite
     - Centre
@@ -1331,6 +1403,7 @@
     - Sud-Est
 - name: Honduras
   code: HN
+  currency_code: HNL
   states:
     - Atlántida
     - Choluteca
@@ -1352,6 +1425,7 @@
     - Yoro
 - name: Hungary
   code: HU
+  currency_code: HUF
   states:
     - Bács-Kiskun
     - Baranya
@@ -1375,6 +1449,7 @@
     - Zala
 - name: Iceland
   code: IS
+  currency_code: ISK
   states:
     - Capital Region
     - East
@@ -1386,6 +1461,7 @@
     - Westfjords
 - name: India
   code: IN
+  currency_code: INR
   states:
     - Andaman and Nicobar Islands
     - Andhra Pradesh
@@ -1425,6 +1501,7 @@
     - West Bengal
 - name: Indonesia
   code: ID
+  currency_code: IDR
   states:
     - Aceh
     - Bali
@@ -1462,6 +1539,7 @@
     - Yogyakarta
 - name: Iran
   code: IR
+  currency_code: IRR
   states:
     - Alborz
     - Ardabil
@@ -1496,6 +1574,7 @@
     - Zanjan
 - name: Iraq
   code: IQ
+  currency_code: IQD
   states:
     - Al-Anbar
     - Al-Muthanna
@@ -1516,6 +1595,7 @@
     - Wasit
 - name: Ireland
   code: IE
+  currency_code: EUR
   states:
     - Carlow
     - Cavan
@@ -1545,6 +1625,7 @@
     - Wicklow
 - name: Israel
   code: IL
+  currency_code: ILS
   states:
     - Central District
     - Haifa District
@@ -1554,6 +1635,7 @@
     - Tel Aviv District
 - name: Italy
   code: IT
+  currency_code: EUR
   states:
     - Abruzzo
     - Aosta Valley
@@ -1577,6 +1659,7 @@
     - Veneto
 - name: Jamaica
   code: JM
+  currency_code: JMD
   states:
     - Clarendon
     - Hanover
@@ -1594,6 +1677,7 @@
     - Westmoreland
 - name: Japan
   code: JP
+  currency_code: JPY
   states:
     - Aichi
     - Akita
@@ -1644,6 +1728,7 @@
     - Yamanashi
 - name: Jordan
   code: JO
+  currency_code: JOD
   states:
     - Ajloun
     - Amman
@@ -1657,8 +1742,10 @@
     - Mafraq
     - Tafilah
     - Zarqa
+
 - name: Kazakhstan
   code: KZ
+  currency_code: KZT
   states:
     - Aktobe
     - Almaty
@@ -1676,8 +1763,10 @@
     - Shymkent
     - Turkistan
     - West Kazakhstan
+
 - name: Kenya
   code: KE
+  currency_code: KES
   states:
     - Bomet
     - Bungoma
@@ -1724,14 +1813,18 @@
     - Vihiga
     - Wajir
     - West Pokot
+
 - name: Kiribati
   code: KI
+  currency_code: AUD
   states:
     - Gilbert Islands
     - Line Islands
     - Phoenix Islands
+
 - name: Kosovo
   code: XK
+  currency_code: EUR
   states:
     - Ferizaj
     - Gjakova
@@ -1740,8 +1833,10 @@
     - Peja
     - Pristina
     - Prizren
+
 - name: Kuwait
   code: KW
+  currency_code: KWD
   states:
     - Ahmadi
     - Farwaniya
@@ -1749,8 +1844,10 @@
     - Jahra
     - Mubarak Al-Kabeer
     - Capital
+
 - name: Kyrgyzstan
   code: KG
+  currency_code: KGS
   states:
     - Batken
     - Bishkek
@@ -1760,8 +1857,10 @@
     - Osh
     - Talas
     - Ysyk-Köl
+
 - name: Laos
   code: LA
+  currency_code: LAK
   states:
     - Attapeu
     - Bokeo
@@ -1781,8 +1880,10 @@
     - Xaisomboun
     - Xekong
     - Xiangkhouang
+
 - name: Latvia
   code: LV
+  currency_code: EUR
   states:
     - Aizkraukle
     - Alūksne
@@ -1810,8 +1911,10 @@
     - Valka
     - Valmiera
     - Ventspils
+
 - name: Lebanon
   code: LB
+  currency_code: LBP
   states:
     - Akkar
     - Baalbek-Hermel
@@ -1821,8 +1924,10 @@
     - North
     - South
     - Beirut
+
 - name: Lesotho
   code: LS
+  currency_code: LSL
   states:
     - Berea
     - Butha-Buthe
@@ -1834,8 +1939,29 @@
     - Qacha's Nek
     - Quthing
     - Thaba-Tseka
+
 - name: Liberia
   code: LR
+  currency_code: LRD
+  states:
+    - Bomi
+    - Bong
+    - Gbarpolu
+    - Grand Bassa
+    - Grand Cape Mount
+    - Grand Gedeh
+    - Grand Kru
+    - Lofa
+    - Margibi
+    - Maryland
+    - Montserrado
+    - Nimba
+    - River Cess
+    - River Gee
+    - Sinoe
+- name: Libya
+  code: LY
+  currency_code: LYD
   states:
     - Bomi
     - Bong
@@ -1873,6 +1999,7 @@
     - Zawiya
 - name: Liechtenstein
   code: LI
+  currency_code: CHF
   states:
     - Balzers
     - Eschen
@@ -1887,6 +2014,7 @@
     - Vaduz
 - name: Lithuania
   code: LT
+  currency_code: EUR
   states:
     - Alytus County
     - Kaunas County
@@ -1900,12 +2028,14 @@
     - Vilnius County
 - name: Luxembourg
   code: LU
+  currency_code: EUR
   states:
     - Diekirch
     - Grevenmacher
     - Luxembourg
 - name: Madagascar
   code: MG
+  currency_code: MGA
   states:
     - Alaotra-Mangoro
     - Amoron'i Mania
@@ -1930,12 +2060,14 @@
     - Vatovavy-Fitovinany
 - name: Malawi
   code: MW
+  currency_code: MWK
   states:
     - Central Region
     - Northern Region
     - Southern Region
 - name: Malaysia
   code: MY
+  currency_code: MYR
   states:
     - Johor
     - Kedah
@@ -1955,6 +2087,7 @@
     - Terengganu
 - name: Maldives
   code: MV
+  currency_code: MVR
   states:
     - Alifu Alifu
     - Alifu Dhaalu
@@ -1978,6 +2111,7 @@
     - Addu City
 - name: Mali
   code: ML
+  currency_code: XOF
   states:
     - Bamako
     - Gao
@@ -1992,11 +2126,13 @@
     - Tombouctou
 - name: Malta
   code: MT
+  currency_code: EUR
   states:
     - Gozo
     - Malta
 - name: Marshall Islands
   code: MH
+  currency_code: USD
   states:
     - Ailinglaplap
     - Ailuk
@@ -2027,6 +2163,7 @@
     - Wotje
 - name: Mauritania
   code: MR
+  currency_code: MRU
   states:
     - Adrar
     - Assaba
@@ -2183,6 +2320,7 @@
     - Ulcinj
 - name: Morocco
   code: MA
+  currency_code: MAD
   states:
     - Béni Mellal-Khénifra
     - Casablanca-Settat
@@ -2338,6 +2476,8 @@
     - Zinder
 - name: Nigeria
   code: NG
+  currency_code: NGN
+  payment_processor: 'Flutterwave'
   states:
     - Abia
     - Adamawa
@@ -3046,6 +3186,7 @@
     - Woqooyi Galbeed
 - name: South Africa
   code: ZA
+  currency_code: ZAR
   states:
     - Eastern Cape
     - Free State
@@ -3058,6 +3199,7 @@
     - Western Cape
 - name: South Sudan
   code: SS
+  currency_code: SDG
   states:
     - Central Equatoria
     - Eastern Equatoria
@@ -3071,6 +3213,7 @@
     - Western Equatoria
 - name: Spain
   code: ES
+  currency_code: EUR
   states:
     - Andalusia
     - Aragon
@@ -3502,13 +3645,17 @@
     - Umm Al Quwain
 - name: United Kingdom
   code: GB
+  currency_code: GBP
+  payment_processor: 'Stripe'
   states:
     - England
     - Northern Ireland
     - Scotland
     - Wales
-- name: United States of America
+- name: United States
   code: US
+  currency_code: USD
+  payment_processor: 'Stripe'
   states:
     - Alabama
     - Alaska

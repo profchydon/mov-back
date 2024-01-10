@@ -1,9 +1,0 @@
-name: Users
-description: Get unlimited users for a small fee
-pricing: PAID
-available_as_addon: true
-prices:
-  - currency_code: NGN
-    price: 50000
-  - currency_code: USD
-    price: 500

@@ -18,6 +18,7 @@ class CreateCompanyDTO
     private ?string $state;
     private string $tenant_id;
     private string $sso_id;
+    private string $invitation_code;
 
     public function setName(string $name)
     {
@@ -137,5 +138,17 @@ class CreateCompanyDTO
     public function getSsoId()
     {
         return $this->sso_id;
+    }
+
+    public function setInvitationCode(string $invitation_code)
+    {
+        $this->invitation_code = $invitation_code;
+
+        return $this;
+    }
+
+    public function getInvitationCode()
+    {
+        return $this->invitation_code;
     }
 }

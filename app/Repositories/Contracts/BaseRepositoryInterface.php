@@ -34,9 +34,15 @@ interface BaseRepositoryInterface
 
     public function deleteById($id);
 
+    public function softDeleteById($id, array $data);
+
     public function update($column, $value, $data);
 
+    public function updateMultiple($column, $value, $data);
+
     public function updateOrCreate(array $condition, $data);
+
+    public function firstOrCreate(array $condition, $data);
 
     public function updateById($id, $updateData);
 

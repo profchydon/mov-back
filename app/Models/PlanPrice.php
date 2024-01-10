@@ -2,21 +2,17 @@
 
 namespace App\Models;
 
-use App\Domains\Constant\PlanPriceConstant;
+use App\Domains\Constant\Plan\PlanPriceConstant;
+use App\Domains\Constant\Plan\PlanProcessorConstant;
 use App\Domains\Enum\Plan\BillingCycleEnum;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Domains\Enum\Plan\PlanProcessorNameEnum;
+use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
 class PlanPrice extends BaseModel
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
-
-    public $incrementing = false;
-
-    protected $keyType = 'string';
+    use UsesUUID, SoftDeletes;
 
     protected $casts = [
         PlanPriceConstant::ID => 'string',
@@ -36,5 +32,20 @@ class PlanPrice extends BaseModel
     public function currency()
     {
         return $this->belongsTo(Currency::class, 'currency_code', 'code');
+    }
+
+    public function processor()
+    {
+        return $this->hasMany(PlanProcessor::class, PlanProcessorConstant::PLAN_PRICE_ID);
+    }
+
+    public function flutterwaveProcessor()
+    {
+        return $this->processor()->where(PlanProcessorConstant::PLAN_PROCESSOR_NAME, PlanProcessorNameEnum::FLUTTERWAVE);
+    }
+
+    public function swipeProcessor()
+    {
+        return $this->processor()->where(PlanProcessorConstant::PLAN_PROCESSOR_NAME, PlanProcessorNameEnum::STRIPE);
     }
 }

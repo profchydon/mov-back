@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Constant\AssetTypeConstant;
+use App\Domains\Constant\Asset\AssetTypeConstant;
 use App\Domains\Enum\Asset\AssetTypeStatusEnum;
 use App\Models\AssetType;
 use Illuminate\Database\Seeder;
@@ -15,15 +15,18 @@ class AssetTypeSeeder extends Seeder
     public function run(): void
     {
         $types = [
-            'Mobile Phone',
-            'Laptop',
-            'Desktop',
-            'Vehicle',
-            'Furniture',
+            'Computer & Equipment',
+            'Furniture & Fixtures',
+            'Machinery & Equipment',
+            'Vehicles',
+            'Building & Real Estate',
+            'Others',
         ];
 
         foreach ($types as $type) {
-            AssetType::create([
+            AssetType::updateOrCreate([
+                AssetTypeConstant::NAME => $type,
+            ], [
                 AssetTypeConstant::NAME => $type,
                 AssetTypeConstant::STATUS => AssetTypeStatusEnum::ACTIVE->value,
             ]);

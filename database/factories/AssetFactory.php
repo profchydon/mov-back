@@ -2,8 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domains\Constant\AssetConstant;
-use App\Domains\Enum\Asset\AssetStatusEnum;
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Models\AssetType;
 use App\Models\Company;
 use App\Models\Office;
@@ -34,7 +33,7 @@ class AssetFactory extends Factory
             AssetConstant::OFFICE_AREA_ID => $officeArea->id,
             AssetConstant::CURRENCY => 'NGN',
             AssetConstant::ADDED_AT => now(),
-            AssetConstant::STATUS => fake()->randomElement(AssetStatusEnum::values()),
+            AssetConstant::STATUS => fake()->randomElement(['AVAILABLE', 'ARCHIVED']),
         ];
     }
 

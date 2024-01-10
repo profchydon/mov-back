@@ -4,62 +4,64 @@ namespace App\Models;
 
 use App\Domains\Constant\InvoiceConstant;
 use App\Domains\Enum\Invoice\InvoiceStatusEnum;
-use App\Traits\GetsTableName;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Ramsey\Uuid\Uuid;
+use App\Traits\UsesUUID;
 
-class Invoice extends Model
+class Invoice extends BaseModel
 {
-    use HasUuids, HasFactory, SoftDeletes, GetsTableName;
+    use UsesUUID;
 
-    public $incrementing = false;
-
-    protected $keyType = 'string';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $guarded = [
         InvoiceConstant::ID,
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         InvoiceConstant::ID => 'string',
         InvoiceConstant::STATUS => InvoiceStatusEnum::class,
+        InvoiceConstant::DUE_AT => 'datetime',
+        InvoiceConstant::PAID_AT => 'datetime',
     ];
-
-    /**
-     * Generate a new UUID for the model.
-     *
-     * @return string
-     */
-    public function newUniqueId()
-    {
-        return (string) Uuid::uuid4();
-    }
-
-    /**
-     * Get the columns that should receive a unique identifier.
-     *
-     * @return array
-     */
-    public function uniqueIds()
-    {
-        return ['id'];
-    }
 
     public static function boot()
     {
         parent::boot();
+        static::creating(function (self $model) {
+            $invoiceNumber = chunk_split(strtoupper(uniqid('in')), 5, '-');
+            $invoiceNumber = trim($invoiceNumber, '-');
+            $model->invoice_number = $invoiceNumber;
+        });
+    }
+
+    public function billable()
+    {
+        return $this->morphTo();
+    }
+
+    public function items()
+    {
+        return $this->hasMany(InvoiceItem::class, 'invoice_id');
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_code', 'code');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function markAsPaid(): bool
+    {
+        return $this->update([
+            InvoiceConstant::STATUS => InvoiceStatusEnum::PAID,
+        ]);
+    }
+
+    public function markAsOverdue(): bool
+    {
+        return $this->update([
+            InvoiceConstant::STATUS => InvoiceStatusEnum::OVERDUE,
+        ]);
     }
 }

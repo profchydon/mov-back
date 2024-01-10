@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\V2;
 
 use App\Common\JWTHandler;
+use App\Common\SerializePermission;
 use App\Domains\Constant\UserConstant;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Company\CompanyResource;
+use App\Http\Resources\User\UserResource;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -66,45 +69,21 @@ class SessionController extends Controller
     {
         $user = $this->userRepository->first(UserConstant::SSO_ID, $sub);
 
+        $userRoles = $user->roles()->with('permissions')->get();
+
+        $userCompany = $user->userCompanies()->with('company')->first();
+
+        $serializePermission = new SerializePermission($userRoles);
+
+        $user->update([
+            UserConstant::LAST_LOGIN => now(),
+        ]);
+
         return [
-            'user' => $user,
+            'user' => new UserResource($user),
+            'company' => new CompanyResource($userCompany?->company),
+            'permissions' => $serializePermission->stringifyPermission(),
             'auth_token' => $user->createToken('auth_token')->plainTextToken,
         ];
     }
-
-    // public function authorization()
-    // {
-    //     $clientId = getenv("CLIENT_ID");
-    //     $clientSecret = getenv("CLIENT_SECRET");
-    //     $ssoUrl = getenv("SSO_URL");
-    //     $redirectUrl = getenv("REDIRECT_URL");
-
-    //     $authorizationUrl = sprintf("%s/s/authorization?client_id=%s&client_secret=%s", $ssoUrl, $clientId, $clientSecret);
-
-    //     $response = Http::get($authorizationUrl);
-
-    //     $redirectURI = sprintf(
-    //         "%s/login?authorization_token=%s&callback_url=%s&client_id=%s",
-    //         $ssoUrl,
-    //         $response["token"],
-    //         $redirectUrl,
-    //         $response["verifier"]
-    //     );
-
-    //     return response()->json(['redirect_url' => $redirectURI]);
-    // }
-
-    // public function confirmation(Request $request)
-    // {
-    //     $clientId = getenv('CLIENT_ID');
-    //     $clientSecret = getenv('CLIENT_SECRET');
-
-    //     $ssoUrl = getenv('SSO_URL');
-
-    //     $confirmationUrl = sprintf('%s/s/confirm_token?client_id=%s&client_secret=%s&token=%s', $ssoUrl, $clientId, $clientSecret, $request->query('token'));
-
-    //     $response = Http::get($confirmationUrl);
-
-    //     return response()->json($response);
-    // }
 }

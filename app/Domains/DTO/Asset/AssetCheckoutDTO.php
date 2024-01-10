@@ -2,6 +2,8 @@
 
 namespace App\Domains\DTO\Asset;
 
+use App\Models\User;
+use App\Models\Vendor;
 use App\Traits\DTOToArray;
 use Illuminate\Support\Carbon;
 
@@ -20,6 +22,12 @@ final class AssetCheckoutDTO
     private ?Carbon $return_date;
     private ?string $comment;
     private ?string $status;
+    private string $checkout_by;
+
+    const REVEIVER_TYPE = [
+        'users' => User::class,
+        'vendors' => Vendor::class,
+    ];
 
     public function getTenantId(): ?string
     {
@@ -88,7 +96,9 @@ final class AssetCheckoutDTO
 
     public function setReceiverType(?string $receiver_type): self
     {
-        $this->receiver_type = $receiver_type;
+        if (!empty($receiver_type)) {
+            $this->receiver_type = self::REVEIVER_TYPE[$receiver_type];
+        }
 
         return $this;
     }
@@ -149,6 +159,18 @@ final class AssetCheckoutDTO
     public function setStatus(?string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getCheckoutBy(): ?string
+    {
+        return $this->checkout_by;
+    }
+
+    public function setCheckoutBy(string $checkout_by): self
+    {
+        $this->checkout_by = $checkout_by;
 
         return $this;
     }

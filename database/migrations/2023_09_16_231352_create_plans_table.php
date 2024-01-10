@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Constant\PlanConstant;
+use App\Domains\Constant\Plan\PlanConstant;
 use App\Domains\Enum\Plan\PlanStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
