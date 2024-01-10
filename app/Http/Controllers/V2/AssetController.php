@@ -26,6 +26,7 @@ use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\FileRepositoryInterface;
 use App\Rules\HumanNameRule;
 use Exception;
+use Illuminate\Http\File;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -43,11 +44,12 @@ class AssetController extends Controller
      * @param CompanyRepositoryInterface $companyRepository
      */
     public function __construct(
-        private readonly AssetRepositoryInterface $assetRepository,
-        private readonly CompanyRepositoryInterface $companyRepository,
+        private readonly AssetRepositoryInterface     $assetRepository,
+        private readonly CompanyRepositoryInterface   $companyRepository,
         private readonly AssetMakeRepositoryInterface $assetMakeRepository,
-        private readonly FileRepositoryInterface $fileRepository
-    ) {
+        private readonly FileRepositoryInterface      $fileRepository
+    )
+    {
     }
 
     /**
@@ -254,15 +256,18 @@ class AssetController extends Controller
 
         $extension = $image->getClientOriginalExtension();
 
-        $fileName = sprintf('%s-%s.%s', time(), Str::uuid(), $extension);
+        $fileName = sprintf('%s/%s.%s', $asset->id, time(), $extension);
 
         if ($asset->image != null) {
             Storage::disk('s3')->delete($asset->image->path);
             $this->fileRepository->deleteById($asset->image->id);
         }
 
-        Storage::disk('s3')->putFileAs('', $image, $image->getClientOriginalName());
-        $asset->image()->create(['path' => $image->getClientOriginalName()]);
+        $url = Storage::disk('s3')->putFileAs('test', new File($image->getRealPath()), $fileName);
+
+        if (!empty($url)) {
+            $asset->image()->create(['path' => $url]);
+        }
 
         return $this->response(Response::HTTP_OK, __('messages.asset-image-updated'), $asset->load('image'));
     }
