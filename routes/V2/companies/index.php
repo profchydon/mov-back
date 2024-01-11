@@ -53,7 +53,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
 });
 
 Route::post('subscription_payment/{payment:tx_ref}/confirm', [SubscriptionController::class, 'confirmSubscriptionPayment']);
-Route::post('confirm-payment', [SubscriptionController::class, 'confirmPayment'])->name('payment-subscription.callback');
+Route::get('confirm-usd-payment', [SubscriptionController::class, 'confirmPayment'])->name('payment-subscription.callback');
 
 // Route for office areas
 Route::group(['prefix' => 'offices/{office}', 'middleware' => ['auth:sanctum', 'user-in-company']], function () {

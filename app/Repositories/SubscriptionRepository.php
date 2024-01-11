@@ -97,15 +97,15 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             if (Str::upper($subDTO->getCurrency()) == 'USD' || Str::upper($subDTO->getCurrency()) == 'GBP' || Str::upper($subDTO->getCurrency()) == 'EUR') {
                 $paymentLink = StripeService::getStandardPaymentLink($paymentLinkDTO);
             } else {
-                $paymentLink = FlutterwaveService::getStandardPaymentLink($paymentLinkDTO);
-                $paymentLink = $paymentLink->authorization_url ?? $paymentLink->link;
+                $paymentObject = FlutterwaveService::getStandardPaymentLink($paymentLinkDTO);
+                $paymentLink = $paymentObject->authorization_url ?? $paymentObject->link;
             }
 
             $subscription->payment()->create([
                 'company_id' => $subDTO->getCompanyId(),
                 'tenant_id' => $subDTO->getTenantId(),
                 'payment_link' => $paymentLink,
-                'tx_ref' => $paymentLink->reference ?? $paymentLinkDTO->getTxRef(),
+                'tx_ref' => $paymentObject?->reference ?? $paymentLinkDTO->getTxRef(),
             ]);
         } else {
             $subscription->activate();
