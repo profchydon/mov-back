@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class File extends Model
@@ -28,7 +29,7 @@ class File extends Model
 
     protected function path(): Attribute
     {
-       return Attribute::make(get: fn ($value) => $this->getTemporaryLink());
+       return Attribute::make(get: fn ($value) => $this->getTemporaryLink($value));
     }
 
     public function getLinkAttribute()
@@ -40,12 +41,12 @@ class File extends Model
         });
     }
 
-    private function getTemporaryLink()
+    private function getTemporaryLink($path)
     {
         $cacheTime = now()->addHours(24);
 
-        return Cache::remember("link-{$this->id}", $cacheTime, function () use ($cacheTime) {
-            return Storage::disk('s3')->temporaryUrl($this->path, $cacheTime);
+        return Cache::remember("link-{$this->id}", $cacheTime, function () use ($cacheTime, $path) {
+            return Storage::disk('s3')->temporaryUrl($path, $cacheTime);
         });
     }
 }
