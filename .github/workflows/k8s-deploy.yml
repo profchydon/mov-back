@@ -6,7 +6,7 @@ env:
   GIT_REF: ${{ github.ref }}
   GIT_PAT: ${{ secrets.GIT_PAT }}
   BRANCH: ${GIT_REF##*/}
-
+  
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -29,7 +29,7 @@ jobs:
   build-and-push-to-dev:
     name: Build and Push to ECR dev
     if: github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  
     needs:
       - test
     steps:
@@ -52,7 +52,7 @@ jobs:
         run: |
           docker build -t 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8} .
           docker push 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8}
-
+      
       # - uses: 8398a7/action-slack@v3
       #   with:
       #     status: ${{ job.status }}
@@ -61,7 +61,7 @@ jobs:
       #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
       #   if: always() # Pick up events even if the job fails or is canceled.
 
-
+  
   deploy-to-dev:
     name: Update the Deployment dev
     runs-on: ubuntu-latest
@@ -74,7 +74,7 @@ jobs:
 
       - name: Install Kustomize
         uses: imranismail/setup-kustomize@v2
-
+        
       - name: Set latest images in the kustomize deployment
         working-directory: deployment
         run: |
@@ -98,7 +98,75 @@ jobs:
   build-and-push-to-staging:
     name: Build and Push to ECR dev
     if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest  
+    needs:
+      - test    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, Tag, and Push the Image to Amazon ECR
+        id: build-image
+        run: |
+          docker build -t 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8} .
+          docker push 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8}
+      
+      # - uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: ${{ job.status }}
+      #     fields: repo,message,commit,author,action,eventName,ref,workflow,job,took # selectable (default: repo,message)
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+      #   if: always() # Pick up events even if the job fails or is canceled.
+
+  
+  deploy-to-staging:
+    name: Update the Deployment dev
     runs-on: ubuntu-latest
+    needs:
+      - build-and-push-to-staging
+    steps:
+      - name: Checkout the Deployment Repository
+        run: |
+          git clone https://chidichukwuma:$GIT_PAT@github.com/RaydaHQ/rayda-deployment.git deployment
+
+      - name: Install Kustomize
+        uses: imranismail/setup-kustomize@v2
+        
+      - name: Set latest images in the kustomize deployment
+        working-directory: deployment
+        run: |
+          cd rayda/corebackendv2/staging
+          kustomize edit set image 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8}
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Update corebackendv2 staging docker images to ${GIT_SHA::8}"
+          git push https://chidichukwuma:$GIT_PAT@github.com/RaydaHQ/rayda-deployment.git
+
+  #     - uses: 8398a7/action-slack@v3
+  #       with:
+  #         status: ${{ job.status }}
+  #         fields: repo,message,commit,author,action,eventName,ref,workflow,job,took # selectable (default: repo,message)
+  #       env:
+  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+  #       if: always() # Pick up events even if the job fails or is canceled.
+
+  build-and-push-to-prod:
+    name: Build and Push to ECR prod
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest  
     needs:
       - test
     steps:
@@ -121,7 +189,7 @@ jobs:
         run: |
           docker build -t 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8} .
           docker push 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8}
-
+      
       # - uses: 8398a7/action-slack@v3
       #   with:
       #     status: ${{ job.status }}
@@ -130,12 +198,12 @@ jobs:
       #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
       #   if: always() # Pick up events even if the job fails or is canceled.
 
-
-  deploy-to-staging:
-    name: Update the Deployment dev
+  
+  deploy-to-prod:
+    name: Update the Deployment prod
     runs-on: ubuntu-latest
     needs:
-      - build-and-push-to-staging
+      - build-and-push-to-prod
     steps:
       - name: Checkout the Deployment Repository
         run: |
@@ -143,16 +211,16 @@ jobs:
 
       - name: Install Kustomize
         uses: imranismail/setup-kustomize@v2
-
+        
       - name: Set latest images in the kustomize deployment
         working-directory: deployment
         run: |
-          cd rayda/corebackendv2/staging
+          cd rayda/corebackendv2/prod
           kustomize edit set image 466221471692.dkr.ecr.us-east-2.amazonaws.com/corebackendv2:${GIT_SHA::8}
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "Update corebackendv2 staging docker images to ${GIT_SHA::8}"
+          git commit -m "Update corebackendv2 prod docker images to ${GIT_SHA::8}"
           git push https://chidichukwuma:$GIT_PAT@github.com/RaydaHQ/rayda-deployment.git
 
   #     - uses: 8398a7/action-slack@v3
@@ -162,3 +230,4 @@ jobs:
   #       env:
   #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
   #       if: always() # Pick up events even if the job fails or is canceled.
+
