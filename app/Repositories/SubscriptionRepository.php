@@ -94,11 +94,13 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                     'billing_cycle' => $subDTO->getBillingCycle(),
                 ]);
 
+            $paymentObject = null;
+
             if (Str::upper($subDTO->getCurrency()) == 'USD' || Str::upper($subDTO->getCurrency()) == 'GBP' || Str::upper($subDTO->getCurrency()) == 'EUR') {
                 $paymentLink = StripeService::getStandardPaymentLink($paymentLinkDTO);
             } else {
                 $paymentObject = FlutterwaveService::getStandardPaymentLink($paymentLinkDTO);
-                $paymentLink = $paymentObject->authorization_url ?? $paymentObject->link;
+                $paymentLink = $paymentObject->authorization_url ?? $paymentObject?->link;
             }
 
             $subscription->payment()->create([
