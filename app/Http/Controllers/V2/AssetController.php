@@ -25,6 +25,7 @@ use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\FileRepositoryInterface;
 use App\Rules\HumanNameRule;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\File;
 use Illuminate\Http\JsonResponse;
@@ -287,6 +288,7 @@ class AssetController extends Controller
             'acquisition_type' => ['nullable', 'string'],
             'custom_tags' => ['nullable', 'array'],
             'vendor_id' => ['nullable', Rule::exists('vendors', 'id')],
+            'assignee' => ['nullable', Rule::exists('users', 'id')],
             'condition' => ['nullable', 'string'],
             'maintenance_cycle' => ['nullable', 'string'],
             'next_maintenance_date' => ['nullable', 'date'],
@@ -324,6 +326,8 @@ class AssetController extends Controller
             ->setCondition($request->input('condition'))
             ->setMaintenanceCycle($request->input('maintenance_cycle'))
             ->setNextMaintenanceDate($request->input('next_maintenance_date'))
+            ->setAssignedTo($request->input('assignee'))
+            ->setAssignedDate(Carbon::now())
             ->setStatus($request->input('status'));
 
         $this->assetRepository->updateById($asset->id, $dto->toSynthensizedArray());

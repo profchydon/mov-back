@@ -40,8 +40,11 @@ class AssetMaintenanceController extends Controller
                 ->setGroupId($groupId)
                 ->setComment($request->comment)
                 ->setReason($request->reason)
-                ->setReturnDate(Carbon::createFromFormat('Y-m-d', $request->return_date))
                 ->setScheduledDate(Carbon::createFromFormat('Y-m-d', $request->scheduled_date));
+
+            if(! empty($request->return)){
+                $dto->setReturnDate(Carbon::createFromFormat('Y-m-d', $request->return_date));
+            }
 
             return $this->maintenanceRepository->createMaintenanceLog($dto);
         });
