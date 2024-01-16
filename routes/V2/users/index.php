@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(UserController::class)->prefix('users')->group(function () {
     Route::post('/', 'register')->name('create.user');
     Route::get('/{user}', 'find')->name('find.user');
-})->middleware(['auth:sanctum']);
+})->middleware(['token.decrypt','auth:sanctum']);
 
 Route::post('/otp', [UserController::class, 'sendOTP'])->name('send.otp');
 Route::put('/otp', [UserController::class, 'verifyAccount'])->name('verify.otp');
@@ -16,7 +16,7 @@ Route::put('/otp', [UserController::class, 'verifyAccount'])->name('verify.otp')
 Route::get('/sessions/authorization', [SessionController::class, 'authorization']);
 Route::get('/sessions/confirmation', [SessionController::class, 'confirmation']);
 
-Route::get('/me', [UserController::class, 'userDetails'])->name('user.details')->middleware(['auth:sanctum']);
+Route::get('/me', [UserController::class, 'userDetails'])->name('user.details')->middleware(['token.decrypt','auth:sanctum']);
 
 Route::controller(UserInvitationController::class)->prefix('users/invitation')->group(function () {
     Route::get('/{code}', 'findUserInvitation')->name('find.user.invitation');
