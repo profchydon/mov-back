@@ -14,7 +14,7 @@
 <body style="background-color: #E5E5E5; padding-top: 40px; padding-bottom: 10px;">
     <div style="box-sizing: border-box;max-width: 570px;width: 100%; margin: 0 auto; padding: 1.3rem; margin-bottom: 2.5rem; background-color: #FFF;">
         <div style="margin-bottom: 3rem; width: 100%">
-            <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/bidda-logo.png" style="width: 60px" alt="Bidda logo">
+            <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/rayda.png" style="width: 60px" alt="Bidda logo">
             <div style="width: 25%; float: right;">
                 <a href="https://www.facebook.com/biddahq/" style="text-decoration: none;" target="_blank"><img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/facebook.png" alt=""></a>
                 <a href="https://www.instagram.com/biddahq/" target="_blank"><img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/instagram.png" alt=""></a>
@@ -26,7 +26,7 @@
 
         <!-- <p style="margin-top: 3rem; font-family: 'IBM Plex Sans', sans-serif; color: #404968;">This email was sent from <a href="mailto:rayda@gmail.com" target="_blank">rayda@gmail.com</a>. If you'd rather not receive this kind of email, Don’t want any more emails from Rayda? <a href="">Unsubscribe</a>.</p> -->
         <p style="margin-top: 3rem; font-family: 'IBM Plex Sans', sans-serif; color: #404968;">1007 N Orange St. 4th Floor Suite #901Wilmington, Delaware, United States</p>
-        <p style="font-family: 'IBM Plex Sans', sans-serif; color: #404968;">© {{date('Y')}} BiddaHQ
+        <p style="font-family: 'IBM Plex Sans', sans-serif; color: #404968;">© {{date('Y')}} Rayda Core
         </p>
     </div>
 </body>
