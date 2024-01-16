@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ForceJsonResponse;
 use App\Http\Middleware\NormalizeResponseForFrontEndMiddleware;
 use App\Http\Middleware\UserBelongsToCompany;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -67,5 +68,11 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'user-in-company' => UserBelongsToCompany::class,
+        'token.decrypt' => \App\Http\Middleware\DecryptBearerToken::class,
+    ];
+
+    protected $middlewarePriority = [
+        \App\Http\Middleware\DecryptBearerToken::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ];
 }
