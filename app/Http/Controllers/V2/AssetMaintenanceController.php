@@ -42,7 +42,7 @@ class AssetMaintenanceController extends Controller
                 ->setReason($request->reason)
                 ->setScheduledDate(Carbon::createFromFormat('Y-m-d', $request->scheduled_date));
 
-            if(! empty($request->return)){
+            if (!empty($request->return)) {
                 $dto->setReturnDate(Carbon::createFromFormat('Y-m-d', $request->return_date));
             }
 

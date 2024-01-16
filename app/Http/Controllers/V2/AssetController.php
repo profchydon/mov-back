@@ -34,7 +34,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class AssetController extends Controller
@@ -45,12 +44,11 @@ class AssetController extends Controller
      * @param CompanyRepositoryInterface $companyRepository
      */
     public function __construct(
-        private readonly AssetRepositoryInterface     $assetRepository,
-        private readonly CompanyRepositoryInterface   $companyRepository,
+        private readonly AssetRepositoryInterface $assetRepository,
+        private readonly CompanyRepositoryInterface $companyRepository,
         private readonly AssetMakeRepositoryInterface $assetMakeRepository,
-        private readonly FileRepositoryInterface      $fileRepository
-    )
-    {
+        private readonly FileRepositoryInterface $fileRepository
+    ) {
     }
 
     /**

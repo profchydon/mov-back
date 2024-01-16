@@ -16,7 +16,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
     Route::post('{company}/invitees', 'inviteCompanyUsers')->name('companies.invite.users');
     Route::post('{company}/sole-admin', 'soleAdminUser')->name('companies.sole.admin');
 
-    Route::controller(CompanyController::class)->prefix('{company}')->middleware(['token.decrypt','auth:sanctum', 'user-in-company'])->group(function () {
+    Route::controller(CompanyController::class)->prefix('{company}')->middleware(['token.decrypt', 'auth:sanctum',  'payload.decrypt',  'user-in-company'])->group(function () {
         Route::resource('tags', TagController::class);
         Route::resource('departments', DepartmentController::class);
 
@@ -48,7 +48,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
     Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription');
     Route::post('/{company}/subscriptions/{subscription}/add-ons', [SubscriptionController::class, 'addAddonsToSubscription'])->name('get.company.subscription');
     Route::resource('{company}/offices', CompanyOfficeController::class)->middleware(['auth:sanctum', 'user-in-company']);
-    Route::middleware(['token.decrypt','auth:sanctum'])->resource('{company}/offices', CompanyOfficeController::class);
+    Route::middleware(['token.decrypt', 'auth:sanctum'])->resource('{company}/offices', CompanyOfficeController::class);
     Route::get('{company}/dashboard', [\App\Http\Controllers\V2\DashboardController::class, 'index']);
 });
 
@@ -56,7 +56,7 @@ Route::post('subscription_payment/{payment:tx_ref}/confirm', [SubscriptionContro
 Route::get('confirm-usd-payment', [SubscriptionController::class, 'confirmPayment'])->name('payment-subscription.callback');
 
 // Route for office areas
-Route::group(['prefix' => 'offices/{office}', 'middleware' => ['token.decrypt','auth:sanctum', 'user-in-company']], function () {
+Route::group(['prefix' => 'offices/{office}', 'middleware' => ['token.decrypt', 'auth:sanctum',  'payload.decrypt', 'user-in-company']], function () {
     Route::post('areas', [CompanyOfficeController::class, 'storeOfficeArea']);
     Route::get('areas', [CompanyOfficeController::class, 'getOfficeAreas']);
     Route::put('areas/{officeArea}', [CompanyOfficeController::class, 'updateOfficeArea']);
@@ -64,7 +64,7 @@ Route::group(['prefix' => 'offices/{office}', 'middleware' => ['token.decrypt','
 });
 
 //Routes for users
-Route::group(['prefix' => 'companies/{company}', 'middleware' => ['token.decrypt','auth:sanctum', 'user-in-company']], function () {
+Route::group(['prefix' => 'companies/{company}', 'middleware' => ['token.decrypt', 'auth:sanctum',  'payload.decrypt', 'user-in-company']], function () {
     Route::controller(CompanyController::class)->group(function () {
         Route::post('/users', 'addCompanyUser')->name('add.company.user');
         Route::get('/users', 'getCompanyUsers')->name('get.company.users');
