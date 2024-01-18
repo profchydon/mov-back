@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Traits\ApiResponse;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
@@ -43,7 +44,7 @@ class DecryptPayload
 
             $request->headers->set('Content-Type', 'application/json');
 
-            return $next($request);
+            return $this->error(Response::HTTP_PRECONDITION_FAILED, $exception->getMessage());
         }
     }
 }
