@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Asset;
 
+use App\Domains\Constant\Asset\AssetConstant;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -16,7 +18,7 @@ class AssetMaintenanceRequest extends FormRequest
             'return_date' => ['sometimes', 'nullable', 'date_format:Y-m-d', 'after_or_equal:checkout_date'],
             'comment' => ['sometimes'],
             'assets' => ['required', 'array', 'min:1'],
-            'assets.*' => ['required', Rule::exists('assets', 'id')],
+            'assets.*' => ['required', Rule::exists('assets', 'id')->whereNot(AssetConstant::STATUS, AssetStatusEnum::STOLEN->value)],
         ];
     }
 }
