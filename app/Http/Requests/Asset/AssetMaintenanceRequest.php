@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Asset;
 
-use App\Domains\Enum\Asset\AssetStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

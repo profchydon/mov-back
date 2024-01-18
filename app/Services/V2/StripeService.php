@@ -32,8 +32,8 @@ class StripeService implements PaymentServiceInterface
                 ],
             ],
             'mode' => 'subscription',
-            'success_url' => $linkDTO->getRedirectUrl() . "?status=completed&reference=" . $linkDTO->getTxRef(),
-            'cancel_url' => $linkDTO->getRedirectUrl() . "?status=canceled&reference=" . $linkDTO->getTxRef(),
+            'success_url' => $linkDTO->getRedirectUrl() . '?status=completed&reference=' . $linkDTO->getTxRef(),
+            'cancel_url' => $linkDTO->getRedirectUrl() . '?status=canceled&reference=' . $linkDTO->getTxRef(),
         ]);
 
         return $session->url;

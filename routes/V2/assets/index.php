@@ -7,7 +7,7 @@ use App\Http\Controllers\V2\AssetTypeController;
 use Illuminate\Support\Facades\Route;
 
 // Asset
-Route::middleware(['token.decrypt','auth:sanctum', 'user-in-company'])->controller(AssetController::class)->prefix('companies')->group(function () {
+Route::middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt', 'user-in-company'])->controller(AssetController::class)->prefix('companies')->group(function () {
     Route::post('{company}/assets', 'create')->name('create.company.asset');
     Route::post('{company}/assets/csv-upload', 'createFromCSV(')->name('create.company.csv-upload.assets');
     Route::post('{company}/assets/bulk', 'createBulk')->name('create.company.bulk.assets');
@@ -41,7 +41,7 @@ Route::middleware(['token.decrypt','auth:sanctum', 'user-in-company'])->controll
 
 
 // Asset Type
-Route::middleware(['token.decrypt','auth:sanctum', 'user-in-company'])->controller(AssetTypeController::class)->prefix('assets/type')->group(function () {
+Route::middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt', 'user-in-company'])->controller(AssetTypeController::class)->prefix('assets/type')->group(function () {
     Route::post('/', 'create')->name('assets.type.create');
     Route::get('/', 'get')->name('assets.type.get');
 });
@@ -49,15 +49,15 @@ Route::middleware(['token.decrypt','auth:sanctum', 'user-in-company'])->controll
 
 // Asset Maintenance
 Route::controller(AssetMaintenanceController::class)->prefix('assets/maintenance')->group(function () {
-})->middleware(['auth:sanctum', 'user-in-company']);
+})->middleware(['auth:sanctum', 'payload.decrypt', 'user-in-company']);
 
-Route::get('companies/{company}/asset-checkouts/group/{groupId}', [AssetCheckoutController::class, 'getGroupAssetCheckout'])->middleware(['token.decrypt','auth:sanctum', 'user-in-company']);
-Route::get('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'index'])->middleware(['token.decrypt','auth:sanctum', 'user-in-company']);
-Route::post('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'store'])->middleware(['token.decrypt','auth:sanctum', 'user-in-company']);
-Route::post('companies/{company}/asset-checkouts/group/{groupId}/return', [AssetCheckoutController::class, 'returnAssetsInGroup'])->middleware(['token.decrypt','auth:sanctum', 'user-in-company']);
-Route::post('companies/{company}/asset-maintenances', [AssetMaintenanceController::class, 'store'])->middleware(['token.decrypt','auth:sanctum', 'user-in-company']);
-Route::get('companies/{company}/asset-maintenances', [AssetMaintenanceController::class, 'index'])->middleware(['token.decrypt','auth:sanctum', 'user-in-company']);
-Route::middleware(['token.decrypt','auth:sanctum'])->controller(AssetMaintenanceController::class)->prefix('assets/maintenance')->group(function () {
+Route::get('companies/{company}/asset-checkouts/group/{groupId}', [AssetCheckoutController::class, 'getGroupAssetCheckout'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+Route::get('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'index'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+Route::post('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'store'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+Route::post('companies/{company}/asset-checkouts/group/{groupId}/return', [AssetCheckoutController::class, 'returnAssetsInGroup'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+Route::post('companies/{company}/asset-maintenances', [AssetMaintenanceController::class, 'store'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+Route::get('companies/{company}/asset-maintenances', [AssetMaintenanceController::class, 'index'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+Route::middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt'])->controller(AssetMaintenanceController::class)->prefix('assets/maintenance')->group(function () {
 });
 
 //Route::middleware(['auth:sanctum'])->resource('asset-checkouts', \App\Http\Controllers\V2\AssetCheckoutController::class);

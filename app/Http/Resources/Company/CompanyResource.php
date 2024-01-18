@@ -25,7 +25,7 @@ class CompanyResource extends JsonResource
             CompanyConstant::COUNTRY => $company->country,
             CompanyConstant::STATE => $company->state,
             CompanyConstant::STATUS => $company->status,
-            CompanyConstant::ACTIVE_SUBSCRIPTION => $company->activeSubscription
+            CompanyConstant::ACTIVE_SUBSCRIPTION => $company->activeSubscription,
         ];
     }
 }
