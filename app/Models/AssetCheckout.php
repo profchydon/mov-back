@@ -13,6 +13,19 @@ class AssetCheckout extends BaseModel
 {
     use UsesUUID;
 
+    protected static $searchable = [
+        'asset.make',
+        'asset.model',
+        'asset.serial_number'
+    ];
+
+    protected static $filterable = [
+        'condition' => 'assets.condition',
+        'type' => 'assets.type_id',
+        'assignee' => 'assets.assigned_to',
+    ];
+
+
     protected static function booted()
     {
         parent::booted();
