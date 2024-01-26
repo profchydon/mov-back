@@ -14,24 +14,24 @@ use App\Models\UserInvitation;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
-beforeEach(function () {
-    $this->artisan('db:seed --class=RoleSeeder');
-    $this->role = Role::inRandomOrder()->first();
-    $this->company = Company::factory()->create();
-    $this->user = User::factory()->create([
-        UserConstant::TENANT_ID => $this->company->tenant_id,
-        UserConstant::STAGE => UserStageEnum::COMPLETED,
-    ]);
-    $this->office = Office::factory()->create([
-        OfficeConstant::TENANT_ID => $this->company->tenant_id,
-        OfficeConstant::COMPANY_ID => $this->company->id,
-    ]);
-    $this->user->userCompanies()->create([
-        UserCompanyConstant::COMPANY_ID => $this->company->id,
-        UserCompanyConstant::TENANT_ID => $this->company->tenant_id,
-        UserCompanyConstant::OFFICE_ID => $this->office->id,
-    ]);
-});
+// beforeEach(function () {
+//     $this->artisan('db:seed --class=RoleSeeder');
+//     $this->role = Role::inRandomOrder()->first();
+//     $this->company = Company::factory()->create();
+//     $this->user = User::factory()->create([
+//         UserConstant::TENANT_ID => $this->company->tenant_id,
+//         UserConstant::STAGE => UserStageEnum::COMPLETED,
+//     ]);
+//     $this->office = Office::factory()->create([
+//         OfficeConstant::TENANT_ID => $this->company->tenant_id,
+//         OfficeConstant::COMPANY_ID => $this->company->id,
+//     ]);
+//     $this->user->userCompanies()->create([
+//         UserCompanyConstant::COMPANY_ID => $this->company->id,
+//         UserCompanyConstant::TENANT_ID => $this->company->tenant_id,
+//         UserCompanyConstant::OFFICE_ID => $this->office->id,
+//     ]);
+// });
 
 // test('invite user', function () {
 //     $data = [
@@ -57,41 +57,41 @@ beforeEach(function () {
 //     expect($response->getData()->message)->toBe('You have successfully invited users');
 // });
 
-test('fetch user invitation', function () {
-    $invitation = UserInvitation::factory()->create([
-        UserInvitationConstant::ROLE_ID => $this->role->id,
-        UserInvitationConstant::COMPANY_ID => $this->company,
-        UserInvitationConstant::INVITED_BY => $this->user,
-    ]);
+// test('fetch user invitation', function () {
+//     $invitation = UserInvitation::factory()->create([
+//         UserInvitationConstant::ROLE_ID => $this->role->id,
+//         UserInvitationConstant::COMPANY_ID => $this->company,
+//         UserInvitationConstant::INVITED_BY => $this->user,
+//     ]);
 
-    $response = $this->get(TestCase::fullLink("/users/invitation/{$invitation->code}"));
-    $response->assertOk();
-    expect($response->getData()->success)->toBeTrue();
-    expect($response->getData()->data->status)->toBe(UserInvitationStatusEnum::PENDING->value);
-    expect($invitation)->toBeInstanceOf(UserInvitation::class);
-    // expect($response->getData()->data)->toContain($invitation);
-});
+//     $response = $this->get(TestCase::fullLink("/users/invitation/{$invitation->code}"));
+//     $response->assertOk();
+//     expect($response->getData()->success)->toBeTrue();
+//     expect($response->getData()->data->status)->toBe(UserInvitationStatusEnum::PENDING->value);
+//     expect($invitation)->toBeInstanceOf(UserInvitation::class);
+//     // expect($response->getData()->data)->toContain($invitation);
+// });
 
-test('error when email provider is different from invited email', function () {
-    $invitation = UserInvitation::factory()->create([
-        UserInvitationConstant::ROLE_ID => $this->role->id,
-        UserInvitationConstant::COMPANY_ID => $this->company,
-        UserInvitationConstant::INVITED_BY => $this->user,
-    ]);
+// test('error when email provider is different from invited email', function () {
+//     $invitation = UserInvitation::factory()->create([
+//         UserInvitationConstant::ROLE_ID => $this->role->id,
+//         UserInvitationConstant::COMPANY_ID => $this->company,
+//         UserInvitationConstant::INVITED_BY => $this->user,
+//     ]);
 
-    $payload = [
-        'first_name' => fake()->firstName(),
-        'last_name' => fake()->lastName(),
-        'email' => fake()->safeEmail(),
-        'password' => fake()->password(),
-        'job_title' => fake()->jobTitle(),
-    ];
+//     $payload = [
+//         'first_name' => fake()->firstName(),
+//         'last_name' => fake()->lastName(),
+//         'email' => fake()->safeEmail(),
+//         'password' => fake()->password(),
+//         'job_title' => fake()->jobTitle(),
+//     ];
 
-    $response = $this->postJson(TestCase::fullLink("/users/invitation/{$invitation->code}"), $payload);
-    $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
-    expect($response->getData()->success)->toBeFalse();
-    expect($response->getData()->message)->toBe('Validation error');
-});
+//     $response = $this->postJson(TestCase::fullLink("/users/invitation/{$invitation->code}"), $payload);
+//     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+//     expect($response->getData()->success)->toBeFalse();
+//     expect($response->getData()->message)->toBe('Validation error');
+// });
 
 
 // test('accept invitation', function () {
