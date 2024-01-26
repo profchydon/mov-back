@@ -49,7 +49,7 @@ Route::middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt', 'user-in-
 
 // Asset Maintenance
 Route::controller(AssetMaintenanceController::class)->prefix('assets/maintenance')->group(function () {
-})->middleware(['auth:sanctum', 'payload.decrypt', 'user-in-company']);
+})->middleware(['token.decrypt','auth:sanctum', 'payload.decrypt', 'user-in-company']);
 
 Route::get('companies/{company}/asset-checkouts/group/{groupId}', [AssetCheckoutController::class, 'getGroupAssetCheckout'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
 Route::get('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'index'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
