@@ -10,8 +10,8 @@ Route::controller(UserController::class)->prefix('users')->group(function () {
     Route::get('/{user}', 'find')->name('find.user');
 })->middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt']);
 
-Route::post('/otp', [UserController::class, 'sendOTP'])->name('send.otp');
-Route::put('/otp', [UserController::class, 'verifyAccount'])->name('verify.otp');
+Route::post('/otp', [UserController::class, 'sendOTP'])->middleware(['payload.decrypt'])->name('send.otp');
+Route::put('/otp', [UserController::class, 'verifyAccount'])->middleware(['payload.decrypt'])->name('verify.otp');
 
 Route::get('/sessions/authorization', [SessionController::class, 'authorization']);
 Route::get('/sessions/confirmation', [SessionController::class, 'confirmation']);
