@@ -42,18 +42,18 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::get('/invoices/{invoice:invoice_number}/pdf', [InvoiceController::class, 'showPDF']);
     });
 
-    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');
-    Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->name('get.company.subscriptions');
-    Route::get('/{company}/active-subscription', [SubscriptionController::class, 'getActiveSubscription'])->name('get.company.active-subscription');
-    Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription');
-    Route::post('/{company}/subscriptions/{subscription}/add-ons', [SubscriptionController::class, 'addAddonsToSubscription'])->name('get.company.subscription');
+    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription')->middleware(['payload.decrypt']);
+    Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->name('get.company.subscriptions')->middleware(['payload.decrypt']);
+    Route::get('/{company}/active-subscription', [SubscriptionController::class, 'getActiveSubscription'])->name('get.company.active-subscription')->middleware(['payload.decrypt']);
+    Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription')->middleware(['payload.decrypt']);
+    Route::post('/{company}/subscriptions/{subscription}/add-ons', [SubscriptionController::class, 'addAddonsToSubscription'])->name('get.company.subscription')->middleware(['payload.decrypt']);
     Route::resource('{company}/offices', CompanyOfficeController::class)->middleware(['auth:sanctum', 'user-in-company']);
     Route::middleware(['token.decrypt', 'payload.decrypt', 'auth:sanctum'])->resource('{company}/offices', CompanyOfficeController::class);
-    Route::get('{company}/dashboard', [\App\Http\Controllers\V2\DashboardController::class, 'index']);
+    Route::get('{company}/dashboard', [\App\Http\Controllers\V2\DashboardController::class, 'index'])->middleware(['token.decrypt', 'payload.decrypt']);
 });
 
-Route::post('subscription_payment/{payment:tx_ref}/confirm', [SubscriptionController::class, 'confirmSubscriptionPayment']);
-Route::get('confirm-usd-payment', [SubscriptionController::class, 'confirmPayment'])->name('payment-subscription.callback');
+Route::post('subscription_payment/{payment:tx_ref}/confirm', [SubscriptionController::class, 'confirmSubscriptionPayment'])->middleware(['payload.decrypt']);
+Route::get('confirm-usd-payment', [SubscriptionController::class, 'confirmPayment'])->name('payment-subscription.callback')->middleware(['payload.decrypt']);
 
 // Route for office areas
 Route::group(['prefix' => 'offices/{office}', 'middleware' => ['token.decrypt', 'auth:sanctum',  'payload.decrypt', 'user-in-company']], function () {
