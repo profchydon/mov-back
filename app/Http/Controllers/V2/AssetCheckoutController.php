@@ -26,9 +26,9 @@ class AssetCheckoutController extends Controller
     public function index(Request $request)
     {
         $company_id = $request->header('x-company-id');
-        $checkout = AssetCheckout::where(AssetCheckoutConstant::COMPANY_ID, $company_id)->with('asset')->orderBy('created_at', 'desc');
+        $checkout = AssetCheckout::where(AssetCheckoutConstant::COMPANY_ID, $company_id)->with(['receiver', 'checkedOutBy'])->orderBy('created_at', 'desc');
         $checkout = AssetCheckout::appendToQueryFromRequestQueryParameters($checkout);
-        $checkout = $checkout->paginate()->groupBy('group_id');
+        $checkout = $checkout->groupBy('group_id')->paginate();
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $checkout);
 //        $checkout = AssetCheckout::where(AssetCheckoutConstant::COMPANY_ID, $company_id)->with('asset', 'receiver', 'checkedOutBy')->orderBy('created_at', 'DESC');
