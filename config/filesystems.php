@@ -73,6 +73,6 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
-    'base-folder' => env('BASE_FILE_LOCATION', 'test')
+    'base-folder' => env('BASE_FILE_LOCATION', 'test'),
 
 ];

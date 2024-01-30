@@ -18,6 +18,7 @@ class SelectSubscriptionPlanRequest extends FormRequest
     public function authorize(): bool
     {
         Log::info($this->input());
+
         return true;
     }
 

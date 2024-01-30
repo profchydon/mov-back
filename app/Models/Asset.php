@@ -22,7 +22,7 @@ class Asset extends BaseModel
     protected static $searchable = [
         'make',
         'model',
-        'serial_number'
+        'serial_number',
     ];
 
     protected static $filterable = [

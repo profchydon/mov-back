@@ -43,7 +43,7 @@ test('it can create maintenance log', function () {
         'name' => fake()->name(),
         'email' => fake()->safeEmail(),
         'phone_number' => fake()->phoneNumber(),
-        'address' => fake()->address()
+        'address' => fake()->address(),
     ]);
 
     $assets = \App\Models\Asset::factory(5)->create([

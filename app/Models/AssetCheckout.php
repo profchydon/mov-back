@@ -16,7 +16,7 @@ class AssetCheckout extends BaseModel
     protected static $searchable = [
         'asset.make',
         'asset.model',
-        'asset.serial_number'
+        'asset.serial_number',
     ];
 
     protected static $filterable = [
@@ -24,7 +24,6 @@ class AssetCheckout extends BaseModel
         'type' => 'assets.type_id',
         'assignee' => 'assets.assigned_to',
     ];
-
 
     protected static function booted()
     {

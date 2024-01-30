@@ -32,8 +32,7 @@ class AcceptUserInvitationRequest extends FormRequest
         $code = $this->route('code');
 
         return [
-            'email' => 'required|email|unique:users,email',
-            'email' => Rule::exists('user_invitations', UserInvitationConstant::EMAIL)->where(UserInvitationConstant::CODE, $code),
+            'email' => ['required', 'email', Rule::exists('user_invitations', UserInvitationConstant::EMAIL)->where(UserInvitationConstant::CODE, $code)],
             'password' => ['required', new RaydaStandardPasswordRule()],
             'first_name' => ['required', new HumanNameRule()],
             'last_name' => ['required', new HumanNameRule()],
