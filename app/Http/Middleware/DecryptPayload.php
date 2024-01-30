@@ -31,11 +31,17 @@ class DecryptPayload
         $request->headers->set('Content-type', 'text/plain');
 
         try {
-            if (empty($request->getContent())) {
+            $content = $request->getContent();
+
+            Log::info("Content {$content}");
+
+
+            if (empty($content)) {
                 return $next($request);
             }
 
-            $decryptedData = Crypt::decryptString($request->getContent());
+
+            $decryptedData = Crypt::decryptString($content);
 
             Log::info("decrypted data {$decryptedData}");
             $requestData = json_decode($decryptedData, true);
