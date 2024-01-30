@@ -37,15 +37,25 @@ test('it can create maintenance log', function () {
         \App\Domains\Constant\UserConstant::STAGE => \App\Domains\Enum\User\UserStageEnum::COMPLETED,
     ]);
 
+    $vendor = \App\Models\Vendor::create([
+        \App\Domains\Constant\UserConstant::TENANT_ID => $this->company->tenant_id,
+        'company_id' => $this->company->id,
+        'name' => fake()->name(),
+        'email' => fake()->safeEmail(),
+        'phone_number' => fake()->phoneNumber(),
+        'address' => fake()->address()
+    ]);
+
     $assets = \App\Models\Asset::factory(5)->create([
         'tenant_id' => $this->company->tenant_id,
         'company_id' => $this->company->id,
         'status' => \App\Domains\Enum\Asset\AssetStatusEnum::AVAILABLE,
     ]);
 
+
     $payload = [
         'reason' => 'quick brown fox',
-        'receiver_id' => $user->id,
+        'receiver_id' => $vendor->id,
         'scheduled_date' => now()->format('Y-m-d'),
         'return_date' => now()->addMonth()->format('Y-m-d'),
         'comment' => fake()->sentence(),
