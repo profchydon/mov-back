@@ -14,7 +14,7 @@ Route::post('/otp', [UserController::class, 'sendOTP'])->middleware(['payload.de
 Route::put('/otp', [UserController::class, 'verifyAccount'])->middleware(['payload.decrypt'])->name('verify.otp');
 
 Route::get('/sessions/authorization', [SessionController::class, 'authorization']);
-Route::get('/sessions/confirmation', [SessionController::class, 'confirmation']);
+Route::get('/sessions/confirmation', [SessionController::class, 'confirmation'])->middleware('payload.decrypt');
 
 Route::get('/me', [UserController::class, 'userDetails'])->name('user.details')->middleware(['token.decrypt', 'auth:sanctum']);
 
