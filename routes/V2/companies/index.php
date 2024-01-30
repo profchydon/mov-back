@@ -14,7 +14,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
     Route::post('/', 'create')->name('companies.create')->middleware(['payload.decrypt']);
     Route::put('{company}', 'addCompanyDetails')->name('companies.update')->middleware(['payload.decrypt']);
     Route::post('{company}/invitees', 'inviteCompanyUsers')->name('companies.invite.users')->middleware(['payload.decrypt']);
-    Route::post('{company}/sole-admin', 'soleAdminUser')->name('companies.sole.admin')->middleware(['payload.decrypt']);
+    Route::post('{company}/sole-admin', 'soleAdminUser')->name('companies.sole.admin');
 
     Route::controller(CompanyController::class)->prefix('{company}')->middleware(['token.decrypt', 'auth:sanctum',  'payload.decrypt',  'user-in-company'])->group(function () {
         Route::resource('tags', TagController::class);
