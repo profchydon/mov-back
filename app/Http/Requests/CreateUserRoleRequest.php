@@ -6,6 +6,7 @@ use App\Domains\Auth\PermissionTypes;
 use App\Domains\DTO\CreateUserRoleDTO;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateUserRoleRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class CreateUserRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => ['required','string',Rule::unique('roles', 'name')],
             'permissions' => 'required|array',
             'permissions.*' => 'integer',
         ];

@@ -256,7 +256,10 @@ class CompanyController extends Controller
 
         $dto->setCompanyId($company->id)
             ->setInvitedBy($user->id)
-            ->setCode($code);
+            ->setCode($code)
+            ->setOfficeId($request->office_id)
+            ->setTeamId($request->team_id)
+            ->setDepartmentId($request->department_id);
 
         $this->userInvitationRepository->create($dto->toArray());
 
