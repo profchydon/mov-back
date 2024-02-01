@@ -52,7 +52,7 @@ Route::controller(AssetMaintenanceController::class)->prefix('assets/maintenance
 })->middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt', 'user-in-company']);
 
 Route::get('companies/{company}/asset-checkouts/group/{groupId}', [AssetCheckoutController::class, 'getGroupAssetCheckout'])->middleware(['token.decrypt', 'payload.decrypt', 'auth:sanctum', 'user-in-company']);
-Route::get('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'index']); //->middleware(['token.decrypt', 'payload.decrypt', 'auth:sanctum', 'user-in-company']);
+Route::get('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'index'])->middleware(['token.decrypt', 'payload.decrypt', 'auth:sanctum', 'user-in-company']);
 Route::post('companies/{company}/asset-checkouts', [AssetCheckoutController::class, 'store'])->middleware(['token.decrypt', 'payload.decrypt', 'auth:sanctum', 'user-in-company']);
 Route::post('companies/{company}/asset-checkouts/group/{groupId}/return', [AssetCheckoutController::class, 'returnAssetsInGroup'])->middleware(['token.decrypt', 'payload.decrypt', 'auth:sanctum', 'user-in-company']);
 Route::post('companies/{company}/asset-maintenances', [AssetMaintenanceController::class, 'store'])->middleware(['token.decrypt', 'payload.decrypt', 'auth:sanctum', 'user-in-company']);
