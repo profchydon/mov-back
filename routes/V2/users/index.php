@@ -20,5 +20,5 @@ Route::get('/me', [UserController::class, 'userDetails'])->name('user.details')-
 
 Route::controller(UserInvitationController::class)->prefix('users/invitation')->group(function () {
     Route::get('/{code}', 'findUserInvitation')->name('find.user.invitation');
-    Route::post('/{code}', 'acceptUserInvitation')->name('accept.user.invitation');
-})->middleware(['payload.decrypt']);
+    Route::post('/{code}', 'acceptUserInvitation')->name('accept.user.invitation')->middleware(['payload.decrypt']);
+});
