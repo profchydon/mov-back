@@ -69,8 +69,8 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
             if ($subDTO->getAddOnIds()->isNotEmpty()) {
                 $addOnAmount += FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
-                ->where('currency_code', $subDTO->getCurrency())
-                ->sum('price');
+                    ->where('currency_code', $subDTO->getCurrency())
+                    ->sum('price');
             }
 
             if (Str::upper($subDTO->getCurrency()) == 'USD') {
@@ -222,5 +222,28 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         DB::commit();
 
         return $paymentLink;
+    }
+
+    public function downgradeSubscription(Subscription $oldSub, Subscription $newSub)
+    {
+        # get amount left
+        # if amount left can pay, set current to inacitve
+        # set new to active
+        # upgrade addons
+        # else calculate amount left, and generate payment
+    }
+
+    public function upgradeSubscription(Subscription $oldSub, Subscription $newSub)
+    {
+        # get amount left
+        # set current to inactive
+        # return payment
+    }
+
+    private function amountLeftInSub(Subscription $sub)
+    {
+        #get time elapsed in days
+        #get sub value in
+        # reutn value/day (integer value)
     }
 }
