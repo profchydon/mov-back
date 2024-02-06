@@ -34,7 +34,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class AssetController extends Controller
@@ -45,12 +44,11 @@ class AssetController extends Controller
      * @param CompanyRepositoryInterface $companyRepository
      */
     public function __construct(
-        private readonly AssetRepositoryInterface     $assetRepository,
-        private readonly CompanyRepositoryInterface   $companyRepository,
+        private readonly AssetRepositoryInterface $assetRepository,
+        private readonly CompanyRepositoryInterface $companyRepository,
         private readonly AssetMakeRepositoryInterface $assetMakeRepository,
-        private readonly FileRepositoryInterface      $fileRepository
-    )
-    {
+        private readonly FileRepositoryInterface $fileRepository
+    ) {
     }
 
     /**
@@ -264,7 +262,7 @@ class AssetController extends Controller
             $this->fileRepository->deleteById($asset->image->id);
         }
 
-        $url = Storage::disk('s3')->putFileAs('test', new File($image->getRealPath()), $fileName);
+        $url = Storage::disk('s3')->putFileAs(config_path('filesystems.base-folder'), new File($image->getRealPath()), $fileName);
 
         if (!empty($url)) {
             $asset->image()->create(['path' => $url]);

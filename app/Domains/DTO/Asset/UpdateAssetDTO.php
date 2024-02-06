@@ -3,7 +3,6 @@
 namespace App\Domains\DTO\Asset;
 
 use App\Traits\DTOToArray;
-use Carbon\Carbon;
 
 final class UpdateAssetDTO
 {
@@ -392,7 +391,7 @@ final class UpdateAssetDTO
         return $this->assigned_to;
     }
 
-     /**
+    /**
      * @param string $assigned_date
      * @return CreateAssetDTO
      */

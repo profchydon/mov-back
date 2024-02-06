@@ -92,7 +92,6 @@ class UserInvitationController extends Controller
             }
 
             $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code, $invitation) {
-
                 $ssoData = $createSSOUser->json()['data'];
 
                 $userDto = $request->getUserDTO()
@@ -114,7 +113,6 @@ class UserInvitationController extends Controller
 
 
                 if ($invitation->department_id !== null) {
-
                     $this->createUserDepartment($company, $user, $invitation);
 
                     if ($invitation->team_id !== null) {
@@ -186,7 +184,6 @@ class UserInvitationController extends Controller
         ]);
     }
 
-
     /**
      * Assigns a role to a user for a specific company.
      *
@@ -205,7 +202,6 @@ class UserInvitationController extends Controller
         ]);
     }
 
-
     /**
      * Create a user department.
      *
@@ -223,8 +219,6 @@ class UserInvitationController extends Controller
             UserDepartmentConstant::DEPARTMENT_ID => $invitation->department_id,
         ]);
     }
-
-
 
     /**
      * Creates a user team.

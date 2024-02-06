@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class File extends Model
@@ -29,7 +28,7 @@ class File extends Model
 
     protected function path(): Attribute
     {
-       return Attribute::make(get: fn ($value) => $this->getTemporaryLink($value));
+        return Attribute::make(get: fn ($value) => $this->getTemporaryLink($value));
     }
 
     public function getLinkAttribute()

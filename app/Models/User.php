@@ -9,10 +9,12 @@ use App\Events\UserCreatedEvent;
 use App\Events\UserDeactivatedEvent;
 use App\Traits\GetsTableName;
 use App\Traits\QueryFormatter;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Crypt;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Permission\Traits\HasRoles;
@@ -52,6 +54,15 @@ class User extends Authenticatable
                 // UserDeactivatedEvent::dispatch($model);
             }
         });
+    }
+
+    public function createToken(string $name, array $abilities = ['*'], DateTimeInterface $expiresAt = null)
+    {
+        $token = $this->createBaseToken($name, $abilities, $expiresAt);
+
+        $token->plainTextToken = Crypt::encryptString($token->plainTextToken);
+
+        return $token;
     }
 
     public function userCompanies()

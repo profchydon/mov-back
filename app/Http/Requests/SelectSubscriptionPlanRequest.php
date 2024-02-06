@@ -7,6 +7,7 @@ use App\Domains\DTO\CreateSubscriptionDTO;
 use App\Domains\Enum\Plan\BillingCycleEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class SelectSubscriptionPlanRequest extends FormRequest
@@ -16,6 +17,8 @@ class SelectSubscriptionPlanRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        Log::info($this->input());
+
         return true;
     }
 

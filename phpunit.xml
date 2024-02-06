@@ -28,6 +28,7 @@
         <env name="TELESCOPE_ENABLED" value="false"/> -->
 
         <env name="APP_ENV" value="testing"/>
+        <env name="APP_KEY" value="base64:wq5w4c5LzEmcQ8cHZDtlRT8Ah7ChQ+WlVvx+5NERwoq="/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="DB_CONNECTION" value="sqlite"/>

@@ -11,12 +11,12 @@ use App\Http\Controllers\V2\TeamController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(CompanyController::class)->prefix('companies')->group(function () {
-    Route::post('/', 'create')->name('companies.create');
-    Route::put('{company}', 'addCompanyDetails')->name('companies.update');
-    Route::post('{company}/invitees', 'inviteCompanyUsers')->name('companies.invite.users');
+    Route::post('/', 'create')->name('companies.create')->middleware(['payload.decrypt']);
+    Route::put('{company}', 'addCompanyDetails')->name('companies.update')->middleware(['payload.decrypt']);
+    Route::post('{company}/invitees', 'inviteCompanyUsers')->name('companies.invite.users')->middleware(['payload.decrypt']);
     Route::post('{company}/sole-admin', 'soleAdminUser')->name('companies.sole.admin');
 
-    Route::controller(CompanyController::class)->prefix('{company}')->middleware(['auth:sanctum', 'user-in-company'])->group(function () {
+    Route::controller(CompanyController::class)->prefix('{company}')->middleware(['token.decrypt', 'auth:sanctum',  'payload.decrypt',  'user-in-company'])->group(function () {
         Route::resource('tags', TagController::class);
         Route::resource('departments', DepartmentController::class);
 
@@ -42,21 +42,21 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::get('/invoices/{invoice:invoice_number}/pdf', [InvoiceController::class, 'showPDF']);
     });
 
-    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->name('create.company.subscription');
-    Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->name('get.company.subscriptions');
-    Route::get('/{company}/active-subscription', [SubscriptionController::class, 'getActiveSubscription'])->name('get.company.active-subscription');
-    Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->name('get.company.subscription');
-    Route::post('/{company}/subscriptions/{subscription}/add-ons', [SubscriptionController::class, 'addAddonsToSubscription'])->name('get.company.subscription');
+    Route::post('/{company}/subscriptions', [SubscriptionController::class, 'selectSubscriptionPlan'])->middleware(['payload.decrypt'])->name('create.company.subscription');
+    Route::get('/{company}/subscriptions', [SubscriptionController::class, 'getSubscriptions'])->middleware(['payload.decrypt'])->name('get.company.subscriptions');
+    Route::get('/{company}/active-subscription', [SubscriptionController::class, 'getActiveSubscription'])->middleware(['payload.decrypt'])->name('get.company.active-subscription');
+    Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->middleware(['payload.decrypt'])->name('get.company.subscription');
+    Route::post('/{company}/subscriptions/{subscription}/add-ons', [SubscriptionController::class, 'addAddonsToSubscription'])->middleware(['payload.decrypt'])->name('get.company.subscription');
     Route::resource('{company}/offices', CompanyOfficeController::class)->middleware(['auth:sanctum', 'user-in-company']);
-    Route::middleware(['auth:sanctum'])->resource('{company}/offices', CompanyOfficeController::class);
-    Route::get('{company}/dashboard', [\App\Http\Controllers\V2\DashboardController::class, 'index']);
+    Route::middleware(['token.decrypt', 'payload.decrypt', 'auth:sanctum'])->resource('{company}/offices', CompanyOfficeController::class);
+    Route::get('{company}/dashboard', [\App\Http\Controllers\V2\DashboardController::class, 'index'])->middleware(['token.decrypt', 'payload.decrypt']);
 });
 
 Route::post('subscription_payment/{payment:tx_ref}/confirm', [SubscriptionController::class, 'confirmSubscriptionPayment']);
-Route::get('confirm-usd-payment', [SubscriptionController::class, 'confirmPayment'])->name('payment-subscription.callback');
+Route::get('confirm-usd-payment', [SubscriptionController::class, 'confirmPayment'])->name('payment-subscription.callback')->middleware(['payload.decrypt']);
 
 // Route for office areas
-Route::group(['prefix' => 'offices/{office}', 'middleware' => ['auth:sanctum', 'user-in-company']], function () {
+Route::group(['prefix' => 'offices/{office}', 'middleware' => ['token.decrypt', 'auth:sanctum',  'payload.decrypt', 'user-in-company']], function () {
     Route::post('areas', [CompanyOfficeController::class, 'storeOfficeArea']);
     Route::get('areas', [CompanyOfficeController::class, 'getOfficeAreas']);
     Route::put('areas/{officeArea}', [CompanyOfficeController::class, 'updateOfficeArea']);
@@ -64,7 +64,7 @@ Route::group(['prefix' => 'offices/{office}', 'middleware' => ['auth:sanctum', '
 });
 
 //Routes for users
-Route::group(['prefix' => 'companies/{company}', 'middleware' => ['auth:sanctum', 'user-in-company']], function () {
+Route::group(['prefix' => 'companies/{company}', 'middleware' => ['token.decrypt', 'auth:sanctum',  'payload.decrypt', 'user-in-company']], function () {
     Route::controller(CompanyController::class)->group(function () {
         Route::post('/users', 'addCompanyUser')->name('add.company.user');
         Route::get('/users', 'getCompanyUsers')->name('get.company.users');
