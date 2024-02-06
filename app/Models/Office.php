@@ -47,4 +47,9 @@ class Office extends BaseModel
     {
         return $this->assets->count();
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, OfficeUser::class)->withTimestamps();
+    }
 }
