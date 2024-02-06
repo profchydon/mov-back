@@ -19,7 +19,7 @@ Route::middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt', 'user-in-
     Route::get('{company}/assets/{asset}', 'getAsset')->name('get.company.asset');
     Route::delete('{company}/assets/{asset}', 'deleteAsset')->name('delete.company.asset')->withoutMiddleware(['payload.decrypt']);
     Route::patch('{company}/assets', 'updateMultipleAsset')->name('update.multiple.company.asset');
-    Route::patch('{company}/assets/{asset}', 'updateAsset')->name('update.company.asset')->withoutMiddleware(['payload.decrypt']);
+    Route::patch('{company}/assets/{asset}', 'updateAsset')->name('update.company.asset');
     Route::post('{company}/assets/{asset}/image', 'uploadAssetImage')->name('update.company.asset.image')->withoutMiddleware(['payload.decrypt']);
     Route::get('{company}/assets/{asset}/users/{user}/assign', 'assignAsset')->name('assign.company.asset');
     Route::get('{company}/assets/{asset}/users/{user}/unassign', 'unAssignAsset')->name('unassign.company.asset');

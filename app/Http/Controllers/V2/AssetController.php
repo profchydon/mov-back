@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Common\SubscriptionValidator;
 use App\Domains\Auth\PermissionTypes;
 use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\Asset\AssetMakeConstant;
@@ -60,6 +61,13 @@ class AssetController extends Controller
         Log::info('Asset Creation Request Received', $request->all());
 
         try {
+
+            // Check available assets
+            // $subscriptionValidator = new SubscriptionValidator($company);
+            // if (!$subscriptionValidator->hasAvailableAssets()) {
+            //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.no-available-assets'));
+            // }
+
             $createAssetDto = $request->createAssetDTO()
                 ->setCompanyId($company->id)
                 ->setTenantId($company->tenant_id);
