@@ -26,4 +26,8 @@ interface CompanyOfficeRepositoryInterface
     public function deleteCompanyOffice(Office|string $office);
 
     public function deleteOfficeArea(OfficeArea|string $officeArea);
+
+    public function assignUserToOffice(Office|string $office, array $userIds);
+
+    public function unassignUserFromOffice(Office|string $office, array $userIds);
 }

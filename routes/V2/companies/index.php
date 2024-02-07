@@ -55,12 +55,13 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
 Route::post('subscription_payment/{payment:tx_ref}/confirm', [SubscriptionController::class, 'confirmSubscriptionPayment']);
 Route::get('confirm-usd-payment', [SubscriptionController::class, 'confirmPayment'])->name('payment-subscription.callback')->middleware(['payload.decrypt']);
 
-// Route for office areas
 Route::group(['prefix' => 'offices/{office}', 'middleware' => ['token.decrypt', 'auth:sanctum',  'payload.decrypt', 'user-in-company']], function () {
     Route::post('areas', [CompanyOfficeController::class, 'storeOfficeArea']);
     Route::get('areas', [CompanyOfficeController::class, 'getOfficeAreas']);
     Route::put('areas/{officeArea}', [CompanyOfficeController::class, 'updateOfficeArea']);
     Route::delete('areas/{officeArea}', [CompanyOfficeController::class, 'destroyOfficeArea']);
+    Route::post('assignment', [CompanyOfficeController::class, 'assignUserToOffice']);
+    Route::delete('assignment', [CompanyOfficeController::class, 'unassignUserFromOffice']);
 });
 
 //Routes for users
