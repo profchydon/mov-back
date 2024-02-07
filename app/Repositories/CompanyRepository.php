@@ -27,6 +27,7 @@ use App\Models\UserTeam;
 use App\Repositories\Contracts\CompanyOfficeRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CompanyRepository extends BaseRepository implements CompanyRepositoryInterface, CompanyOfficeRepositoryInterface
 {
@@ -78,7 +79,7 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
             $company = Company::findOrFail($company);
         }
 
-        $offices = $company->offices()->withCount('areas');
+        $offices = $company->offices()->withCount('areas', 'users');
         $offices = Office::appendToQueryFromRequestQueryParameters($offices);
 
         return $offices->paginate();
@@ -305,5 +306,25 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         } catch (\Throwable $th) {
             return false;
         }
+    }
+
+    public function assignUserToOffice(Office|string $office, array $userIds)
+    {
+        if (!($office instanceof Office)) {
+            $office = Office::findOrFail($office);
+        }
+
+        Log::info($userIds);
+
+        return $office->users()->syncWithoutDetaching($userIds);
+    }
+
+    public function unassignUserFromOffice(Office|string $office, array $userIds)
+    {
+        if (!($office instanceof Office)) {
+            $office = Office::findOrFail($office);
+        }
+
+        $office->users()->detach($userIds);
     }
 }

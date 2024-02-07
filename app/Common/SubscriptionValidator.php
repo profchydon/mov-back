@@ -50,6 +50,19 @@ class SubscriptionValidator
     }
 
     /**
+     * Retrieves the asset limit of the active subscription plan.
+     *
+     * @return int The asset limit of the active subscription plan.
+     */
+    public function getActiveSubscriptionPlanAssetLimit(): int
+    {
+        $activePlan = $this->getActiveSubscriptionPlan();
+        $planAsset = $activePlan->planAsset->first();
+
+        return $planAsset ? (int) $planAsset->value : 0;
+    }
+
+    /**
      * Checks if there are available seats for the company's subscription plan.
      *
      * @return bool Returns true if there are available seats, false otherwise.
@@ -60,5 +73,18 @@ class SubscriptionValidator
         $seatCount = count($this->company->seats);
 
         return $seatCount < $seatLimit ? true : false;
+    }
+
+    /**
+     * Checks if there are available assets for the company's subscription plan.
+     *
+     * @return bool Returns true if there are available assets, false otherwise.
+     */
+    public function hasAvailableAssets(): bool
+    {
+        $assetLimit = $this->getActiveSubscriptionPlanAssetLimit();
+        $assetCount = count($this->company->assets);
+
+        return $assetCount < $assetLimit ? true : false;
     }
 }

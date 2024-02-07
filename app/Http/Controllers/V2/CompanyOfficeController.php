@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V2;
 
 use App\Domains\Enum\Office\OfficeStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AssignUsersToOfficeRequest;
 use App\Http\Requests\Company\CreateCompanyOfficeRequest;
 use App\Http\Requests\Company\UpdateCompanyOfficeRequest;
 use App\Models\Company;
@@ -90,5 +91,19 @@ class CompanyOfficeController extends Controller
         $officeAreas = $this->companyOfficeRepository->getOfficeAreas($office);
 
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), $officeAreas);
+    }
+
+    public function assignUserToOffice(Office $office, AssignUsersToOfficeRequest $request)
+    {
+        $assignments = $this->companyOfficeRepository->assignUserToOffice($office, $request->user_ids);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-created'), $assignments['attached']);
+    }
+
+    public function unassignUserFromOffice(Office $office, Request $request)
+    {
+        $assignments = $this->companyOfficeRepository->unassignUserFromOffice($office, $request->user_ids);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-updated'), $assignments);
     }
 }

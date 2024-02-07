@@ -4,7 +4,7 @@ namespace App\Listeners\User;
 
 use App\Domains\Enum\EventTrack\EventTrackEnum;
 use App\Events\User\UserCreatedEvent;
-use App\Mail\UserCreatedMail;
+use App\Mail\WelcomeMail;
 use App\Services\V2\EventTrackerService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -25,7 +25,7 @@ class UserCreatedListener
         $user = $event->user;
 
         //Send Welcome email
-        Mail::to($user->email)->queue(new UserCreatedMail($user));
+        Mail::to($user->email)->queue(new WelcomeMail($user));
 
         //Trigger user created event
         EventTrackerService::track($user->email, EventTrackEnum::USER_CREATED->value, (array) $user);

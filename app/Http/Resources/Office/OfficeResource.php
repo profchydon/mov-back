@@ -36,6 +36,7 @@ class OfficeResource extends JsonResource
             //         $query->where('teams.department_id', $this->id);
             //     }]),
             'assetCount' => $this->assets->count(),
+            'members' => $this->users
             // 'teamCount' => $this->teams->count(),
         ];
     }

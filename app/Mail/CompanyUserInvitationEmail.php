@@ -29,7 +29,7 @@ class CompanyUserInvitationEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Company Invitation'
+            subject: 'You have been invited to collaborate on Rayda'
         );
     }
 

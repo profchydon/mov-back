@@ -64,4 +64,5 @@ return [
     'users-deleted' => 'Users deleted successfully.',
     'unassign-user-assets' => 'Unassign assets.',
     'no-available-seats' => 'You have reached your maximum seat limit. Upgrade your plan to accommodate additional seats or free up a seat by removing a user or assign the Basic role to this user.',
+    'no-available-assets' => 'You have reached your maximum asset limit. Upgrade your plan to accommodate additional assets or archive some assets to free up space.',
 ];

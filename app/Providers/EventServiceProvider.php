@@ -30,9 +30,9 @@ class EventServiceProvider extends ServiceProvider
         UserCreatedEvent::class => [
             UserCreatedListener::class,
         ],
-        UserDeactivatedEvent::class => [
-            UserCreatedListener::class,
-        ],
+        // UserDeactivatedEvent::class => [
+        //     UserCreatedListener::class,
+        // ],
         CompanyCreatedEvent::class => [
             CompanyCreatedListener::class,
         ],

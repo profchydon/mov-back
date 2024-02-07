@@ -4,8 +4,9 @@ namespace App\Models;
 
 use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\UserConstant;
+use App\Domains\Enum\User\UserStageEnum;
 use App\Domains\Enum\User\UserStatusEnum;
-use App\Events\UserCreatedEvent;
+use App\Events\User\UserCreatedEvent;
 use App\Events\UserDeactivatedEvent;
 use App\Traits\GetsTableName;
 use App\Traits\QueryFormatter;
@@ -45,13 +46,18 @@ class User extends Authenticatable
 
     protected static function booted()
     {
-        static::created(function (self $model) {
-            // UserCreatedEvent::dispatch($model);
+        static::created(function (self $user) {
+            if ($user->stage == UserStageEnum::COMPLETED->value) {
+                UserCreatedEvent::dispatch($user);
+            }
         });
 
-        static::updated(function (self $model) {
-            if ($model->status == UserStatusEnum::DEACTIVATED) {
+        static::updated(function (self $user) {
+            if ($user->status == UserStatusEnum::DEACTIVATED) {
                 // UserDeactivatedEvent::dispatch($model);
+            }
+            if ($user->isDirty(UserConstant::STAGE) && $user->stage == UserStageEnum::COMPLETED->value) {
+                UserCreatedEvent::dispatch($user);
             }
         });
     }
