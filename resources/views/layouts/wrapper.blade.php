@@ -24,54 +24,54 @@
     </style>
     </head>
 
-    <body style="background-color: #E5E5E5; padding-top: 40px; padding-bottom: 10px;">
+    <body style="background-color: #f9f9f9; padding-top: 40px; padding-bottom: 10px;">
 
         <div
-          style="box-sizing: border-box;max-width: 570px;width: 100%; margin: 0 auto; padding: 30px; margin-bottom: 2.5rem; background-color: #FFF; padding-bottom: 0px;">
-          <div style="margin-bottom: 15px; width: 100%">
+          style="box-sizing: border-box;max-width: 570px;width: 100%; margin: 0 auto; margin-bottom: 2.5rem; background-color: #FFF; padding-bottom: 0px;">
+          <div style="margin-bottom: 15px; width: 100%; padding: 20px 30px 0px 30px;">
             <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/rayda.png" style="width: 90px"
               alt="Rayda logo">
           </div>
 
           @yield('content')
 
-          <footer style="background:#f1f1f1; width: auto; margin: 0px -30px; color: #fff; padding: 30px; text-align: center;">
-            <ul style="display: flex; justify-content: center; padding: 0px; list-style-type: none;">
-              <li style="margin: 0px 10px;">
+          <footer style="background:#f1f1f1; width: auto; color: #fff; padding: 30px; text-align: center;">
+            <!-- <div style="display: flex; justify-content: center; padding: 0px; list-style-type: none; text-align: center;">
+              <span style="margin: 0px 10px;">
                 <a href="https://twitter.com/therayda">
                   <img style="width: 35px;"
                     src="https://s3.amazonaws.com/rayda.co/images+for+email+template/socials/Filled-Social-Link.png" alt="" />
                 </a>
-              </li>
-              <li style="margin: 0px 10px;">
+              </span>
+              <span style="margin: 0px 10px;">
                 <a href="https://twitter.com/therayda">
                   <img style="width: 35px;"
                     src="https://s3.amazonaws.com/rayda.co/images+for+email+template/socials/Filled-Social-Youtube.png"
                     alt="" />
                 </a>
-              </li>
-              <li style="margin: 0px 10px;">
+              </span>
+              <span style="margin: 0px 10px;">
                 <a href="https://twitter.com/therayda">
                   <img style="width: 35px;"
                     src="https://s3.amazonaws.com/rayda.co/images+for+email+template/socials/Filled-Social-Instagram.png.png"
                     alt="" />
                 </a>
-              </li>
-              <li style="margin: 0px 10px;">
+              </span>
+              <span style="margin: 0px 10px;">
                 <a href="https://twitter.com/therayda">
                   <img style="width: 35px;"
                     src="https://s3.amazonaws.com/rayda.co/images+for+email+template/socials/Filled-Social-Twitter.png.png"
                     alt="" />
                 </a>
-              </li>
-              <li style="margin: 0px 10px;">
+              </span>
+              <span style="margin: 0px 10px;">
                 <a href="https://www.facebook.com/myraydaHQ/">
                   <img style="width: 35px;"
                     src="https://s3.amazonaws.com/rayda.co/images+for+email+template/socials/Filled-Social-Facebook.png.png"
                     alt="" />
                 </a>
-              </li>
-            </ul>
+              </span>
+            </div> -->
             <div>
               <p style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 300; text-align: center;" ">
                 1007 N Orange St. 4th Floor

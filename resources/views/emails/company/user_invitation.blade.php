@@ -5,17 +5,38 @@ Rayda Invitation
 @endsection
 
 @section('content')
-<p style="font-size: 1.5rem; color: #111322; font-family: 'IBM Plex Sans', sans-serif; font-weight: bold;">You've been invited to collaborate on Rayda</p>
-<p style="font-family: 'IBM Plex Sans', sans-serif; color: #404968;">Hello, {{$invitedBy}} has invited you to collaborate with them on Rayda at <strong>{{ $company }}</strong>. We are excited to have you join their team!</p>
-<p style="font-family: 'IBM Plex Sans', sans-serif; color: #404968;">To get started, just click the link below to dive into the organisation’s asset management backbone.</p>
+<div style="background: linear-gradient(to bottom, transparent, #EBF2FF); padding: 2px 30px;">
+    <p
+      style="font-size: 40px; line-height: 52px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 300;">
+      You have been invited to <br> collaborate on Rayda
+    </p>
+    <p
+      style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400;">
+      Hello</p>
+    <p
+      style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400;">
+      {{$invitedBy}} has invited you to collaborate with them on Rayda at {{ $company }}. We are excited to have you join their team!
 
-<div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin: 2rem 0">
-    <a href="{{$link}}" style="text-decoration: none; color: #fff; display: inline-flex; padding: 1rem 2rem; background: #004CCC; font-family: 'IBM Plex Sans', sans-serif; border-radius: 8px; justify-content: center; min-width: 36%; flex:1;">Accept Invitation</a>
-    <div style="display: inline-flex; padding: 1rem 1.5rem;  min-width: 36%; flex:1; margin-bottom: 1rem;"></div>
-</div>
-
-<p style="font-family: 'IBM Plex Sans', sans-serif; color: #404968; margin-top: 1.5rem;">What's Rayda?</p>
-<p style="font-family: 'IBM Plex Sans', sans-serif; color: #404968;">Rayda is an Asset lifecycle management solution; making it easy to manage, track and audit assets as well as Insurance, issuance and so much more. Want to learn more?</p>
-<p style="font-family: 'IBM Plex Sans', sans-serif; color: #404968;">- The Rayda Team</p>
+    </p>
+    <p
+      style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400;">
+      To get started, just click the link below to dive into the organisation’s asset management backbone.
+    </p>
+    <div style="margin: 50px 0px;">
+      <a href="{{$link}}" style="padding: 15px 30px;
+      font-weight: 500;
+      font-size: 14px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      border-radius: 8px;
+      background: #004CCC;
+      color: #fff;
+      text-decoration: none;">
+        Accept invite
+      </a>
+    </div>
+    <div>
+      <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/userinvite.png" alt="" style="width: 100%;" />
+    </div>
+  </div>
 
 @endsection
