@@ -4,9 +4,9 @@ namespace App\Repositories;
 
 use App\Domains\Constant\CommonConstant;
 use App\Domains\DTO\CreateUserRoleDTO;
+use App\Models\Role;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 class RoleRepository extends BaseRepository implements RoleRepositoryInterface
 {
@@ -17,9 +17,11 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
 
     public function getCompanyRoles(string $companyId)
     {
-        $roles = Role::where(CommonConstant::COMPANY_ID, $companyId)->orWhere(CommonConstant::COMPANY_ID, null)->orderBy('name', 'ASC')->get();
+        $roles = Role::where(CommonConstant::COMPANY_ID, $companyId)->orWhere(CommonConstant::COMPANY_ID, null)->orderBy('name', 'ASC');
 
-        return $roles;
+        $roles = Role::appendToQueryFromRequestQueryParameters($roles);
+
+        return $roles->get();
     }
 
     public function createRole(CreateUserRoleDTO $dto): Role
