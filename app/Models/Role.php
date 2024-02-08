@@ -6,6 +6,7 @@ use App\Traits\GetsTableName;
 use App\Traits\QueryFormatter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Role extends \Spatie\Permission\Models\Role
@@ -33,8 +34,8 @@ class Role extends \Spatie\Permission\Models\Role
         return $this->hasMany(RoleHasPermission::class, 'role_id');
     }
 
-    public function permissions()
+    public function permissions(): BelongsToMany
     {
-        return $this->hasManyThrough(Permission::class, RoleHasPermission::class, 'role_id', 'id', 'id', 'permission_id');
+        return $this->belongsToMany(Permission::class, RoleHasPermission::class, 'role_id', 'id', 'id', 'permission_id');
     }
 }
