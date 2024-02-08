@@ -6,13 +6,16 @@ use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddOnToSubscriptionRequest;
+use App\Http\Requests\ChangeSubscriptionPlanRequest;
 use App\Http\Requests\SelectSubscriptionPlanRequest;
 use App\Models\Company;
+use App\Models\Plan;
 use App\Models\Subscription;
 use App\Models\SubscriptionPayment;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class SubscriptionController extends Controller
 {
@@ -73,5 +76,21 @@ class SubscriptionController extends Controller
         $payment = $this->subscriptionRepository->addAddOnsToSubsciption($subscription, $request->dto());
 
         return $this->response(Response::HTTP_OK, 'Payment link generated', $payment);
+    }
+
+    public function changeSubscription(Company $company, SelectSubscriptionPlanRequest $request)
+    {
+        $activeSubscription = $company->activeSubscription()->firstOrFail();
+        $activeSubscriptionPlan = $activeSubscription->plan;
+
+        if ($activeSubscriptionPlan->id == $request->plan_id) {
+            throw ValidationException::withMessages(['plan_id' => "You are currently on this plan"]);
+        }
+
+        $newCompanyPlan = Plan::find($request->plan_id);
+
+        $message = $this->subscriptionRepository->changeSubscription($activeSubscriptionPlan, $newCompanyPlan, $request->getDTO());
+
+        return $this->response(Response::HTTP_OK, __('Invoice created'), $message);
     }
 }

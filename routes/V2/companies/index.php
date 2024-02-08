@@ -47,6 +47,8 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
     Route::get('/{company}/active-subscription', [SubscriptionController::class, 'getActiveSubscription'])->middleware(['payload.decrypt'])->name('get.company.active-subscription');
     Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->middleware(['payload.decrypt'])->name('get.company.subscription');
     Route::post('/{company}/subscriptions/{subscription}/add-ons', [SubscriptionController::class, 'addAddonsToSubscription'])->middleware(['payload.decrypt'])->name('get.company.subscription');
+    Route::post('{company}/subscriptions/change', [SubscriptionController::class, 'changeSubscription'])->middleware(['token.decrypt', 'auth:sanctum',  'payload.decrypt',  'user-in-company']);
+
     Route::resource('{company}/offices', CompanyOfficeController::class)->middleware(['auth:sanctum', 'user-in-company']);
     Route::middleware(['token.decrypt', 'payload.decrypt', 'auth:sanctum'])->resource('{company}/offices', CompanyOfficeController::class);
     Route::get('{company}/dashboard', [\App\Http\Controllers\V2\DashboardController::class, 'index'])->middleware(['token.decrypt', 'payload.decrypt']);
