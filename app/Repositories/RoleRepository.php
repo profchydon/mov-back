@@ -4,9 +4,9 @@ namespace App\Repositories;
 
 use App\Domains\Constant\CommonConstant;
 use App\Domains\DTO\CreateUserRoleDTO;
-use App\Models\Role;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleRepository extends BaseRepository implements RoleRepositoryInterface
 {

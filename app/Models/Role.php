@@ -33,9 +33,4 @@ class Role extends \Spatie\Permission\Models\Role
     {
         return $this->hasMany(RoleHasPermission::class, 'role_id');
     }
-
-    public function permissions(): BelongsToMany
-    {
-        return $this->belongsToMany(Permission::class, RoleHasPermission::class, 'role_id', 'id', 'id', 'permission_id');
-    }
 }
