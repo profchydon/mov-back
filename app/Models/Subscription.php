@@ -10,6 +10,7 @@ use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Subscription extends BaseModel
@@ -51,9 +52,9 @@ class Subscription extends BaseModel
     /**
      * Get the invoice for this subscription.
      */
-    public function invoice(): HasOne
+    public function invoice(): MorphOne
     {
-        return $this->hasOne(Invoice::class, 'billable_id');
+        return $this->morphOne(Invoice::class, 'billable');
     }
 
     public function payment()
