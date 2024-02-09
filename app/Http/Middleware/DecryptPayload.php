@@ -33,11 +33,9 @@ class DecryptPayload
         try {
             $content = $request->getContent();
 
-
             if (empty($content)) {
                 return $next($request);
             }
-
 
             $decryptedData = Crypt::decryptString($content);
 
