@@ -33,8 +33,6 @@ class DecryptPayload
         try {
             $content = $request->getContent();
 
-            Log::info("Request for {$request->getRequestUri()} and Content {$content}");
-
 
             if (empty($content)) {
                 return $next($request);
@@ -43,9 +41,7 @@ class DecryptPayload
 
             $decryptedData = Crypt::decryptString($content);
 
-            Log::info("decrypted data {$decryptedData}");
             $requestData = json_decode($decryptedData, true);
-            Log::info('request data', $requestData);
 
             $request->headers->set('Content-Type', 'application/json');
             $request->replace($requestData);

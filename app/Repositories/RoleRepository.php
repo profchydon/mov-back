@@ -19,8 +19,6 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
     {
         $roles = Role::where(CommonConstant::COMPANY_ID, $companyId)->orWhere(CommonConstant::COMPANY_ID, null)->orderBy('name', 'ASC');
 
-        $roles = Role::appendToQueryFromRequestQueryParameters($roles);
-
         return $roles->get();
     }
 
