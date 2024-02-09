@@ -11,6 +11,7 @@ class CreateUserRoleDTO
     private string $name;
     private array $permissions;
     private string $company_id;
+    private ?string $description;
 
     public function setName(string $name)
     {
@@ -46,5 +47,17 @@ class CreateUserRoleDTO
     public function getCompanyId()
     {
         return $this->company_id;
+    }
+
+    public function setDescription(?string $description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
     }
 }
