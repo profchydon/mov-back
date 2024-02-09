@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Domains\Constant\SubscriptionAddOnConstant;
 use App\Domains\DTO\AddonDTO;
 use App\Domains\DTO\CreatePaymentLinkDTO;
 use App\Domains\DTO\CreateSubscriptionDTO;
@@ -230,7 +231,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         DB::beginTransaction();
         $amountLeftFromOldSub = $this->amountLeftInSub($oldSub);
 
-        $planPrice = $newPlan->plan->prices()
+        $planPrice = $newPlan->prices()
             ->where('currency_code', $subDTO->getCurrency())
             ->where('billing_cycle', $subDTO->getBillingCycle())
             ->firstOrFail();
@@ -243,11 +244,16 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                 ->sum('price');
         }
 
+        $newSubscription = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
+
         $oldSub->update([
             'status' => SubscriptionStatusEnum::INACTIVE
         ]);
 
-        $newSubscription = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
+        $oldSub->addOns()->update([
+            SubscriptionAddOnConstant::SUBSCRIPTION_ID => $newSubscription->id
+        ]);
+
 
         $amountToPay = max(0, $amountToPayForCurrentSub - $amountLeftFromOldSub);
 
