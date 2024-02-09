@@ -36,7 +36,7 @@ Rayda Invitation
 
     </div>
     <p style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400; width: auto; word-wrap: break-word;">
-      If you're having trouble clicking the "Reset Password" button, copy and paste the URL below into your web browser:
+      If you're having trouble clicking the "Accept Invite" button, copy and paste the URL below into your web browser:
     </p>
     <a style="font-size: 14px; line-height: 24px; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400; width: auto; word-wrap: break-word;" href="{{$link}}">
         {{$link}}

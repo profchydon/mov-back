@@ -23,52 +23,54 @@ features:
   - name: Seat
     value: 20
 prices:
+  # Monthly
   - currency_code: NGN
     billing_cycle: Monthly
     amount: 250000
     processors:
       - name: Flutterwave
-        id: 61151
+        id: 114490
   - currency_code: USD
     billing_cycle: Monthly
     amount: 10000
     processors:
       - name: Stripe
-        id: 60139
+        id: price_1OXKjEB8pj3G5nb3v3ebtaOO
   - currency_code: GBP
     billing_cycle: Monthly
     amount: 10000
     processors:
       - name: Stripe
-        id: 60139
+        id: price_1OXKjcB8pj3G5nb35QAwXM7U
   - currency_code: EUR
     billing_cycle: Monthly
     amount: 10000
     processors:
       - name: Stripe
-        id: 60139
+        id: price_1OXKjtB8pj3G5nb37DIGHsBE
 
+  # Yearly
   - currency_code: NGN
     billing_cycle: Yearly
     amount: 2700000
     processors:
       - name: Flutterwave
-        id: 61152
+        id: 114491
   - currency_code: USD
     billing_cycle: Yearly
     amount: 120000
     processors:
       - name: Stripe
-        id: 60139
+        id: price_1OXKkEB8pj3G5nb3zdnvvQSh
   - currency_code: GBP
     billing_cycle: Yearly
     amount: 120000
     processors:
       - name: Stripe
-        id: 60139
+        id: price_1OXKklB8pj3G5nb3MFZkpB1Y
   - currency_code: EUR
     billing_cycle: Yearly
     amount: 120000
     processors:
       - name: Stripe
-        id: 60139
+        id: price_1OXKl6B8pj3G5nb304XTZd1Y
