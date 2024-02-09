@@ -89,7 +89,7 @@ class SubscriptionController extends Controller
 
         $newCompanyPlan = Plan::find($request->plan_id);
 
-        $message = $this->subscriptionRepository->changeSubscription($activeSubscriptionPlan, $newCompanyPlan, $request->getDTO());
+        $message = $this->subscriptionRepository->changeSubscription($activeSubscription, $newCompanyPlan, $request->getDTO());
 
         return $this->response(Response::HTTP_OK, __('Invoice created'), $message);
     }
