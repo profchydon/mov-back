@@ -17,6 +17,7 @@ class UserRoleConstant
     public const COMPANY_ID = 'company_id';
     public const ROLE_ID = 'role_id';
     public const OFFICE_ID = 'office_id';
+    public const DESCRIPTION = 'description';
     public const STATUS = 'status';
 
     public const CREATED_AT = 'created_at';

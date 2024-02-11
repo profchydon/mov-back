@@ -34,7 +34,8 @@ class UpdateUserRoleRequest extends FormRequest
         $dto = new CreateUserRoleDTO();
 
         $dto->setName($this->input('name'))
-            ->setPermissions($this->input('permissions'));
+            ->setPermissions($this->input('permissions'))
+            ->setDescription($this->input('description'));
 
         return $dto;
     }
