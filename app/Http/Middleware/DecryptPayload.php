@@ -22,6 +22,8 @@ class DecryptPayload
      */
     public function handle(Request $request, Closure $next)
     {
+        return $next($request);
+
         if (app()->environment('testing')) {
             return $next($request);
 

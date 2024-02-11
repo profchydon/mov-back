@@ -277,7 +277,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             ->setCustomer(Company::find($subDTO->getCompanyId()))
             ->setBillingCycle($subDTO->getBillingCycle())
             ->setMeta([
-                'subscription_id' => $subscription->id,
+                'subscription_id' => $newSubscription->id,
                 'billing_cycle' => $subDTO->getBillingCycle(),
             ]);
 
@@ -290,7 +290,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             $paymentLink = $paymentObject->authorization_url ?? $paymentObject?->link;
         }
 
-        $subscription->payment()->create([
+        $newSubscription->payment()->create([
             'company_id' => $subDTO->getCompanyId(),
             'tenant_id' => $subDTO->getTenantId(),
             'payment_link' => $paymentLink,
@@ -301,7 +301,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         $invoiceDTO->setTenantId($subDTO->getTenantId())
             ->setCompanyId($subDTO->getCompanyId())
             ->setCurrencyCode($subDTO->getCurrency())
-            ->setBillable($subscription)
+            ->setBillable($newSubscription)
             ->setSubTotal($totalAmount ?? 0)
             ->setDueAt(now()->addHours(6));
 
@@ -314,7 +314,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
         $invoiceItemDTO = new InvoiceItemDTO();
         $invoiceItemDTO->setAmount($planPrice->amount ?? 0)
-            ->setItem($subscription->plan)
+            ->setItem($newSubscription->plan)
             ->setQuantity(1);
 
         $invoice->items()->create($invoiceItemDTO->toArray());
@@ -335,7 +335,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
         DB::commit();
 
-        return $subscription->load('payment');
+        return $newSubscription->load('payment');
     }
 
     private function amountLeftInSub(Subscription $sub)
