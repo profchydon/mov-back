@@ -9,3 +9,4 @@ require __DIR__ . '/roles/index.php';
 require __DIR__ . '/features/index.php';
 require __DIR__ . '/vendors/index.php';
 require __DIR__ . '/currencies/index.php';
+require __DIR__ . '/documents/index.php';
