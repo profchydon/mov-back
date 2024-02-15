@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Domains\Constant\SubscriptionPaymentConstant;
 use App\Domains\Enum\PaymentStatusEnum;
+use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,9 @@ class SubscriptionPayment extends Model
         parent::booted();
         static::updated(function (self $payment) {
             if ($payment->isComplete()) {
+                $payment->company->activeSubscription()->update([
+                    'status' => SubscriptionStatusEnum::INACTIVE
+                ]);
                 $payment->subscription->activate();
                 $payment->subscription->invoice->markAsPaid();
                 $payment->subscription->addOns->each(function ($addOn) {
@@ -38,6 +42,11 @@ class SubscriptionPayment extends Model
     public function subscription(): BelongsTo
     {
         return $this->belongsTo(Subscription::class, SubscriptionPaymentConstant::SUBSCRIPTION_ID);
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'company_id');
     }
 
     public function isComplete()

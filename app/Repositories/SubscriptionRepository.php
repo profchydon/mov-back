@@ -246,10 +246,6 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
         $newSubscription = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
 
-        $oldSub->update([
-            'status' => SubscriptionStatusEnum::INACTIVE
-        ]);
-
         $oldSub->addOns()->update([
             SubscriptionAddOnConstant::SUBSCRIPTION_ID => $newSubscription->id
         ]);
@@ -258,6 +254,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         $amountToPay = max(0, $amountToPayForCurrentSub - $amountLeftFromOldSub);
 
         if($amountToPay == 0){
+            $oldSub->deactivate();
             $newSubscription->activate();
             return $newSubscription->fresh();
         }

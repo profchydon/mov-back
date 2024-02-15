@@ -68,4 +68,11 @@ class Subscription extends BaseModel
             SubscriptionConstant::STATUS => SubscriptionStatusEnum::ACTIVE,
         ]);
     }
+
+    public function deactivate(): bool
+    {
+        return $this->update([
+            SubscriptionConstant::STATUS => SubscriptionStatusEnum::INACTIVE,
+        ]);
+    }
 }
