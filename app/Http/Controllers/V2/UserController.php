@@ -78,7 +78,7 @@ class UserController extends Controller
         $user = $request->user();
         $userCompany = $user->userCompanies()->first();
         $userRoles = $user->roles()->with('permissions')->get();
-        $company = $this->companyRepository->firstWithRelation(CompanyConstant::ID, $userCompany->company_id, ['activeSubscription']);
+        $company = $this->companyRepository->firstWithRelation(CompanyConstant::ID, $userCompany->company_id, ['activeSubscription.invoice']);
         $serializePermission = new SerializePermission($userRoles);
 
         $response = [
