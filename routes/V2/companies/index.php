@@ -20,6 +20,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::resource('tags', TagController::class);
         Route::resource('departments', DepartmentController::class);
         Route::resource('insurances', \App\Http\Controllers\V2\InsuranceController::class);
+        Route::post('insurances/{insurance}/assets', [\App\Http\Controllers\V2\InsuranceController::class, 'insureAssets']);
 
         Route::post('seats', [SeatController::class, 'store']);
         Route::get('seats', [SeatController::class, 'index']);

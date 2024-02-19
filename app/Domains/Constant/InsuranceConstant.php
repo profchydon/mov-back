@@ -16,5 +16,6 @@ class InsuranceConstant
     public const COVERAGE_CYCLE = 'coverage_cycle';
     public const ASSET_PREMIUM = 'asset_premium';
     public const COUNTRY = 'country';
-
+    public const INSURANCE_ID = 'insurance_id';
+    public const ASSET_ID = 'asset_id';
 }

@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Document extends BaseModel
 {
-    use UsesUUID, SoftDeletes;
+    use UsesUUID, LogsActivity, SoftDeletes;
 
     protected static array $searchable = [
         'name', 'type'

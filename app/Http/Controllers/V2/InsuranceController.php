@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V2;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateInsuranceRequest;
+use App\Http\Requests\InsureAssetRequest;
 use App\Http\Requests\UpdateInsuranceRequest;
 use App\Models\Company;
 use App\Models\Insurance;
@@ -37,6 +38,8 @@ class InsuranceController extends Controller
 
     public function show(Company $company, Insurance $insurance)
     {
+        $insurance = $this->insuranceRepository->getInsurance($insurance);
+
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $insurance);
     }
 
@@ -45,7 +48,13 @@ class InsuranceController extends Controller
         $insurance = $this->insuranceRepository->updateById($insurance->id, $request->toDTO()->toSynthensizedArray());
 
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), $insurance);
+    }
 
+    public function insureAssets(Company $company, Insurance $insurance, InsureAssetRequest $request)
+    {
+        $insurance = $this->insuranceRepository->insureAssets($insurance, $request->assets);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $insurance);
     }
 
     public function destroy(Company $company, Insurance $insurance)
