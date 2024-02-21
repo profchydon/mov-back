@@ -127,4 +127,9 @@ class Company extends BaseModel
     {
         return $this->hasMany(Document::class, 'company_id');
     }
+
+    public function insurances()
+    {
+        return $this->hasMany(Insurance::class, 'company_id');
+    }
 }
