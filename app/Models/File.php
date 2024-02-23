@@ -31,13 +31,18 @@ class File extends Model
         return Attribute::make(get: fn($value) => $this->getTemporaryLink($value));
     }
 
+    public function cacheKey()
+    {
+        return "link-{$this->id}";
+    }
+
     public function getVersionsAttribute()
     {
         $s3 = new S3Client([
             'version' => 'latest',
             'region' => env('AWS_DEFAULT_REGION'),
             'credentials' => [
-                'key'    => env('AWS_ACCESS_KEY_ID'),
+                'key' => env('AWS_ACCESS_KEY_ID'),
                 'secret' => env('AWS_SECRET_ACCESS_KEY'),
             ],
         ]);
@@ -56,7 +61,7 @@ class File extends Model
     {
         $cacheTime = now()->addHours(24);
 
-        return Cache::remember("link-{$this->id}", $cacheTime, function () use ($cacheTime, $path) {
+        return Cache::remember($this->cacheKey(), $cacheTime, function () use ($cacheTime, $path) {
             return Storage::disk('s3')->temporaryUrl($path, $cacheTime);
         });
     }

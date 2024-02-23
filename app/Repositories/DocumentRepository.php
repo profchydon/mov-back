@@ -10,6 +10,7 @@ use App\Repositories\Contracts\DocumentRepositoryInterface;
 use Aws\S3\S3Client;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -77,6 +78,8 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
         $url = Storage::disk('s3')->putFileAs(config('filesystems.base-folder'), $file->getRealPath(), $document->generateFileName($file->getClientOriginalExtension()));
 
         $document->file()->update(['path' => $url]);
+
+        Cache::delete($document->file->cacheKey());
 
         return $document->fresh();
     }
