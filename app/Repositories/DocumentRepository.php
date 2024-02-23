@@ -8,12 +8,15 @@ use App\Models\Company;
 use App\Models\Document;
 use App\Repositories\Contracts\DocumentRepositoryInterface;
 use Aws\S3\S3Client;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class DocumentRepository extends BaseRepository implements DocumentRepositoryInterface
 {
@@ -73,6 +76,10 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
     {
         if (!($document instanceof Document)) {
             $document = Document::findOrFail($document);
+        }
+
+        if($document->user_id !== Auth::id()){
+            return new AuthorizationException("You can't update a file you didn't upload");
         }
 
         $url = Storage::disk('s3')->putFileAs(config('filesystems.base-folder'), $file->getRealPath(), $document->generateFileName($file->getClientOriginalExtension()));

@@ -19,7 +19,7 @@ final class CreateDocumentDTO
 
     public function __construct()
     {
-        $this->user_id = Auth::id() ?? "9b183bb7-d0bf-4ab5-b869-78e8fdc6480c";
+        $this->user_id = Auth::id();
     }
 
     public function getName(): string
