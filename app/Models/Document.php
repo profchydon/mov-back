@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Document extends BaseModel
 {
-    use UsesUUID, LogsActivity, SoftDeletes;
+    use UsesUUID, SoftDeletes;
 
     protected static array $searchable = [
         'name', 'type'
@@ -34,5 +35,10 @@ class Document extends BaseModel
     public function file()
     {
         return $this->morphOne(File::class, 'fileable');
+    }
+
+    public function history()
+    {
+        return $this->hasMany(Activity::class, 'subject_id')->where('subject_type', self::class)->latest();
     }
 }

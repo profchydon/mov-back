@@ -51,7 +51,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
             $document = Document::findOrFail($document);
         }
 
-        $document = $document->load(['file', 'uploader']);
+        $document = $document->load(['file', 'uploader', 'history']);
 
         $document->versions = $document->file->getVersionsAttribute();
 
