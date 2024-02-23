@@ -52,9 +52,9 @@ class File extends Model
             'Prefix' => $this->attributes['path'],
         ]);
 
-        return collect($versions->get('Versions'))->map(fn($version) => [$version["Key"] => Storage::disk('s3')->temporaryUrl($this->attributes['path'], now()->addMinutes(60), [
+        return collect($versions->get('Versions'))->map(fn($version) => Storage::disk('s3')->temporaryUrl($this->attributes['path'], now()->addMinutes(60), [
             'VersionId' => $version["VersionId"],
-        ])]);
+        ]));
     }
 
     private function getTemporaryLink($path)
