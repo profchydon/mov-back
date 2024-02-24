@@ -29,7 +29,7 @@ class SubscriptionActivationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Subscription Failed',
+            subject: 'Subscription Downgraded',
         );
     }
 
@@ -41,7 +41,7 @@ class SubscriptionActivationMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.subscription.subscription-upgraded',
+            view: 'emails.subscription.subscription-downgraded',
             with: [
                 // 'subscription' => $this->subscription,
                 'link' => env('APP_FRONTEND_URL') . '/auth/login',
