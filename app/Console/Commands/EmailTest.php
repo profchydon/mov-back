@@ -27,7 +27,6 @@ class EmailTest extends Command
      */
     public function handle()
     {
-
         Mail::to('chidi.nkwocha@rayda.co')->queue(new SubscriptionActivationMail());
     }
 }
