@@ -29,8 +29,10 @@ Welcome to Rayda
   </p>
 </div>
 
-<div style="padding: 0px; background: #F2F7FF; width: auto; margin: 25px 0px;">
-  <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/asset.png" alt="" style="width: 100%;" />
+<div
+    style="padding: 30px; background: #F2F7FF; width: auto; margin: 25px 0px; display: flex; justify-content: center;">
+    <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/Desktop (LG) -- Single Assetaaaa 1.png"
+    alt="" style="width: 100%;" />
 </div>
 
 <div style="padding: 2px 30px;">
