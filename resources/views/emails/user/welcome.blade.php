@@ -15,7 +15,7 @@ Welcome to Rayda
   </p>
   <p
     style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400;">
-    Hello John,</p>
+    Hello {{ $user?->first_name}},</p>
   <p
     style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400;">
     My name is Francis and I am the founder of Rayda. Thank you for signing up on Rayda. My team and I have spent
