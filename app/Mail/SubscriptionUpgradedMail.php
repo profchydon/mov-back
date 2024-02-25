@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SubscriptionDowngradedMail extends Mailable
+class SubscriptionUpgradedMail extends Mailable
 {
     private $company;
     private $oldPlan;
@@ -41,7 +41,7 @@ class SubscriptionDowngradedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Subscription Downgraded!',
+            subject: 'Subscription Upgraded!',
         );
     }
 
@@ -53,16 +53,16 @@ class SubscriptionDowngradedMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.subscription.subscription-downgraded',
+            view: 'emails.subscription.subscription-upgraded',
             with: [
                 'company' => $this->company,
                 'oldPlan' => $this->oldPlan,
                 'newPlan' => $this->newPlan,
                 'offers' => $this->offers,
-                'offersLost' => array_diff($this->oldPlan->offers, $this->newPlan->offers),
                 'invoice' => $this->invoice,
                 'invoiceItems' => $this->invoiceItems,
                 'currency' => $this->currency,
+                'link' => env('APP_FRONTEND_URL') . '/dashboard/settings/billing/view-invoice/' . $this->invoice?->invoice_number,
             ],
         );
     }

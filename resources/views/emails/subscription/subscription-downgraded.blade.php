@@ -30,43 +30,27 @@ Subscription downgraded
 
       <p
         style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400;">
-        Hello <b> James 😥</b></p>
+        Hello <b> {{ $company?->name }} 😥</b></p>
         <br>
       <p
         style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 300;">
-        Your Rayda account has been downgraded from <b>free plan</b> to <b>premium plan</b>. This means you have lost
+        Your Rayda account has been downgraded from <b> {{ strtolower($oldPlan?->name) }} plan </b> to <b> {{ strtolower($newPlan?->name) }} plan </b>. This means you have lost
         access to the following benefits:
       </p>
 
       <ul style="list-style-type: none; font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; padding: 0px;">
 
-        <li style="display: flex; font-weight: 500; margin: 20px 0px;">
-          <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/check-verified.png"
-            class="object-contain" alt=""
-            style="display: flex; margin-right: 10px; width: 20px; height: 20px; max-width: 20px; max-height: 20px; position: relative; top: 2px" />
-          Document manager
-        </li>
+        @foreach ($offersLost as $offer)
 
-        <li style="display: flex; font-weight: 500; margin: 20px 0px;">
-          <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/check-verified.png"
-            class="object-contain" alt=""
-            style="display: flex; margin-right: 10px; width: 20px; height: 20px; max-width: 20px; max-height: 20px; position: relative; top: 2px" />
-          Insurance
-        </li>
+            <li style="display: flex; font-weight: 500; margin: 20px 0px;">
+                <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/check-verified.png"
+                class="object-contain" alt=""
+                style="display: flex; margin-right: 10px; width: 20px; height: 20px; max-width: 20px; max-height: 20px; position: relative; top: 2px" />
+                {{ $offer }}
+            </li>
 
-        <li style="display: flex; font-weight: 500; margin: 20px 0px;">
-          <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/check-verified.png"
-            class="object-contain" alt=""
-            style="display: flex; margin-right: 10px; width: 20px; height: 20px; max-width: 20px; max-height: 20px; position: relative; top: 2px" />
-          Manage personnel
-        </li>
+        @endforeach
 
-        <li style="display: flex; font-weight: 500; margin: 20px 0px;">
-          <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/check-verified.png"
-            class="object-contain" alt=""
-            style="display: flex; margin-right: 10px; width: 20px; height: 20px; max-width: 20px; max-height: 20px; position: relative; top: 2px" />
-          Manage Insurance
-        </li>
       </ul>
 
       <div style="margin: 60px 0px 30px 0px; text-align: center;">
