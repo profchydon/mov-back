@@ -15,10 +15,7 @@ use Illuminate\Support\Facades\Mail;
 
 class SubscriptionChangedListener
 {
-    /**
-     * UserCreatedListener constructor.
-     * @param EventTrackerService $eventService
-     */
+
     public function __construct()
     {
         //
@@ -49,10 +46,7 @@ class SubscriptionChangedListener
         ];
 
         if ($newPlan?->rank > $oldPlan?->rank) {
-
-            //Send email
              Mail::to($company?->email)->queue(new SubscriptionUpgradedMail($data));
-
         }
 
         if ($newPlan?->rank == $oldPlan?->rank) {
