@@ -299,7 +299,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             ->setCompanyId($subDTO->getCompanyId())
             ->setCurrencyCode($subDTO->getCurrency())
             ->setBillable($newSubscription)
-            ->setSubTotal($totalAmount ?? 0)
+            ->setSubTotal($amountToPay ?? 0)
             ->setDueAt(now()->addHours(6));
 
         if ($amountToPay < 1) {
