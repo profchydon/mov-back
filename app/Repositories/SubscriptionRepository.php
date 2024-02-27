@@ -253,17 +253,24 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
         $amountToPay = max(0, $amountToPayForCurrentSub - $amountLeftFromOldSub);
 
-        if($amountToPay == 0){
-            $oldSub->deactivate();
-            $newSubscription->activate();
-            return $newSubscription->fresh();
-        }
-
-
         if (Str::upper($subDTO->getCurrency()) == 'USD') {
             $planProcessor = $planPrice->swipeProcessor()->firstOrFail();
         } else {
             $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
+        }
+
+        $invoiceDTO = new InvoiceDTO();
+        $invoiceDTO->setTenantId($subDTO->getTenantId())
+            ->setCompanyId($subDTO->getCompanyId())
+            ->setCurrencyCode($subDTO->getCurrency())
+            ->setBillable($newSubscription)
+            ->setSubTotal($amountToPay ?? 0)
+            ->setDueAt(now()->addHours(6));
+
+        if($amountToPay == 0){
+            $oldSub->deactivate();
+            $newSubscription->activate();
+            return $newSubscription->fresh();
         }
 
         $paymentLinkDTO = new CreatePaymentLinkDTO();
@@ -293,14 +300,6 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             'payment_link' => $paymentLink,
             'tx_ref' => $paymentObject?->reference ?? $paymentLinkDTO->getTxRef(),
         ]);
-
-        $invoiceDTO = new InvoiceDTO();
-        $invoiceDTO->setTenantId($subDTO->getTenantId())
-            ->setCompanyId($subDTO->getCompanyId())
-            ->setCurrencyCode($subDTO->getCurrency())
-            ->setBillable($newSubscription)
-            ->setSubTotal($amountToPay ?? 0)
-            ->setDueAt(now()->addHours(6));
 
         if ($amountToPay < 1) {
             $invoiceDTO->setPaidAt(now())
