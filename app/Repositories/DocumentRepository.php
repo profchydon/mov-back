@@ -6,6 +6,7 @@ use App\Domains\DTO\CreateDocumentDTO;
 use App\Domains\DTO\UpdateDocumentDTO;
 use App\Models\Company;
 use App\Models\Document;
+use App\Models\DocumentType;
 use App\Repositories\Contracts\DocumentRepositoryInterface;
 use Aws\S3\S3Client;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -78,7 +79,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
             $document = Document::findOrFail($document);
         }
 
-        if($document->user_id !== Auth::id()){
+        if ($document->user_id !== Auth::id()) {
             return new AuthorizationException("You can't update a file you didn't upload");
         }
 
@@ -100,5 +101,18 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
         Storage::disk('s3')->delete($document->file?->path);
 
         return $document->delete();
+    }
+
+    public function createDocumentType(Company $company, string $name)
+    {
+        return $company->documentTypes()->firstOrCreate(['name' => $name]);
+    }
+
+    public function getCompanyDocumentType(Company $company)
+    {
+       $type = $company->documentTypes();
+       $type = DocumentType::appendToQueryFromRequestQueryParameters($type);
+
+       return $type->get();
     }
 }

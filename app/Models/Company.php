@@ -132,4 +132,9 @@ class Company extends BaseModel
     {
         return $this->hasMany(Insurance::class, 'company_id');
     }
+
+    public function documentTypes()
+    {
+        return $this->hasMany(DocumentType::class, 'company_id');
+    }
 }

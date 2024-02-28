@@ -6,6 +6,7 @@ use App\Domains\DTO\CreateDocumentDTO;
 use App\Domains\DTO\UpdateDocumentDTO;
 use App\Models\Company;
 use App\Models\Document;
+use App\Models\DocumentType;
 use Illuminate\Http\UploadedFile;
 
 interface DocumentRepositoryInterface
@@ -21,4 +22,8 @@ interface DocumentRepositoryInterface
     public function deleteDocument(string|Document $document);
 
     public function changeDocumentFile(string|Document $document, UploadedFile $file);
+
+    public function createDocumentType(Company $company, string $name);
+
+    public function getCompanyDocumentType(Company $company);
 }

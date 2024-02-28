@@ -7,9 +7,13 @@ use App\Http\Requests\CreateDocumentRequest;
 use App\Http\Requests\EditDocumentRequest;
 use App\Models\Company;
 use App\Models\Document;
+use App\Models\DocumentType;
 use App\Repositories\Contracts\DocumentRepositoryInterface;
+use App\Rules\HumanNameRule;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use PhpParser\Comment\Doc;
 
 class DocumentController extends Controller
@@ -55,6 +59,32 @@ class DocumentController extends Controller
         $document = $this->documentRepository->changeDocumentFile($document, $request->file('file'));
 
         return $this->response(Response::HTTP_OK, __("messages.record-updated"), $document);
+    }
+
+    public function createDocumentType(Company $company, Request $request)
+    {
+        $request->name = Str::lower($request->name);
+        $this->validate($request, [
+            'name' => [new HumanNameRule(), Rule::unique('document_types', 'name')->where('company_id', $company->id)]
+        ]);
+
+        $documentType = $this->documentRepository->createDocumentType($company, $request->name);
+
+        return $this->response(Response::HTTP_CREATED, __("messages.record-created"), $documentType);
+    }
+
+    public function getDocumentType(Company $company)
+    {
+        $type = $this->documentRepository->getCompanyDocumentType($company);
+
+        return $this->response(Response::HTTP_OK, __("messages.record-updated"), $type);
+    }
+
+    public function deleteDocumentType(Company $company, DocumentType $type)
+    {
+        $type->delete();
+
+        return $this->noContent();
     }
 
     public function destroy(Company $company, Document $document, Request $request)
