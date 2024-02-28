@@ -35,6 +35,7 @@ class CreateDocumentRequest extends FormRequest
             ->setRegistrationDate($this->input('registration_date'))
             ->setExpirationDate($this->input('expiration_date'));
 
+
         return $dto;
     }
 }
