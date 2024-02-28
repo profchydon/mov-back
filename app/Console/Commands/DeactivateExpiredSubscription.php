@@ -24,6 +24,10 @@ class DeactivateExpiredSubscription extends Command
             SubscriptionConstant::STATUS => SubscriptionStatusEnum::EXPIRED
         ]);
 
+        // $updatedRecords = Subscription::where('end_date', '<=', now()->format('Y-m-d'))->update([
+        //     SubscriptionConstant::STATUS => SubscriptionStatusEnum::EXPIRED
+        // ]);
+
         $this->info("Updated {$updatedRecords} subscription(s) to expired");
     }
 }

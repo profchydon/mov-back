@@ -32,7 +32,9 @@ class SubscriptionPayment extends Model
                 $oldSubscription = $payment->company->activeSubscription;
                 $newSubscription = $payment->subscription;
 
-                SubscriptionChangedEvent::dispatch($oldSubscription, $newSubscription);
+                if ($oldSubscription) {
+                    SubscriptionChangedEvent::dispatch($oldSubscription, $newSubscription);
+                }
 
                 $payment->company->activeSubscription()->update([
                     'status' => SubscriptionStatusEnum::INACTIVE
