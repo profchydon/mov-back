@@ -81,6 +81,7 @@ class UserInvitationController extends Controller
         }
 
         try {
+
             $userDto = $request->getSSOUserDTO();
 
             $company = $invitation->company;
