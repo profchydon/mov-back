@@ -80,116 +80,64 @@ class UserInvitationController extends Controller
             return $this->error(Response::HTTP_NOT_FOUND, __('messages.invite-not-found'));
         }
 
-        $userDto = $request->getSSOUserDTO();
+        try {
 
-        $company = $invitation->company;
+            $userDto = $request->getSSOUserDTO();
 
-        $createSSOUser = $this->ssoService->createSSOUser($userDto, $company->sso_id);
+            $company = $invitation->company;
 
-        if ($createSSOUser->status() !== Response::HTTP_CREATED) {
-            return $this->error(Response::HTTP_BAD_REQUEST, $createSSOUser->json()['message']);
-        }
+            $createSSOUser = $this->ssoService->createSSOUser($userDto, $company->sso_id);
 
-        $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code, $invitation) {
-            $ssoData = $createSSOUser->json()['data'];
-
-            $userDto = $request->getUserDTO()
-                ->setEmploymentType($invitation->employment_type, null)
-                ->setOfficeId($invitation->office_id, null)
-                ->setTenantId($company->tenant_id)
-                ->setSsoId($ssoData['id']);
-
-            $user = $this->userRepository->create($userDto->toArray());
-            $role = $invitation->role;
-
-            // Check available seats
-            if (!$this->hasAvailableSeats($company, $role)) {
-                $role = $this->roleRepository->first('name', RoleTypes::BASIC->value);
+            if ($createSSOUser->status() !== Response::HTTP_CREATED) {
+                return $this->error(Response::HTTP_BAD_REQUEST, $createSSOUser->json()['message']);
             }
 
-            $this->createUserCompany($company, $user, $role);
-            $this->assignRoleToUser($company, $user, $role);
+            $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code, $invitation) {
+                $ssoData = $createSSOUser->json()['data'];
 
+                $userDto = $request->getUserDTO()
+                    ->setEmploymentType($invitation->employment_type, null)
+                    ->setOfficeId($invitation->office_id, null)
+                    ->setTenantId($company->tenant_id)
+                    ->setSsoId($ssoData['id']);
 
-            if ($invitation->department_id !== null) {
-                $this->createUserDepartment($company, $user, $invitation);
+                $user = $this->userRepository->create($userDto->toArray());
+                $role = $invitation->role;
 
-                if ($invitation->team_id !== null) {
-                    $this->createUserTeam($company, $user, $invitation);
+                // Check available seats
+                if (!$this->hasAvailableSeats($company, $role)) {
+                    $role = $this->roleRepository->first('name', RoleTypes::BASIC->value);
                 }
-            }
 
-            $this->userInvitationRepository->update(
-                UserInvitationConstant::CODE,
-                $code,
-                [UserInvitationConstant::STATUS => UserInvitationStatusEnum::ACCEPTED]
-            );
-
-            return [
-                'user' => $user,
-                'company' => $company,
-            ];
-        });
-
-        return $this->response(Response::HTTP_OK, __('messages.record-created'), $dbData);
-
-        // try {
-        //     $userDto = $request->getSSOUserDTO();
-
-        //     $company = $invitation->company;
-
-        //     $createSSOUser = $this->ssoService->createSSOUser($userDto, $company->sso_id);
-
-        //     if ($createSSOUser->status() !== Response::HTTP_CREATED) {
-        //         return $this->error(Response::HTTP_BAD_REQUEST, $createSSOUser->json()['message']);
-        //     }
-
-        //     $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code, $invitation) {
-        //         $ssoData = $createSSOUser->json()['data'];
-
-        //         $userDto = $request->getUserDTO()
-        //             ->setEmploymentType($invitation->employment_type, null)
-        //             ->setOfficeId($invitation->office_id, null)
-        //             ->setTenantId($company->tenant_id)
-        //             ->setSsoId($ssoData['id']);
-
-        //         $user = $this->userRepository->create($userDto->toArray());
-        //         $role = $invitation->role;
-
-        //         // Check available seats
-        //         if (!$this->hasAvailableSeats($company, $role)) {
-        //             $role = $this->roleRepository->first('name', RoleTypes::BASIC->value);
-        //         }
-
-        //         $this->createUserCompany($company, $user, $role);
-        //         $this->assignRoleToUser($company, $user, $role);
+                $this->createUserCompany($company, $user, $role);
+                $this->assignRoleToUser($company, $user, $role);
 
 
-        //         if ($invitation->department_id !== null) {
-        //             $this->createUserDepartment($company, $user, $invitation);
+                if ($invitation->department_id !== null) {
+                    $this->createUserDepartment($company, $user, $invitation);
 
-        //             if ($invitation->team_id !== null) {
-        //                 $this->createUserTeam($company, $user, $invitation);
-        //             }
-        //         }
+                    if ($invitation->team_id !== null) {
+                        $this->createUserTeam($company, $user, $invitation);
+                    }
+                }
 
-        //         $this->userInvitationRepository->update(
-        //             UserInvitationConstant::CODE,
-        //             $code,
-        //             [UserInvitationConstant::STATUS => UserInvitationStatusEnum::ACCEPTED]
-        //         );
+                $this->userInvitationRepository->update(
+                    UserInvitationConstant::CODE,
+                    $code,
+                    [UserInvitationConstant::STATUS => UserInvitationStatusEnum::ACCEPTED]
+                );
 
-        //         return [
-        //             'user' => $user,
-        //             'company' => $company,
-        //         ];
-        //     });
+                return [
+                    'user' => $user,
+                    'company' => $company,
+                ];
+            });
 
-        //     return $this->response(Response::HTTP_OK, __('messages.record-created'), $dbData);
-        // } catch (Exception $exception) {
-        //     //operation failed on core, notify sso
-        //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
-        // }
+            return $this->response(Response::HTTP_OK, __('messages.record-created'), $dbData);
+        } catch (Exception $exception) {
+            //operation failed on core, notify sso
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'));
+        }
     }
 
     /**
