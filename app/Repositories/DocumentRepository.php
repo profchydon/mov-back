@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Domains\DTO\CreateDocumentDTO;
 use App\Domains\DTO\UpdateDocumentDTO;
+use App\Models\Asset;
+use App\Models\AssetDocument;
 use App\Models\Company;
 use App\Models\Document;
 use App\Models\DocumentType;
@@ -114,5 +116,12 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
        $type = DocumentType::appendToQueryFromRequestQueryParameters($type);
 
        return $type->get();
+    }
+
+    public function addAssetsToDocument(Document $document, array $assetIds)
+    {
+       return collect($assetIds)->map(fn($id) => AssetDocument::create(['asset_id' => $id, 'document_id' => $document->id]));
+
+        return $document->load('assets');
     }
 }

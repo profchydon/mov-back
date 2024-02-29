@@ -73,6 +73,18 @@ class DocumentController extends Controller
         return $this->response(Response::HTTP_CREATED, __("messages.record-created"), $documentType);
     }
 
+    public function addAssets(Company $company, Document $document, Request $request)
+    {
+        $this->validate($request, [
+            'asset_ids' => 'required|array|min:1',
+            'asset_ids.*' => [Rule::exists('assets', 'id')->where('company_id', $company->id)]
+        ]);
+
+        $document = $this->documentRepository->addAssetsToDocument($document, $request->asset_ids);
+
+        return $this->response(Response::HTTP_CREATED, __("messages.record-created"), $document);
+    }
+
     public function getDocumentType(Company $company)
     {
         $type = $this->documentRepository->getCompanyDocumentType($company);

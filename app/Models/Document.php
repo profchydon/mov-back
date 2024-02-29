@@ -41,4 +41,10 @@ class Document extends BaseModel
     {
         return $this->hasMany(Activity::class, 'subject_id')->where('subject_type', self::class)->latest();
     }
+
+    public function assets()
+    {
+        return $this->hasManyThrough(Asset::class, AssetDocument::class, 'asset_id', 'document_id');
+//        return $this->hasMany(Asset::class, 'asset_id');
+    }
 }

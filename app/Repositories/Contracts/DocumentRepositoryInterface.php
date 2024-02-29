@@ -26,4 +26,6 @@ interface DocumentRepositoryInterface
     public function createDocumentType(Company $company, string $name);
 
     public function getCompanyDocumentType(Company $company);
+
+    public function addAssetsToDocument(Document $document, array $assetIds);
 }
