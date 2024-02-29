@@ -82,56 +82,56 @@ class UserInvitationController extends Controller
 
         $userDto = $request->getSSOUserDTO();
 
-            $company = $invitation->company;
+        $company = $invitation->company;
 
-            $createSSOUser = $this->ssoService->createSSOUser($userDto, $company->sso_id);
+        $createSSOUser = $this->ssoService->createSSOUser($userDto, $company->sso_id);
 
-            if ($createSSOUser->status() !== Response::HTTP_CREATED) {
-                return $this->error(Response::HTTP_BAD_REQUEST, $createSSOUser->json()['message']);
+        if ($createSSOUser->status() !== Response::HTTP_CREATED) {
+            return $this->error(Response::HTTP_BAD_REQUEST, $createSSOUser->json()['message']);
+        }
+
+        $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code, $invitation) {
+            $ssoData = $createSSOUser->json()['data'];
+
+            $userDto = $request->getUserDTO()
+                ->setEmploymentType($invitation->employment_type, null)
+                ->setOfficeId($invitation->office_id, null)
+                ->setTenantId($company->tenant_id)
+                ->setSsoId($ssoData['id']);
+
+            $user = $this->userRepository->create($userDto->toArray());
+            $role = $invitation->role;
+
+            // Check available seats
+            if (!$this->hasAvailableSeats($company, $role)) {
+                $role = $this->roleRepository->first('name', RoleTypes::BASIC->value);
             }
 
-            $dbData = DB::transaction(function () use ($request, $createSSOUser, $company, $code, $invitation) {
-                $ssoData = $createSSOUser->json()['data'];
+            $this->createUserCompany($company, $user, $role);
+            $this->assignRoleToUser($company, $user, $role);
 
-                $userDto = $request->getUserDTO()
-                    ->setEmploymentType($invitation->employment_type, null)
-                    ->setOfficeId($invitation->office_id, null)
-                    ->setTenantId($company->tenant_id)
-                    ->setSsoId($ssoData['id']);
 
-                $user = $this->userRepository->create($userDto->toArray());
-                $role = $invitation->role;
+            if ($invitation->department_id !== null) {
+                $this->createUserDepartment($company, $user, $invitation);
 
-                // Check available seats
-                if (!$this->hasAvailableSeats($company, $role)) {
-                    $role = $this->roleRepository->first('name', RoleTypes::BASIC->value);
+                if ($invitation->team_id !== null) {
+                    $this->createUserTeam($company, $user, $invitation);
                 }
+            }
 
-                $this->createUserCompany($company, $user, $role);
-                $this->assignRoleToUser($company, $user, $role);
+            $this->userInvitationRepository->update(
+                UserInvitationConstant::CODE,
+                $code,
+                [UserInvitationConstant::STATUS => UserInvitationStatusEnum::ACCEPTED]
+            );
 
+            return [
+                'user' => $user,
+                'company' => $company,
+            ];
+        });
 
-                if ($invitation->department_id !== null) {
-                    $this->createUserDepartment($company, $user, $invitation);
-
-                    if ($invitation->team_id !== null) {
-                        $this->createUserTeam($company, $user, $invitation);
-                    }
-                }
-
-                $this->userInvitationRepository->update(
-                    UserInvitationConstant::CODE,
-                    $code,
-                    [UserInvitationConstant::STATUS => UserInvitationStatusEnum::ACCEPTED]
-                );
-
-                return [
-                    'user' => $user,
-                    'company' => $company,
-                ];
-            });
-
-            return $this->response(Response::HTTP_OK, __('messages.record-created'), $dbData);
+        return $this->response(Response::HTTP_OK, __('messages.record-created'), $dbData);
 
         // try {
         //     $userDto = $request->getSSOUserDTO();
