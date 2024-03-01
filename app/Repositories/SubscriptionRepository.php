@@ -75,6 +75,10 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                 $addOnAmount += FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
                     ->where('currency_code', $subDTO->getCurrency())
                     ->sum('price');
+
+                if(Str::lower($subDTO->getBillingCycle()) == 'yearly'){
+                    $addOnAmount *= 12;
+                }
             }
 
             if (Str::upper($subDTO->getCurrency()) == 'USD') {
@@ -239,9 +243,15 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         $amountToPayForCurrentSub = $planPrice->amount ?? 0;
 
         if ($subDTO->getAddOnIds()->isNotEmpty()) {
-            $amountToPayForCurrentSub += FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
+            $addOnAmount = FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
                 ->where('currency_code', $subDTO->getCurrency())
                 ->sum('price');
+
+            if (Str::lower($subDTO->getBillingCycle()) == 'yearly') {
+                $addOnAmount *= 12;
+
+                $amountToPayForCurrentSub += $addOnAmount;
+            }
         }
 
         $newSubscription = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
@@ -267,7 +277,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             ->setSubTotal($amountToPay ?? 0)
             ->setDueAt(now()->addHours(6));
 
-        if($amountToPay == 0){
+        if ($amountToPay == 0) {
             $oldSub->deactivate();
             $newSubscription->activate();
             return $newSubscription->fresh();
