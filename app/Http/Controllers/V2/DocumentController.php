@@ -77,7 +77,7 @@ class DocumentController extends Controller
     {
         $this->validate($request, [
             'asset_ids' => 'required|array|min:1',
-            'asset_ids.*' => [Rule::exists('assets', 'id')->where('company_id', $company->id)]
+            'asset_ids.*' => [Rule::exists('assets', 'id')->where('company_id', $company->id), Rule::unique('asset_documents', 'asset_id')->where('document_id', $document->id)]
         ]);
 
         $document = $this->documentRepository->addAssetsToDocument($document, $request->asset_ids);
