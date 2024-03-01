@@ -44,6 +44,6 @@ class Document extends BaseModel
 
     public function assets()
     {
-        return $this->hasManyThrough(Asset::class, AssetDocument::class, 'asset_id', 'document_id');
+        return $this->belongsToMany(Asset::class, 'asset_documents', 'document_id', 'asset_id');
     }
 }
