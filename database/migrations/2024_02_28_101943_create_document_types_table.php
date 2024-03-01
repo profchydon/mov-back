@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('document_types', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('company_id')->constrained('companies')->nullable();
+            $table->foreignUuid('company_id')->nullable()->constrained('companies');
             $table->string('name');
             $table->timestamps();
-
             $table->unique(['company_id', 'name']);
         });
     }
