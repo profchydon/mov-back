@@ -33,9 +33,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
         DB::beginTransaction();
         $document = Document::firstOrCreate($dto->toSynthensizedArray());
 
-        $fileName = sprintf('%s/%s/%s.%s', "company_documents", $document->company_id, $document->id, $document->generateFileName($file->getClientOriginalExtension()));
-
-        $url = Storage::disk('s3')->putFileAs(config('filesystems.base-folder'), $file->getRealPath(), $fileName);
+        $url = Storage::disk('s3')->putFileAs(config('filesystems.base-folder'), $file->getRealPath(), $document->generateFileName($file->getClientOriginalExtension()));
 
         $document->file()->create(['path' => $url]);
         DB::commit();
