@@ -10,5 +10,6 @@ class DocumentConstant
     public const REGISTRATION_DATE = 'registration_date';
     public const EXPIRATION_DATE = 'expiration_date';
     public const COMPANY_ID = 'company_id';
+    public const VERSION = 'version';
     public const USER_ID = 'user_id';
 }

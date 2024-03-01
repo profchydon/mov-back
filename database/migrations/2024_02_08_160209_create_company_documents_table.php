@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string(DocumentConstant::TYPE);
             $table->foreignUuid(DocumentConstant::COMPANY_ID)->constrained(\App\Models\Company::getTableName());
             $table->foreignUuid(DocumentConstant::USER_ID)->constrained(\App\Models\User::getTableName());
+            $table->integer(DocumentConstant::VERSION)->default(1);
             $table->date(DocumentConstant::REGISTRATION_DATE)->nullable();
             $table->date(DocumentConstant::EXPIRATION_DATE)->nullable();
             $table->softDeletes();
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('company_documents');
+        Schema::dropIfExists('documents');
     }
 };
