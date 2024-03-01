@@ -6,7 +6,6 @@ use App\Domains\Constant\DocumentConstant;
 use App\Domains\DTO\CreateDocumentDTO;
 use App\Rules\HumanNameRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class CreateDocumentRequest extends FormRequest
