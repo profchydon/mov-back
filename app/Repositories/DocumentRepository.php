@@ -88,7 +88,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
         $document->file()->update(['path' => $url]);
 
         $document->update([
-            'name' => $document->name . " [v".now()->timestamp."]"
+            'version' => ++$document->version
         ]);
 
         Cache::delete($document->file->cacheKey());
