@@ -110,15 +110,15 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
 
     public function getCompanyDocumentType(Company $company)
     {
-       $type = $company->documentTypes();
-       $type = DocumentType::appendToQueryFromRequestQueryParameters($type);
+        $type = DocumentType::whereNull('company_id')->orWhere('company_id', $company->id);
+        $type = DocumentType::appendToQueryFromRequestQueryParameters($type);
 
-       return $type->get();
+        return $type->get();
     }
 
     public function addAssetsToDocument(Document $document, array $assetIds)
     {
-       return collect($assetIds)->map(fn($id) => AssetDocument::create(['asset_id' => $id, 'document_id' => $document->id]));
+        return collect($assetIds)->map(fn($id) => AssetDocument::create(['asset_id' => $id, 'document_id' => $document->id]));
 
         return $document->load('assets');
     }
