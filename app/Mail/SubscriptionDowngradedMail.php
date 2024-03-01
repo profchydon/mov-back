@@ -30,9 +30,9 @@ class SubscriptionDowngradedMail extends Mailable
         $this->oldPlan = $data['oldPlan'];
         $this->newPlan = $data['newPlan'];
         $this->offers = $data['offers'];
-        $this->invoice = $data['invoice'];
-        $this->invoiceItems = $data['invoiceItems'];
-        $this->currency = $data['currency'];
+        $this->invoice = $data['invoice'] ?? null;
+        $this->invoiceItems = $data['invoiceItems'] ?? null;
+        $this->currency = $data['currency'] ?? null;
     }
 
     /**
@@ -63,6 +63,7 @@ class SubscriptionDowngradedMail extends Mailable
                 'invoice' => $this->invoice,
                 'invoiceItems' => $this->invoiceItems,
                 'currency' => $this->currency,
+                'link' => env('APP_FRONTEND_URL') . '/dashboard/settings/billing',
             ],
         );
     }
