@@ -34,8 +34,9 @@ Subscription downgraded
         <br>
       <p
         style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 300;">
-        Your Rayda account has been downgraded from <b> {{ strtolower($oldPlan?->name) }} plan </b> to <b> {{ strtolower($newPlan?->name) }} plan </b>. This means you have lost
-        access to the following benefits:
+        {{-- Your Rayda account has been downgraded from <b> {{ strtolower($oldPlan?->name) }} plan </b> to <b> {{ strtolower($newPlan?->name) }} plan </b>. This means you have lost
+        access to the following benefits: --}}
+        Your Rayda <b> {{ $oldPlan?->name }} plan </b> subscription has ended and your account has been downgraded to the free plan, This means you have lost access to the following benefits:
       </p>
 
       <ul style="list-style-type: none; font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; padding: 0px;">
@@ -54,7 +55,7 @@ Subscription downgraded
       </ul>
 
       <div style="margin: 60px 0px 30px 0px; text-align: center;">
-        <a href="" style="display: inline-block; width: 100%; padding: 15px 0;
+        <a href="{{ $link }}" style="display: inline-block; width: 100%; padding: 15px 0;
             font-weight: 500;
             font-size: 14px;
             font-family: 'IBM Plex Sans', sans-serif;
