@@ -15,6 +15,6 @@ class DocumentType extends BaseModel
 
     protected function name(): Attribute
     {
-        return Attribute::make(get: fn($v) => ucwords($v), set: fn($v) => Str::lower($v));
+        return Attribute::make(get: fn($v) => ucwords($v), set: fn($v) => ucwords(strtolower($v)));
     }
 }
