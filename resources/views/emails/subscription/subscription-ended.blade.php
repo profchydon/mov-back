@@ -30,47 +30,31 @@ Subscription ended
 
       <p
         style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400;">
-        Hello <b>John Edem</b>
+        Hello <b>{{ $company?->name }}</b>
       </p>
       <br>
       <p
         style="font-size: 14px; line-height: 24px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 300;">
-        Your Rayda <b>Premium Plus</b> subscription has ended and your account has been downgraded to the free plan, This means you have lost access to the following benefits:
+        Your Rayda <b> {{ $oldPlan?->name }} plan </b> subscription has ended and your account has been downgraded to the free plan, This means you have lost access to the following benefits:
       </p>
 
       <ul style="list-style-type: none; font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; padding: 0px;">
 
-        <li style="display: flex; font-weight: 500; margin: 20px 0px;">
-          <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/check-verified.png"
-            class="object-contain" alt=""
-            style="display: flex; margin-right: 10px; width: 20px; height: 20px; max-width: 20px; max-height: 20px; position: relative; top: 2px" />
-          Document manager
-        </li>
+        @foreach ($offers as $offer)
 
         <li style="display: flex; font-weight: 500; margin: 20px 0px;">
-          <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/check-verified.png"
-            class="object-contain" alt=""
+          <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/check-verified.png" class="object-contain"
+            alt=""
             style="display: flex; margin-right: 10px; width: 20px; height: 20px; max-width: 20px; max-height: 20px; position: relative; top: 2px" />
-          Insurance
+          {{ $offer }}
         </li>
 
-        <li style="display: flex; font-weight: 500; margin: 20px 0px;">
-          <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/check-verified.png"
-            class="object-contain" alt=""
-            style="display: flex; margin-right: 10px; width: 20px; height: 20px; max-width: 20px; max-height: 20px; position: relative; top: 2px" />
-          Manage personnel
-        </li>
+        @endforeach
 
-        <li style="display: flex; font-weight: 500; margin: 20px 0px;">
-          <img src="https://s3.amazonaws.com/rayda.co/images+for+email+template/check-verified.png"
-            class="object-contain" alt=""
-            style="display: flex; margin-right: 10px; width: 20px; height: 20px; max-width: 20px; max-height: 20px; position: relative; top: 2px" />
-          Manage Insurance
-        </li>
       </ul>
 
       <div style="margin: 60px 0px 30px 0px; text-align: center;">
-        <a href="" style="display: inline-block; width: 100%; padding: 15px 0;
+        <a href="{{ $link }}" style="display: inline-block; width: 100%; padding: 15px 0;
             font-weight: 500;
             font-size: 14px;
             font-family: 'IBM Plex Sans', sans-serif;
