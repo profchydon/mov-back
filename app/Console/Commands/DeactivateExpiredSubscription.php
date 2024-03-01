@@ -6,6 +6,7 @@ use App\Domains\Constant\Plan\PlanConstant;
 use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\Enum\Plan\BillingCycleEnum;
 use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
+use App\Events\Subscription\SubscriptionChangedEvent;
 use App\Models\Plan;
 use App\Models\Subscription;
 use Illuminate\Console\Command;
@@ -32,20 +33,21 @@ class DeactivateExpiredSubscription extends Command
             ->where('end_date', '<=', now()->format('Y-m-d'))
             ->get();
 
-            foreach ($updatedRecords as $updatedRecord) {
+            foreach ($updatedRecords as $oldSubscription) {
 
                 DB::beginTransaction();
-                $updatedRecord->update([
+                $oldSubscription->update([
                     SubscriptionConstant::STATUS => SubscriptionStatusEnum::EXPIRED->value
                 ]);
 
-                $company = $updatedRecord->company;
+                $company = $oldSubscription->company;
                 $plan = Plan::where(PlanConstant::NAME, 'Basic')->first();
 
                 $startDate = Carbon::now();
                 $endDate = $startDate->addYear();
 
-                $company->subscriptions()->create([
+                $newSubscription = Subscription::create([
+                    SubscriptionConstant::COMPANY_ID => $company->id,
                     SubscriptionConstant::TENANT_ID => $company->tenant?->id,
                     SubscriptionConstant::PLAN_ID => $plan->id,
                     SubscriptionConstant::START_DATE => $startDate,
@@ -55,6 +57,8 @@ class DeactivateExpiredSubscription extends Command
                 ]);
 
                 DB::commit();
+
+                SubscriptionChangedEvent::dispatch($oldSubscription, $newSubscription);
             }
 
         // $this->info("Updated {$updatedRecords} subscription(s) to expired");
