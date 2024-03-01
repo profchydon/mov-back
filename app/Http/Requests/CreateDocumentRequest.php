@@ -15,7 +15,7 @@ class CreateDocumentRequest extends FormRequest
     {
         return [
             'name' => ['required', Rule::unique('documents', 'name')->where(DocumentConstant::COMPANY_ID, $this->company?->id)->whereNull('deleted_at')],
-            'type' => ['required', new HumanNameRule(), Rule::exists('document_types', 'name')],
+            'type' => ['required', new HumanNameRule()],
             'registration_date' => ['sometimes', 'nullable', 'date_format:Y-m-d'],
             'expiration_date' => [Rule::when(
                 fn($input) => !empty($this->input('registration_date')),
