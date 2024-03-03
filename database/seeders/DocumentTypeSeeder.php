@@ -17,7 +17,7 @@ class DocumentTypeSeeder extends Seeder
             'License',
             'Policy',
             'Invoice',
-            'Receipts',
+            'Receipt',
             'Warranty'
         ])->each(fn($type) => DocumentType::firstOrCreate(['name' => $type]));
     }
