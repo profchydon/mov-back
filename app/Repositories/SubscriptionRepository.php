@@ -232,8 +232,11 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
     public function changeSubscription(Subscription $oldSub, Plan $newPlan, CreateSubscriptionDTO $subDTO)
     {
+
         DB::beginTransaction();
         $amountLeftFromOldSub = $this->amountLeftInSub($oldSub);
+
+        // return $amountLeftFromOldSub;
 
         $planPrice = $newPlan->prices()
             ->where('currency_code', $subDTO->getCurrency())
@@ -344,8 +347,17 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         return $newSubscription->load('payment');
     }
 
-    private function amountLeftInSub(Subscription $sub)
+    private function amountLeftInSub(Subscription|string $sub)
     {
+
+        if (!($sub instanceof Subscription)) {
+            $sub = Subscription::findOrFail($sub);
+        }
+
+        if ($sub->plan->name === 'Basic') {
+            return 0;
+        }
+
         $invoice = $sub->invoice;
 
         $planInDays = $sub->created_at->diffInDays($sub->end_date);
