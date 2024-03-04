@@ -52,7 +52,7 @@ class SubscriptionController extends Controller
 
     public function getSubscription(Company $company, Subscription $subscription)
     {
-        $subscription = $this->subscriptionRepository->firstWithRelation(SubscriptionConstant::ID, $subscription->id, ['payment', 'plan.prices', 'addOns']);
+        $subscription = $this->subscriptionRepository->firstWithRelation(SubscriptionConstant::ID, $subscription->id, ['payment', 'plan.prices', 'addOns.feature', 'invoice']);
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $subscription);
     }
@@ -89,7 +89,11 @@ class SubscriptionController extends Controller
 
         $newCompanyPlan = Plan::find($request->plan_id);
 
-        $message = $this->subscriptionRepository->changeSubscription($activeSubscription, $newCompanyPlan, $request->getDTO());
+        $dto = $request->getDTO();
+        $dto->setTenantId($company->tenant_id)
+            ->setCompanyId($company->id);
+
+        $message = $this->subscriptionRepository->changeSubscription($activeSubscription, $newCompanyPlan, $dto);
 
         return $this->response(Response::HTTP_OK, __('Invoice created'), $message);
     }

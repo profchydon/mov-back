@@ -75,6 +75,10 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
                 $addOnAmount += FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
                     ->where('currency_code', $subDTO->getCurrency())
                     ->sum('price');
+
+                if(Str::lower($subDTO->getBillingCycle()) == 'yearly'){
+                    $addOnAmount *= 12;
+                }
             }
 
             if (Str::upper($subDTO->getCurrency()) == 'USD') {
@@ -228,8 +232,11 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
     public function changeSubscription(Subscription $oldSub, Plan $newPlan, CreateSubscriptionDTO $subDTO)
     {
+
         DB::beginTransaction();
         $amountLeftFromOldSub = $this->amountLeftInSub($oldSub);
+
+        // return $amountLeftFromOldSub;
 
         $planPrice = $newPlan->prices()
             ->where('currency_code', $subDTO->getCurrency())
@@ -239,16 +246,18 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         $amountToPayForCurrentSub = $planPrice->amount ?? 0;
 
         if ($subDTO->getAddOnIds()->isNotEmpty()) {
-            $amountToPayForCurrentSub += FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
+            $addOnAmount = FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
                 ->where('currency_code', $subDTO->getCurrency())
                 ->sum('price');
+
+            if (Str::lower($subDTO->getBillingCycle()) == 'yearly') {
+                $addOnAmount *= 12;
+
+                $amountToPayForCurrentSub += $addOnAmount;
+            }
         }
 
         $newSubscription = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
-
-        $oldSub->update([
-            'status' => SubscriptionStatusEnum::INACTIVE
-        ]);
 
         $oldSub->addOns()->update([
             SubscriptionAddOnConstant::SUBSCRIPTION_ID => $newSubscription->id
@@ -257,16 +266,24 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
         $amountToPay = max(0, $amountToPayForCurrentSub - $amountLeftFromOldSub);
 
-        if($amountToPay == 0){
-            $newSubscription->activate();
-            return $newSubscription->fresh();
-        }
-
-
         if (Str::upper($subDTO->getCurrency()) == 'USD') {
             $planProcessor = $planPrice->swipeProcessor()->firstOrFail();
         } else {
             $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
+        }
+
+        $invoiceDTO = new InvoiceDTO();
+        $invoiceDTO->setTenantId($subDTO->getTenantId())
+            ->setCompanyId($subDTO->getCompanyId())
+            ->setCurrencyCode($subDTO->getCurrency())
+            ->setBillable($newSubscription)
+            ->setSubTotal($amountToPay ?? 0)
+            ->setDueAt(now()->addHours(6));
+
+        if ($amountToPay == 0) {
+            $oldSub->deactivate();
+            $newSubscription->activate();
+            return $newSubscription->fresh();
         }
 
         $paymentLinkDTO = new CreatePaymentLinkDTO();
@@ -277,7 +294,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             ->setCustomer(Company::find($subDTO->getCompanyId()))
             ->setBillingCycle($subDTO->getBillingCycle())
             ->setMeta([
-                'subscription_id' => $subscription->id,
+                'subscription_id' => $newSubscription->id,
                 'billing_cycle' => $subDTO->getBillingCycle(),
             ]);
 
@@ -290,20 +307,12 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             $paymentLink = $paymentObject->authorization_url ?? $paymentObject?->link;
         }
 
-        $subscription->payment()->create([
+        $newSubscription->payment()->create([
             'company_id' => $subDTO->getCompanyId(),
             'tenant_id' => $subDTO->getTenantId(),
             'payment_link' => $paymentLink,
             'tx_ref' => $paymentObject?->reference ?? $paymentLinkDTO->getTxRef(),
         ]);
-
-        $invoiceDTO = new InvoiceDTO();
-        $invoiceDTO->setTenantId($subDTO->getTenantId())
-            ->setCompanyId($subDTO->getCompanyId())
-            ->setCurrencyCode($subDTO->getCurrency())
-            ->setBillable($subscription)
-            ->setSubTotal($totalAmount ?? 0)
-            ->setDueAt(now()->addHours(6));
 
         if ($amountToPay < 1) {
             $invoiceDTO->setPaidAt(now())
@@ -314,7 +323,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
         $invoiceItemDTO = new InvoiceItemDTO();
         $invoiceItemDTO->setAmount($planPrice->amount ?? 0)
-            ->setItem($subscription->plan)
+            ->setItem($newSubscription->plan)
             ->setQuantity(1);
 
         $invoice->items()->create($invoiceItemDTO->toArray());
@@ -335,11 +344,20 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
         DB::commit();
 
-        return $subscription->load('payment');
+        return $newSubscription->load('payment');
     }
 
-    private function amountLeftInSub(Subscription $sub)
+    private function amountLeftInSub(Subscription|string $sub)
     {
+
+        if (!($sub instanceof Subscription)) {
+            $sub = Subscription::findOrFail($sub);
+        }
+
+        if ($sub->plan->name === 'Basic') {
+            return 0;
+        }
+
         $invoice = $sub->invoice;
 
         $planInDays = $sub->created_at->diffInDays($sub->end_date);

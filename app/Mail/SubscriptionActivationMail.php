@@ -18,9 +18,9 @@ class SubscriptionActivationMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(Subscription $subscription)
+    public function __construct()
     {
-        $this->subscription = $subscription;
+
     }
 
     /**
@@ -29,7 +29,7 @@ class SubscriptionActivationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Subscription Activated',
+            subject: 'Subscription Failed',
         );
     }
 
@@ -41,7 +41,7 @@ class SubscriptionActivationMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.subscription.activated',
+            view: 'emails.subscription.subscription-upgraded',
             with: [
                 // 'subscription' => $this->subscription,
                 'link' => env('APP_FRONTEND_URL') . '/auth/login',

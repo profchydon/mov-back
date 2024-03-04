@@ -174,4 +174,9 @@ class Asset extends BaseModel
     {
         return $this->status === AssetStatusEnum::CHECKED_OUT->value;
     }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class, 'document_id');
+    }
 }

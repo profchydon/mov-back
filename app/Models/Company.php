@@ -122,4 +122,19 @@ class Company extends BaseModel
     {
         return $this->hasMany(Vendor::class, 'company_id')->whereNull('deleted_at');
     }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class, 'company_id');
+    }
+
+    public function insurances()
+    {
+        return $this->hasMany(Insurance::class, 'company_id');
+    }
+
+    public function documentTypes()
+    {
+        return $this->hasMany(DocumentType::class, 'company_id');
+    }
 }

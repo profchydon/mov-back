@@ -34,6 +34,14 @@ class Subscription extends BaseModel
     }
 
     /**
+     * Get the company of this subscription.
+     */
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, SubscriptionConstant::COMPANY_ID);
+    }
+
+    /**
      * Get the plan of this subscription.
      */
     public function plan(): BelongsTo
@@ -66,6 +74,13 @@ class Subscription extends BaseModel
     {
         return $this->update([
             SubscriptionConstant::STATUS => SubscriptionStatusEnum::ACTIVE,
+        ]);
+    }
+
+    public function deactivate(): bool
+    {
+        return $this->update([
+            SubscriptionConstant::STATUS => SubscriptionStatusEnum::INACTIVE,
         ]);
     }
 }

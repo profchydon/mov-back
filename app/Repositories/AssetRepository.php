@@ -197,7 +197,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function getCompanyStolenAssets(Company|string $company)
     {
-        if (!($company instanceof  Company)) {
+        if (!($company instanceof Company)) {
             $company = Company::findOrFail($company);
         }
 
@@ -206,7 +206,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function getCompanyDamagedAssets(Company|string $company)
     {
-        if (!($company instanceof  Company)) {
+        if (!($company instanceof Company)) {
             $company = Company::findOrFail($company);
         }
 

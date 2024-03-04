@@ -6,8 +6,11 @@ cd /var/www
 
 # php artisan migrate --seed --force
 php artisan migrate --force
+php artisan config:clear
+php artisan view:clear
 php artisan cache:clear
 php artisan queue:restart
+
 
 /usr/bin/supervisord -n -c /etc/supervisord.conf
 /usr/src/artisan queue:restart --tries=3 --verbose --timeout=30 --sleep=3 --rest=1 --max-jobs=1000 --max-time=3600

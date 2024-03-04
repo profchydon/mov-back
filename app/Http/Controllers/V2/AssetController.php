@@ -270,7 +270,7 @@ class AssetController extends Controller
             $this->fileRepository->deleteById($asset->image->id);
         }
 
-        $url = Storage::disk('s3')->putFileAs(config_path('filesystems.base-folder'), new File($image->getRealPath()), $fileName);
+        $url = Storage::disk('s3')->putFileAs(config('filesystems.base-folder'), new File($image->getRealPath()), $fileName);
 
         if (!empty($url)) {
             $asset->image()->create(['path' => $url]);
