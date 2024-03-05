@@ -396,7 +396,6 @@ class AssetController extends Controller
         if (!$assets) {
             return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.error-encountered'), $assets);
         }
-
         return $this->response(Response::HTTP_OK, __('messages.record-updated'), $assets);
     }
 }
