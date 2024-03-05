@@ -17,7 +17,7 @@ class CreateAssetFromArrayRequest extends FormRequest
             'assets.*.make' => 'nullable|string',
             'assets.*.model' => 'nullable|string',
             'assets.*.type_id' => ['required', Rule::exists('asset_types', 'id')],
-            'assets.*.serial_number' => 'required|string',
+            'assets.*.serial_number' => 'required',
             'assets.*.purchase_price' => ['required', 'decimal:2,4'],
             'assets.*.purchase_date' => 'nullable|date',
             'assets.*.office_id' => ['sometimes', Rule::exists('offices', 'id')->where('company_id', $company->id)],
