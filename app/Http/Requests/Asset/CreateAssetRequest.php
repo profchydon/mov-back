@@ -22,8 +22,8 @@ class CreateAssetRequest extends FormRequest
 
         return [
             // Rule::exists(Company::class, CompanyConstant::ID),
-            'make' => 'nullable|string',
-            'model' => 'nullable|string',
+            'make' => 'nullable',
+            'model' => 'nullable',
             'type_id' => ['required', Rule::exists('asset_types', 'id')],
             'serial_number' => 'required',
             'purchase_price' => ['required', 'decimal:2,4'],
