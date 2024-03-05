@@ -41,7 +41,7 @@ class SubscriptionDowngradedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Subscription Downgraded!',
+            subject: 'Subscription Ended!',
         );
     }
 

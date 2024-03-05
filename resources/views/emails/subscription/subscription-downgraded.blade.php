@@ -1,7 +1,7 @@
 @extends('layouts.wrapper')
 
 @section('title')
-Subscription downgraded
+Subscription ended
 @endsection
 
 @section('content')
@@ -25,7 +25,7 @@ Subscription downgraded
 
       <p
         style="font-size: 30px; line-height: 40px; color: #191919; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400; margin: 0px;">
-        Your Plan has been <br> downgraded successfully 😥
+        End of Subscription <br> Reminder🚨
       </p>
 
       <p

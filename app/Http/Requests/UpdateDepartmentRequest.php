@@ -11,7 +11,7 @@ class UpdateDepartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['sometimes', new HumanNameRule()],
+            'name' => 'nullable|string',
             'head_id' => ['sometimes', 'nullable', Rule::exists('users', 'id')->whereNull('deleted_at')],
         ];
     }

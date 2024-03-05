@@ -22,10 +22,10 @@ class CreateAssetRequest extends FormRequest
 
         return [
             // Rule::exists(Company::class, CompanyConstant::ID),
-            'make' => ['nullable', new HumanNameRule()],
-            'model' => ['nullable', new HumanNameRule()],
+            'make' => 'nullable|string',
+            'model' => 'nullable|string',
             'type_id' => ['required', Rule::exists('asset_types', 'id')],
-            'serial_number' => 'required|string',
+            'serial_number' => 'required',
             'purchase_price' => ['required', 'decimal:2,4'],
             'purchase_date' => 'nullable|date',
             'office_id' => ['required', Rule::exists('offices', 'id')->where('company_id', $company->id)],

@@ -14,8 +14,8 @@ class CreateAssetFromArrayRequest extends FormRequest
 
         return [
             'assets' => ['required', 'array'],
-            'assets.*.make' => ['nullable', new HumanNameRule()],
-            'assets.*.model' => ['nullable', new HumanNameRule()],
+            'assets.*.make' => 'nullable|string',
+            'assets.*.model' => 'nullable|string',
             'assets.*.type_id' => ['required', Rule::exists('asset_types', 'id')],
             'assets.*.serial_number' => 'required|string',
             'assets.*.purchase_price' => ['required', 'decimal:2,4'],
