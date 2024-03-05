@@ -15,7 +15,7 @@ class UpdateInsuranceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'provider' => ['sometimes', new HumanNameRule()],
+            'provider' => 'nullable|string',
             'policy_id' => ['sometimes', Rule::unique('insurances', InsuranceConstant::POLICY_ID)->where('company_id', $this->company->id)],
             'purchase_date' => ['sometimes', 'date_format:Y-m-d', 'before_or_equal:today'],
             'expiration_date' => ['sometimes', 'date_format:Y-m-d', 'after:purchase_date'],

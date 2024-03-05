@@ -282,8 +282,8 @@ class AssetController extends Controller
     private function updateAssetDetails(Request $request, Asset $asset)
     {
         $request->validate([
-            'make' => ['nullable', new HumanNameRule()],
-            'model' => ['nullable', new HumanNameRule()],
+            'make' => 'nullable|string',
+            'model' => 'nullable|string',
             'type_id' => ['nullable', Rule::exists('asset_types', 'id')],
             'serial_number' => 'nullable|string',
             'purchase_price' => ['nullable', 'decimal:2,4'],

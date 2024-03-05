@@ -25,8 +25,8 @@ class CreateCompanyRequest extends FormRequest
             'user' => 'required|array',
             'user.email' => 'required|email|unique:users,email',
             'user.password' => ['required', new RaydaStandardPasswordRule()],
-            'user.first_name' => ['required', new HumanNameRule()],
-            'user.last_name' => ['required', new HumanNameRule()],
+            'user.first_name' => 'required|string',
+            'user.last_name' => 'required|string',
         ];
     }
 

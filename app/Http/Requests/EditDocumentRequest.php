@@ -28,7 +28,7 @@ class EditDocumentRequest extends FormRequest
 
         return [
             'name' => ['sometimes', Rule::unique('documents', 'name')->where(DocumentConstant::COMPANY_ID, $this->company?->id)->whereNull('deleted_at')->ignore($this->document)],
-            'type' => ['sometimes', new HumanNameRule()],
+            'type' => 'nullable|string',
             'registration_date' => ['sometimes', 'nullable', 'date_format:Y-m-d'],
             'expiration_date' => ['sometimes', 'nullable', 'date_format:Y-m-d', "after_or_equal:{$reg_date}"],
         ];

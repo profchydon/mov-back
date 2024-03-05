@@ -30,8 +30,8 @@ class AssetImport implements WithValidation, WithHeadingRow, ToModel, ShouldQueu
     public function rules(): array
     {
         return [
-            'make' => ['nullable', new HumanNameRule()],
-            'model' => ['nullable', new HumanNameRule()],
+            'make' => 'required|string',
+            'model' => 'required|string',
             'type_id' => ['required', 'string', Rule::exists('asset_types', 'id')],
             'purchase_price' => ['required', 'numeric', 'min:1'],
             'purchase_date' => 'nullable|date_format:Y-m-d',

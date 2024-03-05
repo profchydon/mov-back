@@ -15,7 +15,7 @@ class CreateInsuranceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'provider' => ['required', new HumanNameRule()],
+            'provider' => 'required|string',
             'policy_id' => ['required', Rule::unique('insurances', InsuranceConstant::POLICY_ID)->where('company_id', $this->company->id)],
             'purchase_date' => ['required', 'date_format:Y-m-d', 'before_or_equal:today'],
             'expiration_date' => ['required', 'date_format:Y-m-d', 'after:purchase_date'],
