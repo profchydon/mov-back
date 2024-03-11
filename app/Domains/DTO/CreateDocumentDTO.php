@@ -11,6 +11,7 @@ final class CreateDocumentDTO
 
     private string $name;
     private string $type;
+    private string $extension;
     private string $user_id;
     private string $company_id;
     private ?string $registration_date;
@@ -41,6 +42,17 @@ final class CreateDocumentDTO
     public function setType(string $type): CreateDocumentDTO
     {
         $this->type = $type;
+        return $this;
+    }
+
+    public function getExtension(): string
+    {
+        return $this->extension;
+    }
+
+    public function setExtension(string $extension): CreateDocumentDTO
+    {
+        $this->extension = $extension;
         return $this;
     }
 

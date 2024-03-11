@@ -31,6 +31,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
     public function createDocument(CreateDocumentDTO $dto, UploadedFile $file)
     {
         DB::beginTransaction();
+        $dto->setExtension($file->getClientOriginalExtension());
         $document = Document::firstOrCreate($dto->toSynthensizedArray());
 
         $url = Storage::disk('s3')->putFileAs(config('filesystems.base-folder'), $file->getRealPath(), $document->generateFileName($file->getClientOriginalExtension()));

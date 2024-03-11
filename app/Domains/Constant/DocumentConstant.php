@@ -11,5 +11,6 @@ class DocumentConstant
     public const EXPIRATION_DATE = 'expiration_date';
     public const COMPANY_ID = 'company_id';
     public const VERSION = 'version';
+    public const EXTENSION = 'extension';
     public const USER_ID = 'user_id';
 }

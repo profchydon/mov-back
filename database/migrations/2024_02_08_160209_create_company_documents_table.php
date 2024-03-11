@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid(DocumentConstant::ID)->primary();
             $table->string(DocumentConstant::NAME);
             $table->string(DocumentConstant::TYPE);
+            $table->string(\App\Domains\Constant\DocumentConstant::EXTENSION);
             $table->foreignUuid(DocumentConstant::COMPANY_ID)->constrained(\App\Models\Company::getTableName());
             $table->foreignUuid(DocumentConstant::USER_ID)->constrained(\App\Models\User::getTableName());
             $table->integer(DocumentConstant::VERSION)->default(1);
