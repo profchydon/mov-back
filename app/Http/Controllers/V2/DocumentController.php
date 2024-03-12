@@ -65,7 +65,7 @@ class DocumentController extends Controller
             ]);
         }
 
-        $document = $this->documentRepository->changeDocumentFile($document,);
+        $document = $this->documentRepository->changeDocumentFile($document, $file);
 
         return $this->response(Response::HTTP_OK, __("messages.record-updated"), $document);
     }
