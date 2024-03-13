@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V2;
 
 use App\Common\SerializePermission;
+use App\Common\SubscriptionValidator;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\UserConstant;
 use App\Http\Controllers\Controller;
@@ -10,6 +11,7 @@ use App\Http\Requests\ResendOTPRequest;
 use App\Http\Requests\VerifyOTPRequest;
 use App\Http\Resources\Company\CompanyResource;
 use App\Http\Resources\Role\RoleResource;
+use App\Http\Resources\Subscription\SubscriptionResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
@@ -75,10 +77,12 @@ class UserController extends Controller
 
     public function userDetails(Request $request)
     {
+
         $user = $request->user();
         $userCompany = $user->userCompanies()->first();
         $userRoles = $user->roles()->with('permissions')->get();
         $company = $this->companyRepository->firstWithRelation(CompanyConstant::ID, $userCompany->company_id, ['activeSubscription.invoice']);
+        $subscriptionValidator = new SubscriptionValidator($company);
         $serializePermission = new SerializePermission($userRoles);
 
         $response = [
@@ -86,6 +90,7 @@ class UserController extends Controller
             'company' => new CompanyResource($company),
             'roles' => new RoleResource($userRoles),
             'permissions' => $serializePermission->stringifyPermission(),
+            'subscriptionPlan' => new SubscriptionResource($subscriptionValidator->getActiveSubscription()->load('plan'))
         ];
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $response);

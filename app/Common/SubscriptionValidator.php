@@ -83,8 +83,56 @@ class SubscriptionValidator
     public function hasAvailableAssets(): bool
     {
         $assetLimit = $this->getActiveSubscriptionPlanAssetLimit();
-        $assetCount = count($this->company->assets);
+        $assetCount = count($this->company->availableAssets);
 
         return $assetCount < $assetLimit ? true : false;
+    }
+
+    /**
+     * Checks if the seat limit of the active subscription plan has been exceeded.
+     *
+     * @return bool Returns true if the seat limit has been exceeded, false otherwise.
+     */
+    public function seatLimitExceeded(): bool
+    {
+        $seatLimit = $this->getActiveSubscriptionPlanSeatLimit();
+        $seatCount = count($this->company->seats);
+
+        return $seatCount > $seatLimit ? true : false;
+    }
+
+     /**
+     * Checks if the assets limit of the active subscription plan has been exceeded.
+     *
+     * @return bool Returns true if the assets limit has been exceeded, false otherwise.
+     */
+    public function assetLimitExceeded(): bool
+    {
+        $assetLimit = $this->getActiveSubscriptionPlanAssetLimit();
+        $assetCount = count($this->company->availableAssets);
+
+        return $assetCount > $assetLimit ? true : false;
+    }
+
+
+    /**
+     * Retrieves the total number of seats for the company.
+     *
+     * @return int Returns the total number of seats for the company.
+     */
+    public function getSeatCount()
+    {
+        return count($this->company->seats);
+    }
+
+
+    /**
+     * Retrieves the total number of assets for the company.
+     *
+     * @return int The total number of assets for the company.
+     */
+    public function getAssetCount()
+    {
+        return count($this->company->availableAssets);
     }
 }

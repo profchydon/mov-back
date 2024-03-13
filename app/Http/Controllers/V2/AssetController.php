@@ -64,10 +64,10 @@ class AssetController extends Controller
         try {
 
             // Check available assets
-            // $subscriptionValidator = new SubscriptionValidator($company);
-            // if (!$subscriptionValidator->hasAvailableAssets()) {
-            //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.no-available-assets'));
-            // }
+            $subscriptionValidator = new SubscriptionValidator($company);
+            if (!$subscriptionValidator->hasAvailableAssets()) {
+                return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.no-available-assets'));
+            }
 
             $createAssetDto = $request->createAssetDTO()
                 ->setCompanyId($company->id)
