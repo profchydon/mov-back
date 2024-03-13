@@ -135,4 +135,12 @@ class SubscriptionValidator
     {
         return $this->company->availableAssets()->count();
     }
+
+    public function getAssetSpaceLeft()
+    {
+        $assetLimit = $this->getActiveSubscriptionPlanAssetLimit();
+        $assetCount = $this->company->availableAssets()->count();
+
+        return (int) $assetLimit - $assetCount;
+    }
 }

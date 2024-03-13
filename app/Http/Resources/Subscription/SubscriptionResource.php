@@ -32,9 +32,10 @@ class SubscriptionResource extends JsonResource
         $subscriptionValidator = new SubscriptionValidator($this->company);
 
         $resourceArray['access'] = [
-            'seatCount' => $subscriptionValidator->getSeatCount(),
             'assetCount' => $subscriptionValidator->getAssetCount(),
             'assetLimit' => $subscriptionValidator->getActiveSubscriptionPlanAssetLimit(),
+            'assetSpaceLeft' => $subscriptionValidator->getAssetSpaceLeft(),
+            'seatCount' => $subscriptionValidator->getSeatCount(),
             'seatLimit' => $subscriptionValidator->getActiveSubscriptionPlanSeatLimit(),
             'seatLimit' => $subscriptionValidator->getActiveSubscriptionPlanSeatLimit(),
             'hasAvailableSeats' => $subscriptionValidator->hasAvailableSeats(),
