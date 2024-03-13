@@ -24,6 +24,7 @@ Route::middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt', 'user-in-
     Route::get('{company}/assets/{asset}/users/{user}/assign', 'assignAsset')->name('assign.company.asset');
     Route::get('{company}/assets/{asset}/users/{user}/unassign', 'unAssignAsset')->name('unassign.company.asset');
     Route::post('{company}/assets/{asset}/assign', 'reAssignAsset')->name('reassign.company.asset');
+    Route::post('{company}/assets/{asset}/archive', 'archiveAsset');
 
     Route::post('{company}/assets/reassign', 'reassignMultipleAsset')->name('reassign.multiple.company.asset');
 

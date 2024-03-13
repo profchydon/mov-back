@@ -45,11 +45,12 @@ class AssetController extends Controller
      * @param CompanyRepositoryInterface $companyRepository
      */
     public function __construct(
-        private readonly AssetRepositoryInterface $assetRepository,
-        private readonly CompanyRepositoryInterface $companyRepository,
+        private readonly AssetRepositoryInterface     $assetRepository,
+        private readonly CompanyRepositoryInterface   $companyRepository,
         private readonly AssetMakeRepositoryInterface $assetMakeRepository,
-        private readonly FileRepositoryInterface $fileRepository
-    ) {
+        private readonly FileRepositoryInterface      $fileRepository
+    )
+    {
     }
 
     /**
@@ -198,6 +199,15 @@ class AssetController extends Controller
             default:
                 return $this->error(Response::HTTP_BAD_REQUEST, __('messages.action-not-allowed'));
         }
+    }
+
+    public function archiveAsset(Request $request, Company $company, Asset $asset)
+    {
+        $asset->update([
+            AssetConstant::STATUS => AssetStatusEnum::ARCHIVED->value
+        ]);
+
+        return $this->response(Response::HTTP_OK, __('messages.asset-archived'), $asset->fresh());
     }
 
     public function markAssetAsStolen(CreateStolenAsset $request, Company $company)
