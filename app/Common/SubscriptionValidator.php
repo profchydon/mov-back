@@ -70,7 +70,7 @@ class SubscriptionValidator
     public function hasAvailableSeats(): bool
     {
         $seatLimit = $this->getActiveSubscriptionPlanSeatLimit();
-        $seatCount = count($this->company->seats);
+        $seatCount = $this->company->seats()->count();
 
         return $seatCount < $seatLimit ? true : false;
     }
@@ -83,7 +83,7 @@ class SubscriptionValidator
     public function hasAvailableAssets(): bool
     {
         $assetLimit = $this->getActiveSubscriptionPlanAssetLimit();
-        $assetCount = count($this->company->availableAssets);
+        $assetCount = $this->company->availableAssets()->count();
 
         return $assetCount < $assetLimit ? true : false;
     }
@@ -96,7 +96,7 @@ class SubscriptionValidator
     public function seatLimitExceeded(): bool
     {
         $seatLimit = $this->getActiveSubscriptionPlanSeatLimit();
-        $seatCount = count($this->company->seats);
+        $seatCount = $this->company->seats()->count();
 
         return $seatCount > $seatLimit ? true : false;
     }
@@ -109,7 +109,7 @@ class SubscriptionValidator
     public function assetLimitExceeded(): bool
     {
         $assetLimit = $this->getActiveSubscriptionPlanAssetLimit();
-        $assetCount = count($this->company->availableAssets);
+        $assetCount =$this->company->availableAssets()->count();
 
         return $assetCount > $assetLimit ? true : false;
     }
@@ -122,7 +122,7 @@ class SubscriptionValidator
      */
     public function getSeatCount()
     {
-        return count($this->company->seats);
+        return $this->company->seats()->count();
     }
 
 
@@ -133,6 +133,6 @@ class SubscriptionValidator
      */
     public function getAssetCount()
     {
-        return count($this->company->availableAssets);
+        return $this->company->availableAssets()->count();
     }
 }
