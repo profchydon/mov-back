@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\DepartmentConstant;
 use App\Domains\Constant\SubscriptionConstant;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Domains\Enum\Company\CompanyStatusEnum;
 use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Events\Company\CompanyCreatedEvent;
@@ -81,6 +83,11 @@ class Company extends BaseModel
     public function assets(): HasMany
     {
         return $this->hasMany(Asset::class, 'company_id');
+    }
+
+    public function availableAssets(): HasMany
+    {
+        return $this->hasMany(Asset::class, 'company_id')->whereNotIn(AssetConstant::STATUS, [AssetStatusEnum::ARCHIVED->value]);
     }
 
     public function tags(): HasMany
