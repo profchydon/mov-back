@@ -11,6 +11,7 @@ use App\Domains\Enum\Plan\PlanStatusEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Plan extends BaseModel
 {
@@ -26,6 +27,13 @@ class Plan extends BaseModel
         PlanConstant::OFFERS => 'json',
     ];
 
+    public static function booted()
+    {
+        static::creating(function (self $model) {
+            $model->slug = Str::slug($model->name);
+        });
+    }
+
     public function subscriptions(): HasMany
     {
         return $this->hasMany(Subscription::class);
@@ -33,12 +41,14 @@ class Plan extends BaseModel
 
     public function prices(): HasMany
     {
-        return $this->hasMany(PlanPrice::class);
+        return $this->hasMany(PlanPrice::class, 'plan_slug', 'slug');
     }
 
     public function processors()
     {
-        return $this->hasManyThrough(PlanProcessor::class, PlanPrice::class);
+        return $this->belongsToMany(PlanProcessor::class, PlanPrice::class, 'plan_slug', 'slug', 'slug', 'payment_processor_slug');
+//        return $this->hasMany(PlanProcessor::class, PlanPrice::class);
+//        return $this->hasManyThrough(PlanProcessor::class, PlanPrice::class, 'payment_processor_slug', 'plan_price_slug', 'slug', 'slug');
     }
 
     public function flutterwaveProcessors()

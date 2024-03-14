@@ -11,6 +11,7 @@ class PlanConstant
 {
     public const ID = 'id';
     public const NAME = 'name';
+    public const SLUG = 'slug';
     public const DESCRIPTION = 'description';
     public const PRECEDING_PLAN_NAME = 'preceding_plan_name';
     public const RANK = 'rank';
