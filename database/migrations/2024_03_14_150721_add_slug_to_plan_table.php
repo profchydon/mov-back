@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment_processors', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->string('url');
-            $table->timestamps();
+        Schema::table('plans', function (Blueprint $table) {
+            $table->string(\App\Domains\Constant\Plan\PlanConstant::SLUG)->after(\App\Domains\Constant\Plan\PlanConstant::NAME)->unique()->nullable();
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_processors');
+        Schema::table('plans', function (Blueprint $table) {
+            $table->dropColumn(\App\Domains\Constant\Plan\PlanConstant::SLUG);
+        });
     }
 };

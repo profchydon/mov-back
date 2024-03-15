@@ -11,6 +11,8 @@ class PlanPriceConstant
 {
     public const ID = 'id';
     public const PLAN_ID = 'plan_id';
+    public const PLAN_SLUG = 'plan_slug';
+    public const SLUG = 'slug';
     public const CURRENCY_CODE = 'currency_code';
     public const AMOUNT = 'amount';
     public const BILLING_CYCLE = 'billing_cycle';
