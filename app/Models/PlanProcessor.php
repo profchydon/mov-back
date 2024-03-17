@@ -9,7 +9,8 @@ class PlanProcessor extends BaseModel
 {
     public function planPrice()
     {
-        return $this->belongsTo(PlanPrice::class, PlanProcessorConstant::PLAN_PRICE_SLUG, 'slug');
+        return $this->belongsTo(PlanPrice::class, PlanProcessorConstant::PLAN_PRICE_ID);
+//        return $this->belongsTo(PlanPrice::class, PlanProcessorConstant::PLAN_PRICE_SLUG, 'slug');
     }
 
     public function processor()
