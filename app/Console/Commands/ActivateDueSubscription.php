@@ -23,7 +23,7 @@ class ActivateDueSubscription extends Command
      */
     protected $description = 'Command description';
 
-    /**
+    /**i
      * Execute the console command.
      */
     public function handle()
