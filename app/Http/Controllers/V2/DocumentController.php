@@ -46,6 +46,7 @@ class DocumentController extends Controller
 
     public function update(Company $company, Document $document, EditDocumentRequest $request)
     {
+
         $document = $this->documentRepository->updateDocument($document, $request->getDTO());
 
         return $this->response(Response::HTTP_OK, __("messages.record-updated"), $document);
