@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Domains\Constant\Asset\AssetConstant;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -44,6 +46,6 @@ class Document extends BaseModel
 
     public function assets()
     {
-        return $this->belongsToMany(Asset::class, 'asset_documents', 'document_id', 'asset_id');
+        return $this->belongsToMany(Asset::class, 'asset_documents', 'document_id', 'asset_id')->whereNotIn(AssetConstant::STATUS, [AssetStatusEnum::ARCHIVED->value]);
     }
 }
