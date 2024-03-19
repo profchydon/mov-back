@@ -68,7 +68,7 @@ Route::group(['prefix' => 'offices/{office}', 'middleware' => ['token.decrypt', 
     Route::delete('assignment', [CompanyOfficeController::class, 'unassignUserFromOffice']);
 });
 
-Route::delete('companies/{company}/users/{user}', 'deleteCompanyUser')->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company'])->name('delete.company.user');
+Route::delete('companies/{company}/users/{user}', [CompanyController::class, 'deleteCompanyUser'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company'])->name('delete.company.user');
 
 //Routes for users
 Route::group(['prefix' => 'companies/{company}', 'middleware' => ['token.decrypt', 'auth:sanctum',  'payload.decrypt', 'user-in-company']], function () {
