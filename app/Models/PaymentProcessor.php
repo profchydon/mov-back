@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 
 class PaymentProcessor extends BaseModel
 {
+    protected $table = 'payment_processors';
+
     protected static function booted()
     {
         parent::booted();

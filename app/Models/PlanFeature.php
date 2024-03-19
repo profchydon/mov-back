@@ -20,14 +20,4 @@ class PlanFeature extends BaseModel
     protected $casts = [
         PlanFeatureConstant::ID => 'string',
     ];
-
-    public function newUniqueId()
-    {
-        return (string) Uuid::uuid4();
-    }
-
-    public function uniqueIds()
-    {
-        return ['id'];
-    }
 }

@@ -64,10 +64,10 @@ class AssetController extends Controller
         try {
 
             // Check available assets
-            // $subscriptionValidator = new SubscriptionValidator($company);
-            // if (!$subscriptionValidator->hasAvailableAssets()) {
-            //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.no-available-assets'));
-            // }
+            $subscriptionValidator = new SubscriptionValidator($company);
+            if (!$subscriptionValidator->hasAvailableAssets()) {
+                return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.no-available-assets'));
+            }
 
             $createAssetDto = $request->createAssetDTO()
                 ->setCompanyId($company->id)
@@ -100,6 +100,22 @@ class AssetController extends Controller
     public function createBulk(Company $company, CreateAssetFromArrayRequest $request)
     {
         $user = $request->user();
+
+        $subscriptionValidator = new SubscriptionValidator($company);
+        $assetSpaceLeft = $subscriptionValidator->getAssetSpaceLeft();
+
+        // Check available assets
+        if (!$subscriptionValidator->hasAvailableAssets()) {
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.no-available-assets'));
+        }
+
+        if (count($request->assets) > $assetSpaceLeft) {
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, sprintf(
+                "You have only %d asset space(s) left. Upgrade your plan to accommodate additional assets, or make sure you upload no more than %d asset(s).",
+                $assetSpaceLeft,
+                $assetSpaceLeft
+            ));
+        }
 
         $assets = collect($request->assets)->transform(function ($asset) use ($company, $user) {
             $dto = new CreateAssetDTO();

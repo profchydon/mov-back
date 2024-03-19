@@ -8,6 +8,7 @@ use App\Domains\Enum\Plan\BillingCycleEnum;
 use App\Domains\Enum\Plan\PlanProcessorNameEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 
 class PlanPrice extends BaseModel
@@ -19,14 +20,17 @@ class PlanPrice extends BaseModel
         PlanPriceConstant::BILLING_CYCLE => BillingCycleEnum::class,
     ];
 
-    public function newUniqueId()
+    public static function booted()
     {
-        return (string) Uuid::uuid4();
+        parent::booted();
+        static::creating(function(self $model){
+            $slugString = "{$model->plan_slug} {$model->currency_code} {$model->billing_cylce}";
+            $model->slug = Str::slug($slugString);
+        });
     }
 
-    public function uniqueIds()
-    {
-        return ['id'];
+    public function plan(){
+        return $this->belongsTo(Plan::class, 'plan_slug', 'slug');
     }
 
     public function currency()
@@ -36,16 +40,16 @@ class PlanPrice extends BaseModel
 
     public function processor()
     {
-        return $this->hasMany(PlanProcessor::class, PlanProcessorConstant::PLAN_PRICE_ID);
+        return $this->hasMany(PlanProcessor::class, 'plan_price_slug','slug');
     }
 
     public function flutterwaveProcessor()
     {
-        return $this->processor()->where(PlanProcessorConstant::PLAN_PROCESSOR_NAME, PlanProcessorNameEnum::FLUTTERWAVE);
+        return $this->processor()->where(PlanProcessorConstant::PAYMENT_PROCESSOR_SLUG, 'flutterwave');
     }
 
     public function swipeProcessor()
     {
-        return $this->processor()->where(PlanProcessorConstant::PLAN_PROCESSOR_NAME, PlanProcessorNameEnum::STRIPE);
+        return $this->processor()->where(PlanProcessorConstant::PAYMENT_PROCESSOR_SLUG, 'stripe');
     }
 }
