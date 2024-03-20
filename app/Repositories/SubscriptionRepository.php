@@ -10,10 +10,12 @@ use App\Domains\DTO\Invoice\InvoiceDTO;
 use App\Domains\DTO\Invoice\InvoiceItemDTO;
 use App\Domains\Enum\Invoice\InvoiceStatusEnum;
 use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
+use App\Helpers\BillingHelper;
 use App\Models\Company;
 use App\Models\Feature;
 use App\Models\FeaturePrice;
 use App\Models\Invoice;
+use App\Models\PlanPrice;
 use App\Models\Subscription;
 use App\Models\Plan;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
@@ -61,105 +63,13 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             });
         }
 
-        $planPrice = $subscription->plan->prices()
-            ->where('currency_code', $subDTO->getCurrency())
-            ->where('billing_cycle', $subDTO->getBillingCycle())
-            ->firstOrFail();
+        $invoice = BillingHelper::createSubscriptionInvoice($subscription, $subDTO->getCurrency());
 
-        $totalAmount = $planPrice->amount ?? 0;
-
-        if ($totalAmount > 0) {
-            $addOnAmount = 0;
-
-            if ($subDTO->getAddOnIds()->isNotEmpty()) {
-                $addOnAmount += FeaturePrice::whereIn('feature_id', $subDTO->getAddOnIds())
-                    ->where('currency_code', $subDTO->getCurrency())
-                    ->sum('price');
-
-                if(Str::lower($subDTO->getBillingCycle()) == 'yearly'){
-                    $addOnAmount *= 12;
-                }
-            }
-
-            if (Str::upper($subDTO->getCurrency()) == 'USD') {
-                $planProcessor = $planPrice->swipeProcessor()->firstOrFail();
-            } else {
-                $planProcessor = $planPrice->flutterwaveProcessor()->firstOrFail();
-            }
-
-
-            $totalAmount += $addOnAmount;
-
-            $paymentLinkDTO = new CreatePaymentLinkDTO();
-            $paymentLinkDTO->setCurrency($subDTO->getCurrency())
-                ->setAmount($totalAmount)
-                ->setPaymentPlan($planProcessor->plan_processor_id)
-                ->setRedirectUrl($subDTO->getRedirectURI())
-                ->setCustomer(Company::find($subDTO->getCompanyId()))
-                ->setBillingCycle($subDTO->getBillingCycle())
-                ->setMeta([
-                    'subscription_id' => $subscription->id,
-                    'billing_cycle' => $subDTO->getBillingCycle(),
-                ]);
-
-            $paymentObject = null;
-
-            if (Str::upper($subDTO->getCurrency()) == 'USD' || Str::upper($subDTO->getCurrency()) == 'GBP' || Str::upper($subDTO->getCurrency()) == 'EUR') {
-                $paymentLink = StripeService::getStandardPaymentLink($paymentLinkDTO);
-            } else {
-                $paymentObject = FlutterwaveService::getStandardPaymentLink($paymentLinkDTO);
-                $paymentLink = $paymentObject->authorization_url ?? $paymentObject?->link;
-            }
-
-            $subscription->payment()->create([
-                'company_id' => $subDTO->getCompanyId(),
-                'tenant_id' => $subDTO->getTenantId(),
-                'payment_link' => $paymentLink,
-                'tx_ref' => $paymentObject?->reference ?? $paymentLinkDTO->getTxRef(),
-            ]);
-        } else {
-            $subscription->activate();
-        }
-
-        $invoiceDTO = new InvoiceDTO();
-        $invoiceDTO->setTenantId($subDTO->getTenantId())
-            ->setCompanyId($subDTO->getCompanyId())
-            ->setCurrencyCode($subDTO->getCurrency())
-            ->setBillable($subscription)
-            ->setSubTotal($totalAmount ?? 0)
-            ->setDueAt(now()->addHours(6));
-
-        if ($totalAmount < 1) {
-            $invoiceDTO->setPaidAt(now())
-                ->setStatus(InvoiceStatusEnum::PAID->value);
-        }
-
-        $invoice = Invoice::create($invoiceDTO->toArray());
-
-        $invoiceItemDTO = new InvoiceItemDTO();
-        $invoiceItemDTO->setAmount($planPrice->amount ?? 0)
-            ->setItem($subscription->plan)
-            ->setQuantity(1);
-
-        $invoice->items()->create($invoiceItemDTO->toArray());
-
-        $features = Feature::find($subDTO->getAddOnIds());
-
-        $features->each(function ($feature) use ($subDTO, $invoice) {
-            $price = $feature->currencyPrice($subDTO->getCurrency())->firstOrFail();
-
-            $dto = new InvoiceItemDTO();
-            $dto->setQuantity(1)
-                ->setAmount($price->price)
-                ->setItem($feature)
-                ->setInvoiceId($invoice);
-
-            $invoice->items()->create($dto->toArray());
-        });
+        BillingHelper::createSubscriptionInvoicePayment($subscription, $invoice, $subDTO->getRedirectURI());
 
         DB::commit();
 
-        return $subscription->load('payment');
+        return $subscription->load('invoice.payment');
     }
 
     public function addAddOnsToSubsciption(Subscription|string $subscription, AddonDTO $addonDTO)
@@ -347,30 +257,15 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         return $newSubscription->load('payment');
     }
 
-    private function amountLeftInSub(Subscription|string $sub)
+    public function downgradeSubscription(Subscription $oldSub, Plan $newPlan)
     {
-
-        if (!($sub instanceof Subscription)) {
-            $sub = Subscription::findOrFail($sub);
-        }
-
-        if ($sub->plan->name === 'Basic') {
-            return 0;
-        }
-
-        $invoice = $sub->invoice;
-
-        $planInDays = $sub->created_at->diffInDays($sub->end_date);
-
-        $planPrice = $sub->plan->prices()->where('currency_code', $invoice->currency_code)->where('billing_cycle', $sub->billing_cycle)->first();
-
-        $timeElapsedInDays = $sub->created_at->diffInDays(now());
-
-        $amountPerDay = round($planPrice->amount / $planInDays, 2);
-
-        $amountExhausted = $timeElapsedInDays * $amountPerDay;
-
-        return round($planPrice->amount - $amountExhausted, 2);
+        // TODO: Implement downgradeSubscription() method.
     }
+
+    public function upgradeSubscription(Subscription $oldSub, Plan $newPlan)
+    {
+        // TODO: Implement upgradeSubscription() method.
+    }
+
 
 }
