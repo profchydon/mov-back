@@ -18,6 +18,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
 
     Route::controller(CompanyController::class)->prefix('{company}')->middleware(['token.decrypt', 'auth:sanctum',  'payload.decrypt',  'user-in-company'])->group(function () {
         Route::resource('tags', TagController::class);
+        Route::delete('tags', [TagController::class, 'destroyMany']);
         Route::resource('departments', DepartmentController::class);
         Route::resource('insurances', \App\Http\Controllers\V2\InsuranceController::class);
         Route::post('insurances/{insurance}/assets', [\App\Http\Controllers\V2\InsuranceController::class, 'insureAssets']);
