@@ -8,7 +8,8 @@ class CreateCompanyUserDTO
 {
     use DTOToArray;
 
-    private string $name;
+    private string $first_name;
+    private string $last_name;
     private string $email;
     private string $job_title;
     private string $employment_type;
@@ -18,18 +19,31 @@ class CreateCompanyUserDTO
     private ?string $team_id;
     private string $code;
     private string $company_id;
+    private ?string $tenant_id;
     private string $invited_by;
 
-    public function setName(string $name)
+    public function setFirstName(string $first_name)
     {
-        $this->name = $name;
+        $this->first_name = $first_name;
 
         return $this;
     }
 
-    public function getName()
+    public function getFirstName()
     {
-        return $this->name;
+        return $this->first_name;
+    }
+
+    public function setLastName(string $last_name)
+    {
+        $this->last_name = $last_name;
+
+        return $this;
+    }
+
+    public function getLastName()
+    {
+        return $this->last_name;
     }
 
     public function setEmail(string $email)
@@ -138,6 +152,18 @@ class CreateCompanyUserDTO
     public function getCompanyId()
     {
         return $this->company_id;
+    }
+
+    public function setTenantId(?string $tenant_id)
+    {
+        $this->tenant_id = $tenant_id;
+
+        return $this;
+    }
+
+    public function getTenantId()
+    {
+        return $this->tenant_id;
     }
 
     public function setInvitedBy(string $invited_by)

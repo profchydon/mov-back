@@ -24,7 +24,8 @@ class CreateCompanyUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'nullable|string',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
             'email' => 'required|email',
             'job_title' => 'nullable|string',
             'employment_type' => 'nullable|string',
@@ -43,12 +44,14 @@ class CreateCompanyUserRequest extends FormRequest
         $dto = new CreateCompanyUserDTO();
 
         $dto->setEmail($this->input('email'))
-            ->setJobTitle($this->input('job_title', ''))
-            ->setEmploymentType($this->input('employment_type', ''))
+            ->setFirstName($this->input('first_name'))
+            ->setLastName($this->input('last_name'))
+            ->setJobTitle($this->input('job_title', null))
+            ->setEmploymentType($this->input('employment_type', null))
             ->setRoleId($this->input('role_id'))
-            ->setOfficeId($this->input('office_id', ''))
-            ->setDepartmentId($this->input('department_id', ''))
-            ->setTeamId($this->input('team_id', ''));
+            ->setOfficeId($this->input('office_id', null))
+            ->setDepartmentId($this->input('department_id', null))
+            ->setTeamId($this->input('team_id', null));
 
         return $dto;
     }
