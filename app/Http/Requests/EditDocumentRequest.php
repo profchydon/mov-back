@@ -29,6 +29,7 @@ class EditDocumentRequest extends FormRequest
         return [
             'name' => ['sometimes', Rule::unique('documents', 'name')->where(DocumentConstant::COMPANY_ID, $this->company?->id)->whereNull('deleted_at')->ignore($this->document)],
             'type' => 'nullable|string',
+            'owner_id' => ['sometimes', 'nullable', Rule::exists('user_companies', 'user_id')->where('company_id', $this->company?->id)],
             'registration_date' => ['sometimes', 'nullable', 'date_format:Y-m-d'],
             'expiration_date' => ['sometimes', 'nullable', 'date_format:Y-m-d', "after_or_equal:{$reg_date}"],
         ];
@@ -40,6 +41,7 @@ class EditDocumentRequest extends FormRequest
         $dto->setName($this->input('name'))
             ->setType($this->input('type'))
             ->setRegistrationDate($this->input('registration_date'))
+            ->setOwnerId($this->input('owner_id'))
             ->setExpirationDate($this->input('expiration_date'));
 
         return $dto;

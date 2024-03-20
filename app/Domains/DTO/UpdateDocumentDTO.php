@@ -13,6 +13,7 @@ final class UpdateDocumentDTO
     private ?string $type;
     private ?string $registration_date;
     private ?string $expiration_date;
+    private ?string $owner_id;
 
     public function getName(): string
     {
@@ -44,6 +45,17 @@ final class UpdateDocumentDTO
     public function setRegistrationDate(?string $registration_date): self
     {
         $this->registration_date = $registration_date;
+        return $this;
+    }
+
+    public function getOwnerId(): ?string
+    {
+        return $this->owner_id;
+    }
+
+    public function setOwnerId(?string $owner_id): UpdateDocumentDTO
+    {
+        $this->owner_id = $owner_id;
         return $this;
     }
 
