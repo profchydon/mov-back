@@ -20,7 +20,7 @@ use Illuminate\Support\Str;
 
 class BillingHelper
 {
-    public static function createSubscriptionInvoice(Subscription $subscription, string $currency)
+    public static function createSubscriptionInvoice(Subscription $subscription, string $currency, float $outstanding = 0)
     {
         $planPriceSlug = static::planPrice($subscription, $currency);
         $planPrice = PlanPrice::where('slug', $planPriceSlug)->first();
@@ -41,6 +41,7 @@ class BillingHelper
         }
 
         $totalAmount += $addOnAmount;
+        $totalAmount = max(0, $totalAmount);
 
         $invoice = Invoice::where('company_id', $subscription->company_id)
             ->where('billable_type', $subscription::class)
@@ -53,7 +54,8 @@ class BillingHelper
                 ->setCompanyId($subscription->company_id)
                 ->setCurrencyCode($currency)
                 ->setBillable($subscription)
-                ->setSubTotal($totalAmount ?? 0)
+                ->setSubTotal($totalAmount)
+                ->setCarryOver($outstanding)
                 ->setDueAt(now()->addHours(6));
 
             $invoice = Invoice::create($invoiceDTO->toArray());
@@ -87,7 +89,7 @@ class BillingHelper
         return $invoice;
     }
 
-    public static function createSubscriptionInvoicePayment(Subscription $subscription, Invoice $invoice,string $redirectURI)
+    public static function createSubscriptionInvoicePayment(Subscription $subscription, Invoice $invoice, string $redirectURI)
     {
         $planPriceSlug = static::planPriceSlug($subscription, $invoice->currency_code);
         $paymentProcessorSlug = "flutterwave";
@@ -104,7 +106,7 @@ class BillingHelper
 
         $paymentLinkDTO = new CreatePaymentLinkDTO();
         $paymentLinkDTO->setCurrency($invoice->currency_code)
-            ->setAmount($invoice->sub_total + $invoice->tax)
+            ->setAmount(($invoice->sub_total + $invoice->tax) - $invoice->carry_over)
             ->setPaymentPlan($planProcessor->plan_processor_id)
             ->setRedirectUrl($redirectURI)
             ->setCustomer($subscription->company)
@@ -115,10 +117,10 @@ class BillingHelper
             ]);
 
         $payment = $paymentProcessor::getStandardPaymentLink($paymentLinkDTO);
-        if($paymentProcessorSlug == 'flutterwave'){
+        if ($paymentProcessorSlug == 'flutterwave') {
             $paymentLink = $payment->authorization_url;
-        }else{
-            $paymentLink  = $payment;
+        } else {
+            $paymentLink = $payment;
         }
 
         $invoice->payment()->create([
@@ -129,7 +131,7 @@ class BillingHelper
         ]);
     }
 
-    public static function calculateAmountLeftInSub(Subscription $sub, Invoice $invoice)
+    public static function calculateAmountLeftInSub(Subscription $sub)
     {
         if ($sub->plan->name === 'Basic') {
             return 0;
@@ -152,6 +154,6 @@ class BillingHelper
     private static function planPriceSlug(Subscription $subscription, string $currency)
     {
         $planPriceSlug = "{$subscription->plan->slug} {$currency} {$subscription->billing_cycle}";
-        return  Str::slug($planPriceSlug);
+        return Str::slug($planPriceSlug);
     }
 }

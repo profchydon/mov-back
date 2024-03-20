@@ -48,7 +48,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
     public function createSubscription(CreateSubscriptionDTO $subDTO)
     {
         DB::beginTransaction();
-        $subscription = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
+        $subscription = Subscription::firstOrCreate(Arr::except($subDTO->toSynthensizedArray(), 'add-on-ids'));
 
         if ($subDTO->getAddOnIds()->isNotEmpty()) {
             $addons = $subDTO->getAddOnIds()->map(function ($id) use ($subscription) {
@@ -257,14 +257,63 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
         return $newSubscription->load('payment');
     }
 
-    public function downgradeSubscription(Subscription $oldSub, Plan $newPlan)
+    public function downgradeSubscription(Subscription $oldSub, Plan $newPlan, CreateSubscriptionDTO $subDTO)
     {
-        // TODO: Implement downgradeSubscription() method.
+        DB::beginTransaction();
+
+        $newSub = Subscription::where('company_id', $oldSub->company_id)
+            ->where('plan_id', $newPlan->id)
+            ->where('status', SubscriptionStatusEnum::INACTIVE)
+            ->where('billing_cycle', $subDTO->getBillingCycle())
+            ->first();
+
+        if (empty($newSub)) {
+            $newSub = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
+        }
+
+        if ($subDTO->getAddOnIds()->isNotEmpty()) {
+            $addons = $subDTO->getAddOnIds()->map(function ($id) use ($newSub) {
+                return [
+                    'feature_id' => $id,
+                    ...Arr::except($newSub->toArray(), ['id', 'plan_id', 'invoice_id']),
+                ];
+            });
+
+            $addons->each(function ($addOn) use ($newSub) {
+                $newSub->addOns()->create($addOn);
+            });
+        }
+
+        $invoice = BillingHelper::createSubscriptionInvoice($newSub, $subDTO->getCurrency());
+
+        BillingHelper::createSubscriptionInvoicePayment($newSub, $invoice, $subDTO->getRedirectURI());
+
+        return $newSub->load('invoice');
+
+        DB::commit();
     }
 
-    public function upgradeSubscription(Subscription $oldSub, Plan $newPlan)
+    public function upgradeSubscription(Subscription $oldSub, Plan $newPlan, CreateSubscriptionDTO $subDTO)
     {
-        // TODO: Implement upgradeSubscription() method.
+        $amountLeftFromOldSub = BillingHelper::calculateAmountLeftInSub($oldSub);
+
+        $newSub = Subscription::where('company_id', $oldSub->company_id)
+            ->where('plan_id', $newPlan->id)
+            ->where('status', SubscriptionStatusEnum::INACTIVE)
+            ->where('billing_cycle', $subDTO->getBillingCycle())
+            ->first();
+
+        if (empty($newSub)) {
+            $newSub = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
+        }
+
+        $invoice = BillingHelper::createSubscriptionInvoice($newSub, $subDTO->getCurrency(), $amountLeftFromOldSub);
+
+        BillingHelper::createSubscriptionInvoicePayment($newSub, $invoice, $subDTO->getRedirectURI());
+
+        DB::commit();
+
+        return $newPlan->load('invoice.payment');
     }
 
 
