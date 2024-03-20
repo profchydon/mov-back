@@ -34,6 +34,11 @@ class Document extends BaseModel
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
     public function file()
     {
         return $this->morphOne(File::class, 'fileable');
