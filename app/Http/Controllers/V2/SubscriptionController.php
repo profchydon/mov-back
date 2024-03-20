@@ -15,6 +15,7 @@ use App\Models\SubscriptionPayment;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\ValidationException;
 
 class SubscriptionController extends Controller
@@ -96,5 +97,54 @@ class SubscriptionController extends Controller
         $message = $this->subscriptionRepository->changeSubscription($activeSubscription, $newCompanyPlan, $dto);
 
         return $this->response(Response::HTTP_OK, __('Invoice created'), $message);
+    }
+
+    public function upgradeSubscription(Company $company, SelectSubscriptionPlanRequest $request)
+    {
+        $activeSubscription = $company->activeSubscription()->firstOrFail();
+        $activeSubscriptionPlan = $activeSubscription->plan;
+        $newPlan = Plan::find($request->plan_id);
+
+        if ($activeSubscriptionPlan->rank <= $newPlan) {
+            throw ValidationException::withMessages(['plan_id' => "Selected plan is not available for upgrade"]);
+        }
+
+        $dto = $request->getDTO();
+        $dto->setTenantId($company->tenant_id)
+            ->setCompanyId($company->id);
+
+        $plan = $this->subscriptionRepository->upgradeSubscription($activeSubscription, $newPlan, $dto);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-created'), $plan);
+    }
+
+    public function downgradeSubscription(Company $company, SelectSubscriptionPlanRequest $request)
+    {
+        $activeSubscription = $company->activeSubscription()->firstOrFail();
+        $activeSubscriptionPlan = $activeSubscription->plan;
+        $newPlan = Plan::find($request->plan_id);
+
+        if ($activeSubscriptionPlan->rank >= $newPlan) {
+            throw ValidationException::withMessages(['plan_id' => "Selected plan is not available for downgrade"]);
+        }
+
+        $startDate = Carbon::createFromFormat('Y-m-d', $activeSubscription->end_date);
+        $endDate = Carbon::createFromFormat('Y-m-d', $activeSubscription->end_date);
+
+        if ($this->input('billing_cycle') == BillingCycleEnum::MONTHLY->value) {
+            $endDate = $startDate->addMonth();
+        } elseif ($this->input('billing_cycle') == BillingCycleEnum::YEARLY->value) {
+            $endDate = $startDate->addYear();
+        }
+
+        $dto = $request->getDTO();
+        $dto->setTenantId($company->tenant_id)
+            ->setCompanyId($company->id)
+            ->setStartDate($startDate)
+            ->setEndDate($endDate);
+
+        $plan = $this->subscriptionRepository->downgradeSubscription($activeSubscription, $newPlan, $dto);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-created'), $plan);
     }
 }
