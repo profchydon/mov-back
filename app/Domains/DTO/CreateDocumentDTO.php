@@ -16,7 +16,7 @@ final class CreateDocumentDTO
     private string $company_id;
     private ?string $registration_date;
     private ?string $expiration_date;
-
+    private ?string $owner_id;
 
     public function __construct()
     {
@@ -64,6 +64,17 @@ final class CreateDocumentDTO
     public function setUserId(string $user_id): CreateDocumentDTO
     {
         $this->user_id = $user_id;
+        return $this;
+    }
+
+    public function getOwnerId(): ?string
+    {
+        return $this->owner_id;
+    }
+
+    public function setOwnerId(?string $owner_id): CreateDocumentDTO
+    {
+        $this->owner_id = $owner_id;
         return $this;
     }
 
