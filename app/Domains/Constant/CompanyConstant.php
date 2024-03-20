@@ -22,6 +22,7 @@ class CompanyConstant
     public const STATE = 'state';
     public const SSO_ID = 'sso_id';
     public const STATUS = 'status';
+    public const ALLOW_USER_LOGIN = 'allow_user_login';
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';
     public const DELETED_AT = 'deleted_at';

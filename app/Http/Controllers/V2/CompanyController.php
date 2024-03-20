@@ -228,6 +228,7 @@ class CompanyController extends Controller
 
     public function addCompanyUser(CreateCompanyUserRequest $request, Company $company)
     {
+
         $emailExist = $this->userRepository->exist(UserConstant::EMAIL, $request->email);
 
         if ($emailExist) {
@@ -249,21 +250,55 @@ class CompanyController extends Controller
             }
         }
 
+        DB::beginTransaction();
         $user = $request->user();
         $code = (string) Str::uuid();
 
         $dto = $request->getDTO();
 
         $dto->setCompanyId($company->id)
+            ->setTenantId($company->tenant_id)
             ->setInvitedBy($user->id)
             ->setCode($code)
             ->setOfficeId($request->office_id)
             ->setTeamId($request->team_id)
             ->setDepartmentId($request->department_id);
 
-        $this->userInvitationRepository->create($dto->toArray());
+        if ($company->allow_user_login) {
 
-        return $this->response(Response::HTTP_CREATED, __('messages.user.invitation.sent'));
+            $this->userInvitationRepository->create($dto->toArray());
+
+            DB::commit();
+
+            return $this->response(Response::HTTP_CREATED, __('messages.user.invitation.sent'));
+
+        } else {
+
+
+            // return $newUser;
+            $role = $this->roleRepository->first('name', RoleTypes::BASIC->value);
+            $newUser = $this->userRepository->create($dto->toArray());
+            $this->userRepository->createUserCompany($company, $newUser, $role);
+
+            $this->userRepository->assignRoleToUser($company, $newUser, $role);
+
+            if ($dto->getDepartmentId() !== null) {
+                $this->userRepository->createUserDepartment($company, $newUser, $dto->getDepartmentId());
+            }
+
+            if ($dto->getTeamId() !== null) {
+                $this->userRepository->createUserTeam($company, $newUser, $dto->getDepartmentId(), $dto->getTeamId());
+            }
+
+            DB::commit();
+
+            return $this->response(Response::HTTP_CREATED, __('messages.user.added'));
+
+        }
+
+
+
+
     }
 
     public function updateCompanyUser(Company $company, User $user, UpdateCompanyUserRequest $request)
