@@ -21,7 +21,7 @@ class Document extends BaseModel
     ];
 
     protected static array $filterable = [
-        'type' => 'company_documents.type',
+        'type' => 'documents.type',
     ];
 
     public function generateFileName(string $ext)
