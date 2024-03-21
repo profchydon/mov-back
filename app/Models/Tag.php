@@ -22,8 +22,13 @@ class Tag extends BaseModel
         'company' => 'tags.company_id',
     ];
 
+    public function assets()
+    {
+        return $this->hasMany(Asset::class, 'taggable_id')->where('taggable_type', Asset::class);
+    }
+
     protected function name()
     {
-        Attribute::make(get: fn ($value) => Str::title($value), set: fn ($value) => Str::lower($value));
+        Attribute::make(get: fn($value) => Str::title($value), set: fn($value) => Str::lower($value));
     }
 }
