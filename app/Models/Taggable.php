@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class Taggable extends Model
 {
     use HasFactory, GetsTableName;
+
+    public function owner()
+    {
+        return $this->morphTo();
+    }
 }

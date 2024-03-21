@@ -179,4 +179,9 @@ class Asset extends BaseModel
     {
         return $this->hasMany(Document::class, 'document_id');
     }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
 }

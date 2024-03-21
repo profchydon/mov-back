@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('companies/{company}/assets/{asset}/archive', [AssetController::class, 'archiveAsset'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+Route::post('companies/{company}/assets/{asset}/assign-tags', [\App\Http\Controllers\AssetTagController::class, 'assign'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+Route::delete('companies/{company}/assets/{asset}/unassign-tags', [\App\Http\Controllers\AssetTagController::class, 'unassign'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
 
 // Asset
 Route::middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt', 'user-in-company'])->controller(AssetController::class)->prefix('companies')->group(function () {
