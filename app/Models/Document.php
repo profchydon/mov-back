@@ -46,7 +46,7 @@ class Document extends BaseModel
 
     public function history()
     {
-        return $this->hasMany(Activity::class, 'subject_id')->latest();
+        return $this->hasMany(ActivityLog::class, 'subject_id')->latest();
     }
 
     public function assets()

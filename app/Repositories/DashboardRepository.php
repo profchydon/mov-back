@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\ActivityLog;
 use App\Models\Asset;
 use App\Models\Company;
 use App\Repositories\Contracts\DashboardRepositoryInterface;
@@ -56,7 +57,7 @@ class DashboardRepository implements DashboardRepositoryInterface
         $assets = $assetQuery->with('office')->get()->groupBy('office.country');
         $data->assetCountries = $assets;
 
-        $query = Activity::where('subject_type', Asset::class)->where('event', 'created');
+        $query = ActivityLog::where('subject_type', Asset::class)->where('event', 'created');
         $query = $query->whereIn('subject_id', $company->assets()->orderBy('created_at', 'desc')->limit(20)->pluck('id'));
         $query = $query->with('causer');
         $data->assetActivity = $query->get();
