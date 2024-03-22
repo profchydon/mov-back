@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Asset extends BaseModel
@@ -40,6 +41,15 @@ class Asset extends BaseModel
     protected $casts = [
         AssetConstant::ID => 'string',
     ];
+
+    public function getEventDescription($eventName)
+    {
+        if (Str::lower($eventName) == 'updated') {
+            return "Asset was marked as " . Str::lower($this->status);
+        }
+
+        return parent::getEventDescription($eventName);
+    }
 
     public static function boot()
     {
