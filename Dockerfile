@@ -1,5 +1,5 @@
 
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 # Set working directory
 WORKDIR /var/www
@@ -66,4 +66,3 @@ RUN chmod +x /var/www/docker/run.sh
 
 EXPOSE 80
 ENTRYPOINT ["/var/www/docker/run.sh"]
-# CMD ["chmod", "-R", "777", "/var/www/storage"]

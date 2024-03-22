@@ -41,6 +41,10 @@ class DecryptPayload
 
             $requestData = json_decode($decryptedData, true);
 
+            if(is_null($requestData)){
+                return $next($request);
+            }
+
             $request->headers->set('Content-Type', 'application/json');
             $request->replace($requestData);
 

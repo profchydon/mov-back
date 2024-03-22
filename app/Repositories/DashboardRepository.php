@@ -19,11 +19,12 @@ class DashboardRepository implements DashboardRepositoryInterface
 
         $data = new Fluent();
 
-        $assetQuery = $company->assets();
-        $query = Asset::appendToQueryFromRequestQueryParameters($assetQuery);
-        $data->assetCount = $query->count();
+        $assetQuery = $company->availableAssets();
+        // $query = Asset::appendToQueryFromRequestQueryParameters($assetQuery);
+        // $data->assetCount = $query->count();
 
-        $assetQuery = $company->assets();
+        $data->assetCount = $assetQuery->count();
+
         $query = $assetQuery->whereYear('created_at', now()->year)
             ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
             ->orderBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
@@ -31,27 +32,27 @@ class DashboardRepository implements DashboardRepositoryInterface
         $query = Asset::appendToQueryFromRequestQueryParameters($query);
         $data->assetsCountByMonth = $query->get();
 
-        $assetQuery = $company->assets();
+        $assetQuery = $company->availableAssets();
         $query = $assetQuery->groupBy('status')->select('status', DB::raw('COUNT(*) as count'));
         $query = Asset::appendToQueryFromRequestQueryParameters($query);
         $data->assetConditions = $query->get();
 
-        $assetQuery = $company->assets();
+        $assetQuery = $company->availableAssets();
         $query = $assetQuery->with('type')
             ->groupBy('type_id')
             ->selectRaw('type_id, COUNT(*) as count, SUM(purchase_price) as sum');
         $query = Asset::appendToQueryFromRequestQueryParameters($query);
         $data->assetCategories = $query->get();
 
-        $assetQuery = $company->assets();
+        $assetQuery = $company->availableAssets();
         $query = Asset::appendToQueryFromRequestQueryParameters($assetQuery);
         $data->assetSum = $query->sum('purchase_price');
 
-        $assetQuery = $company->assets();
+        $assetQuery = $company->availableAssets();
         $query = Asset::appendToQueryFromRequestQueryParameters($assetQuery);
         $data->assetAverage = $query->average('purchase_price');
 
-        $assetQuery = $company->assets();
+        $assetQuery = $company->availableAssets();
         $assets = $assetQuery->with('office')->get()->groupBy('office.country');
         $data->assetCountries = $assets;
 

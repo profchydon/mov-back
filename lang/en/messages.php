@@ -53,6 +53,7 @@ return [
     'asset-marked-as-damaged' => 'You have successfully marked the asset as damaged',
     'asset-marked-as-retired' => 'You have successfully marked the asset as retired',
     'user.invitation.sent' => 'User invitation was successfully sent.',
+    'user.added' => 'User has been successfully added to your account.',
     'upgrade-plan-users' => 'Your current free plan only allows you to add users with Basic role. Upgrade your plan to support paid roles.',
     'user-suspended' => 'User suspended successfully.',
     'users-suspended' => 'Users suspended successfully.',
@@ -63,6 +64,6 @@ return [
     'user-deleted' => 'User deleted successfully.',
     'users-deleted' => 'Users deleted successfully.',
     'unassign-user-assets' => 'Unassign assets.',
-    'no-available-seats' => 'You have reached your maximum seat limit. Upgrade your plan to accommodate additional seats or free up a seat by removing a user or assign the Basic role to this user.',
-    'no-available-assets' => 'You have reached your maximum asset limit. Upgrade your plan to accommodate additional assets or archive some assets to free up space.',
+    'no-available-seats' => 'Your organization has reached its maximum seat limit. Upgrade your plan to accommodate additional seats or free up a seat by removing a user or assign the Basic role to this user.',
+    'no-available-assets' => 'Your organization has reached its maximum asset limit. Upgrade your plan to accommodate additional assets or archive some assets to free up space.',
 ];

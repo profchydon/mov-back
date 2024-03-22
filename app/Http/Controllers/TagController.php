@@ -35,9 +35,10 @@ class TagController extends Controller
     {
         $this->validate($request, [
             'name' => ['required', new HumanNameRule()],
+            'notes' => ['sometimes']
         ]);
 
-        $tag = $this->tagRepository->createCompanyTag($company, $request->name);
+        $tag = $this->tagRepository->createCompanyTag($company, $request->name, $request->notes);
 
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $tag);
     }
@@ -47,6 +48,7 @@ class TagController extends Controller
         $this->validate($request, [
             'name' => ['sometimes', new HumanNameRule()],
             'status' => ['sometimes', Rule::in(TagStatusEnum::values())],
+            'notes' => ['sometimes']
         ]);
 
         $tag = $this->tagRepository->updateById($tag->id, [
@@ -60,6 +62,18 @@ class TagController extends Controller
     public function destroy(Company $company, Tag $tag, Request $request)
     {
         $this->tagRepository->delete($tag);
+
+        return $this->noContent();
+    }
+
+    public function destroyMany(Company $company, Request $request)
+    {
+        $this->validate($request, [
+            'tag_ids' => 'required|array|min:1',
+            'tag_ids.*' => [Rule::exists('tags', 'id')->where('company_id', $company->id)]
+        ]);
+
+        Tag::whereIn('id', $request->tag_ids)->delete();
 
         return $this->noContent();
     }

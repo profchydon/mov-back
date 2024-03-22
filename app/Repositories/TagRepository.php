@@ -36,13 +36,14 @@ class TagRepository extends BaseRepository implements TagRepositoryInterface
             $tag = Tag::findOrFail($tag);
         }
 
-        return $tag->load('company');
+        return $tag->load('company', 'assets');
     }
 
-    public function createCompanyTag(Company $company, $name, $status = TagStatusEnum::ACTIVE)
+    public function createCompanyTag(Company $company, $name, $notes, $status = TagStatusEnum::ACTIVE)
     {
         return $company->tags()->create([
              'tenant_id' => $company->tenant_id,
+             'notes' => $notes,
              'name' => $name,
              'status' => $status,
          ]);

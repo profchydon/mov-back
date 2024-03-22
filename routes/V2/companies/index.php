@@ -18,6 +18,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
 
     Route::controller(CompanyController::class)->prefix('{company}')->middleware(['token.decrypt', 'auth:sanctum',  'payload.decrypt',  'user-in-company'])->group(function () {
         Route::resource('tags', TagController::class);
+        Route::delete('tags', [TagController::class, 'destroyMany']);
         Route::resource('departments', DepartmentController::class);
         Route::resource('insurances', \App\Http\Controllers\V2\InsuranceController::class);
         Route::post('insurances/{insurance}/assets', [\App\Http\Controllers\V2\InsuranceController::class, 'insureAssets']);
@@ -70,6 +71,8 @@ Route::group(['prefix' => 'offices/{office}', 'middleware' => ['token.decrypt', 
     Route::delete('assignment', [CompanyOfficeController::class, 'unassignUserFromOffice']);
 });
 
+Route::delete('companies/{company}/users/{user}', [CompanyController::class, 'deleteCompanyUser'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company'])->name('delete.company.user');
+
 //Routes for users
 Route::group(['prefix' => 'companies/{company}', 'middleware' => ['token.decrypt', 'auth:sanctum',  'payload.decrypt', 'user-in-company']], function () {
     Route::controller(CompanyController::class)->group(function () {
@@ -77,7 +80,7 @@ Route::group(['prefix' => 'companies/{company}', 'middleware' => ['token.decrypt
         Route::get('/users', 'getCompanyUsers')->name('get.company.users');
         Route::get('/users/{user}', 'getCompanyUserDetails')->name('get.company.user');
         Route::put('/users/{user}', 'updateCompanyUser')->name('update.company.user');
-        Route::delete('/users/{user}', 'deleteCompanyUser')->name('delete.company.user');
+        // Route::delete('/users/{user}', 'deleteCompanyUser')->name('delete.company.user');
         Route::delete('/users', 'deleteCompanyUsers')->name('delete.company.users');
         Route::post('/users/{user}/suspend', 'suspendCompanyUser')->name('suspend.company.user');
         Route::post('/users/{user}/unsuspend', 'unSuspendCompanyUser')->name('unsuspend.company.user');

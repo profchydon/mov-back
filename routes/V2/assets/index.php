@@ -6,6 +6,11 @@ use App\Http\Controllers\V2\AssetMaintenanceController;
 use App\Http\Controllers\V2\AssetTypeController;
 use Illuminate\Support\Facades\Route;
 
+
+Route::post('companies/{company}/assets/{asset}/archive', [AssetController::class, 'archiveAsset'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+Route::post('companies/{company}/assets/{asset}/assign-tags', [\App\Http\Controllers\AssetTagController::class, 'assign'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+Route::delete('companies/{company}/assets/{asset}/unassign-tags', [\App\Http\Controllers\AssetTagController::class, 'unassign'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+
 // Asset
 Route::middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt', 'user-in-company'])->controller(AssetController::class)->prefix('companies')->group(function () {
     Route::post('{company}/assets', 'create')->name('create.company.asset');
@@ -24,6 +29,7 @@ Route::middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt', 'user-in-
     Route::get('{company}/assets/{asset}/users/{user}/assign', 'assignAsset')->name('assign.company.asset');
     Route::get('{company}/assets/{asset}/users/{user}/unassign', 'unAssignAsset')->name('unassign.company.asset');
     Route::post('{company}/assets/{asset}/assign', 'reAssignAsset')->name('reassign.company.asset');
+    // Route::post('{company}/assets/{asset}/archive', 'archiveAsset');
 
     Route::post('{company}/assets/reassign', 'reassignMultipleAsset')->name('reassign.multiple.company.asset');
 

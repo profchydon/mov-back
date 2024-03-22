@@ -45,11 +45,12 @@ class AssetController extends Controller
      * @param CompanyRepositoryInterface $companyRepository
      */
     public function __construct(
-        private readonly AssetRepositoryInterface $assetRepository,
-        private readonly CompanyRepositoryInterface $companyRepository,
+        private readonly AssetRepositoryInterface     $assetRepository,
+        private readonly CompanyRepositoryInterface   $companyRepository,
         private readonly AssetMakeRepositoryInterface $assetMakeRepository,
-        private readonly FileRepositoryInterface $fileRepository
-    ) {
+        private readonly FileRepositoryInterface      $fileRepository
+    )
+    {
     }
 
     /**
@@ -63,10 +64,10 @@ class AssetController extends Controller
         try {
 
             // Check available assets
-            // $subscriptionValidator = new SubscriptionValidator($company);
-            // if (!$subscriptionValidator->hasAvailableAssets()) {
-            //     return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.no-available-assets'));
-            // }
+            $subscriptionValidator = new SubscriptionValidator($company);
+            if (!$subscriptionValidator->hasAvailableAssets()) {
+                return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.no-available-assets'));
+            }
 
             $createAssetDto = $request->createAssetDTO()
                 ->setCompanyId($company->id)
@@ -99,6 +100,22 @@ class AssetController extends Controller
     public function createBulk(Company $company, CreateAssetFromArrayRequest $request)
     {
         $user = $request->user();
+
+        $subscriptionValidator = new SubscriptionValidator($company);
+        $assetSpaceLeft = $subscriptionValidator->getAssetSpaceLeft();
+
+        // Check available assets
+        if (!$subscriptionValidator->hasAvailableAssets()) {
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.no-available-assets'));
+        }
+
+        if (count($request->assets) > $assetSpaceLeft) {
+            return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, sprintf(
+                "You have only %d asset space(s) left. Upgrade your plan to accommodate additional assets, or make sure you upload no more than %d asset(s).",
+                $assetSpaceLeft,
+                $assetSpaceLeft
+            ));
+        }
 
         $assets = collect($request->assets)->transform(function ($asset) use ($company, $user) {
             $dto = new CreateAssetDTO();
@@ -198,6 +215,15 @@ class AssetController extends Controller
             default:
                 return $this->error(Response::HTTP_BAD_REQUEST, __('messages.action-not-allowed'));
         }
+    }
+
+    public function archiveAsset(Request $request, Company $company, Asset $asset)
+    {
+        $asset->update([
+            AssetConstant::STATUS => AssetStatusEnum::ARCHIVED->value
+        ]);
+
+        return $this->response(Response::HTTP_OK, __('messages.asset-archived'), $asset->fresh());
     }
 
     public function markAssetAsStolen(CreateStolenAsset $request, Company $company)

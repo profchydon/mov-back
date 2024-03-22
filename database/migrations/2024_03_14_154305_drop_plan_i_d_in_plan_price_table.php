@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('plan_prices', function (Blueprint $table) {
-            $table->dropColumn(\App\Domains\Constant\Plan\PlanPriceConstant::PLAN_ID);
+            // $table->dropColumn(\App\Domains\Constant\Plan\PlanPriceConstant::PLAN_ID);
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('plan_prices', function (Blueprint $table) {
-            $table->foreignUuid(\App\Domains\Constant\Plan\PlanPriceConstant::PLAN_ID)->nullable()->references(\App\Domains\Constant\FeatureConstant::ID)->on(\App\Models\Plan::getTableName());
+//             $table->foreignUuid(\App\Domains\Constant\Plan\PlanPriceConstant::PLAN_ID)->nullable()->references(\App\Domains\Constant\FeatureConstant::ID)->on(\App\Models\Plan::getTableName());
         });
     }
 };
