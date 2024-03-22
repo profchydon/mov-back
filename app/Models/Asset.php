@@ -44,7 +44,7 @@ class Asset extends BaseModel
 
     public function getEventDescription($eventName)
     {
-        if (Str::lower($eventName) == 'updated') {
+        if (Str::lower($eventName) == 'updated' && $this->isDirty('status')) {
             return "Asset was marked as " . Str::lower($this->status);
         }
 
