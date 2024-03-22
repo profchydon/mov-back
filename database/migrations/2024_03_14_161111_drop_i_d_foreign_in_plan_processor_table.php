@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('plan_processors', function (Blueprint $table) {
-            $table->dropColumn(\App\Domains\Constant\Plan\PlanProcessorConstant::PLAN_PROCESSOR_NAME);
-            $table->dropColumn(\App\Domains\Constant\Plan\PlanProcessorConstant::PLAN_PRICE_ID);
+            // $table->dropColumn(\App\Domains\Constant\Plan\PlanProcessorConstant::PLAN_PROCESSOR_NAME);
+            // $table->dropColumn(\App\Domains\Constant\Plan\PlanProcessorConstant::PLAN_PRICE_ID);
         });
     }
 
@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('plan_processors', function (Blueprint $table) {
-            $table->foreignUuid(PlanProcessorConstant::PLAN_ID)->references(PlanProcessorConstant::ID)->on(\App\Models\Plan::getTableName());
-            $table->foreignUuid(PlanProcessorConstant::PLAN_PRICE_ID)->references(PlanProcessorConstant::ID)->on(\App\Models\PlanPrice::getTableName());
+            // $table->foreignUuid(PlanProcessorConstant::PLAN_ID)->references(PlanProcessorConstant::ID)->on(\App\Models\Plan::getTableName());
+            // $table->foreignUuid(PlanProcessorConstant::PLAN_PRICE_ID)->references(PlanProcessorConstant::ID)->on(\App\Models\PlanPrice::getTableName());
         });
     }
 };
