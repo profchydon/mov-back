@@ -1,0 +1,81 @@
+name: Premium
+description: Popular plan for medium teams
+preceding_plan_name: Essential
+rank: 3
+offers:
+  - Up to 250 assets
+  - Up to 5 seats
+  - Asset register
+  - Up to 5 insurance policy
+  - Purchase insurance
+  - Document manager
+  - Manage vendor
+  - Up tp 5 workflow builder
+  - API access
+  - Asset checklist
+  - Dedicated account manager
+features:
+  - name: Asset
+    value: 250
+
+  - name: Seat
+    value: 5
+
+prices:
+  - currency_code: NGN
+    billing_cycle: Monthly
+    amount: 80000
+    slug: premium-ngn-monthly
+    processors:
+      - name: Flutterwave
+        id: 61147
+  - currency_code: USD
+    billing_cycle: Monthly
+    amount: 249
+    slug: premium-usd-monthly
+    processors:
+      - name: Stripe
+        id: price_1Oy0AjB8pj3G5nb3O9MYJPUb
+  - currency_code: GBP
+    billing_cycle: Monthly
+    amount: 249
+    slug: premium-gbp-monthly
+    processors:
+      - name: Stripe
+        id: price_1Oy0BYB8pj3G5nb3nnlOod0f
+  - currency_code: EUR
+    billing_cycle: Monthly
+    amount: 249
+    slug: premium-eur-monthly
+    processors:
+      - name: Stripe
+        id: price_1Oy0BFB8pj3G5nb3kO1awP2F
+
+  - currency_code: NGN
+    billing_cycle: Yearly
+    amount: 864000
+    slug: premium-ngn-yearly
+    processors:
+      - name: Flutterwave
+        id: 61148
+  - currency_code: USD
+    billing_cycle: Yearly
+    amount: 2490
+    slug: premium-usd-yearly
+    processors:
+      - name: Stripe
+        id: price_1Oy0CZB8pj3G5nb30F3ae8l1
+  - currency_code: GBP
+    billing_cycle: Yearly
+    amount: 2490
+    slug: premium-gbp-yearly
+    processors:
+      - name: Stripe
+        id: price_1Oy0DTB8pj3G5nb3hE3af2vS
+  - currency_code: EUR
+    billing_cycle: Yearly
+    amount: 2490
+    slug: premium-eur-yearly
+    processors:
+      - name: Stripe
+        id: price_1Oy0D0B8pj3G5nb3nUtzkP9y

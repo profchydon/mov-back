@@ -48,7 +48,8 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
     public function createSubscription(CreateSubscriptionDTO $subDTO)
     {
         DB::beginTransaction();
-        $subscription = Subscription::firstOrCreate(Arr::except($subDTO->toSynthensizedArray(), 'add-on-ids'));
+
+        $subscription = Subscription::firstOrCreate(Arr::except($subDTO->toSynthensizedArray(), ['add-on-ids', 'currency', 'redirect_uri']));
 
         if ($subDTO->getAddOnIds()->isNotEmpty()) {
             $addons = $subDTO->getAddOnIds()->map(function ($id) use ($subscription) {

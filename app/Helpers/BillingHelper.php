@@ -22,7 +22,7 @@ class BillingHelper
 {
     public static function createSubscriptionInvoice(Subscription $subscription, string $currency, float $outstanding = 0)
     {
-        $planPriceSlug = static::planPrice($subscription, $currency);
+        $planPriceSlug = static::planPriceSlug($subscription, $currency);
         $planPrice = PlanPrice::where('slug', $planPriceSlug)->first();
 
         $totalAmount = $planPrice->amount ?? 0;
@@ -46,7 +46,7 @@ class BillingHelper
         $invoice = Invoice::where('company_id', $subscription->company_id)
             ->where('billable_type', $subscription::class)
             ->where('billable_id', $subscription->id)
-            ->sole();
+            ->first();
 
         if (empty($invoice)) {
             $invoiceDTO = new InvoiceDTO();
@@ -102,7 +102,7 @@ class BillingHelper
 
         $planProcessor = PlanProcessor::where('payment_processor_slug', $paymentProcessorSlug)
             ->where('plan_price_slug', $planPriceSlug)
-            ->sole();
+            ->first();
 
         $paymentLinkDTO = new CreatePaymentLinkDTO();
         $paymentLinkDTO->setCurrency($invoice->currency_code)
@@ -118,7 +118,7 @@ class BillingHelper
 
         $payment = $paymentProcessor::getStandardPaymentLink($paymentLinkDTO);
         if ($paymentProcessorSlug == 'flutterwave') {
-            $paymentLink = $payment->authorization_url;
+            $paymentLink = $payment['link'];
         } else {
             $paymentLink = $payment;
         }
@@ -127,6 +127,7 @@ class BillingHelper
             'company_id' => $subscription->company_id,
             'tenant_id' => $subscription->tenant_id,
             'payment_link' => $paymentLink,
+            'processor' => $paymentProcessorSlug,
             'tx_ref' => $payment?->reference ?? $paymentLinkDTO->getTxRef(),
         ]);
     }
