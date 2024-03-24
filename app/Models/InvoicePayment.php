@@ -14,6 +14,6 @@ class InvoicePayment extends BaseModel
 
     public function company()
     {
-        return $this->belongsTo(Company::class, 'companies_id');
+        return $this->belongsTo(Company::class, 'company_id');
     }
 }

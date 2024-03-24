@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('plan_processors', function (Blueprint $table) {
-            // $table->foreignUuid(PlanProcessorConstant::PLAN_ID)->references(PlanProcessorConstant::ID)->on(\App\Models\Plan::getTableName());
-            // $table->foreignUuid(PlanProcessorConstant::PLAN_PRICE_ID)->references(PlanProcessorConstant::ID)->on(\App\Models\PlanPrice::getTableName());
+//             $table->foreignUuid(\App\Domains\Constant\Plan\PlanProcessorConstant::PLAN_ID)->nullable()->references(\App\Domains\Constant\Plan\PlanProcessorConstant::ID)->on(\App\Models\Plan::getTableName());
+//             $table->foreignUuid(\App\Domains\Constant\Plan\PlanProcessorConstant::PLAN_PRICE_ID)->nullable()->references(\App\Domains\Constant\Plan\PlanProcessorConstant::ID)->on(\App\Models\PlanPrice::getTableName());
         });
     }
 };

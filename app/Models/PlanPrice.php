@@ -23,13 +23,14 @@ class PlanPrice extends BaseModel
     public static function booted()
     {
         parent::booted();
-        static::creating(function(self $model){
+        static::creating(function (self $model) {
             $slugString = "{$model->plan_slug} {$model->currency_code} {$model->billing_cylce}";
             $model->slug = Str::slug($slugString);
         });
     }
 
-    public function plan(){
+    public function plan()
+    {
         return $this->belongsTo(Plan::class, 'plan_slug', 'slug');
     }
 
@@ -40,7 +41,7 @@ class PlanPrice extends BaseModel
 
     public function processor()
     {
-        return $this->hasMany(PlanProcessor::class, 'plan_price_slug','slug');
+        return $this->hasMany(PlanProcessor::class, 'plan_price_slug', 'slug');
     }
 
     public function flutterwaveProcessor()

@@ -46,7 +46,15 @@ class Plan extends BaseModel
 
     public function processors()
     {
-        return $this->belongsToMany(PlanProcessor::class, PlanPrice::class, 'plan_slug', 'slug', 'slug', 'payment_processor_slug');
+        return $this->hasManyThrough(
+            PlanProcessor::class,
+            PlanPrice::class,
+            'plan_slug', // Foreign key on PlanPrice table
+            'plan_price_slug', // Foreign key on PlanProcessor table
+            'slug', // Local key on Plan table
+            'slug' // Local key on PlanPrice table
+        );
+//        return $this->belongsToMany(PlanProcessor::class, PlanPrice::class, 'plan_slug', 'slug', 'slug', 'payment_processor_slug');
 //        return $this->hasMany(PlanProcessor::class, PlanPrice::class);
 //        return $this->hasManyThrough(PlanProcessor::class, PlanPrice::class, 'payment_processor_slug', 'plan_price_slug', 'slug', 'slug');
     }
