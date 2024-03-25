@@ -57,7 +57,7 @@ class Company extends BaseModel
 
     public function activeSubscription(): HasOne
     {
-        return $this->hasOne(Subscription::class)->where(SubscriptionConstant::STATUS, SubscriptionStatusEnum::ACTIVE);
+        return $this->hasOne(Subscription::class)->where(SubscriptionConstant::STATUS, SubscriptionStatusEnum::ACTIVE->value);
     }
 
     public function users(): HasManyThrough

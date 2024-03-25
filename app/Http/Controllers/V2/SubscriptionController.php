@@ -50,10 +50,10 @@ class SubscriptionController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.subscription-selected'), $subscription);
     }
 
-    public function confirmInvoicePayment(InvoicePayment $payment, Request $request)
+    public function confirmInvoicePayment(InvoicePayment $payment)
     {
 
-        $verifyPayment = $this->invoicePaymentRepository->verifyPayment($payment->tx_ref);
+        $verifyPayment = $this->invoicePaymentRepository->verifyPayment($payment);
 
         if (!$verifyPayment) {
             return $this->error(Response::HTTP_INTERNAL_SERVER_ERROR, __('Payment cannot be verified at the moment.'), $payment->fresh());

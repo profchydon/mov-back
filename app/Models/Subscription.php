@@ -73,14 +73,14 @@ class Subscription extends BaseModel
     public function activate(): bool
     {
         return $this->update([
-            SubscriptionConstant::STATUS => SubscriptionStatusEnum::ACTIVE,
+            SubscriptionConstant::STATUS => SubscriptionStatusEnum::ACTIVE->value,
         ]);
     }
 
     public function deactivate(): bool
     {
         return $this->update([
-            SubscriptionConstant::STATUS => SubscriptionStatusEnum::INACTIVE,
+            SubscriptionConstant::STATUS => SubscriptionStatusEnum::INACTIVE->value,
         ]);
     }
 }

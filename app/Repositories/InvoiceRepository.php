@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Domains\Enum\PaymentStatusEnum;
 use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
@@ -53,27 +54,29 @@ class InvoiceRepository implements InvoiceRepositoryInterface, InvoicePaymentRep
         return url($fileName);
     }
 
-    public function verifyPayment(string|InvoicePayment $tx_ref)
+    public function verifyPayment(InvoicePayment|string $payment)
     {
 
-        if (!($tx_ref instanceof  InvoicePayment)) {
-            $payment = InvoicePayment::where('tx_ref', $tx_ref)->first();
+        if (!($payment instanceof  InvoicePayment)) {
+            $payment = InvoicePayment::where('tx_ref', $payment)->first();
         }
 
         if ($payment->processor == 'flutterwave') {
-            if (!$this->verifyFlwTransaction($tx_ref)) {
+            if (!$this->verifyFlwTransaction($payment->tx_ref)) {
                 return false;
             }
         }
 
         if ($payment->processor == 'stripe') {
-            if (!$this->verifyStripeTransaction($tx_ref)) {
+            if (!$this->verifyStripeTransaction($payment->tx_ref)) {
                 return false;
             }
         }
 
-        $payment->complete();
-        $payment->invoice->markAsPaid();
+        if ($payment->status != PaymentStatusEnum::COMPLETED->value) {
+            $payment->complete();
+        }
+
         return true;
     }
 
