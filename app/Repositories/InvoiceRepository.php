@@ -4,10 +4,14 @@ namespace App\Repositories;
 
 use App\Models\Company;
 use App\Models\Invoice;
+use App\Models\InvoicePayment;
+use App\Repositories\Contracts\InvoicePaymentRepositoryInterface;
 use App\Repositories\Contracts\InvoiceRepositoryInterface;
+use App\Services\V2\FlutterwaveService;
+use App\Services\V2\StripeService;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-class InvoiceRepository implements InvoiceRepositoryInterface
+class InvoiceRepository implements InvoiceRepositoryInterface, InvoicePaymentRepositoryInterface
 {
     public function getCompanyInvoices(Company|string $company)
     {
@@ -47,5 +51,52 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         $pdf->save(public_path($fileName));
 
         return url($fileName);
+    }
+
+    public function verifyPayment(string|InvoicePayment $tx_ref)
+    {
+
+        if (!($tx_ref instanceof  InvoicePayment)) {
+            $payment = InvoicePayment::where('tx_ref', $tx_ref)->first();
+        }
+
+        if ($payment->processor == 'flutterwave') {
+            if (!$this->verifyFlwTransaction($tx_ref)) {
+                return false;
+            }
+        }
+
+        if ($payment->processor == 'stripe') {
+            if (!$this->verifyStripeTransaction($tx_ref)) {
+                return false;
+            }
+        }
+
+        $payment->complete();
+        $payment->invoice->markAsPaid();
+        return true;
+    }
+
+    public function verifyFlwTransaction($tx_ref)
+    {
+
+        $verifiedTransaction = FlutterwaveService::getTransactionDetails($tx_ref);
+
+        if ($verifiedTransaction['status'] = !'success') {
+
+            return false;
+        }
+
+        if ($verifiedTransaction['data']['status'] != 'successful') {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function verifyStripeTransaction($tx_ref)
+    {
+
+        return true;
     }
 }

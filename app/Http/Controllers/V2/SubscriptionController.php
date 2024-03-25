@@ -9,9 +9,12 @@ use App\Http\Requests\AddOnToSubscriptionRequest;
 use App\Http\Requests\ChangeSubscriptionPlanRequest;
 use App\Http\Requests\SelectSubscriptionPlanRequest;
 use App\Models\Company;
+use App\Models\InvoicePayment;
 use App\Models\Plan;
 use App\Models\Subscription;
 use App\Models\SubscriptionPayment;
+use App\Repositories\Contracts\InvoicePaymentRepositoryInterface;
+use App\Repositories\Contracts\InvoiceRepositoryInterface;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -20,7 +23,10 @@ use Illuminate\Validation\ValidationException;
 
 class SubscriptionController extends Controller
 {
-    public function __construct(private readonly SubscriptionRepositoryInterface $subscriptionRepository)
+    public function __construct(
+        private readonly SubscriptionRepositoryInterface $subscriptionRepository,
+        private readonly InvoicePaymentRepositoryInterface $invoicePaymentRepository
+    )
     {
     }
 
@@ -42,6 +48,18 @@ class SubscriptionController extends Controller
         $user->update(['stage' => UserStageEnum::USERS]);
 
         return $this->response(Response::HTTP_OK, __('messages.subscription-selected'), $subscription);
+    }
+
+    public function confirmInvoicePayment(InvoicePayment $payment, Request $request)
+    {
+
+        $verifyPayment = $this->invoicePaymentRepository->verifyPayment($payment->tx_ref);
+
+        if (!$verifyPayment) {
+            return $this->error(Response::HTTP_INTERNAL_SERVER_ERROR, __('Payment cannot be verified at the moment.'), $payment->fresh());
+        }
+
+        return $this->response(Response::HTTP_OK, __('Payment Confirmed'), $payment->fresh());
     }
 
     public function confirmSubscriptionPayment(SubscriptionPayment $payment, Request $request)

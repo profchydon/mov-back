@@ -59,6 +59,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
     Route::get('{company}/dashboard', [\App\Http\Controllers\V2\DashboardController::class, 'index'])->middleware(['token.decrypt', 'payload.decrypt']);
 });
 
+Route::post('invoice_payment/{payment:tx_ref}/confirm', [SubscriptionController::class, 'confirmInvoicePayment']);
 Route::post('subscription_payment/{payment:tx_ref}/confirm', [SubscriptionController::class, 'confirmSubscriptionPayment']);
 Route::get('confirm-usd-payment', [SubscriptionController::class, 'confirmPayment'])->name('payment-subscription.callback')->middleware(['payload.decrypt']);
 
