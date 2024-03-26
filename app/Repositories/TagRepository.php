@@ -25,9 +25,15 @@ class TagRepository extends BaseRepository implements TagRepositoryInterface
         return $tags->simplePaginate();
     }
 
-    public function getCompanyTags(Company $company)
+    public function getCompanyTags(Company $company, $paginate = true)
     {
+
         $tags = $company->tags()->orderBy('name');
+
+        if ($paginate == "false") {
+            return $tags->get();
+        }
+
         $tags = Tag::appendToQueryFromRequestQueryParameters($tags);
 
         return $tags->simplePaginate();

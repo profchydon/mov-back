@@ -9,7 +9,7 @@ use App\Models\Tag;
 
 interface TagRepositoryInterface
 {
-    public function getCompanyTags(Company $company);
+    public function getCompanyTags(Company $company, $paginate = true);
 
     public function createCompanyTag(Company $company, $name, $notes, $user, $status = TagStatusEnum::ACTIVE);
 

@@ -19,9 +19,12 @@ class TagController extends Controller
     {
     }
 
-    public function index(Company $company)
+    public function index(Company $company, Request $request)
     {
-        $tags = $this->tagRepository->getCompanyTags($company);
+
+        $paginate = $request->get('paginate');
+
+        $tags = $this->tagRepository->getCompanyTags($company, $paginate);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $tags);
     }
