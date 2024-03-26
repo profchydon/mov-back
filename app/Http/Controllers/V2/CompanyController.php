@@ -214,12 +214,14 @@ class CompanyController extends Controller
         return $this->response(Response::HTTP_CREATED, __('messages.company-sole-admin'));
     }
 
-    public function getCompanyUsers(Company $company)
+    public function getCompanyUsers(Company $company, Request $request)
     {
         // $relation = [];
         // $request->get('assets') ? array_push($relation, 'assets') : '';
 
-        $users = $this->companyRepository->getCompanyUsers($company);
+        $paginate = $request->get('paginate');
+
+        $users = $this->companyRepository->getCompanyUsers($company, $paginate);
 
         // $users = $company->users->load('departments', 'teams', 'office', 'roles');
 

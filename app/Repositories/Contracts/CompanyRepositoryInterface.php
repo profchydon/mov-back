@@ -18,5 +18,5 @@ interface CompanyRepositoryInterface extends BaseRepositoryInterface
 
     public function deleteCompanyUser(Company|string $company, User|string $user);
 
-    public function getCompanyUsers(Company|string $company);
+    public function getCompanyUsers(Company|string $company, $paginate = true);
 }
