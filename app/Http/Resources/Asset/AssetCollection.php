@@ -10,7 +10,7 @@ class AssetCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            'data' => AssetCheckoutResource::collection($this->collection),
+            'data' => AssetResource::collection($this->collection),
             'total' => $this->total(),
             'per_page' => $this->perPage(),
             'current_page' => $this->currentPage(),

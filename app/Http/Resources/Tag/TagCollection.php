@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Resources\Asset;
+namespace App\Http\Resources\Tag;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class AssetCollection extends ResourceCollection
+class TagCollection extends ResourceCollection
 {
     public function toArray(Request $request): array
     {
         return [
-            'data' => AssetCheckoutResource::collection($this->collection),
+            'data' => TagResource::collection($this->collection),
             'total' => $this->total(),
             'per_page' => $this->perPage(),
             'current_page' => $this->currentPage(),

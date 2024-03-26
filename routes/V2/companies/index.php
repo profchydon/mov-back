@@ -10,15 +10,21 @@ use App\Http\Controllers\V2\SubscriptionController;
 use App\Http\Controllers\V2\TeamController;
 use Illuminate\Support\Facades\Route;
 
+
+// Route::post('companies/{company}/assets/{asset}/assign-tags', [\App\Http\Controllers\AssetTagController::class, 'assign'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+// Route::delete('companies/{company}/assets/{asset}/unassign-tags', [\App\Http\Controllers\AssetTagController::class, 'unassign'])->middleware(['token.decrypt', 'auth:sanctum', 'user-in-company']);
+
+
 Route::controller(CompanyController::class)->prefix('companies')->group(function () {
     Route::post('/', 'create')->name('companies.create')->middleware(['payload.decrypt']);
     Route::put('{company}', 'addCompanyDetails')->name('companies.update')->middleware(['payload.decrypt']);
     Route::post('{company}/invitees', 'inviteCompanyUsers')->name('companies.invite.users')->middleware(['payload.decrypt']);
     Route::post('{company}/sole-admin', 'soleAdminUser')->name('companies.sole.admin');
 
-    Route::controller(CompanyController::class)->prefix('{company}')->middleware(['token.decrypt', 'auth:sanctum',  'payload.decrypt',  'user-in-company'])->group(function () {
+    Route::controller(CompanyController::class)->prefix('{company}')->middleware(['token.decrypt', 'auth:sanctum',  'user-in-company'])->group(function () {
         Route::resource('tags', TagController::class);
         Route::delete('tags', [TagController::class, 'destroyMany']);
+        Route::post('tags/{tag}/assign-assets', [TagController::class, 'assignAssets']);
         Route::resource('departments', DepartmentController::class);
         Route::resource('insurances', \App\Http\Controllers\V2\InsuranceController::class);
         Route::post('insurances/{insurance}/assets', [\App\Http\Controllers\V2\InsuranceController::class, 'insureAssets']);
