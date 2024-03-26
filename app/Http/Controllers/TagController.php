@@ -96,4 +96,20 @@ class TagController extends Controller
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $tag->load('assets'));
     }
 
+    public function unAssignAssets(Company $company, Tag $tag, Request $request)
+    {
+
+        $this->validate($request, [
+            'asset_ids' => 'required|array|min:1',
+            'asset_ids.*' => [Rule::exists('assets', 'id')]
+        ]);
+
+        $assets = collect($request->asset_ids);
+
+        // Detach the assets from the tag
+        $tag->assets()->detach($assets);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-created'), $tag->load('assets'));
+    }
+
 }

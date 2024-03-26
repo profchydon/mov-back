@@ -25,6 +25,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
         Route::resource('tags', TagController::class);
         Route::delete('tags', [TagController::class, 'destroyMany']);
         Route::post('tags/{tag}/assign-assets', [TagController::class, 'assignAssets']);
+        Route::post('tags/{tag}/unassign-assets', [TagController::class, 'unAssignAssets']);
         Route::resource('departments', DepartmentController::class);
         Route::resource('insurances', \App\Http\Controllers\V2\InsuranceController::class);
         Route::post('insurances/{insurance}/assets', [\App\Http\Controllers\V2\InsuranceController::class, 'insureAssets']);
