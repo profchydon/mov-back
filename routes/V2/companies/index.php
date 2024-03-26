@@ -21,7 +21,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
     Route::post('{company}/invitees', 'inviteCompanyUsers')->name('companies.invite.users')->middleware(['payload.decrypt']);
     Route::post('{company}/sole-admin', 'soleAdminUser')->name('companies.sole.admin');
 
-    Route::controller(CompanyController::class)->prefix('{company}')->middleware(['token.decrypt', 'auth:sanctum',  'user-in-company'])->group(function () {
+    Route::controller(CompanyController::class)->prefix('{company}')->middleware(['token.decrypt', 'auth:sanctum', 'payload.decrypt', 'user-in-company'])->group(function () {
         Route::resource('tags', TagController::class);
         Route::delete('tags', [TagController::class, 'destroyMany']);
         Route::post('tags/{tag}/assign-assets', [TagController::class, 'assignAssets']);
