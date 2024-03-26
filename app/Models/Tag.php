@@ -32,6 +32,11 @@ class Tag extends BaseModel
         return $this->morphedByMany(Asset::class, 'taggable');
     }
 
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     protected function name()
     {
         Attribute::make(get: fn($value) => Str::title($value), set: fn($value) => Str::lower($value));

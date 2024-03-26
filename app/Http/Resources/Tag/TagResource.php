@@ -15,12 +15,17 @@ class TagResource extends JsonResource
     {
         $resourceArray = [
             'id' => $this->id,
-            'company_id' => $this->company_id,
+            'companyId' => $this->company_id,
             'name' => $this->name,
+            'createdBy' => $this->createdBy ? [
+                'id' => $this->createdBy?->id,
+                'firstName' => $this->createdBy?->first_name,
+                'lastName' => $this->createdBy?->last_name,
+            ] : null,
             'status' => $this->status,
             'notes' => $this->notes,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
         ];
 
         // Check if 'assets' relationship was loaded in the query

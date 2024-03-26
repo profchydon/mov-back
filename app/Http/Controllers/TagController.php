@@ -35,12 +35,15 @@ class TagController extends Controller
 
     public function store(Company $company, Request $request)
     {
+
+        $user =  $request->user();
+
         $this->validate($request, [
             'name' => ['required', 'string', Rule::unique('tags', 'name')->where('company_id', $company->id)],
             'notes' => ['sometimes']
         ]);
 
-        $tag = $this->tagRepository->createCompanyTag($company, $request->name, $request->notes);
+        $tag = $this->tagRepository->createCompanyTag($company, $request->name, $request->notes, $user->id);
 
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $tag);
     }

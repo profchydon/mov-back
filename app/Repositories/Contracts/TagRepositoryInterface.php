@@ -11,7 +11,7 @@ interface TagRepositoryInterface
 {
     public function getCompanyTags(Company $company);
 
-    public function createCompanyTag(Company $company, $name, $notes, $status = TagStatusEnum::ACTIVE);
+    public function createCompanyTag(Company $company, $name, $notes, $user, $status = TagStatusEnum::ACTIVE);
 
     public function getTag(Tag|string $tag);
 
