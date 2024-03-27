@@ -46,7 +46,9 @@ class SubscriptionValidator
      */
     public function getActiveSubscriptionPlan(): ?Plan
     {
-        return $this->company->activeSubscription?->plan;
+        $activeSubscription = $this->getActiveSubscription();
+
+        return $activeSubscription?->plan;
     }
 
     /**
@@ -149,7 +151,16 @@ class SubscriptionValidator
         return $this->company->availableAssets()->count();
     }
 
-    public function getAssetSpaceLeft()
+    /**
+     * Retrieves the number of available assets left for the company.
+     *
+     * This method calculates the difference between the asset limit of the
+     * active subscription plan and the total number of assets available for
+     * the company.
+     *
+     * @return int The number of available assets left for the company.
+     */
+    public function getAssetSpaceLeft(): int
     {
         $assetLimit = $this->getActiveSubscriptionPlanAssetLimit();
         $assetCount = $this->company->availableAssets()->count();
@@ -157,9 +168,13 @@ class SubscriptionValidator
         return (int) $assetLimit - $assetCount;
     }
 
-    public function createBasicSubscription()
+    /**
+     * Creates a basic subscription for the company.
+     *
+     * @return Subscription The created subscription.
+     */
+    public function createBasicSubscription(): Subscription
     {
-
         $basicPlan = Plan::where(PlanConstant::NAME, 'Basic')->first();
 
         $subscription = $this->company->subscriptions()->create([
