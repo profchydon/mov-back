@@ -66,7 +66,9 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
 
         $invoice = BillingHelper::createSubscriptionInvoice($subscription, $subDTO->getCurrency());
 
-        BillingHelper::createSubscriptionInvoicePayment($subscription, $invoice, $subDTO->getRedirectURI());
+        if ($subscription->plan->name !== 'Basic') {
+            BillingHelper::createSubscriptionInvoicePayment($subscription, $invoice, $subDTO->getRedirectURI());
+        }
 
         DB::commit();
 
