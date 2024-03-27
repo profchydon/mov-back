@@ -2,9 +2,16 @@
 
 namespace App\Common;
 
+use App\Domains\Constant\InvoiceConstant;
+use App\Domains\Constant\InvoiceItemConstant;
+use App\Domains\Constant\Plan\PlanConstant;
+use App\Domains\Constant\SubscriptionConstant;
+use App\Domains\Enum\Invoice\InvoiceStatusEnum;
+use App\Domains\Enum\Plan\BillingCycleEnum;
 use App\Models\Company;
 use App\Models\Plan;
 use App\Models\Subscription;
+use Carbon\Carbon;
 
 class SubscriptionValidator
 {
@@ -23,7 +30,13 @@ class SubscriptionValidator
      */
     public function getActiveSubscription(): ?Subscription
     {
-        return $this->company->activeSubscription;
+        $subscription = $this->company->activeSubscription;
+
+        if (!$subscription) {
+            $subscription = $this->createBasicSubscription();
+        }
+
+        return $subscription;
     }
 
     /**
@@ -101,7 +114,7 @@ class SubscriptionValidator
         return $seatCount > $seatLimit ? true : false;
     }
 
-     /**
+    /**
      * Checks if the assets limit of the active subscription plan has been exceeded.
      *
      * @return bool Returns true if the assets limit has been exceeded, false otherwise.
@@ -109,7 +122,7 @@ class SubscriptionValidator
     public function assetLimitExceeded(): bool
     {
         $assetLimit = $this->getActiveSubscriptionPlanAssetLimit();
-        $assetCount =$this->company->availableAssets()->count();
+        $assetCount = $this->company->availableAssets()->count();
 
         return $assetCount > $assetLimit ? true : false;
     }
@@ -142,5 +155,42 @@ class SubscriptionValidator
         $assetCount = $this->company->availableAssets()->count();
 
         return (int) $assetLimit - $assetCount;
+    }
+
+    public function createBasicSubscription()
+    {
+
+        $basicPlan = Plan::where(PlanConstant::NAME, 'Basic')->first();
+
+        $subscription = $this->company->subscriptions()->create([
+            SubscriptionConstant::TENANT_ID => $this->company->tenant_id,
+            SubscriptionConstant::COMPANY_ID => $this->company->id,
+            SubscriptionConstant::PLAN_ID => $basicPlan->id,
+            SubscriptionConstant::START_DATE => Carbon::now(),
+            SubscriptionConstant::END_DATE => Carbon::now()->addYear(1),
+            SubscriptionConstant::BILLING_CYCLE => BillingCycleEnum::YEARLY->value,
+        ]);
+
+        $invoice = $subscription->invoice()->create([
+            InvoiceConstant::TENANT_ID => $this->company->tenant_id,
+            InvoiceConstant::COMPANY_ID => $this->company->id,
+            InvoiceConstant::DUE_AT => Carbon::now()->addHours(24),
+            InvoiceConstant::SUB_TOTAL => 0.00,
+            InvoiceConstant::CURRENCY_CODE => 'NGN',
+            InvoiceConstant::BILLABLE_ID => $subscription->id,
+            InvoiceConstant::BILLABLE_TYPE => Subscription::class,
+            InvoiceConstant::STATUS => InvoiceStatusEnum::PAID->value,
+
+        ]);
+
+        $invoice->items()->create([
+            InvoiceItemConstant::INVOICE_ID => $invoice->id,
+            InvoiceItemConstant::ITEM_TYPE => Plan::class,
+            InvoiceItemConstant::ITEM_ID => $basicPlan->id,
+            InvoiceItemConstant::QUANTITY => 1,
+            InvoiceItemConstant::AMOUNT => 0.00,
+        ]);
+
+        return $subscription;
     }
 }
