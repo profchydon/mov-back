@@ -84,4 +84,11 @@ enum PermissionTypes: string
     case INSURANCE_READ_ACCESS = 'InsuranceReadAccess';
     case INSURANCE_DELETE_ACCESS = 'InsuranceDeleteAccess';
     case INSURANCE_UPDATE_ACCESS = 'InsuranceUpdateAccess';
+
+     // Tag
+     case TAG_FULL_ACCESS = 'TagFullAccess';
+     case TAG_CREATE_ACCESS = 'TagCreateAccess';
+     case TAG_READ_ACCESS = 'TagReadAccess';
+     case TAG_DELETE_ACCESS = 'TagUpdateAccess';
+     case TAG_UPDATE_ACCESS = 'TagDeleteAccess';
 }

@@ -99,16 +99,20 @@ class SubscriptionController extends Controller
 
     public function changeSubscription(Company $company, SelectSubscriptionPlanRequest $request)
     {
+
+        $dto = $request->getDTO();
         $activeSubscription = $company->activeSubscription()->firstOrFail();
         $activeSubscriptionPlan = $activeSubscription->plan;
 
-        if ($activeSubscriptionPlan->id == $request->plan_id) {
+        // @dump($activeSubscription->billing_cycle);
+        // @dump($dto->getBillingCycle());
+
+        if ($activeSubscription->plan_id == $request->plan_id && $activeSubscription->billing_cycle == $dto->getBillingCycle()) {
             throw ValidationException::withMessages(['plan_id' => "You are currently on this plan"]);
         }
 
         $newCompanyPlan = Plan::find($request->plan_id);
 
-        $dto = $request->getDTO();
         $dto->setTenantId($company->tenant_id)
             ->setCompanyId($company->id);
 
@@ -119,15 +123,19 @@ class SubscriptionController extends Controller
 
     public function upgradeSubscription(Company $company, SelectSubscriptionPlanRequest $request)
     {
+        $dto = $request->getDTO();
         $activeSubscription = $company->activeSubscription()->firstOrFail();
         $activeSubscriptionPlan = $activeSubscription->plan;
         $newPlan = Plan::find($request->plan_id);
 
-        if ($activeSubscriptionPlan->rank <= $newPlan) {
-            throw ValidationException::withMessages(['plan_id' => "Selected plan is not available for upgrade"]);
+        // if ($activeSubscriptionPlan->rank <= $newPlan) {
+        //     throw ValidationException::withMessages(['plan_id' => "Selected plan is not available for upgrade"]);
+        // }
+
+        if ($activeSubscription->plan_id == $request->plan_id && $activeSubscription->billing_cycle == $dto->getBillingCycle()) {
+            throw ValidationException::withMessages(['plan_id' => "You are currently on this plan"]);
         }
 
-        $dto = $request->getDTO();
         $dto->setTenantId($company->tenant_id)
             ->setCompanyId($company->id);
 

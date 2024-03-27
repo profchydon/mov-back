@@ -308,13 +308,13 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
             $newSub = $this->create(Arr::except($subDTO->toArray(), 'add-on-ids'));
         }
 
-        $invoice = BillingHelper::createSubscriptionInvoice($newSub, $subDTO->getCurrency(), $amountLeftFromOldSub);
+        $invoice = BillingHelper::createSubscriptionInvoice($newSub, $subDTO->getCurrency(), $amountLeftFromOldSub, $oldSub);
 
         BillingHelper::createSubscriptionInvoicePayment($newSub, $invoice, $subDTO->getRedirectURI());
 
         DB::commit();
 
-        return $newPlan->load('invoice.payment');
+        return $invoice->load('payment');
     }
 
 

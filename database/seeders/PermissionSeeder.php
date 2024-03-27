@@ -77,6 +77,12 @@ class PermissionSeeder extends Seeder
             ['name' => PermissionTypes::INSURANCE_READ_ACCESS, 'display' => 'Permission to View Insurance', 'category' => 'Insurance Management'],
             ['name' => PermissionTypes::INSURANCE_UPDATE_ACCESS, 'display' => 'Permission to Update Insurance', 'category' => 'Insurance Management'],
             ['name' => PermissionTypes::INSURANCE_DELETE_ACCESS, 'display' => 'Permission to Delete Insurance', 'category' => 'Insurance Management'],
+
+            ['name' => PermissionTypes::TAG_FULL_ACCESS, 'display' => 'Full Access to Tags', 'category' => 'Tag Management'],
+            ['name' => PermissionTypes::TAG_CREATE_ACCESS, 'display' => 'Permission to Create Tags', 'category' => 'Tag Management'],
+            ['name' => PermissionTypes::TAG_READ_ACCESS, 'display' => 'Permission to View Tags', 'category' => 'Tag Management'],
+            ['name' => PermissionTypes::TAG_UPDATE_ACCESS, 'display' => 'Permission to Update Tags', 'category' => 'Tag Management'],
+            ['name' => PermissionTypes::TAG_DELETE_ACCESS, 'display' => 'Permission to Delete Tags', 'category' => 'Tag Management'],
         ]);
 
         $permissions->each(function ($permission) {

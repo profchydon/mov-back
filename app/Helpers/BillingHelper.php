@@ -16,11 +16,12 @@ use App\Models\PlanProcessor;
 use App\Models\Subscription;
 use App\Services\V2\FlutterwaveService;
 use App\Services\V2\StripeService;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class BillingHelper
 {
-    public static function createSubscriptionInvoice(Subscription $subscription, string $currency, float $outstanding = 0)
+    public static function createSubscriptionInvoice(Subscription $subscription, string $currency, float $outstanding = 0, $oldSub = null)
     {
         $planPriceSlug = static::planPriceSlug($subscription, $currency);
         $planPrice = PlanPrice::where('slug', $planPriceSlug)->first();
@@ -55,8 +56,9 @@ class BillingHelper
                 ->setCurrencyCode($currency)
                 ->setBillable($subscription)
                 ->setSubTotal($totalAmount)
+                // ->setSubTotal((float)$totalAmount - (float)$outstanding)
                 ->setCarryOver($outstanding)
-                ->setDueAt(now()->addHours(6));
+                ->setDueAt(now()->addHours(24));
 
             $invoice = Invoice::create($invoiceDTO->toArray());
 
@@ -66,6 +68,16 @@ class BillingHelper
                 ->setQuantity(1);
 
             $invoice->items()->create($invoiceItemDTO->toArray());
+
+            if ($oldSub != null) {
+                $invoiceItemDTO = new InvoiceItemDTO();
+                $invoiceItemDTO->setAmount($outstanding ?? 0)
+                ->setItem($oldSub->plan)
+                ->setIsCarriedOver(true)
+                ->setQuantity(1);
+
+                $invoice->items()->create($invoiceItemDTO->toArray());
+            }
 
             $features = Feature::find($addOnIds);
 
@@ -91,6 +103,13 @@ class BillingHelper
 
     public static function createSubscriptionInvoicePayment(Subscription $subscription, Invoice $invoice, string $redirectURI)
     {
+
+        $invoicePayment = $invoice->payment()->first();
+
+        if ($invoicePayment) {
+           return $invoicePayment;
+        }
+
         $planPriceSlug = static::planPriceSlug($subscription, $invoice->currency_code);
         $paymentProcessorSlug = "flutterwave";
         $paymentProcessor = FlutterwaveService::class;
@@ -139,13 +158,15 @@ class BillingHelper
         }
 
         $invoice = $sub->invoice;
+        $startDate = Carbon::parse($sub->start_date);
+        $endDate = Carbon::parse($sub->end_date);
 
-        $planInDays = $sub->created_at->diffInDays($sub->end_date);
+        $planInDays = $startDate->diffInDays($endDate);
 
         $planPriceSlug = static::planPriceSlug($sub, $invoice->currency_code);
-        $planPrice = $sub->plan->prices()->where('plan_price_slug', $planPriceSlug)->first();
+        $planPrice = $sub->plan->prices()->where('slug', $planPriceSlug)->first();
 
-        $timeElapsedInDays = $sub->created_at->diffInDays(now());
+        $timeElapsedInDays = $startDate->diffInDays(Carbon::now());
         $amountPerDay = round($planPrice->amount / $planInDays, 2);
         $amountExhausted = $timeElapsedInDays * $amountPerDay;
 
