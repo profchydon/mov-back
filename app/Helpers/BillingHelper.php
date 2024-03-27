@@ -55,8 +55,8 @@ class BillingHelper
                 ->setCompanyId($subscription->company_id)
                 ->setCurrencyCode($currency)
                 ->setBillable($subscription)
-                ->setSubTotal($totalAmount)
-                // ->setSubTotal((float)$totalAmount - (float)$outstanding)
+                // ->setSubTotal($totalAmount)
+                ->setSubTotal((float)$totalAmount - (float)$outstanding)
                 ->setCarryOver($outstanding)
                 ->setDueAt(now()->addHours(24));
 
@@ -69,7 +69,7 @@ class BillingHelper
 
             $invoice->items()->create($invoiceItemDTO->toArray());
 
-            if ($oldSub != null) {
+            if ($oldSub != null && $oldSub->plan->name != 'Basic') {
                 $invoiceItemDTO = new InvoiceItemDTO();
                 $invoiceItemDTO->setAmount($outstanding ?? 0)
                 ->setItem($oldSub->plan)
@@ -125,7 +125,7 @@ class BillingHelper
 
         $paymentLinkDTO = new CreatePaymentLinkDTO();
         $paymentLinkDTO->setCurrency($invoice->currency_code)
-            ->setAmount(($invoice->sub_total + $invoice->tax) - $invoice->carry_over)
+            ->setAmount(($invoice->sub_total + $invoice->tax))
             ->setPaymentPlan($planProcessor->plan_processor_id)
             ->setRedirectUrl($redirectURI)
             ->setCustomer($subscription->company)

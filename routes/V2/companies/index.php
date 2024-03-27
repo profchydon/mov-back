@@ -57,7 +57,7 @@ Route::controller(CompanyController::class)->prefix('companies')->group(function
     Route::get('/{company}/active-subscription', [SubscriptionController::class, 'getActiveSubscription'])->middleware(['payload.decrypt'])->name('get.company.active-subscription');
     Route::get('/{company}/subscriptions/{subscription}', [SubscriptionController::class, 'getSubscription'])->middleware(['payload.decrypt'])->name('get.company.subscription');
     Route::post('/{company}/subscriptions/{subscription}/add-ons', [SubscriptionController::class, 'addAddonsToSubscription'])->middleware(['payload.decrypt'])->name('get.company.subscription');
-    Route::post('{company}/subscriptions/change', [SubscriptionController::class, 'changeSubscription'])->middleware(['token.decrypt', 'auth:sanctum',  'payload.decrypt',  'user-in-company']);
+    Route::post('{company}/subscriptions/change', [SubscriptionController::class, 'upgradeSubscription'])->middleware(['token.decrypt', 'auth:sanctum',  'payload.decrypt',  'user-in-company']);
     Route::post('{company}/subscriptions/upgrade', [SubscriptionController::class, 'upgradeSubscription'])->middleware(['token.decrypt', 'auth:sanctum',  'payload.decrypt',  'user-in-company']);
     Route::post('{company}/subscriptions/downgrade', [SubscriptionController::class, 'downgradeSubscription'])->middleware(['token.decrypt', 'auth:sanctum',  'payload.decrypt',  'user-in-company']);
 

@@ -79,7 +79,7 @@
         </tr>
         <tr>
             <th>Total</th>
-            <td>{{$invoice->currency_code}} {{ number_format($invoice->sub_total + $invoice->tax - $invoice->carry_over) }}</td>
+            <td>{{$invoice->currency_code}} {{ number_format($invoice->sub_total + $invoice->tax) }}</td>
         </tr>
         <tr>
             <th>Date Due</th>

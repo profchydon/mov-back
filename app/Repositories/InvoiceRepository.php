@@ -32,7 +32,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface, InvoicePaymentRep
             $invoice = Company::findOrFail($invoice);
         }
 
-        return $invoice->load('currency', 'items.item');
+        return $invoice->load('currency', 'payment', 'items.item');
     }
 
     public function generateInvoicePDF(Invoice|string $invoice)
@@ -99,7 +99,6 @@ class InvoiceRepository implements InvoiceRepositoryInterface, InvoicePaymentRep
 
     public function verifyStripeTransaction($tx_ref)
     {
-
         return true;
     }
 }

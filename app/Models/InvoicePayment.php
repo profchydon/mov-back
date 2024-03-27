@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Domains\Constant\SubscriptionConstant;
+use App\Domains\Enum\Invoice\InvoiceStatusEnum;
 use App\Domains\Enum\PaymentStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -48,6 +49,9 @@ class InvoicePayment extends BaseModel
                 $payment->invoice?->billable?->addOns?->each(function ($addOn) {
                     $addOn->activate();
                 });
+                $payment->invoice->company->pendingSubscriptionsInvoices()->update([
+                    'status' => InvoiceStatusEnum::CANCELED
+                ]);
             }
         });
     }
