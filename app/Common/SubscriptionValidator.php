@@ -8,6 +8,7 @@ use App\Domains\Constant\Plan\PlanConstant;
 use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\Enum\Invoice\InvoiceStatusEnum;
 use App\Domains\Enum\Plan\BillingCycleEnum;
+use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Models\Company;
 use App\Models\Plan;
 use App\Models\Subscription;
@@ -184,6 +185,7 @@ class SubscriptionValidator
             SubscriptionConstant::START_DATE => Carbon::now(),
             SubscriptionConstant::END_DATE => Carbon::now()->addYear(1),
             SubscriptionConstant::BILLING_CYCLE => BillingCycleEnum::YEARLY->value,
+            SubscriptionConstant::STATUS => SubscriptionStatusEnum::ACTIVE->value,
         ]);
 
         $invoice = $subscription->invoice()->create([
