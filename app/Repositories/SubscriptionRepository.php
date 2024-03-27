@@ -145,7 +145,7 @@ class SubscriptionRepository extends BaseRepository implements SubscriptionRepos
     {
 
         DB::beginTransaction();
-        $amountLeftFromOldSub = $this->amountLeftInSub($oldSub);
+        $amountLeftFromOldSub = BillingHelper::calculateAmountLeftInSub($oldSub);
 
         // return $amountLeftFromOldSub;
 
