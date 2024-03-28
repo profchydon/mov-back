@@ -153,7 +153,7 @@ class BillingHelper
 
     public static function calculateAmountLeftInSub(Subscription $sub)
     {
-        if ($sub->plan->name === 'Basic') {
+        if ($sub->isBasic()) {
             return 0;
         }
 

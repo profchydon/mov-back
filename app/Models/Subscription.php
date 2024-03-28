@@ -83,4 +83,60 @@ class Subscription extends BaseModel
             SubscriptionConstant::STATUS => SubscriptionStatusEnum::INACTIVE->value,
         ]);
     }
+
+    /**
+     * Check if the subscription is for the basic plan
+     *
+     * @return bool
+     */
+    public function isBasic(): bool
+    {
+        // Check if the plan name is 'Basic'
+        return $this->plan->name === 'Basic';
+    }
+
+    /**
+     * Check if the subscription is for the essential plan
+     *
+     * @return bool
+     */
+    public function isEssential(): bool
+    {
+        // Check if the plan name is 'Essential'
+        return $this->plan->name === 'Essential';
+    }
+
+    /**
+     * Check if the subscription is for the premium plan
+     *
+     * @return bool
+     */
+    public function isPremium(): bool
+    {
+        // Check if the plan name is 'Premium'
+        return $this->plan->name === 'Premium';
+    }
+
+    /**
+     * Check if the subscription is for the premium plus plan
+     *
+     * @return bool
+     */
+    public function isPremiumPlus(): bool
+    {
+        // Check if the plan name is 'Premium Plus'
+        return $this->plan->name === 'Premium Plus';
+    }
+
+    /**
+     * Check if the subscription is for the enterprise plan
+     *
+     * @return bool
+     */
+    public function isEnterprise(): bool
+    {
+        // Check if the plan name is 'Enterprise'
+        return $this->plan->name === 'Enterprise';
+    }
+
 }
