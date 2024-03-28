@@ -58,4 +58,11 @@ class AssetMaintenanceController extends Controller
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $maintenance);
     }
+
+    public function assetMaintenanceMap(Company $company, Request $request)
+    {
+        $maintenance = $this->maintenanceRepository->getMaintenanceMaps($company);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $maintenance);
+    }
 }
