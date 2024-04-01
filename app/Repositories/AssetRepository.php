@@ -168,11 +168,12 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function getMaintenanceMaps(Company $company)
     {
-       $query = $company->asset_maintenance()->whereYear('created_at', now()->year);
-       $query = $query->groupBy(DB::raw('MONTH(created_at)'))->orderBy(DB::raw('MONTH(created_at)'), 'ASC');
-       $query = $query->select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as total_entries'));
-
-       return $query->get();
+       return $company->asset_maintenance()
+                    ->whereYear('created_at', now()->year)
+                    ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
+                    ->orderBy(DB::raw('EXTRACT(MONTH FROM created_at)'), 'ASC')
+                    ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), DB::raw('COUNT(*) as total_entries'))
+                    ->get();
     }
 
     public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset
