@@ -21,6 +21,7 @@ class CreateCompanyUserDTO
     private string $company_id;
     private ?string $tenant_id;
     private string $invited_by;
+    private ?bool $allow_user_login;
 
     public function setFirstName(string $first_name)
     {
@@ -176,5 +177,17 @@ class CreateCompanyUserDTO
     public function getInvitedBy()
     {
         return $this->invited_by;
+    }
+
+    public function setAllowUserLogin(?bool $allow_user_login)
+    {
+        $this->allow_user_login = $allow_user_login;
+
+        return $this;
+    }
+
+    public function getAllowUserLogin()
+    {
+        return $this->allow_user_login;
     }
 }
