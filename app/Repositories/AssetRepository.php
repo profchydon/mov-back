@@ -176,7 +176,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
             ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), DB::raw('COUNT(*) as total_entries'))
             ->get();
 
-        $repairs = $company->asset_checkouts()
+        $repairs = $company->asset_checkouts()->where('reason', 'Repair')->where('status', 'Returned')
             ->whereYear('created_at', now()->year)
             ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
             ->orderBy(DB::raw('EXTRACT(MONTH FROM created_at)'), 'ASC')
