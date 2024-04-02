@@ -35,6 +35,8 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return Asset::class;
     }
 
+
+
     public function getCompanyAssets(Company|string $company, string|null $status)
     {
         if (!($company instanceof Company)) {
@@ -164,6 +166,16 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         $maintenance = AssetMaintenance::appendToQueryFromRequestQueryParameters($maintenance);
 
         return $maintenance->simplePaginate();
+    }
+
+    public function getMaintenanceMaps(Company $company)
+    {
+        $maintenance = $company->asset_maintenance()->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'),
+            DB::raw('COUNT(*) as count'));
+        $maintenance = $maintenance->whereYear('created_at', date('Y'));
+        $maintenance = $maintenance->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'));
+
+        return $maintenance->get();
     }
 
     public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset

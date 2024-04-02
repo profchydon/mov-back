@@ -25,10 +25,17 @@ class AssetMaintenanceController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $maintenance);
     }
 
+    public function getMaintenanceMap(Company $company, Request $request)
+    {
+        $maintenance = $this->maintenanceRepository->getMaintenanceMaps($company);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $maintenance);
+    }
+
     public function store(Company $company, AssetMaintenanceRequest $request)
     {
         $assets = collect($request->assets);
-        $assets = $assets->transform(fn ($asset) => Asset::find($asset));
+        $assets = $assets->transform(fn($asset) => Asset::find($asset));
 
         $groupId = strtolower(uniqid());
         $assets = $assets->transform(function ($asset) use ($request, $groupId) {
