@@ -51,9 +51,25 @@ class Invoice extends BaseModel
         return $this->belongsTo(Company::class, 'company_id');
     }
 
+    public function payment()
+    {
+        return $this->hasOne(InvoicePayment::class, 'invoice_id');
+    }
+
+    public function isForSubscription()
+    {
+        return $this->billable_type == Subscription::class;
+    }
+
+    public function paid()
+    {
+        return $this->status == InvoiceStatusEnum::PAID;
+    }
+
     public function markAsPaid(): bool
     {
         return $this->update([
+            InvoiceConstant::PAID_AT => now(),
             InvoiceConstant::STATUS => InvoiceStatusEnum::PAID,
         ]);
     }

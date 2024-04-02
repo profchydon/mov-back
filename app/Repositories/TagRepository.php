@@ -3,8 +3,11 @@
 namespace App\Repositories;
 
 use App\Domains\Enum\Tag\TagStatusEnum;
+use App\Http\Resources\Tag\TagResource;
+use App\Models\Asset;
 use App\Models\Company;
 use App\Models\Tag;
+use App\Models\Taggable;
 use App\Repositories\Contracts\TagRepositoryInterface;
 
 class TagRepository extends BaseRepository implements TagRepositoryInterface
@@ -22,9 +25,15 @@ class TagRepository extends BaseRepository implements TagRepositoryInterface
         return $tags->simplePaginate();
     }
 
-    public function getCompanyTags(Company $company)
+    public function getCompanyTags(Company $company, $paginate = true)
     {
+
         $tags = $company->tags()->orderBy('name');
+
+        if ($paginate == "false") {
+            return $tags->get();
+        }
+
         $tags = Tag::appendToQueryFromRequestQueryParameters($tags);
 
         return $tags->simplePaginate();
@@ -36,16 +45,34 @@ class TagRepository extends BaseRepository implements TagRepositoryInterface
             $tag = Tag::findOrFail($tag);
         }
 
-        return $tag->load('company', 'assets');
+        return new TagResource($tag->load('assets'));
     }
 
-    public function createCompanyTag(Company $company, $name, $notes, $status = TagStatusEnum::ACTIVE)
+    public function createCompanyTag(Company $company, $name, $notes, $user, $status = TagStatusEnum::ACTIVE)
     {
         return $company->tags()->create([
-             'tenant_id' => $company->tenant_id,
-             'notes' => $notes,
-             'name' => $name,
-             'status' => $status,
-         ]);
+            'tenant_id' => $company->tenant_id,
+            'notes' => $notes,
+            'name' => $name,
+            'created_by' => $user,
+            'status' => $status,
+        ]);
+    }
+
+    public function assignTagtoAsset(Asset|string $asset, Tag|string $tag)
+    {
+        if (!($asset instanceof Asset)) {
+            $asset = Asset::findOrFail($asset);
+        }
+
+        if (!($tag instanceof Tag)) {
+            $tag = Tag::findOrFail($tag);
+        }
+
+        return Taggable::firstOrCreate([
+            'tag_id' => $tag->id,
+            'taggable_type' => $asset::class,
+            'taggable_id' => $asset->id,
+        ]);
     }
 }

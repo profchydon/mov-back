@@ -74,6 +74,10 @@
             <td>{{$invoice->currency_code}} {{ number_format($invoice->tax) }}</td>
         </tr>
         <tr>
+            <th>Carryover Balance</th>
+            <td>{{$invoice->currency_code}} {{ number_format($invoice->carry_over) }}</td>
+        </tr>
+        <tr>
             <th>Total</th>
             <td>{{$invoice->currency_code}} {{ number_format($invoice->sub_total + $invoice->tax) }}</td>
         </tr>

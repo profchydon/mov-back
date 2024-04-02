@@ -21,7 +21,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('plan_prices', function (Blueprint $table) {
-            // $table->foreignUuid(PlanPriceConstant::PLAN_ID)->references(FeatureConstant::ID)->on(Plan::getTableName());
+//             $table->foreignUuid(\App\Domains\Constant\Plan\PlanPriceConstant::PLAN_ID)->nullable()->references(\App\Domains\Constant\FeatureConstant::ID)->on(\App\Models\Plan::getTableName());
         });
     }
 };

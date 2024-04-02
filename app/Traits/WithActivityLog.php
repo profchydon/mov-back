@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Log;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -27,6 +28,7 @@ trait WithActivityLog
     {
         $className = explode('\\', static::class);
         $className = array_pop($className);
+        Log::info("I got here");
         return "{$className} was {$eventName}";
     }
 }

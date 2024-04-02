@@ -8,6 +8,7 @@ use App\Domains\Constant\DepartmentConstant;
 use App\Domains\Constant\SubscriptionConstant;
 use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Domains\Enum\Company\CompanyStatusEnum;
+use App\Domains\Enum\Invoice\InvoiceStatusEnum;
 use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Events\Company\CompanyCreatedEvent;
 use App\Traits\QueryFormatter;
@@ -57,7 +58,7 @@ class Company extends BaseModel
 
     public function activeSubscription(): HasOne
     {
-        return $this->hasOne(Subscription::class)->where(SubscriptionConstant::STATUS, SubscriptionStatusEnum::ACTIVE);
+        return $this->hasOne(Subscription::class)->where(SubscriptionConstant::STATUS, SubscriptionStatusEnum::ACTIVE->value);
     }
 
     public function users(): HasManyThrough
@@ -100,9 +101,19 @@ class Company extends BaseModel
         return $this->hasMany(AssetMaintenance::class, 'company_id');
     }
 
+    public function asset_checkouts()
+    {
+        return $this->hasMany(AssetCheckout::class, 'company_id');
+    }
+
     public function invoices()
     {
         return $this->hasMany(Invoice::class, 'company_id');
+    }
+
+    public function pendingSubscriptionsInvoices()
+    {
+        return $this->hasMany(Invoice::class, 'company_id')->where('billable_type', Subscription::class)->where('status', InvoiceStatusEnum::PENDING->value);
     }
 
     public function stolenAssets()

@@ -15,6 +15,7 @@ final class InvoiceDTO
     private Carbon $due_at;
     private float $sub_total;
     private float $tax = 0;
+    private float $carry_over = 0;
     private string $currency_code;
     private string $status;
     private Carbon $paid_at;
@@ -50,6 +51,19 @@ final class InvoiceDTO
     {
         return $this->due_at;
     }
+
+    public function getCarryOver(): float
+    {
+        return $this->carry_over;
+    }
+
+    public function setCarryOver(float $carry_over): InvoiceDTO
+    {
+        $this->carry_over = $carry_over;
+        return $this;
+    }
+
+
 
     public function setDueAt(Carbon $due_at): self
     {

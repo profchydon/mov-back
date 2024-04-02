@@ -12,6 +12,7 @@ use App\Models\Plan;
 use App\Models\PlanProcessor;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
+use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 use Symfony\Component\Yaml\Yaml;
 
 class PlanSeeder extends Seeder
@@ -24,8 +25,15 @@ class PlanSeeder extends Seeder
 //        Plan::truncate();
 //        PlanProcessor::truncate();
 
-        $directoryPath = base_path('database/seeders/config/plans');
-        $files = File::files($directoryPath);
+        if (env('APP_ENV') === 'production') {
+            $directoryPath = base_path('database/seeders/config/plans');
+            $files = File::files($directoryPath);
+            @dump("Production Seed: " . count($files) . " Plans");
+        }else {
+            $directoryPath = base_path('database/seeders/config/plans-dev');
+            $files = File::files($directoryPath);
+            @dump("Dev Seed: " . count($files) . " Plans");
+        }
 
         foreach ($files as $file) {
             $seedFile = Yaml::parseFile($file->getPathname());
@@ -55,6 +63,8 @@ class PlanSeeder extends Seeder
                         PlanProcessorConstant::PLAN_PROCESSOR_NAME => $processor['name'],
                     ], [
                         PlanProcessorConstant::PLAN_PROCESSOR_ID => $processor['id'],
+                        PlanProcessorConstant::PLAN_PRICE_SLUG => $price['slug'],
+                        PlanProcessorConstant::PAYMENT_PROCESSOR_SLUG => strtolower($processor['name']),
                     ]);
                 }
             }

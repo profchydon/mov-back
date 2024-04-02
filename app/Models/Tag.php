@@ -22,9 +22,19 @@ class Tag extends BaseModel
         'company' => 'tags.company_id',
     ];
 
+    // public function assets()
+    // {
+    //     return $this->hasMany(Asset::class, 'taggable_id')->where('taggable_type', Asset::class);
+    // }
+
     public function assets()
     {
-        return $this->hasMany(Asset::class, 'taggable_id')->where('taggable_type', Asset::class);
+        return $this->morphedByMany(Asset::class, 'taggable');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     protected function name()

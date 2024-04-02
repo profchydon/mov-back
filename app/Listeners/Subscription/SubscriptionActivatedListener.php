@@ -22,28 +22,38 @@ class SubscriptionActivatedListener
 
     public function handle(SubscriptionActivatedEvent $event)
     {
+
+
         $subscription = $event->subscription;
         $company = $subscription->company()->first();
         $plan = $subscription->plan()->first();
         // $add_ons = $subscription->addOns()->get();
 
-        //Send email
-        Mail::to('chidi.nkwocha@rayda.co')->queue(new SubscriptionActivationMail($subscription));
+        $offers = $plan?->offers;
+        $invoice = $subscription?->invoice;
+        $invoiceItems = $invoice?->items;
+        $currency = $invoice?->currency;
 
         $data = [
             'company' => $company,
             'plan' => $plan,
-            // 'add_ons' => $add_ons
+            'offers' => $offers,
+            'invoice' => $invoice,
+            'invoiceItems' => $invoiceItems,
+            'currency' => $currency,
         ];
+
+        //Send email
+        Mail::to($company?->email)->queue(new SubscriptionActivationMail($data));
 
         //Trigger user created event
         try {
-            EventTrackerService::track('chidi.nkwocha@rayda.co', EventTrackEnum::SUBSCRIPTION_ACTIVATED->value, (array) $data);
+            EventTrackerService::track($company?->email, EventTrackEnum::SUBSCRIPTION_ACTIVATED->value, (array) $subscription->load('plan'));
         } catch (\Throwable $th) {
             //throw $th;
         }
 
-        Log::info("Info: Subscription Activated {$subscription}");
+        Log::info("Info: Subscription Activated {$subscription->load('plan')}");
 
         return true;
     }

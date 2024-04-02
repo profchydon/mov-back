@@ -11,16 +11,26 @@ use Illuminate\Queue\SerializesModels;
 
 class SubscriptionActivationMail extends Mailable
 {
-    private $subscription;
+    private $company;
+    private $plan;
+    private $offers;
+    private $invoice;
+    private $invoiceItems;
+    private $currency;
 
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(public array $data)
     {
-
+        $this->company = $data['company'];
+        $this->plan = $data['plan'];
+        $this->offers = $data['offers'];
+        $this->invoice = $data['invoice'] ?? null;
+        $this->invoiceItems = $data['invoiceItems'] ?? null;
+        $this->currency = $data['currency'] ?? null;
     }
 
     /**
@@ -29,7 +39,7 @@ class SubscriptionActivationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Subscription Failed',
+            subject: 'Your subscription has been activated. 👍',
         );
     }
 
@@ -41,10 +51,15 @@ class SubscriptionActivationMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.subscription.subscription-upgraded',
+            view: 'emails.subscription.subscription-activated',
             with: [
-                // 'subscription' => $this->subscription,
-                'link' => env('APP_FRONTEND_URL') . '/auth/login',
+                'company' => $this->company,
+                'plan' => $this->plan,
+                'offers' => $this->offers,
+                'invoice' => $this->invoice,
+                'invoiceItems' => $this->invoiceItems,
+                'currency' => $this->currency,
+                'link' => env('APP_FRONTEND_URL') . '/dashboard/settings/billing',
             ],
         );
     }

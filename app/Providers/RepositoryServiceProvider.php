@@ -20,6 +20,7 @@ use App\Repositories\Contracts\DocumentRepositoryInterface;
 use App\Repositories\Contracts\FeatureRepositoryInterface;
 use App\Repositories\Contracts\FileRepositoryInterface;
 use App\Repositories\Contracts\InsuranceRepositoryInterface;
+use App\Repositories\Contracts\InvoicePaymentRepositoryInterface;
 use App\Repositories\Contracts\InvoiceRepositoryInterface;
 use App\Repositories\Contracts\OTPRepositoryInterface;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
@@ -107,5 +108,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(DashboardRepositoryInterface::class, DashboardRepository::class);
         $this->app->singleton(DocumentRepositoryInterface::class, DocumentRepository::class);
         $this->app->singleton(InsuranceRepositoryInterface::class, InsuranceRepository::class);
+        $this->app->singleton(InvoicePaymentRepositoryInterface::class, InvoiceRepository::class);
     }
 }

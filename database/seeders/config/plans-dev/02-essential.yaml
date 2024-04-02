@@ -1,0 +1,80 @@
+name: Essential
+description: Popular plan for small teams
+preceding_plan_name: Basic
+rank: 2
+offers:
+  - Up to 100 assets
+  - Up to 3 seats
+  - Asset register
+  - Up to 2 insurance policies
+  - Purchase insurance
+  - Document manager
+  - Manage vendor
+  - Up tp 2 workflow builder
+  - API access
+  - Asset checklist
+features:
+  - name: Asset
+    value: 100
+
+  - name: Seat
+    value: 3
+
+prices:
+  - currency_code: NGN
+    billing_cycle: Monthly
+    amount: 30000
+    slug: essential-ngn-monthly
+    processors:
+      - name: Flutterwave
+        id: 61145
+  - currency_code: USD
+    billing_cycle: Monthly
+    amount: 99
+    slug: essential-usd-monthly
+    processors:
+      - name: Stripe
+        id: price_1OOdz9B8pj3G5nb3Sl8UVQNH
+  - currency_code: GBP
+    billing_cycle: Monthly
+    amount: 99
+    slug: essential-gbp-monthly
+    processors:
+      - name: Stripe
+        id: price_1OOe3qB8pj3G5nb39gvGweAc
+  - currency_code: EUR
+    billing_cycle: Monthly
+    amount: 99
+    slug: essential-eur-monthly
+    processors:
+      - name: Stripe
+        id: price_1OOeF3B8pj3G5nb3tY7Dhguo
+
+  - currency_code: NGN
+    billing_cycle: Yearly
+    amount: 324000
+    slug: essential-ngn-yearly
+    processors:
+      - name: Flutterwave
+        id: 61146
+  - currency_code: USD
+    billing_cycle: Yearly
+    amount: 990
+    slug: essential-usd-yearly
+    processors:
+      - name: Stripe
+        id: price_1OOeGFB8pj3G5nb3ZF0CnXRg
+  - currency_code: GBP
+    billing_cycle: Yearly
+    amount: 990
+    slug: essential-gbp-yearly
+    processors:
+      - name: Stripe
+        id: price_1OOeGeB8pj3G5nb3MmJckLCt
+  - currency_code: EUR
+    billing_cycle: Yearly
+    amount: 990
+    slug: essential-eur-yearly
+    processors:
+      - name: Stripe
+        id: price_1OOeGyB8pj3G5nb3ssyXlyrF

@@ -59,10 +59,15 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
         ]);
     }
 
-    public function getCompanyUsers(Company|string $company)
+    public function getCompanyUsers(Company|string $company, $paginate = true)
     {
+
         if (!($company instanceof  Company)) {
             $company = Company::findOrFail($company);
+        }
+
+        if ($paginate == "false") {
+            return $company->users;
         }
 
         $users = $company->users()->with(['departments', 'teams', 'office', 'roles']);

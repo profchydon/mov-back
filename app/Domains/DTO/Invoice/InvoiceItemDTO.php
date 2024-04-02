@@ -15,6 +15,19 @@ final class InvoiceItemDTO
     private Model $item;
     private string $item_type;
     private string $item_id;
+    private bool $is_carried_over;
+
+    public function getIsCarriedOver(): string
+    {
+        return $this->is_carried_over;
+    }
+
+    public function setIsCarriedOver(bool $is_carried_over): self
+    {
+        $this->is_carried_over = $is_carried_over;
+
+        return $this;
+    }
 
     public function getInvoiceId(): string
     {

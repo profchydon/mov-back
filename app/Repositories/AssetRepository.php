@@ -36,7 +36,6 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
     }
 
 
-
     public function getCompanyAssets(Company|string $company, string|null $status)
     {
         if (!($company instanceof Company)) {
@@ -45,7 +44,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
         $statusArray = $status === null ? AssetStatusEnum::values() : [$status];
 
-        $assets = $company->assets()->status($statusArray)->with(['type', 'office', 'assignee', 'image'])->orderBy('assets.created_at', 'desc');
+        $assets = $company->assets()->status($statusArray)->with(['type', 'office', 'assignee', 'image', 'tags'])->orderBy('assets.created_at', 'desc');
         $assets = Asset::appendToQueryFromRequestQueryParameters($assets);
 
         if ($status !== AssetStatusEnum::ARCHIVED->value) {
@@ -170,12 +169,21 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function getMaintenanceMaps(Company $company)
     {
-        $maintenance = $company->asset_maintenance()->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'),
-            DB::raw('COUNT(*) as count'));
-        $maintenance = $maintenance->whereYear('created_at', date('Y'));
-        $maintenance = $maintenance->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'));
+        $maintenances = $company->asset_maintenance()
+            ->whereYear('created_at', now()->year)
+            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
+            ->orderBy(DB::raw('EXTRACT(MONTH FROM created_at)'), 'ASC')
+            ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), DB::raw('COUNT(*) as total_entries'))
+            ->get();
 
-        return $maintenance->get();
+        $repairs = $company->asset_checkouts()
+            ->whereYear('created_at', now()->year)
+            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
+            ->orderBy(DB::raw('EXTRACT(MONTH FROM created_at)'), 'ASC')
+            ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), DB::raw('COUNT(*) as total_entries'))
+            ->get();
+
+        return ['maintenance' => $maintenances, 'repair' => $repairs];
     }
 
     public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset
