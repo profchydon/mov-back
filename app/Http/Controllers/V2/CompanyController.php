@@ -266,7 +266,7 @@ class CompanyController extends Controller
             ->setTeamId($request->team_id)
             ->setDepartmentId($request->department_id);
 
-        if ($company->allow_user_login) {
+        if ($company->allow_user_login || $dto->getAllowUserLogin() === true) {
 
             $this->userInvitationRepository->create($dto->toArray());
 
