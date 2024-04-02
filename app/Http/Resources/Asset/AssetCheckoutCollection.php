@@ -5,7 +5,7 @@ namespace App\Http\Resources\Asset;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class AssetCollection extends ResourceCollection
+class AssetCheckoutCollection extends ResourceCollection
 {
     public function toArray(Request $request): array
     {
