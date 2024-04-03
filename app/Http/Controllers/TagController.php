@@ -54,13 +54,14 @@ class TagController extends Controller
     public function update(Company $company, Tag $tag, Request $request)
     {
         $this->validate($request, [
-            'name' => ['sometimes', 'string', Rule::unique('tags', 'name')->where('company_id', $company->id)],
+            'name' => ['sometimes', 'string', Rule::unique('tags', 'name')->where('company_id', $company->id)->ignore($tag)],
             'status' => ['sometimes', Rule::in(TagStatusEnum::values())],
             'notes' => ['sometimes']
         ]);
 
         $tag = $this->tagRepository->updateById($tag->id, [
             'name' => $request->name,
+            'notes' => $request->notes,
             'status' => $request->status ?? $tag->status,
         ]);
 
