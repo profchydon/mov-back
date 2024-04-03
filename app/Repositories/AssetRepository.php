@@ -25,7 +25,9 @@ use App\Repositories\Contracts\AssetMaintenanceRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AssetRepository extends BaseRepository implements AssetRepositoryInterface, AssetCheckoutRepositoryInterface, AssetMaintenanceRepositoryInterface
@@ -167,20 +169,33 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return $maintenance->simplePaginate();
     }
 
-    public function getMaintenanceMaps(Company $company)
+    public function getMaintenanceMaps(Company $company, $timeframe = null)
     {
+        $timelineQuery = 'EXTRACT(MONTH FROM created_at)';
+        $timelineField = 'month';
+
+        if(Str::lower($timeframe) == 'daily'){
+            $timelineQuery = 'EXTRACT(DAY FROM created_at)';
+            $timelineField = 'day';
+        }
+
+        if(Str::lower($timeframe) == 'weekly'){
+            $timelineQuery = 'EXTRACT(WEEK FROM created_at)';
+            $timelineField = 'week';
+        }
+
         $maintenances = $company->asset_maintenance()
             ->whereYear('created_at', now()->year)
-            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
-            ->orderBy(DB::raw('EXTRACT(MONTH FROM created_at)'), 'ASC')
-            ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), DB::raw('COUNT(*) as total_entries'))
+            ->groupBy(DB::raw($timelineQuery))
+            ->orderBy(DB::raw($timelineQuery), 'ASC')
+            ->select(DB::raw("{$timelineQuery} as {$timelineField}"), DB::raw('COUNT(*) as total_entries'))
             ->get();
 
         $repairs = $company->asset_checkouts()->where('reason', 'Repair')->where('status', 'Returned')
             ->whereYear('created_at', now()->year)
-            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
-            ->orderBy(DB::raw('EXTRACT(MONTH FROM created_at)'), 'ASC')
-            ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), DB::raw('COUNT(*) as total_entries'))
+            ->groupBy(DB::raw($timelineQuery))
+            ->orderBy(DB::raw($timelineQuery), 'ASC')
+            ->select(DB::raw("{$timelineQuery} as {$timelineField}"), DB::raw('COUNT(*) as total_entries'))
             ->get();
 
         return ['maintenance' => $maintenances, 'repair' => $repairs];

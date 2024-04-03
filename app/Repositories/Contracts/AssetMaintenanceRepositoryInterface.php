@@ -12,7 +12,7 @@ interface AssetMaintenanceRepositoryInterface
 
     public function getMaintenanceLogs(Company $company);
 
-    public function getMaintenanceMaps(Company $company);
+    public function getMaintenanceMaps(Company $company, $timeframe = null);
 
     public function getAssetMaintenance(Asset|string $asset);
 }

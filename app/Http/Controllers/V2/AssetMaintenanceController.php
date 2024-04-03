@@ -11,6 +11,7 @@ use App\Repositories\Contracts\AssetMaintenanceRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class AssetMaintenanceController extends Controller
 {
@@ -27,7 +28,7 @@ class AssetMaintenanceController extends Controller
 
     public function getMaintenanceMap(Company $company, Request $request)
     {
-        $maintenance = $this->maintenanceRepository->getMaintenanceMaps($company);
+        $maintenance = $this->maintenanceRepository->getMaintenanceMaps($company, $request->timeframe);
 
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $maintenance);
     }
@@ -68,7 +69,7 @@ class AssetMaintenanceController extends Controller
 
     public function assetMaintenanceMap(Company $company, Request $request)
     {
-        $maintenance = $this->maintenanceRepository->getMaintenanceMaps($company);
+        $maintenance = $this->maintenanceRepository->getMaintenanceMaps($company, $request->timeframe);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $maintenance);
     }
