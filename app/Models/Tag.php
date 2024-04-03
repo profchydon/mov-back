@@ -32,6 +32,11 @@ class Tag extends BaseModel
         return $this->morphedByMany(Asset::class, 'taggable');
     }
 
+    public function assetCountOnly()
+    {
+        return $this->morphedByMany(Asset::class, 'taggable');
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
