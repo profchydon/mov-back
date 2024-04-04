@@ -196,19 +196,19 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
             $repairs = $repairs->whereYear('created_at', now()->year);
         }
 
-        if (Str::lower($timelineQuery) == 'hourly') {
+        if (Str::lower($timeframe) == 'hourly') {
             $timelineQuery = 'EXTRACT(HOUR FROM created_at)';
             $timelineField = 'hour';
             $maintenances = $maintenances->whereDate('created_at', now()->toDateString());
             $repairs = $repairs->whereDate('created_at', now()->toDateString());
         }
 
-        $maintenances->groupBy(DB::raw($timelineQuery))
+        $maintenances = $maintenances->groupBy(DB::raw($timelineQuery))
             ->orderBy(DB::raw($timelineQuery), 'ASC')
             ->select(DB::raw("{$timelineQuery} as {$timelineField}"), DB::raw('COUNT(*) as total_entries'))
             ->get();
 
-        $repairs->groupBy(DB::raw($timelineQuery))
+        $repairs = $repairs->groupBy(DB::raw($timelineQuery))
             ->orderBy(DB::raw($timelineQuery), 'ASC')
             ->select(DB::raw("{$timelineQuery} as {$timelineField}"), DB::raw('COUNT(*) as total_entries'))
             ->get();
