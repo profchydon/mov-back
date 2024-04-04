@@ -14,4 +14,5 @@ class DocumentConstant
     public const EXTENSION = 'extension';
     public const USER_ID = 'user_id';
     public const OWNER_ID = 'owner_id';
+    public const STATUS = 'status';
 }

@@ -14,6 +14,7 @@ final class UpdateDocumentDTO
     private ?string $registration_date;
     private ?string $expiration_date;
     private ?string $owner_id;
+    private ?string $status;
 
     public function getName(): string
     {
@@ -67,6 +68,17 @@ final class UpdateDocumentDTO
     public function setExpirationDate(?string $expiration_date): self
     {
         $this->expiration_date = $expiration_date;
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
         return $this;
     }
 }
