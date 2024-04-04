@@ -43,10 +43,19 @@ class TagController extends Controller
 
         $this->validate($request, [
             'name' => ['required', 'string', Rule::unique('tags', 'name')->where('company_id', $company->id)],
-            'notes' => ['sometimes']
+            'notes' => ['sometimes'],
+            'asset_ids' => 'sometimes|array',
+            'asset_ids.*' => [Rule::exists('assets', 'id')->where('company_id', $company->id)]
         ]);
 
         $tag = $this->tagRepository->createCompanyTag($company, $request->name, $request->notes, $user->id);
+
+        if ($request->has('asset_ids')) {
+            $assets = collect($request->asset_ids);
+            $assets->transform(function (Asset|string $asset) use ($tag) {
+                $this->tagRepository->assignTagtoAsset($asset, $tag);
+            });
+        }
 
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $tag);
     }
@@ -54,13 +63,14 @@ class TagController extends Controller
     public function update(Company $company, Tag $tag, Request $request)
     {
         $this->validate($request, [
-            'name' => ['sometimes', 'string', Rule::unique('tags', 'name')->where('company_id', $company->id)],
+            'name' => ['sometimes', 'string', Rule::unique('tags', 'name')->where('company_id', $company->id)->ignore($tag)],
             'status' => ['sometimes', Rule::in(TagStatusEnum::values())],
             'notes' => ['sometimes']
         ]);
 
         $tag = $this->tagRepository->updateById($tag->id, [
             'name' => $request->name,
+            'notes' => $request->notes,
             'status' => $request->status ?? $tag->status,
         ]);
 

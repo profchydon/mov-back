@@ -28,22 +28,20 @@ class TagResource extends JsonResource
             'updatedAt' => $this->updated_at,
         ];
 
+        $resourceArray['assets'] = null;
+        $resourceArray['assetCount'] = null;
+
         // Check if 'assets' relationship was loaded in the query
         if ($this->relationLoaded('assets')) {
             $resourceArray['assets'] = $this->assets->map(function ($asset) {
                 return new AssetResource($asset);
             });
             $resourceArray['assetCount'] = $this->assets->count();
-        } else {
-            $resourceArray['assets'] = null;
-            $resourceArray['assetCount'] = null;
         }
 
-        // if ($this->relationLoaded('company')) {
-        //     $resourceArray['company'] = $this->company;
-        // } else {
-        //     $resourceArray['company'] = null;
-        // }
+        if ($this->relationLoaded('assetCountOnly')) {
+            $resourceArray['assetCount'] = $this->assets->count();
+        }
 
         return $resourceArray;
     }

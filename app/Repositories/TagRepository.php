@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Domains\Enum\Tag\TagStatusEnum;
+use App\Http\Resources\Tag\TagCollection;
 use App\Http\Resources\Tag\TagResource;
 use App\Models\Asset;
 use App\Models\Company;
@@ -28,7 +29,7 @@ class TagRepository extends BaseRepository implements TagRepositoryInterface
     public function getCompanyTags(Company $company, $paginate = true)
     {
 
-        $tags = $company->tags()->orderBy('name');
+        $tags = $company->tags()->with('assetCountOnly')->orderBy('name');
 
         if ($paginate == "false") {
             return $tags->get();
@@ -36,7 +37,12 @@ class TagRepository extends BaseRepository implements TagRepositoryInterface
 
         $tags = Tag::appendToQueryFromRequestQueryParameters($tags);
 
-        return $tags->simplePaginate();
+        $tags = $tags->paginate();
+
+        // $users = User::appendToQueryFromRequestQueryParameters($users);
+        // $users = $users->paginate();
+
+        return TagCollection::make($tags);
     }
 
     public function getTag(Tag|string $tag)
