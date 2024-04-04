@@ -159,9 +159,10 @@ class Asset extends BaseModel
 
     public function checkout()
     {
-        return $this->update([
-            'status' => AssetStatusEnum::CHECKED_OUT,
-        ]);
+        $this->status = AssetStatusEnum::CHECKED_OUT;
+        $this->save();
+
+        return $this->fresh();
     }
 
     public function maintenances()
