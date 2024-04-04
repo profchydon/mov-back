@@ -135,7 +135,9 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         DB::transaction(function () use ($assetId, $dto, $documents) {
             $stolenAsset = StolenAsset::create($dto->toArray());
 
-            $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::STOLEN->value]);
+            $asset = Asset::find($assetId);
+            $asset->status = AssetStatusEnum::STOLEN;
+            $asset->save();
 
             if ($documents) {
                 collect($documents)->each(function ($document) use ($stolenAsset) {
@@ -150,9 +152,11 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function markAsArchived(string $assetId): Asset
     {
-        $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::ARCHIVED->value]);
+        $asset = Asset::find($assetId);
+        $asset->status = AssetStatusEnum::ARCHIVED;
+        $asset->save();
 
-        return $this->first('id', $assetId);
+        return $asset->fresh();
     }
 
     public function createMaintenanceLog(AssetMaintenanceDTO $maintenanceDTO)
@@ -217,7 +221,9 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         DB::transaction(function () use ($assetId, $dto, $documents) {
             $damagedAsset = DamagedAsset::create($dto->toArray());
 
-            $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::DAMAGED->value]);
+            $asset = Asset::find($assetId);
+            $asset->status = AssetStatusEnum::DAMAGED;
+            $asset->save();
 
             if ($documents) {
                 collect($documents)->each(function ($document) use ($damagedAsset) {
@@ -235,7 +241,9 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         DB::transaction(function () use ($dto) {
             RetiredAsset::create($dto->toArray());
 
-            $this->update('id', $dto->getAssetId(), [AssetConstant::STATUS => AssetStatusEnum::RETIRED->value]);
+            $asset = Asset::find($dto->getAssetId());
+            $asset->status = AssetStatusEnum::RETIRED;
+            $asset->save();
         });
 
         return $this->first('id', $dto->getAssetId());

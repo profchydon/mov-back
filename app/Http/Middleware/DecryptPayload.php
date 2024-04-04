@@ -22,7 +22,7 @@ class DecryptPayload
      */
     public function handle(Request $request, Closure $next)
     {
-        if (app()->environment('testing')) {
+        if (app()->environment('testing') || app()->environment('local')) {
             return $next($request);
 
             // TODO: Update tests to have company users so we can yank this off
