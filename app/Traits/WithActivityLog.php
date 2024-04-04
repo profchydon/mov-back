@@ -28,7 +28,6 @@ trait WithActivityLog
     {
         $className = explode('\\', static::class);
         $className = array_pop($className);
-        Log::info("I got here");
         return "{$className} was {$eventName}";
     }
 }

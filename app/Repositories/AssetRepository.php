@@ -171,29 +171,40 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function getMaintenanceMaps(Company $company, $timeframe = null)
     {
+
         $timelineQuery = 'EXTRACT(MONTH FROM created_at)';
         $timelineField = 'month';
 
-        if(Str::lower($timeframe) == 'daily'){
+        $maintenances = $company->asset_maintenance();
+        $repairs = $company->asset_checkouts()->where('reason', 'Repair')->where('status', 'Returned');
+
+        if (Str::lower($timeframe) == 'daily') {
             $timelineQuery = 'EXTRACT(DAY FROM created_at)';
             $timelineField = 'day';
+            $maintenances = $maintenances->whereYear('created_at', now()->year);
+            $repairs = $repairs->whereYear('created_at', now()->year);
         }
 
-        if(Str::lower($timeframe) == 'weekly'){
+        if (Str::lower($timeframe) == 'weekly') {
             $timelineQuery = 'EXTRACT(WEEK FROM created_at)';
             $timelineField = 'week';
+            $maintenances = $maintenances->whereYear('created_at', now()->year);
+            $repairs = $repairs->whereYear('created_at', now()->year);
         }
 
-        $maintenances = $company->asset_maintenance()
-            ->whereYear('created_at', now()->year)
-            ->groupBy(DB::raw($timelineQuery))
+        if (Str::lower($timelineQuery) == 'hourly') {
+            $timelineQuery = 'EXTRACT(HOUR FROM created_at)';
+            $timelineField = 'hour';
+            $maintenances = $maintenances->whereDate('created_at', now()->toDateString());
+            $repairs = $repairs->whereDate('created_at', now()->toDateString());
+        }
+
+        $maintenances->groupBy(DB::raw($timelineQuery))
             ->orderBy(DB::raw($timelineQuery), 'ASC')
             ->select(DB::raw("{$timelineQuery} as {$timelineField}"), DB::raw('COUNT(*) as total_entries'))
             ->get();
 
-        $repairs = $company->asset_checkouts()->where('reason', 'Repair')->where('status', 'Returned')
-            ->whereYear('created_at', now()->year)
-            ->groupBy(DB::raw($timelineQuery))
+        $repairs->groupBy(DB::raw($timelineQuery))
             ->orderBy(DB::raw($timelineQuery), 'ASC')
             ->select(DB::raw("{$timelineQuery} as {$timelineField}"), DB::raw('COUNT(*) as total_entries'))
             ->get();
