@@ -79,7 +79,9 @@ class TagController extends Controller
 
     public function destroy(Company $company, Tag $tag, Request $request)
     {
-        $this->tagRepository->delete($tag);
+        $tag->taggables()->delete();
+
+        $tag->delete();
 
         return $this->noContent();
     }
@@ -91,10 +93,22 @@ class TagController extends Controller
             'tag_ids.*' => [Rule::exists('tags', 'id')->where('company_id', $company->id)]
         ]);
 
-        Tag::whereIn('id', $request->tag_ids)->delete();
+        $tagIds = $request->tag_ids;
+
+        // Loop through each tag ID
+        foreach ($tagIds as $tagId) {
+            $tag = Tag::findOrFail($tagId);
+
+            $tag->taggables()->delete();
+
+            // Delete the tag
+            $tag->delete();
+        }
 
         return $this->noContent();
     }
+
+
 
     public function assignAssets(Company $company, Tag $tag, Request $request)
     {
@@ -127,5 +141,4 @@ class TagController extends Controller
 
         return $this->response(Response::HTTP_OK, __('messages.record-created'), $tag->load('assets'));
     }
-
 }

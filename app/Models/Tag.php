@@ -42,6 +42,11 @@ class Tag extends BaseModel
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function taggables()
+    {
+        return $this->hasMany(Taggable::class);
+    }
+
     protected function name()
     {
         Attribute::make(get: fn($value) => Str::title($value), set: fn($value) => Str::lower($value));
