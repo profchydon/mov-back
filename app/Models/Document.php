@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Domains\Constant\Asset\AssetConstant;
+use App\Domains\Constant\DocumentConstant;
 use App\Domains\Enum\Asset\AssetStatusEnum;
+use App\Domains\Enum\Document\DocumentStatusEnum;
 use App\Traits\UsesUUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Builder;
 
 class Document extends BaseModel
 {
@@ -52,5 +55,15 @@ class Document extends BaseModel
     public function assets()
     {
         return $this->belongsToMany(Asset::class, 'asset_documents', 'document_id', 'asset_id')->whereNotIn(AssetConstant::STATUS, [AssetStatusEnum::ARCHIVED->value]);
+    }
+
+    public function scopeArchived(Builder $query): Builder
+    {
+        return $query->where(DocumentConstant::STATUS, DocumentStatusEnum::ARCHIVED);
+    }
+
+    public function scopeExcludeArchived(Builder $query): Builder
+    {
+        return $query->whereNot(DocumentConstant::STATUS, DocumentStatusEnum::ARCHIVED);
     }
 }

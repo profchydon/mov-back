@@ -42,7 +42,8 @@ class EditDocumentRequest extends FormRequest
             ->setType($this->input('type'))
             ->setRegistrationDate($this->input('registration_date'))
             ->setOwnerId($this->input('owner_id'))
-            ->setExpirationDate($this->input('expiration_date'));
+            ->setExpirationDate($this->input('expiration_date'))
+            ->setStatus($this->input('status'));
 
         return $dto;
     }
