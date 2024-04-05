@@ -20,5 +20,7 @@ class SendCompaniesWeeklySummary extends Command
         Company::active()->chunk(50, function($companies){
             $companies->each(fn($company) => CompanyWeeklyAssetSummaryJob::dispatch($company));
         });
+
+        $this->info("Initiated weekly report for current week");
     }
 }

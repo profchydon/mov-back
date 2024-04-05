@@ -122,6 +122,16 @@ class Asset extends BaseModel
         return $query->whereIn(AssetConstant::STATUS, $status);
     }
 
+    public function scopeInsured(Builder $query)
+    {
+        return $query->where('is_insured', true);
+    }
+
+    public function scopeUnInsured(Builder $query)
+    {
+        return $query->where('is_insured', false);
+    }
+
     public function office()
     {
         return $this->belongsTo(Office::class, AssetConstant::OFFICE_ID);
