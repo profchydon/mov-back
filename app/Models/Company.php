@@ -13,6 +13,7 @@ use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Events\Company\CompanyCreatedEvent;
 use App\Traits\QueryFormatter;
 use App\Traits\UsesUUID;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -44,6 +45,11 @@ class Company extends BaseModel
         static::created(function (self $model) {
             CompanyCreatedEvent::dispatch($model);
         });
+    }
+
+    public function scopeActive(Builder $query)
+    {
+        return $query->where(CompanyConstant::STATUS, CompanyStatusEnum::ACTIVE);
     }
 
     public function tenant()
