@@ -30,6 +30,7 @@ final class CreateAssetDTO
     private string $condition;
     private ?string $assigned_to;
     private ?string $assigned_date;
+    private ?array $tags;
 
     public function __construct()
     {
@@ -415,5 +416,24 @@ final class CreateAssetDTO
     public function getAssignedTo()
     {
         return $this->assigned_date;
+    }
+
+     /**
+     * @param string $tags
+     * @return CreateAssetDTO
+     */
+    public function setTags(?array $tags): self
+    {
+        $this->tags = $tags;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

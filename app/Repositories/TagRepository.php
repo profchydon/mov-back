@@ -81,4 +81,26 @@ class TagRepository extends BaseRepository implements TagRepositoryInterface
             'taggable_id' => $asset->id,
         ]);
     }
+
+    public function unAssignTagstoAsset(Asset|string $asset, array $tags)
+    {
+        if (!($asset instanceof Asset)) {
+            $asset = Asset::findOrFail($asset);
+        }
+
+        Taggable::where('taggable_id', $asset->id)->whereNotIn('tag_id', $tags)->delete();
+    }
+
+    public function getCompanyTagByName(Tag|string $tag, Company|string $company) {
+
+        if (!($tag instanceof  Tag)) {
+            $tag = Tag::where('name', $tag)->where('company_id', $company->id)->first();
+        }
+
+        if (!($company instanceof  Company)) {
+            $company = Company::findOrFail($company);
+        }
+
+        return $tag;
+    }
 }

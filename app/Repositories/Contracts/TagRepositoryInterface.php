@@ -16,4 +16,8 @@ interface TagRepositoryInterface
     public function getTag(Tag|string $tag);
 
     public function assignTagtoAsset(Asset|string $asset, Tag|string $tag);
+
+    public function unAssignTagstoAsset(Asset|string $asset, array $tags);
+
+    public function getCompanyTagByName(Tag|string $tag, Company|string $company);
 }
