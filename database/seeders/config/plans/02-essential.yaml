@@ -24,27 +24,31 @@ prices:
   - currency_code: NGN
     billing_cycle: Monthly
     amount: 30000
+    slug: essential-ngn-monthly
     processors:
       - name: Flutterwave
         id: 114484
 
   - currency_code: USD
     billing_cycle: Monthly
-    amount: 500
+    amount: 99
+    slug: essential-usd-monthly
     processors:
       - name: Stripe
         id: price_1OXKOsB8pj3G5nb3cKDmjvrn
 
   - currency_code: GBP
     billing_cycle: Monthly
-    amount: 500
+    amount: 99
+    slug: essential-gbp-monthly
     processors:
       - name: Stripe
         id: price_1OXKQBB8pj3G5nb3Gx8MgOWL
 
   - currency_code: EUR
     billing_cycle: Monthly
-    amount: 500
+    amount: 99
+    slug: essential-eur-monthly
     processors:
       - name: Stripe
         id: price_1OXKPeB8pj3G5nb3Bmz5AzpC
@@ -53,24 +57,31 @@ prices:
   - currency_code: NGN
     billing_cycle: Yearly
     amount: 324000
+    slug: essential-ngn-yearly
     processors:
       - name: Flutterwave
         id: 114485
+
   - currency_code: USD
     billing_cycle: Yearly
-    amount: 5400
+    amount: 990
+    slug: essential-usd-yearly
     processors:
       - name: Stripe
         id: price_1OXKUjB8pj3G5nb3dZmLh6Kr
+
   - currency_code: GBP
     billing_cycle: Yearly
-    amount: 5400
+    amount: 990
+    slug: essential-gbp-yearly
     processors:
       - name: Stripe
         id: price_1OXKW7B8pj3G5nb3GtvT2Hm6
+
   - currency_code: EUR
     billing_cycle: Yearly
-    amount: 5400
+    amount: 990
+    slug: essential-eur-yearly
     processors:
       - name: Stripe
         id: price_1OXKVrB8pj3G5nb3SNBG996b
