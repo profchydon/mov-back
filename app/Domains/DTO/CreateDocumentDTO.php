@@ -11,11 +11,12 @@ final class CreateDocumentDTO
 
     private string $name;
     private string $type;
+    private string $extension;
     private string $user_id;
     private string $company_id;
     private ?string $registration_date;
     private ?string $expiration_date;
-
+    private ?string $owner_id;
 
     public function __construct()
     {
@@ -44,6 +45,17 @@ final class CreateDocumentDTO
         return $this;
     }
 
+    public function getExtension(): string
+    {
+        return $this->extension;
+    }
+
+    public function setExtension(string $extension): CreateDocumentDTO
+    {
+        $this->extension = $extension;
+        return $this;
+    }
+
     public function getUserId(): string
     {
         return $this->user_id;
@@ -52,6 +64,17 @@ final class CreateDocumentDTO
     public function setUserId(string $user_id): CreateDocumentDTO
     {
         $this->user_id = $user_id;
+        return $this;
+    }
+
+    public function getOwnerId(): ?string
+    {
+        return $this->owner_id;
+    }
+
+    public function setOwnerId(?string $owner_id): CreateDocumentDTO
+    {
+        $this->owner_id = $owner_id;
         return $this;
     }
 

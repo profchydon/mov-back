@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Log;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -13,16 +14,20 @@ trait WithActivityLog
 
     public function getActivitylogOptions(): LogOptions
     {
-        $className = explode('\\', static::class);
-        $className = array_pop($className);
-
         return LogOptions::defaults()
-            ->setDescriptionForEvent(fn ($eventName) => "{$className} was {$eventName}")
+            ->setDescriptionForEvent(fn($eventName) => $this->getEventDescription($eventName))
             ->logAll();
     }
 
     public function getLogNameToUse(): ?string
     {
         return 'Core Backend';
+    }
+
+    public function getEventDescription($eventName)
+    {
+        $className = explode('\\', static::class);
+        $className = array_pop($className);
+        return "{$className} was {$eventName}";
     }
 }

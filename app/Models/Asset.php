@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Asset extends BaseModel
@@ -40,6 +42,15 @@ class Asset extends BaseModel
     protected $casts = [
         AssetConstant::ID => 'string',
     ];
+
+    public function getEventDescription($eventName)
+    {
+        if (Str::lower($eventName) == 'updated' && $this->isDirty('status')) {
+            return "Asset was marked as " . Str::lower($this->status->value ?? $this->status);
+        }
+
+        return parent::getEventDescription($eventName);
+    }
 
     public static function boot()
     {
@@ -148,9 +159,10 @@ class Asset extends BaseModel
 
     public function checkout()
     {
-        return $this->update([
-            'status' => AssetStatusEnum::CHECKED_OUT,
-        ]);
+        $this->status = AssetStatusEnum::CHECKED_OUT;
+        $this->save();
+
+        return $this->fresh();
     }
 
     public function maintenances()
@@ -178,5 +190,10 @@ class Asset extends BaseModel
     public function documents()
     {
         return $this->hasMany(Document::class, 'document_id');
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 }

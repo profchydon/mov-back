@@ -17,4 +17,8 @@ interface SubscriptionRepositoryInterface extends BaseRepositoryInterface
     public function getCompanySubscription(string|Company $company);
 
     public function changeSubscription(Subscription $oldSub, Plan $newPlan, CreateSubscriptionDTO $subDTO);
+
+    public function downgradeSubscription(Subscription $oldSub, Plan $newPlan, CreateSubscriptionDTO $subDTO);
+
+    public function upgradeSubscription(Subscription $oldSub, Plan $newPlan, CreateSubscriptionDTO $subDTO);
 }

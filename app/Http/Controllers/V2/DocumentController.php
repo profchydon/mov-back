@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use PhpParser\Comment\Doc;
 
 class DocumentController extends Controller
@@ -53,10 +54,18 @@ class DocumentController extends Controller
     public function changeFile(Company $company, Document $document, Request $request)
     {
         $this->validate($request, [
-            'file' => 'required'
+            'file' => 'required|file'
         ]);
 
-        $document = $this->documentRepository->changeDocumentFile($document, $request->file('file'));
+        $file = $request->file('file');
+
+        if (Str::lower($document->extension) !== Str::lower($file->getClientOriginalExtension())){
+            throw ValidationException::withMessages([
+                'file' => "File extension has to be .{$document->extension}"
+            ]);
+        }
+
+        $document = $this->documentRepository->changeDocumentFile($document, $file);
 
         return $this->response(Response::HTTP_OK, __("messages.record-updated"), $document);
     }

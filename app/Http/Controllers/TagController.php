@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Domains\Enum\Tag\TagStatusEnum;
+use App\Models\Asset;
 use App\Models\Company;
 use App\Models\Tag;
+use App\Models\Taggable;
 use App\Repositories\Contracts\TagRepositoryInterface;
 use App\Rules\HumanNameRule;
 use Illuminate\Http\Request;
@@ -17,9 +19,12 @@ class TagController extends Controller
     {
     }
 
-    public function index(Company $company)
+    public function index(Company $company, Request $request)
     {
-        $tags = $this->tagRepository->getCompanyTags($company);
+
+        $paginate = $request->get('paginate');
+
+        $tags = $this->tagRepository->getCompanyTags($company, $paginate);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $tags);
     }
@@ -33,11 +38,24 @@ class TagController extends Controller
 
     public function store(Company $company, Request $request)
     {
+
+        $user =  $request->user();
+
         $this->validate($request, [
-            'name' => ['required', new HumanNameRule()],
+            'name' => ['required', 'string', Rule::unique('tags', 'name')->where('company_id', $company->id)],
+            'notes' => ['sometimes'],
+            'asset_ids' => 'sometimes|array',
+            'asset_ids.*' => [Rule::exists('assets', 'id')->where('company_id', $company->id)]
         ]);
 
-        $tag = $this->tagRepository->createCompanyTag($company, $request->name);
+        $tag = $this->tagRepository->createCompanyTag($company, $request->name, $request->notes, $user->id);
+
+        if ($request->has('asset_ids')) {
+            $assets = collect($request->asset_ids);
+            $assets->transform(function (Asset|string $asset) use ($tag) {
+                $this->tagRepository->assignTagtoAsset($asset, $tag);
+            });
+        }
 
         return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $tag);
     }
@@ -45,22 +63,82 @@ class TagController extends Controller
     public function update(Company $company, Tag $tag, Request $request)
     {
         $this->validate($request, [
-            'name' => ['sometimes', new HumanNameRule()],
+            'name' => ['sometimes', 'string', Rule::unique('tags', 'name')->where('company_id', $company->id)->ignore($tag)],
             'status' => ['sometimes', Rule::in(TagStatusEnum::values())],
+            'notes' => ['sometimes']
         ]);
 
         $tag = $this->tagRepository->updateById($tag->id, [
             'name' => $request->name,
+            'notes' => $request->notes,
             'status' => $request->status ?? $tag->status,
         ]);
 
-        return $this->response(Response::HTTP_CREATED, __('messages.record-updated'), $tag);
+        return $this->response(Response::HTTP_OK, __('messages.record-updated'), $tag);
     }
 
     public function destroy(Company $company, Tag $tag, Request $request)
     {
-        $this->tagRepository->delete($tag);
+        $tag->taggables()->delete();
+
+        $tag->delete();
 
         return $this->noContent();
+    }
+
+    public function destroyMany(Company $company, Request $request)
+    {
+        $this->validate($request, [
+            'tag_ids' => 'required|array|min:1',
+            'tag_ids.*' => [Rule::exists('tags', 'id')->where('company_id', $company->id)]
+        ]);
+
+        $tagIds = $request->tag_ids;
+
+        // Loop through each tag ID
+        foreach ($tagIds as $tagId) {
+            $tag = Tag::findOrFail($tagId);
+
+            $tag->taggables()->delete();
+
+            // Delete the tag
+            $tag->delete();
+        }
+
+        return $this->noContent();
+    }
+
+
+
+    public function assignAssets(Company $company, Tag $tag, Request $request)
+    {
+
+        $this->validate($request, [
+            'asset_ids' => 'required|array|min:1',
+            'asset_ids.*' => [Rule::exists('assets', 'id')]
+        ]);
+
+        $assets = collect($request->asset_ids);
+        $assets->transform(function (Asset|string $asset) use ($tag) {
+            $this->tagRepository->assignTagtoAsset($asset, $tag);
+        });
+
+        return $this->response(Response::HTTP_CREATED, __('messages.record-created'), $tag->load('assets'));
+    }
+
+    public function unAssignAssets(Company $company, Tag $tag, Request $request)
+    {
+
+        $this->validate($request, [
+            'asset_ids' => 'required|array|min:1',
+            'asset_ids.*' => [Rule::exists('assets', 'id')]
+        ]);
+
+        $assets = collect($request->asset_ids);
+
+        // Detach the assets from the tag
+        $tag->assets()->detach($assets);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-created'), $tag->load('assets'));
     }
 }

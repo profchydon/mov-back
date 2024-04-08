@@ -22,8 +22,33 @@ class Tag extends BaseModel
         'company' => 'tags.company_id',
     ];
 
+    // public function assets()
+    // {
+    //     return $this->hasMany(Asset::class, 'taggable_id')->where('taggable_type', Asset::class);
+    // }
+
+    public function assets()
+    {
+        return $this->morphedByMany(Asset::class, 'taggable');
+    }
+
+    public function assetCountOnly()
+    {
+        return $this->morphedByMany(Asset::class, 'taggable');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function taggables()
+    {
+        return $this->hasMany(Taggable::class);
+    }
+
     protected function name()
     {
-        Attribute::make(get: fn ($value) => Str::title($value), set: fn ($value) => Str::lower($value));
+        Attribute::make(get: fn($value) => Str::title($value), set: fn($value) => Str::lower($value));
     }
 }

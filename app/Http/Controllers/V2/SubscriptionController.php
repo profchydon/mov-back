@@ -9,17 +9,24 @@ use App\Http\Requests\AddOnToSubscriptionRequest;
 use App\Http\Requests\ChangeSubscriptionPlanRequest;
 use App\Http\Requests\SelectSubscriptionPlanRequest;
 use App\Models\Company;
+use App\Models\InvoicePayment;
 use App\Models\Plan;
 use App\Models\Subscription;
 use App\Models\SubscriptionPayment;
+use App\Repositories\Contracts\InvoicePaymentRepositoryInterface;
+use App\Repositories\Contracts\InvoiceRepositoryInterface;
 use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\ValidationException;
 
 class SubscriptionController extends Controller
 {
-    public function __construct(private readonly SubscriptionRepositoryInterface $subscriptionRepository)
+    public function __construct(
+        private readonly SubscriptionRepositoryInterface $subscriptionRepository,
+        private readonly InvoicePaymentRepositoryInterface $invoicePaymentRepository
+    )
     {
     }
 
@@ -41,6 +48,18 @@ class SubscriptionController extends Controller
         $user->update(['stage' => UserStageEnum::USERS]);
 
         return $this->response(Response::HTTP_OK, __('messages.subscription-selected'), $subscription);
+    }
+
+    public function confirmInvoicePayment(InvoicePayment $payment)
+    {
+
+        $verifyPayment = $this->invoicePaymentRepository->verifyPayment($payment);
+
+        if (!$verifyPayment) {
+            return $this->error(Response::HTTP_INTERNAL_SERVER_ERROR, __('Payment cannot be verified at the moment.'), $payment->fresh());
+        }
+
+        return $this->response(Response::HTTP_OK, __('Payment Confirmed'), $payment->fresh());
     }
 
     public function confirmSubscriptionPayment(SubscriptionPayment $payment, Request $request)
@@ -80,21 +99,78 @@ class SubscriptionController extends Controller
 
     public function changeSubscription(Company $company, SelectSubscriptionPlanRequest $request)
     {
+
+        $dto = $request->getDTO();
         $activeSubscription = $company->activeSubscription()->firstOrFail();
         $activeSubscriptionPlan = $activeSubscription->plan;
 
-        if ($activeSubscriptionPlan->id == $request->plan_id) {
+        // @dump($activeSubscription->billing_cycle);
+        // @dump($dto->getBillingCycle());
+
+        if ($activeSubscription->plan_id == $request->plan_id && $activeSubscription->billing_cycle == $dto->getBillingCycle()) {
             throw ValidationException::withMessages(['plan_id' => "You are currently on this plan"]);
         }
 
         $newCompanyPlan = Plan::find($request->plan_id);
 
-        $dto = $request->getDTO();
         $dto->setTenantId($company->tenant_id)
             ->setCompanyId($company->id);
 
         $message = $this->subscriptionRepository->changeSubscription($activeSubscription, $newCompanyPlan, $dto);
 
         return $this->response(Response::HTTP_OK, __('Invoice created'), $message);
+    }
+
+    public function upgradeSubscription(Company $company, SelectSubscriptionPlanRequest $request)
+    {
+        $dto = $request->getDTO();
+        $activeSubscription = $company->activeSubscription()->firstOrFail();
+        $activeSubscriptionPlan = $activeSubscription->plan;
+        $newPlan = Plan::find($request->plan_id);
+
+        // if ($activeSubscriptionPlan->rank <= $newPlan) {
+        //     throw ValidationException::withMessages(['plan_id' => "Selected plan is not available for upgrade"]);
+        // }
+
+        if ($activeSubscription->plan_id == $request->plan_id && $activeSubscription->billing_cycle == $dto->getBillingCycle()) {
+            throw ValidationException::withMessages(['plan_id' => "You are currently on this plan"]);
+        }
+
+        $dto->setTenantId($company->tenant_id)
+            ->setCompanyId($company->id);
+
+        $plan = $this->subscriptionRepository->upgradeSubscription($activeSubscription, $newPlan, $dto);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-created'), $plan);
+    }
+
+    public function downgradeSubscription(Company $company, SelectSubscriptionPlanRequest $request)
+    {
+        $activeSubscription = $company->activeSubscription()->firstOrFail();
+        $activeSubscriptionPlan = $activeSubscription->plan;
+        $newPlan = Plan::find($request->plan_id);
+
+        if ($activeSubscriptionPlan->rank >= $newPlan) {
+            throw ValidationException::withMessages(['plan_id' => "Selected plan is not available for downgrade"]);
+        }
+
+        $startDate = Carbon::createFromFormat('Y-m-d', $activeSubscription->end_date);
+        $endDate = Carbon::createFromFormat('Y-m-d', $activeSubscription->end_date);
+
+        if ($this->input('billing_cycle') == BillingCycleEnum::MONTHLY->value) {
+            $endDate = $startDate->addMonth();
+        } elseif ($this->input('billing_cycle') == BillingCycleEnum::YEARLY->value) {
+            $endDate = $startDate->addYear();
+        }
+
+        $dto = $request->getDTO();
+        $dto->setTenantId($company->tenant_id)
+            ->setCompanyId($company->id)
+            ->setStartDate($startDate)
+            ->setEndDate($endDate);
+
+        $plan = $this->subscriptionRepository->downgradeSubscription($activeSubscription, $newPlan, $dto);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-created'), $plan);
     }
 }

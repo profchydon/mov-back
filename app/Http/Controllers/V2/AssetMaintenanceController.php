@@ -11,6 +11,7 @@ use App\Repositories\Contracts\AssetMaintenanceRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class AssetMaintenanceController extends Controller
 {
@@ -25,10 +26,17 @@ class AssetMaintenanceController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $maintenance);
     }
 
+    public function getMaintenanceMap(Company $company, Request $request)
+    {
+        $maintenance = $this->maintenanceRepository->getMaintenanceMaps($company, $request->timeframe);
+
+        return $this->response(Response::HTTP_OK, __('messages.record-fetched'), $maintenance);
+    }
+
     public function store(Company $company, AssetMaintenanceRequest $request)
     {
         $assets = collect($request->assets);
-        $assets = $assets->transform(fn ($asset) => Asset::find($asset));
+        $assets = $assets->transform(fn($asset) => Asset::find($asset));
 
         $groupId = strtolower(uniqid());
         $assets = $assets->transform(function ($asset) use ($request, $groupId) {
@@ -55,6 +63,13 @@ class AssetMaintenanceController extends Controller
     public function getAssetMaintenance(Company $company, Asset $asset)
     {
         $maintenance = $this->maintenanceRepository->getAssetMaintenance($asset);
+
+        return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $maintenance);
+    }
+
+    public function assetMaintenanceMap(Company $company, Request $request)
+    {
+        $maintenance = $this->maintenanceRepository->getMaintenanceMaps($company, $request->timeframe);
 
         return $this->response(Response::HTTP_OK, __('messages.records-fetched'), $maintenance);
     }

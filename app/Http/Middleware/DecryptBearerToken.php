@@ -20,11 +20,9 @@ class DecryptBearerToken
             $request->headers->set('Authorization', "Bearer {$decryptedToken}");
 
             return $next($request);
-        } catch (DecryptException $ex) {
+        } catch (\Exception $ex) {
             Log::error($ex->getMessage(), $ex->getTrace());
 
-            return response('Failed to descrypt');
-        } catch (\Exception $ex) {
             return response($ex->getMessage(), 403);
         }
     }

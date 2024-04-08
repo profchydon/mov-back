@@ -22,11 +22,11 @@ class DecryptPayload
      */
     public function handle(Request $request, Closure $next)
     {
-        if (app()->environment('testing')) {
-            return $next($request);
+        // if (app()->environment('testing') || app()->environment('local')) {
+        //     return $next($request);
 
-            // TODO: Update tests to have company users so we can yank this off
-        }
+        //     // TODO: Update tests to have company users so we can yank this off
+        // }
 
         $request->headers->set('Content-type', 'text/plain');
 
@@ -40,6 +40,10 @@ class DecryptPayload
             $decryptedData = Crypt::decryptString($content);
 
             $requestData = json_decode($decryptedData, true);
+
+            if(is_null($requestData)){
+                return $next($request);
+            }
 
             $request->headers->set('Content-Type', 'application/json');
             $request->replace($requestData);

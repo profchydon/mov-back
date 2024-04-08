@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\CompanyConstant;
 use App\Domains\Constant\DepartmentConstant;
 use App\Domains\Constant\SubscriptionConstant;
+use App\Domains\Enum\Asset\AssetStatusEnum;
 use App\Domains\Enum\Company\CompanyStatusEnum;
+use App\Domains\Enum\Invoice\InvoiceStatusEnum;
 use App\Domains\Enum\Subscription\SubscriptionStatusEnum;
 use App\Events\Company\CompanyCreatedEvent;
 use App\Traits\QueryFormatter;
@@ -55,12 +58,12 @@ class Company extends BaseModel
 
     public function activeSubscription(): HasOne
     {
-        return $this->hasOne(Subscription::class)->where(SubscriptionConstant::STATUS, SubscriptionStatusEnum::ACTIVE);
+        return $this->hasOne(Subscription::class)->where(SubscriptionConstant::STATUS, SubscriptionStatusEnum::ACTIVE->value);
     }
 
     public function users(): HasManyThrough
     {
-        return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id')->whereNull('user_companies.deleted_at');
+        return $this->hasManyThrough(User::class, UserCompany::class, 'company_id', 'id', 'id', 'user_id')->whereNull('user_companies.deleted_at')->orderBy('users.first_name');
     }
 
     public function usersWithSeats()
@@ -83,6 +86,11 @@ class Company extends BaseModel
         return $this->hasMany(Asset::class, 'company_id');
     }
 
+    public function availableAssets(): HasMany
+    {
+        return $this->hasMany(Asset::class, 'company_id')->whereNotIn(AssetConstant::STATUS, [AssetStatusEnum::ARCHIVED->value]);
+    }
+
     public function tags(): HasMany
     {
         return $this->hasMany(Tag::class, 'company_id');
@@ -93,9 +101,19 @@ class Company extends BaseModel
         return $this->hasMany(AssetMaintenance::class, 'company_id');
     }
 
+    public function asset_checkouts()
+    {
+        return $this->hasMany(AssetCheckout::class, 'company_id');
+    }
+
     public function invoices()
     {
         return $this->hasMany(Invoice::class, 'company_id');
+    }
+
+    public function pendingSubscriptionsInvoices()
+    {
+        return $this->hasMany(Invoice::class, 'company_id')->where('billable_type', Subscription::class)->where('status', InvoiceStatusEnum::PENDING->value);
     }
 
     public function stolenAssets()

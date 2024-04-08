@@ -10,6 +10,8 @@ class TagConstant
     public const TENANT_ID = 'tenant_id';
     public const COMPANY_ID = 'company_id';
     public const NAME = 'name';
+    public const CREATED_BY = 'created_by';
+    public const NOTES = 'notes';
     public const STATUS = 'status';
 
     public const CREATED_AT = 'created_at';

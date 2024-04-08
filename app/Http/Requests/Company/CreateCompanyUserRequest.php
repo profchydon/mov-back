@@ -51,7 +51,8 @@ class CreateCompanyUserRequest extends FormRequest
             ->setRoleId($this->input('role_id'))
             ->setOfficeId($this->input('office_id', null))
             ->setDepartmentId($this->input('department_id', null))
-            ->setTeamId($this->input('team_id', null));
+            ->setTeamId($this->input('team_id', null))
+            ->setAllowUserLogin($this->input('allow_user_login', true));
 
         return $dto;
     }

@@ -31,6 +31,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
     public function createDocument(CreateDocumentDTO $dto, UploadedFile $file)
     {
         DB::beginTransaction();
+        $dto->setExtension($file->getClientOriginalExtension());
         $document = Document::firstOrCreate($dto->toSynthensizedArray());
 
         $url = Storage::disk('s3')->putFileAs(config('filesystems.base-folder'), $file->getRealPath(), $document->generateFileName($file->getClientOriginalExtension()));
@@ -43,7 +44,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
 
     public function getCompanyDocuments(Company $company)
     {
-        $documents = $company->documents();
+        $documents = $company->documents()->excludeArchived();
         $documents = Document::appendToQueryFromRequestQueryParameters($documents);
 
         return $documents->paginate();
@@ -55,7 +56,7 @@ class DocumentRepository extends BaseRepository implements DocumentRepositoryInt
             $document = Document::findOrFail($document);
         }
 
-        $document = $document->load(['file', 'uploader', 'history', 'assets']);
+        $document = $document->load(['file', 'owner', 'uploader', 'history', 'assets']);
 
         $document->versions = $document->file->getVersionsAttribute();
 

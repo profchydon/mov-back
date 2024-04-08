@@ -42,6 +42,7 @@ class RoleSeeder extends Seeder
                         ->orWhere('name', PermissionTypes::DEPARTMENT_FULL_ACCESS)
                         ->orWhere('name', PermissionTypes::DOCUMENT_FULL_ACCESS)
                         ->orWhere('name', PermissionTypes::INSURANCE_FULL_ACCESS)
+                        ->orWhere('name', PermissionTypes::TAG_FULL_ACCESS)
                         ->get();
                     $dbRole->syncPermissions($permissions);
                     break;

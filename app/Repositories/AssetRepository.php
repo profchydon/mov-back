@@ -25,7 +25,9 @@ use App\Repositories\Contracts\AssetMaintenanceRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AssetRepository extends BaseRepository implements AssetRepositoryInterface, AssetCheckoutRepositoryInterface, AssetMaintenanceRepositoryInterface
@@ -35,6 +37,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return Asset::class;
     }
 
+
     public function getCompanyAssets(Company|string $company, string|null $status)
     {
         if (!($company instanceof Company)) {
@@ -43,7 +46,7 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
         $statusArray = $status === null ? AssetStatusEnum::values() : [$status];
 
-        $assets = $company->assets()->status($statusArray)->with(['type', 'office', 'assignee', 'image'])->orderBy('assets.created_at', 'desc');
+        $assets = $company->assets()->status($statusArray)->with(['type', 'office', 'assignee', 'image', 'tags'])->orderBy('assets.created_at', 'desc');
         $assets = Asset::appendToQueryFromRequestQueryParameters($assets);
 
         if ($status !== AssetStatusEnum::ARCHIVED->value) {
@@ -132,7 +135,9 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         DB::transaction(function () use ($assetId, $dto, $documents) {
             $stolenAsset = StolenAsset::create($dto->toArray());
 
-            $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::STOLEN->value]);
+            $asset = Asset::find($assetId);
+            $asset->status = AssetStatusEnum::STOLEN;
+            $asset->save();
 
             if ($documents) {
                 collect($documents)->each(function ($document) use ($stolenAsset) {
@@ -147,9 +152,11 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
 
     public function markAsArchived(string $assetId): Asset
     {
-        $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::ARCHIVED->value]);
+        $asset = Asset::find($assetId);
+        $asset->status = AssetStatusEnum::ARCHIVED;
+        $asset->save();
 
-        return $this->first('id', $assetId);
+        return $asset->fresh();
     }
 
     public function createMaintenanceLog(AssetMaintenanceDTO $maintenanceDTO)
@@ -166,12 +173,57 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         return $maintenance->simplePaginate();
     }
 
+    public function getMaintenanceMaps(Company $company, $timeframe = null)
+    {
+
+        $timelineQuery = 'EXTRACT(MONTH FROM created_at)';
+        $timelineField = 'month';
+
+        $maintenances = $company->asset_maintenance();
+        $repairs = $company->asset_checkouts()->where('reason', 'Repair')->where('status', 'Returned');
+
+        if (Str::lower($timeframe) == 'daily') {
+            $timelineQuery = 'EXTRACT(DAY FROM created_at)';
+            $timelineField = 'day';
+            $maintenances = $maintenances->whereYear('created_at', now()->year);
+            $repairs = $repairs->whereYear('created_at', now()->year);
+        }
+
+        if (Str::lower($timeframe) == 'weekly') {
+            $timelineQuery = 'EXTRACT(WEEK FROM created_at)';
+            $timelineField = 'week';
+            $maintenances = $maintenances->whereYear('created_at', now()->year);
+            $repairs = $repairs->whereYear('created_at', now()->year);
+        }
+
+        if (Str::lower($timeframe) == 'hourly') {
+            $timelineQuery = 'EXTRACT(HOUR FROM created_at)';
+            $timelineField = 'hour';
+            $maintenances = $maintenances->whereDate('created_at', now()->toDateString());
+            $repairs = $repairs->whereDate('created_at', now()->toDateString());
+        }
+
+        $maintenances = $maintenances->groupBy(DB::raw($timelineQuery))
+            ->orderBy(DB::raw($timelineQuery), 'ASC')
+            ->select(DB::raw("{$timelineQuery} as {$timelineField}"), DB::raw('COUNT(*) as total_entries'))
+            ->get();
+
+        $repairs = $repairs->groupBy(DB::raw($timelineQuery))
+            ->orderBy(DB::raw($timelineQuery), 'ASC')
+            ->select(DB::raw("{$timelineQuery} as {$timelineField}"), DB::raw('COUNT(*) as total_entries'))
+            ->get();
+
+        return ['maintenance' => $maintenances, 'repair' => $repairs];
+    }
+
     public function markAsDamaged(string $assetId, CreateDamagedAssetDTO $dto, ?array $documents): Asset
     {
         DB::transaction(function () use ($assetId, $dto, $documents) {
             $damagedAsset = DamagedAsset::create($dto->toArray());
 
-            $this->update('id', $assetId, [AssetConstant::STATUS => AssetStatusEnum::DAMAGED->value]);
+            $asset = Asset::find($assetId);
+            $asset->status = AssetStatusEnum::DAMAGED;
+            $asset->save();
 
             if ($documents) {
                 collect($documents)->each(function ($document) use ($damagedAsset) {
@@ -189,7 +241,9 @@ class AssetRepository extends BaseRepository implements AssetRepositoryInterface
         DB::transaction(function () use ($dto) {
             RetiredAsset::create($dto->toArray());
 
-            $this->update('id', $dto->getAssetId(), [AssetConstant::STATUS => AssetStatusEnum::RETIRED->value]);
+            $asset = Asset::find($dto->getAssetId());
+            $asset->status = AssetStatusEnum::RETIRED;
+            $asset->save();
         });
 
         return $this->first('id', $dto->getAssetId());

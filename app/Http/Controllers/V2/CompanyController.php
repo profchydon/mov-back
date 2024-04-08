@@ -214,12 +214,14 @@ class CompanyController extends Controller
         return $this->response(Response::HTTP_CREATED, __('messages.company-sole-admin'));
     }
 
-    public function getCompanyUsers(Company $company)
+    public function getCompanyUsers(Company $company, Request $request)
     {
         // $relation = [];
         // $request->get('assets') ? array_push($relation, 'assets') : '';
 
-        $users = $this->companyRepository->getCompanyUsers($company);
+        $paginate = $request->get('paginate');
+
+        $users = $this->companyRepository->getCompanyUsers($company, $paginate);
 
         // $users = $company->users->load('departments', 'teams', 'office', 'roles');
 
@@ -239,7 +241,7 @@ class CompanyController extends Controller
         $role = $this->roleRepository->first('id', $request->role_id);
 
         if (($role?->name !== RoleTypes::BASIC->value)) {
-            if ($companySubscription?->plan->name === 'Basic') {
+            if ($companySubscription?->isBasic()) {
                 return $this->error(Response::HTTP_UNPROCESSABLE_ENTITY, __('messages.upgrade-plan-users'));
             }
 
@@ -262,9 +264,10 @@ class CompanyController extends Controller
             ->setCode($code)
             ->setOfficeId($request->office_id)
             ->setTeamId($request->team_id)
-            ->setDepartmentId($request->department_id);
+            ->setDepartmentId($request->department_id)
+            ->setAllowUserLogin($request->allow_user_login);
 
-        if ($company->allow_user_login) {
+        if ($dto->getAllowUserLogin() === true) {
 
             $this->userInvitationRepository->create($dto->toArray());
 

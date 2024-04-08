@@ -18,7 +18,6 @@ class UserBelongsToCompany
     {
         if (app()->environment('testing')) {
             return $next($request);
-
             // TODO: Update tests to have company users so we can yank this off
         }
 
