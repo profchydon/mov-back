@@ -197,9 +197,14 @@ class Asset extends BaseModel
         return $this->status === AssetStatusEnum::CHECKED_OUT->value;
     }
 
+    // public function documents()
+    // {
+    //     return $this->hasMany(Document::class, 'document_id');
+    // }
+
     public function documents()
     {
-        return $this->hasMany(Document::class, 'document_id');
+        return $this->belongsToMany(Document::class, 'asset_documents', 'asset_id', 'document_id');
     }
 
     public function tags()
