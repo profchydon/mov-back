@@ -20,11 +20,13 @@ use App\Http\Requests\Asset\ReAssignMultipleAssetRequest;
 use App\Http\Requests\Asset\UpdateMultipleAssetsRequest;
 use App\Models\Asset;
 use App\Models\Company;
+use App\Models\Taggable;
 use App\Models\User;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\FileRepositoryInterface;
+use App\Repositories\Contracts\TagRepositoryInterface;
 use App\Rules\HumanNameRule;
 use Carbon\Carbon;
 use Exception;
@@ -48,9 +50,9 @@ class AssetController extends Controller
         private readonly AssetRepositoryInterface     $assetRepository,
         private readonly CompanyRepositoryInterface   $companyRepository,
         private readonly AssetMakeRepositoryInterface $assetMakeRepository,
-        private readonly FileRepositoryInterface      $fileRepository
-    )
-    {
+        private readonly FileRepositoryInterface      $fileRepository,
+        private readonly TagRepositoryInterface      $tagRepository,
+    ) {
     }
 
     /**
@@ -133,6 +135,7 @@ class AssetController extends Controller
                 ->setMaintenanceCycle(Arr::get($asset, 'maintenance_cycle', null))
                 ->setNextMaintenanceDate(Arr::get($asset, 'next_maintenance_date', null))
                 ->setIsInsured(Arr::get($asset, 'is_insured', false))
+                ->setAcquisitionType(Arr::get($asset, 'acquisition_type', null))
                 ->setStatus(Arr::get($asset, 'status', AssetStatusEnum::PENDING_APPROVAL->value));
 
             if ($user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value, PermissionTypes::ASSET_CREATE_ACCESS->value])) {
@@ -210,7 +213,7 @@ class AssetController extends Controller
             case 'archive':
                 return $this->markAssetAsArchived($asset);
             case 'details':
-                return $this->updateAssetDetails($request, $asset);
+                return $this->updateAssetDetails($request, $asset, $company);
 
             default:
                 return $this->error(Response::HTTP_BAD_REQUEST, __('messages.action-not-allowed'));
@@ -305,7 +308,7 @@ class AssetController extends Controller
         return $this->response(Response::HTTP_OK, __('messages.asset-image-updated'), $asset->load('image'));
     }
 
-    private function updateAssetDetails(Request $request, Asset $asset)
+    private function updateAssetDetails(Request $request, Asset $asset, Company $company)
     {
         $request->validate([
             'make' => 'nullable',
@@ -353,7 +356,7 @@ class AssetController extends Controller
             ->setOfficeId($request->input('office_id'))
             ->setOfficeAreaId($request->input('office_area_id'))
             ->setCurrency($request->input('currency'))
-            ->setVendorId($request->input('vendor_id'))
+            ->setVendorId($request->input('vendor_id') ?? null)
             ->setAcquisitionType($request->input('acquisition_type'))
             ->setCondition($request->input('condition'))
             ->setMaintenanceCycle($request->input('maintenance_cycle'))
@@ -363,6 +366,16 @@ class AssetController extends Controller
             ->setStatus($request->input('status'));
 
         $this->assetRepository->updateById($asset->id, $dto->toSynthensizedArray());
+
+        if (!empty($request->custom_tags)) {
+
+            foreach ($request->custom_tags as $tag) {
+
+                $this->tagRepository->assignTagtoAsset($asset, $tag);
+            }
+
+            $this->tagRepository->unAssignTagstoAsset($asset, $request->custom_tags);
+        }
 
         $asset->refresh();
 

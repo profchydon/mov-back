@@ -27,24 +27,31 @@ prices:
   - currency_code: NGN
     billing_cycle: Monthly
     amount: 250000
+    slug: enterprise-ngn-monthly
     processors:
       - name: Flutterwave
         id: 114490
+
   - currency_code: USD
     billing_cycle: Monthly
     amount: 10000
+    slug: enterprise-usd-monthly
     processors:
       - name: Stripe
         id: price_1OXKjEB8pj3G5nb3v3ebtaOO
+
   - currency_code: GBP
     billing_cycle: Monthly
     amount: 10000
+    slug: enterprise-gbp-monthly
     processors:
       - name: Stripe
         id: price_1OXKjcB8pj3G5nb35QAwXM7U
+
   - currency_code: EUR
     billing_cycle: Monthly
     amount: 10000
+    slug: enterprise-eur-monthly
     processors:
       - name: Stripe
         id: price_1OXKjtB8pj3G5nb37DIGHsBE
@@ -53,24 +60,31 @@ prices:
   - currency_code: NGN
     billing_cycle: Yearly
     amount: 2700000
+    slug: enterprise-ngn-yearly
     processors:
       - name: Flutterwave
         id: 114491
+
   - currency_code: USD
     billing_cycle: Yearly
     amount: 120000
+    slug: enterprise-usd-yearly
     processors:
       - name: Stripe
         id: price_1OXKkEB8pj3G5nb3zdnvvQSh
+
   - currency_code: GBP
     billing_cycle: Yearly
     amount: 120000
+    slug: enterprise-gbp-yearly
     processors:
       - name: Stripe
         id: price_1OXKklB8pj3G5nb3MFZkpB1Y
+
   - currency_code: EUR
     billing_cycle: Yearly
     amount: 120000
+    slug: enterprise-eur-yearly
     processors:
       - name: Stripe
         id: price_1OXKl6B8pj3G5nb304XTZd1Y

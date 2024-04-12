@@ -64,6 +64,7 @@ class PlanSeeder extends Seeder
                     ], [
                         PlanProcessorConstant::PLAN_PROCESSOR_ID => $processor['id'],
                         PlanProcessorConstant::PLAN_PRICE_SLUG => $price['slug'],
+                        PlanProcessorConstant::PLAN_PRICE_ID => $planPrice->id,
                         PlanProcessorConstant::PAYMENT_PROCESSOR_SLUG => strtolower($processor['name']),
                     ]);
                 }
