@@ -4,11 +4,14 @@ namespace App\Http\Controllers\V2;
 
 use App\Common\SubscriptionValidator;
 use App\Domains\Auth\PermissionTypes;
+use App\Domains\Auth\RoleTypes;
 use App\Domains\Constant\Asset\AssetConstant;
 use App\Domains\Constant\Asset\AssetMakeConstant;
+use App\Domains\Constant\UserConstant;
 use App\Domains\DTO\Asset\CreateAssetDTO;
 use App\Domains\DTO\Asset\UpdateAssetDTO;
 use App\Domains\Enum\Asset\AssetStatusEnum;
+use App\Domains\Enum\User\UserStageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asset\CreateAssetFromArrayRequest;
 use App\Http\Requests\Asset\CreateAssetRequest;
@@ -26,7 +29,9 @@ use App\Repositories\Contracts\AssetMakeRepositoryInterface;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
 use App\Repositories\Contracts\FileRepositoryInterface;
+use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\TagRepositoryInterface;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Rules\HumanNameRule;
 use Carbon\Carbon;
 use Exception;
@@ -52,6 +57,8 @@ class AssetController extends Controller
         private readonly AssetMakeRepositoryInterface $assetMakeRepository,
         private readonly FileRepositoryInterface      $fileRepository,
         private readonly TagRepositoryInterface      $tagRepository,
+        private readonly RoleRepositoryInterface     $roleRepository,
+        private readonly UserRepositoryInterface     $userRepository,
     ) {
     }
 
@@ -128,18 +135,40 @@ class AssetController extends Controller
                 ->setTypeId(Arr::get($asset, 'type_id'))
                 ->setSerialNumber(Arr::get($asset, 'serial_number'))
                 ->setPurchasePrice(Arr::get($asset, 'purchase_price', null))
-                ->setPurchaseDate(Arr::get($asset, 'purchase_date', null))
+                // ->setPurchaseDate(Arr::get($asset, 'purchase_date', null))
                 ->setOfficeId(Arr::get($asset, 'office_id'))
                 ->setOfficeAreaId(Arr::get($asset, 'office_area_id', null))
                 ->setCurrency(Arr::get($asset, 'currency'))
                 ->setMaintenanceCycle(Arr::get($asset, 'maintenance_cycle', null))
-                ->setNextMaintenanceDate(Arr::get($asset, 'next_maintenance_date', null))
+                // ->setNextMaintenanceDate(Arr::get($asset, 'next_maintenance_date', null))
                 ->setIsInsured(Arr::get($asset, 'is_insured', false))
                 ->setAcquisitionType(Arr::get($asset, 'acquisition_type', null))
                 ->setStatus(Arr::get($asset, 'status', AssetStatusEnum::PENDING_APPROVAL->value));
 
             if ($user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value, PermissionTypes::ASSET_CREATE_ACCESS->value])) {
                 $dto->setStatus(AssetStatusEnum::AVAILABLE->value);
+            }
+
+            if (Arr::get($asset, 'assignee_email_address') !== null) {
+
+                $role = $this->roleRepository->first('name', RoleTypes::BASIC->value);
+                $newUser = $this->userRepository->firstorCreate([
+                    UserConstant::EMAIL => Arr::get($asset, 'assignee_email_address'),
+                ],
+                [
+                    UserConstant::COMPANY_ID => $company->id,
+                    UserConstant::TENANT_ID => $company->tenant_id,
+                    UserConstant::EMAIL => Arr::get($asset, 'assignee_email_address'),
+                    UserConstant::FIRST_NAME => Arr::get($asset, 'assignee_first_name') ?? null,
+                    UserConstant::LAST_NAME => Arr::get($asset, 'assignee_last_name') ?? null,
+                    UserConstant::STAGE => UserStageEnum::COMPLETED->value,
+                ]);
+
+                $this->userRepository->createUserCompany($company, $newUser, $role);
+
+                $this->userRepository->assignRoleToUser($company, $newUser, $role);
+
+                $dto->setAssignedTo($newUser->id);
             }
 
             return $this->assetRepository->create($dto->toArray());
