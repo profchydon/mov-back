@@ -98,6 +98,9 @@ Route::delete('companies/{company}/users/{user}', [CompanyController::class, 'de
 
 //Routes for users
 Route::group(['prefix' => 'companies/{company}', 'middleware' => ['token.decrypt', 'auth:sanctum',  'payload.decrypt', 'user-in-company']], function () {
+
+    Route::resource('activity-logs', \App\Http\Controllers\ActivityLogController::class)->only('index');
+
     Route::controller(CompanyController::class)->group(function () {
         Route::post('/users', 'addCompanyUser')->name('add.company.user');
         Route::get('/users', 'getCompanyUsers')->name('get.company.users');
