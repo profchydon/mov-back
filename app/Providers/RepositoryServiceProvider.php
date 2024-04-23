@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Repositories\ActivityLogRepository;
 use App\Repositories\AssetMakeRepository;
 use App\Repositories\AssetRepository;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\CompanyRepository;
+use App\Repositories\Contracts\ActivityLogRepositoryInterface;
 use App\Repositories\Contracts\AssetCheckoutRepositoryInterface;
 use App\Repositories\Contracts\AssetMaintenanceRepositoryInterface;
 use App\Repositories\Contracts\AssetMakeRepositoryInterface;
@@ -109,5 +111,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(DocumentRepositoryInterface::class, DocumentRepository::class);
         $this->app->singleton(InsuranceRepositoryInterface::class, InsuranceRepository::class);
         $this->app->singleton(InvoicePaymentRepositoryInterface::class, InvoiceRepository::class);
+        $this->app->singleton(ActivityLogRepositoryInterface::class, ActivityLogRepository::class);
     }
 }
