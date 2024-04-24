@@ -36,7 +36,6 @@ class AssetConstant
     public const ACQUISITION_TYPE = 'acquisition_type';
     public const VENDOR_ID = 'vendor_id';
     public const CONDITION = 'condition';
-    public const SCORE = 'score';
 
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';

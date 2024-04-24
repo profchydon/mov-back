@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -211,47 +210,5 @@ class Asset extends BaseModel
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');
-    }
-
-    /* see here for tips on calculation
-   https://app.clickup.com/4640992/v/dc/4dm70-4308/4dm70-708
-    */
-    public function calculateScore()
-    {
-        $score = 0;
-        if ($this->documents()->exists()) {
-            $score += 10;
-        }
-
-        if ($this->assignee()->exists()) {
-            $score += 10;
-        }
-
-        if ($this->maintenances()->exists()) {
-            $score += 30;
-        }
-
-        if ($this->status != AssetStatusEnum::PENDING_APPROVAL->value && $this->updated_at > $this->created_at) {
-            $score += 15;
-        }
-
-        if ($this->is_insured) {
-            $score += 20;
-        }
-
-        return $score;
-    }
-
-    public static function getScoreGrade($score)
-    {
-        if ($score <= 30){
-            return 'F';
-        }elseif ($score <=50){
-            return 'C';
-        }elseif ($score <= 70){
-            return 'B';
-        }
-
-        return 'A';
     }
 }

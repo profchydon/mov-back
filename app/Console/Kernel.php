@@ -18,7 +18,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('upcoming-return-asset:days')->daily();
         $schedule->command('asset-return-overdue')->daily();
         $schedule->command('app:deactivate-expired-subscription')->daily();
-        $schedule->command('app:update-assets-score')->daily();
 
         $schedule->command('companies:send-weekly-summary')->weekly()->saturdays()->at('12:00');
     }
