@@ -17,6 +17,6 @@ class ActivityLogRepository implements ActivityLogRepositoryInterface
         $query = $query->whereIn('causer_id', $company->users()->pluck('user_id'));
         $query = ActivityLog::appendToQueryFromRequestQueryParameters($query);
 
-        return $query->simplePaginate();
+        return $query->paginate();
     }
 }
