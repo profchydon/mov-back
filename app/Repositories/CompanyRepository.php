@@ -70,9 +70,10 @@ class CompanyRepository extends BaseRepository implements CompanyRepositoryInter
             return $company->users;
         }
 
-        $users = $company->users()->with(['departments', 'teams', 'office', 'roles']);
+        $users = $company->users()->distinct()->with(['departments', 'teams', 'office', 'roles']);
 
         $users = User::appendToQueryFromRequestQueryParameters($users);
+
         $users = $users->paginate();
 
         return CompanyUserCollection::make($users);
