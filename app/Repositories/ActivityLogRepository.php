@@ -13,9 +13,12 @@ class ActivityLogRepository implements ActivityLogRepositoryInterface
     public function getActivityLogs(Company $company)
     {
         $query = ActivityLog::query();
-        $query = $query->whereCauserType(User::class);
-        $query = $query->whereIn('causer_id', $company->users()->pluck('user_id'));
+        $query->whereCauserType(User::class);
+        $query->whereIn('causer_id', $company->users()->pluck('user_id'));
         $query = ActivityLog::appendToQueryFromRequestQueryParameters($query);
+
+        // Add orderBy clause to sort by most recent
+        $query->orderBy('created_at', 'desc');
 
         return $query->paginate();
     }
