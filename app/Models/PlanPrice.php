@@ -24,7 +24,7 @@ class PlanPrice extends BaseModel
     {
         parent::booted();
         static::creating(function (self $model) {
-            $slugString = "{$model->plan_slug} {$model->currency_code} {$model->billing_cylce}";
+            $slugString = "{$model->plan_slug} {$model->currency_code} {$model->billing_cycle->value}";
             $model->slug = Str::slug($slugString);
         });
     }
