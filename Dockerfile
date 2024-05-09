@@ -28,8 +28,7 @@ RUN apt-get update && apt-get install -y \
     lua-zlib-dev \
     libmemcached-dev \
     nginx \
-    nano \
-    php-intl
+    nano
 
 # Install supervisor
 RUN apt-get install -y supervisor
