@@ -115,7 +115,7 @@ Your Weekly Asset Report is Here!
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
                     font-size: 30px;
-                    font-weight: 500;
+                    font-weight: 600;
                     line-height: 44px;
                     letter-spacing: -0.02em;
                     text-align: left;
@@ -163,7 +163,7 @@ Your Weekly Asset Report is Here!
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
                     font-size: 30px;
-                    font-weight: 500;
+                    font-weight: 600;
                     line-height: 44px;
                     letter-spacing: -0.02em;
                     text-align: left;
@@ -213,7 +213,7 @@ Your Weekly Asset Report is Here!
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
                     font-size: 30px;
-                    font-weight: 500;
+                    font-weight: 600;
                     line-height: 44px;
                     letter-spacing: -0.02em;
                     text-align: left;
@@ -261,7 +261,7 @@ Your Weekly Asset Report is Here!
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
                     font-size: 30px;
-                    font-weight: 500;
+                    font-weight: 600;
                     line-height: 44px;
                     letter-spacing: -0.02em;
                     text-align: left;
@@ -311,7 +311,7 @@ Your Weekly Asset Report is Here!
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
                     font-size: 30px;
-                    font-weight: 500;
+                    font-weight: 600;
                     line-height: 44px;
                     letter-spacing: -0.02em;
                     text-align: left;
@@ -359,7 +359,7 @@ Your Weekly Asset Report is Here!
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
                     font-size: 30px;
-                    font-weight: 500;
+                    font-weight: 600;
                     line-height: 44px;
                     letter-spacing: -0.02em;
                     text-align: left;
