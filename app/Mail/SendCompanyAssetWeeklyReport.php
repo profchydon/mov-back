@@ -27,7 +27,7 @@ class SendCompanyAssetWeeklyReport extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Company Asset Weekly Report',
+            subject: 'Your Weekly Asset Report is Here!',
         );
     }
 
