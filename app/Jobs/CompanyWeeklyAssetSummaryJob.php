@@ -29,22 +29,22 @@ class CompanyWeeklyAssetSummaryJob implements ShouldQueue
     {
         $assetObject = new Fluent();
 
-        $assetObject->totalAsset = Number::abbreviate($this->company->assets()->count(), 2);
+        $assetObject->totalAsset = Number::abbreviate($this->company->assets()->count());
         $assetObject->totalAssetValue = Number::abbreviate($this->company->assets()->sum('purchase_price'), 2);
 
-        $assetObject->totalAssetAdded = Number::abbreviate($this->company->assets()->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count(), 2);
+        $assetObject->totalAssetAdded = Number::abbreviate($this->company->assets()->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count());
         $assetObject->totalAssetAddedValue = Number::abbreviate($this->company->assets()->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->sum('purchase_price'), 2);
 
-        $assetObject->totalCheckedOutAsset = Number::abbreviate($this->company->assets()->status([AssetStatusEnum::CHECKED_OUT])->count(), 2);
+        $assetObject->totalCheckedOutAsset = Number::abbreviate($this->company->assets()->status([AssetStatusEnum::CHECKED_OUT])->count());
         $assetObject->totalCheckedOutAssetValue = Number::abbreviate($this->company->assets()->status([AssetStatusEnum::CHECKED_OUT])->sum('purchase_price'), 2);
 
-        $assetObject->totalInsuredAsset = Number::abbreviate($this->company->assets()->insured()->count(), 2);
+        $assetObject->totalInsuredAsset = Number::abbreviate($this->company->assets()->insured()->count());
         $assetObject->totalInsuredAssetValue = Number::abbreviate($this->company->assets()->insured()->sum('purchase_price'), 2);
 
-        $assetObject->totalUnInsuredAsset = Number::abbreviate($this->company->assets()->unInsured()->count(), 2);
+        $assetObject->totalUnInsuredAsset = Number::abbreviate($this->company->assets()->unInsured()->count());
         $assetObject->totalUnInsuredAssetValue = Number::abbreviate($this->company->assets()->unInsured()->sum('purchase_price'), 2);
 
-        $assetObject->totalAssetDueMaintenance = Number::abbreviate($this->company->assets()->whereBetween('next_maintenance_date', [now()->startOfWeek(), now()->endOfWeek()])->count(), 2);
+        $assetObject->totalAssetDueMaintenance = Number::abbreviate($this->company->assets()->whereBetween('next_maintenance_date', [now()->startOfWeek(), now()->endOfWeek()])->count());
         $assetObject->totalAssetDueMaintenanceValue = Number::abbreviate($this->company->assets()->whereBetween('next_maintenance_date', [now()->startOfWeek(), now()->endOfWeek()])->sum('purchase_price'), 2);
 
         Mail::to($this->company->email)->queue(new SendCompanyAssetWeeklyReport($this->company, $assetObject));
