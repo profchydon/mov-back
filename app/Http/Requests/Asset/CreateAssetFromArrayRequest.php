@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Asset;
 
 use App\Domains\Enum\Asset\AssetAcquisitionTypeEnum;
+use App\Domains\Enum\Asset\AssetConditionEnum;
 use App\Domains\Enum\Maintenance\MaintenanceCycleEnum;
 use App\Rules\HumanNameRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -27,6 +28,7 @@ class CreateAssetFromArrayRequest extends FormRequest
             'assets.*.maintenance_cycle' => ['nullable', Rule::in(MaintenanceCycleEnum::values())],
             'assets.*.next_maintenance_date' => 'nullable|date',
             'assets.*.acquisition_type' => ['nullable', Rule::in(AssetAcquisitionTypeEnum::values())],
+            'assets.*.condition' => ['nullable', Rule::in(AssetConditionEnum::values())],
             'assets.*.assignee_email_address' => 'nullable|email',
         ];
     }

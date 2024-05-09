@@ -143,6 +143,7 @@ class AssetController extends Controller
                 ->setNextMaintenanceDate(Arr::get($asset, 'next_maintenance_date', null))
                 ->setIsInsured(Arr::get($asset, 'is_insured', false))
                 ->setAcquisitionType(Arr::get($asset, 'acquisition_type', null))
+                ->setCondition(Arr::get($asset, 'condition', null))
                 ->setStatus(Arr::get($asset, 'status', AssetStatusEnum::PENDING_APPROVAL->value));
 
             if ($user->hasAnyPermission([PermissionTypes::ASSET_FULL_ACCESS->value, PermissionTypes::ASSET_CREATE_ACCESS->value])) {
