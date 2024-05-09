@@ -121,12 +121,12 @@ Your Weekly Asset Report is Here!
                     text-align: left;
                     display: block;
                   "
-                  >₦ {{$report->totalAssetValue}}</span
+                  >₦ {{ number_format($report->totalAssetValue) }}</span
                 >
                 <span
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
-                    font-size: 16px;
+                    font-size: 15px;
                     font-weight: 400;
                     line-height: 24px;
                     text-align: left;
@@ -169,12 +169,12 @@ Your Weekly Asset Report is Here!
                     text-align: left;
                     display: block;
                   "
-                  >₦ {{$report->totalAssetAddedValue}}</span
+                  >₦ {{ number_format($report->totalAssetAddedValue) }}</span
                 >
                 <span
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
-                    font-size: 16px;
+                    font-size: 15px;
                     font-weight: 400;
                     line-height: 24px;
                     text-align: left;
@@ -219,12 +219,12 @@ Your Weekly Asset Report is Here!
                     text-align: left;
                     display: block;
                   "
-                  >₦ {{$report->totalInsuredAssetValue}}</span
+                  >₦ {{ number_format($report->totalInsuredAssetValue) }}</span
                 >
                 <span
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
-                    font-size: 16px;
+                    font-size: 15px;
                     font-weight: 400;
                     line-height: 24px;
                     text-align: left;
@@ -267,12 +267,12 @@ Your Weekly Asset Report is Here!
                     text-align: left;
                     display: block;
                   "
-                  >₦ {{$report->totalUnInsuredAssetValue }}</span
+                  >₦ {{ number_format($report->totalUnInsuredAssetValue) }}</span
                 >
                 <span
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
-                    font-size: 16px;
+                    font-size: 15px;
                     font-weight: 400;
                     line-height: 24px;
                     text-align: left;
@@ -317,12 +317,12 @@ Your Weekly Asset Report is Here!
                     text-align: left;
                     display: block;
                   "
-                  >₦ {{$report->totalAssetDueMaintenanceValue }}
+                  >₦ {{ number_format($report->totalAssetDueMaintenanceValue) }}
                 </span>
                 <span
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
-                    font-size: 16px;
+                    font-size: 15px;
                     font-weight: 400;
                     line-height: 24px;
                     text-align: left;
@@ -365,12 +365,12 @@ Your Weekly Asset Report is Here!
                     text-align: left;
                     display: block;
                   "
-                  >₦ {{$report->totalCheckedOutAssetValue }}
+                  >₦ {{ number_format($report->totalCheckedOutAssetValue) }}
                 </span>
                 <span
                   style="
                     font-family: 'IBM Plex Sans', sans-serif;
-                    font-size: 16px;
+                    font-size: 15px;
                     font-weight: 400;
                     line-height: 24px;
                     text-align: left;
@@ -415,6 +415,4 @@ Your Weekly Asset Report is Here!
       </div>
     </div>
   </div>
-
-
 @endsection
