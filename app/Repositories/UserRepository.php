@@ -41,13 +41,20 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $hasSeat = $role->name === RoleTypes::BASIC->value ? false : true;
 
         // Create the user company record
-        return UserCompany::create([
-            UserCompanyConstant::TENANT_ID => $company->tenant_id,
-            UserCompanyConstant::COMPANY_ID => $company->id,
-            UserCompanyConstant::USER_ID => $user->id,
-            UserCompanyConstant::STATUS => UserCompanyStatusEnum::ACTIVE->value,
-            UserCompanyConstant::HAS_SEAT => $hasSeat,
-        ]);
+        return UserCompany::updateOrCreate(
+            [
+                UserCompanyConstant::COMPANY_ID => $company->id,
+                UserCompanyConstant::TENANT_ID => $company->tenant_id,
+                UserCompanyConstant::USER_ID => $user->id,
+            ],
+            [
+                UserCompanyConstant::TENANT_ID => $company->tenant_id,
+                UserCompanyConstant::COMPANY_ID => $company->id,
+                UserCompanyConstant::USER_ID => $user->id,
+                UserCompanyConstant::STATUS => UserCompanyStatusEnum::ACTIVE->value,
+                UserCompanyConstant::HAS_SEAT => $hasSeat,
+            ]
+        );
     }
 
     /**
@@ -61,7 +68,11 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function assignRoleToUser(Company $company, User $user, $role): UserRole
     {
         // Create a new user role record with the given user, company, and role IDs.
-        return UserRole::create([
+        return UserRole::updateOrCreate([
+            UserCompanyConstant::USER_ID => $company->id,
+            UserCompanyConstant::COMPANY_ID => $user->id,
+            UserRoleConstant::ROLE_ID => $role->id,
+        ], [
             UserRoleConstant::USER_ID => $user->id,
             UserRoleConstant::COMPANY_ID => $company->id,
             UserRoleConstant::ROLE_ID => $role->id,

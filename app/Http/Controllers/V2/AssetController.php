@@ -153,6 +153,7 @@ class AssetController extends Controller
             if (Arr::get($asset, 'assignee_email_address') !== null) {
 
                 $role = $this->roleRepository->first('name', RoleTypes::BASIC->value);
+
                 $newUser = $this->userRepository->updateOrCreate([
                     UserConstant::EMAIL => Arr::get($asset, 'assignee_email_address'),
                 ],
