@@ -383,7 +383,7 @@ Your Weekly Asset Report is Here!
             </div>
           </div>
 
-          <div style="margin-top: 30px; margin-bottom: 30px">
+          {{-- <div style="margin-top: 30px; margin-bottom: 30px">
             <button
               style="
                 background: rgba(0, 76, 204, 1);
@@ -410,7 +410,7 @@ Your Weekly Asset Report is Here!
                 >View full report</span
               >
             </button>
-          </div>
+          </div> --}}
         </div>
       </div>
     </div>
