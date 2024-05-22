@@ -10,7 +10,6 @@ use App\Domains\Constant\UserTeamConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Models\Company;
 use App\Models\Department;
-use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\UserCompany;
@@ -66,14 +65,8 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      * @param $role The role to assign.
      * @return void
      */
-    public function assignRoleToUser(Company $company, User $user, Role|string $role): UserRole
+    public function assignRoleToUser(Company $company, User $user, $role): UserRole
     {
-
-        if (!($role instanceof Role)) {
-            $role = Role::findOrFail($role);
-        }
-
-
         // Create a new user role record with the given user, company, and role IDs.
         return UserRole::updateOrCreate([
             UserCompanyConstant::USER_ID => $user->id,
