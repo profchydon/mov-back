@@ -24,7 +24,7 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
 
     public function createUserCompany(Company $company, User $user, $role): UserCompany;
 
-    public function assignRoleToUser(Company $company, User $user, Role|string $role): UserRole;
+    public function assignRoleToUser(Company $company, User $user, $role): UserRole;
 
     public function createUserDepartment(Company $company, User $user, Department|string $department): UserDepartment;
 
