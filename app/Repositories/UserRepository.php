@@ -67,16 +67,19 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      */
     public function assignRoleToUser(Company $company, User $user, $role): UserRole
     {
+
+        $role = UserRole::where(UserRoleConstant::USER_ID, $user->id)->where(UserRoleConstant::COMPANY_ID, $company->id)->where(UserRoleConstant::ROLE_ID, $role->id)->first();
+
+        if (!$role) {
+            $role = UserRole::create([
+                UserRoleConstant::USER_ID => $user->id,
+                UserRoleConstant::COMPANY_ID => $company->id,
+                UserRoleConstant::ROLE_ID => $role->id,
+            ]);
+        }
+
         // Create a new user role record with the given user, company, and role IDs.
-        return UserRole::updateOrCreate([
-            UserCompanyConstant::USER_ID => $company->id,
-            UserCompanyConstant::COMPANY_ID => $user->id,
-            UserRoleConstant::ROLE_ID => $role->id,
-        ], [
-            UserRoleConstant::USER_ID => $user->id,
-            UserRoleConstant::COMPANY_ID => $company->id,
-            UserRoleConstant::ROLE_ID => $role->id,
-        ]);
+        return $role;
     }
 
     /**
