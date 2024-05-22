@@ -69,8 +69,8 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         // Create a new user role record with the given user, company, and role IDs.
         return UserRole::updateOrCreate([
-            UserCompanyConstant::USER_ID => $user->id,
-            UserCompanyConstant::COMPANY_ID => $company->id,
+            UserRoleConstant::USER_ID => $user->id,
+            UserRoleConstant::COMPANY_ID => $company->id,
             UserRoleConstant::ROLE_ID => $role->id,
         ], [
             UserRoleConstant::USER_ID => $user->id,
