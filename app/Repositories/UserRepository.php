@@ -10,6 +10,7 @@ use App\Domains\Constant\UserTeamConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Models\Company;
 use App\Models\Department;
+use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\UserCompany;
@@ -65,21 +66,24 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      * @param $role The role to assign.
      * @return void
      */
-    public function assignRoleToUser(Company $company, User $user, $role): UserRole
+    public function assignRoleToUser(Company $company, User $user, Role|string $role): UserRole
     {
 
-        $role = UserRole::where(UserRoleConstant::USER_ID, $user->id)->where(UserRoleConstant::COMPANY_ID, $company->id)->where(UserRoleConstant::ROLE_ID, $role->id)->first();
-
-        if (!$role) {
-            $role = UserRole::create([
-                UserRoleConstant::USER_ID => $user->id,
-                UserRoleConstant::COMPANY_ID => $company->id,
-                UserRoleConstant::ROLE_ID => $role->id,
-            ]);
+        if (!($role instanceof Role)) {
+            $role = Role::findOrFail($role);
         }
 
+
         // Create a new user role record with the given user, company, and role IDs.
-        return $role;
+        return UserRole::updateOrCreate([
+            UserCompanyConstant::USER_ID => $user->id,
+            UserCompanyConstant::COMPANY_ID => $company->id,
+            UserRoleConstant::ROLE_ID => $role->id,
+        ], [
+            UserRoleConstant::USER_ID => $user->id,
+            UserRoleConstant::COMPANY_ID => $company->id,
+            UserRoleConstant::ROLE_ID => $role->id,
+        ]);
     }
 
     /**
