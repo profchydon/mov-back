@@ -47,23 +47,23 @@ class CompanyWeeklyAssetSummaryJob implements ShouldQueue
         // $assetObject->totalAssetDueMaintenance = Number::abbreviate($this->company->assets()->whereBetween('next_maintenance_date', [now()->startOfWeek(), now()->endOfWeek()])->count());
         // $assetObject->totalAssetDueMaintenanceValue = Number::abbreviate($this->company->assets()->whereBetween('next_maintenance_date', [now()->startOfWeek(), now()->endOfWeek()])->sum('purchase_price'), 2);
 
-        $assetObject->totalAsset = $this->company->assets()->count();
-        $assetObject->totalAssetValue = $this->company->assets()->sum('purchase_price');
+        $assetObject->totalAsset = $this->company->availableAssets()->count();
+        $assetObject->totalAssetValue = $this->company->availableAssets()->sum('purchase_price');
 
-        $assetObject->totalAssetAdded = $this->company->assets()->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count();
-        $assetObject->totalAssetAddedValue = $this->company->assets()->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->sum('purchase_price');
+        $assetObject->totalAssetAdded = $this->company->availableAssets()->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count();
+        $assetObject->totalAssetAddedValue = $this->company->availableAssets()->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->sum('purchase_price');
 
-        $assetObject->totalCheckedOutAsset = $this->company->assets()->status([AssetStatusEnum::CHECKED_OUT])->count();
-        $assetObject->totalCheckedOutAssetValue = $this->company->assets()->status([AssetStatusEnum::CHECKED_OUT])->sum('purchase_price');
+        $assetObject->totalCheckedOutAsset = $this->company->availableAssets()->status([AssetStatusEnum::CHECKED_OUT])->count();
+        $assetObject->totalCheckedOutAssetValue = $this->company->availableAssets()->status([AssetStatusEnum::CHECKED_OUT])->sum('purchase_price');
 
-        $assetObject->totalInsuredAsset = $this->company->assets()->insured()->count();
-        $assetObject->totalInsuredAssetValue = $this->company->assets()->insured()->sum('purchase_price');
+        $assetObject->totalInsuredAsset = $this->company->availableAssets()->insured()->count();
+        $assetObject->totalInsuredAssetValue = $this->company->availableAssets()->insured()->sum('purchase_price');
 
-        $assetObject->totalUnInsuredAsset = $this->company->assets()->unInsured()->count();
-        $assetObject->totalUnInsuredAssetValue = $this->company->assets()->unInsured()->sum('purchase_price');
+        $assetObject->totalUnInsuredAsset = $this->company->availableAssets()->unInsured()->count();
+        $assetObject->totalUnInsuredAssetValue = $this->company->availableAssets()->unInsured()->sum('purchase_price');
 
-        $assetObject->totalAssetDueMaintenance = $this->company->assets()->whereBetween('next_maintenance_date', [now()->startOfWeek(), now()->endOfWeek()])->count();
-        $assetObject->totalAssetDueMaintenanceValue = $this->company->assets()->whereBetween('next_maintenance_date', [now()->startOfWeek(), now()->endOfWeek()])->sum('purchase_price');
+        $assetObject->totalAssetDueMaintenance = $this->company->availableAssets()->whereBetween('next_maintenance_date', [now()->startOfWeek(), now()->endOfWeek()])->count();
+        $assetObject->totalAssetDueMaintenanceValue = $this->company->availableAssets()->whereBetween('next_maintenance_date', [now()->startOfWeek(), now()->endOfWeek()])->sum('purchase_price');
 
         Mail::to($this->company->email)->queue(new SendCompanyAssetWeeklyReport($this->company, $assetObject));
     }
