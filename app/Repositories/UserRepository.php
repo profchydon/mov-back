@@ -10,6 +10,7 @@ use App\Domains\Constant\UserTeamConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Models\Company;
 use App\Models\Department;
+use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\UserCompany;
@@ -41,13 +42,20 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $hasSeat = $role->name === RoleTypes::BASIC->value ? false : true;
 
         // Create the user company record
-        return UserCompany::create([
-            UserCompanyConstant::TENANT_ID => $company->tenant_id,
-            UserCompanyConstant::COMPANY_ID => $company->id,
-            UserCompanyConstant::USER_ID => $user->id,
-            UserCompanyConstant::STATUS => UserCompanyStatusEnum::ACTIVE->value,
-            UserCompanyConstant::HAS_SEAT => $hasSeat,
-        ]);
+        return UserCompany::updateOrCreate(
+            [
+                UserCompanyConstant::COMPANY_ID => $company->id,
+                UserCompanyConstant::TENANT_ID => $company->tenant_id,
+                UserCompanyConstant::USER_ID => $user->id,
+            ],
+            [
+                UserCompanyConstant::TENANT_ID => $company->tenant_id,
+                UserCompanyConstant::COMPANY_ID => $company->id,
+                UserCompanyConstant::USER_ID => $user->id,
+                UserCompanyConstant::STATUS => UserCompanyStatusEnum::ACTIVE->value,
+                UserCompanyConstant::HAS_SEAT => $hasSeat,
+            ]
+        );
     }
 
     /**
@@ -61,7 +69,11 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function assignRoleToUser(Company $company, User $user, $role): UserRole
     {
         // Create a new user role record with the given user, company, and role IDs.
-        return UserRole::create([
+        return UserRole::updateOrCreate([
+            UserRoleConstant::USER_ID => $user->id,
+            UserRoleConstant::COMPANY_ID => $company->id,
+            UserRoleConstant::ROLE_ID => $role->id,
+        ], [
             UserRoleConstant::USER_ID => $user->id,
             UserRoleConstant::COMPANY_ID => $company->id,
             UserRoleConstant::ROLE_ID => $role->id,

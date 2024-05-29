@@ -10,6 +10,7 @@ use App\Domains\Constant\UserTeamConstant;
 use App\Domains\Enum\User\UserCompanyStatusEnum;
 use App\Models\Company;
 use App\Models\Department;
+use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\UserCompany;

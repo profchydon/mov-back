@@ -9,10 +9,8 @@ use App\Domains\Constant\Plan\PlanPriceConstant;
 use App\Domains\Constant\Plan\PlanProcessorConstant;
 use App\Models\Feature;
 use App\Models\Plan;
-use App\Models\PlanProcessor;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
-use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 use Symfony\Component\Yaml\Yaml;
 
 class PlanSeeder extends Seeder
@@ -55,6 +53,7 @@ class PlanSeeder extends Seeder
                     PlanPriceConstant::CURRENCY_CODE => $price['currency_code'],
                     PlanPriceConstant::BILLING_CYCLE => $price['billing_cycle'],
                     PlanPriceConstant::AMOUNT => $price['amount'],
+                    PlanPriceConstant::PLAN_ID => $plan->id,
                 ]);
 
                 $processors = $price['processors'] ?? [];
