@@ -163,6 +163,7 @@ class AssetController extends Controller
                     UserConstant::EMAIL => Arr::get($asset, 'assignee_email_address'),
                     UserConstant::FIRST_NAME => Arr::get($asset, 'assignee_first_name') ?? null,
                     UserConstant::LAST_NAME => Arr::get($asset, 'assignee_last_name') ?? null,
+                    UserConstant::JOB_TITLE => Arr::get($asset, 'job_title') ?? null,
                     UserConstant::STAGE => UserStageEnum::COMPLETED->value,
                 ]);
 
