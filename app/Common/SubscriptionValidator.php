@@ -75,7 +75,7 @@ class SubscriptionValidator
         $activePlan = $this->getActiveSubscriptionPlan();
         $planAsset = $activePlan->planAsset->first();
 
-        return $planAsset ? (int) $planAsset->value : 0;
+        return $planAsset && $planAsset->value == 'Unlimited' ? 1000000 : (int) $planAsset->value;
     }
 
     /**
