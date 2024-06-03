@@ -172,6 +172,10 @@ class AssetController extends Controller
                 $this->userRepository->assignRoleToUser($company, $newUser, $role);
 
                 $dto->setAssignedTo($newUser->id);
+
+                if (Arr::get($asset, 'department_id') !== null) {
+                    $this->userRepository->createUserDepartment($company, $newUser, Arr::get($asset, 'department_id'));
+                }
             }
 
             return $this->assetRepository->create($dto->toArray());

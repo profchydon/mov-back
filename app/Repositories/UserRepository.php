@@ -98,11 +98,17 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         }
 
         // Create a new user department record in the database
-        return UserDepartment::create([
-            UserDepartmentConstant::USER_ID => $user->id, // The ID of the user to assign the department to.
-            UserDepartmentConstant::COMPANY_ID => $company->id, // The ID of the company the user is assigned to.
-            UserDepartmentConstant::DEPARTMENT_ID => $department->id, // The ID of the department to assign the user to.
-        ]);
+        return UserDepartment::updateOrCreate(
+            [
+                UserDepartmentConstant::USER_ID => $user->id, // The ID of the user to assign the department to.
+                UserDepartmentConstant::DEPARTMENT_ID => $department->id, // The ID of the department to assign the user to.
+            ],
+            [
+                UserDepartmentConstant::USER_ID => $user->id, // The ID of the user to assign the department to.
+                UserDepartmentConstant::COMPANY_ID => $company->id, // The ID of the company the user is assigned to.
+                UserDepartmentConstant::DEPARTMENT_ID => $department->id, // The ID of the department to assign the user to.
+            ]
+        );
     }
 
     /**
@@ -128,11 +134,17 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         }
 
         // Create the user team using the repository
-        return UserTeam::create([
-            UserTeamConstant::USER_ID => $user->id, // The ID of the user to assign the team to.
-            UserTeamConstant::COMPANY_ID => $company->id, // The ID of the company the user is assigned to.
-            UserTeamConstant::DEPARTMENT_ID => $department->id, // The ID of the department the user is assigned to.
-            UserTeamConstant::TEAM_ID => $team->id, // The ID of the team to assign the user to.
-        ]);
+        return UserTeam::updateOrCreate(
+            [
+                UserTeamConstant::USER_ID => $user->id, // The ID of the user to assign the team to.
+                UserTeamConstant::TEAM_ID => $team->id, // The ID of the team to assign the user to.
+            ],
+            [
+                UserTeamConstant::USER_ID => $user->id, // The ID of the user to assign the team to.
+                UserTeamConstant::COMPANY_ID => $company->id, // The ID of the company the user is assigned to.
+                UserTeamConstant::DEPARTMENT_ID => $department->id, // The ID of the department the user is assigned to.
+                UserTeamConstant::TEAM_ID => $team->id, // The ID of the team to assign the user to.
+            ]
+        );
     }
 }
