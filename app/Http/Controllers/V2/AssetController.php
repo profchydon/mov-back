@@ -160,6 +160,7 @@ class AssetController extends Controller
                 [
                     UserConstant::COMPANY_ID => $company->id,
                     UserConstant::TENANT_ID => $company->tenant_id,
+                    UserConstant::OFFICE_ID => Arr::get($asset, 'office_id'),
                     UserConstant::EMAIL => Arr::get($asset, 'assignee_email_address'),
                     UserConstant::FIRST_NAME => Arr::get($asset, 'assignee_first_name') ?? null,
                     UserConstant::LAST_NAME => Arr::get($asset, 'assignee_last_name') ?? null,
