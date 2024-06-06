@@ -28,12 +28,12 @@ class CompanyUserResource extends JsonResource
             // ] : null,
         ];
 
-        // Check if 'department' relationship was loaded in the query
-        if ($this->relationLoaded('department')) {
-            $resourceArray['department'] = $this->department;
+        // Check if 'departments' relationship was loaded in the query
+        if ($this->relationLoaded('departments')) {
+            $resourceArray['departments'] = $this->departments;
             $resourceArray['memberCount'] = $this->departments->count();
         } else {
-            $resourceArray['department'] = null;
+            $resourceArray['departments'] = null;
             $resourceArray['memberCount'] = null;
         }
 
