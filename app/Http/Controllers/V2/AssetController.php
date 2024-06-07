@@ -157,7 +157,9 @@ class AssetController extends Controller
 
                 $existingUser = $this->userRepository->first('email', $assigneeEmail);
 
-                if($existingUser?->company?->id != $company->id) {
+                $existingUserCompanyId = $existingUser?->company?->id;
+
+                if($existingUserCompanyId && ($existingUserCompanyId != $company->id)) {
                     $rejectedAssets->push([
                         'assignee_email' => $assigneeEmail,
                         'asset_serial_number' => Arr::get($asset, 'serial_number'),
@@ -198,7 +200,7 @@ class AssetController extends Controller
         });
 
         if($rejectedAssets->count() > 0) {
-            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.partial-assets-assigned'), $rejectedAssets);
+            return $this->error(Response::HTTP_BAD_REQUEST, __('{$rejectedAssets->count()} assets could not be assigned.'), $rejectedAssets);
         }
 
         return $this->response(Response::HTTP_ACCEPTED, __("{$assets->count()} assets created"), $assets);
