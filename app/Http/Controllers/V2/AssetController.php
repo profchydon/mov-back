@@ -201,7 +201,7 @@ class AssetController extends Controller
         });
 
         if($rejectedAssets->count() > 0) {
-            return $this->error(Response::HTTP_BAD_REQUEST, __('{$rejectedAssets->count()} assets cannot be assigned because assignee belongs to a different company. Kindly assign manually.'), $rejectedAssets);
+            return $this->error(Response::HTTP_BAD_REQUEST, __("{$rejectedAssets->count()} assets cannot be assigned because assignee belongs to a different company. Kindly assign manually."), $rejectedAssets);
         }
 
         return $this->response(Response::HTTP_ACCEPTED, __("{$assets->count()} assets created"), $assets);
