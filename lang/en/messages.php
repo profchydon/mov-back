@@ -36,6 +36,7 @@ return [
     'provide-asset-image' => 'Provide an asset image',
     'asset-image-updated' => 'You have successfully updated the asset image',
     'asset-updated' => 'Asset has been updated',
+    'partial-assets-assigned' => 'Some assets could not be assigned.',
     'asset-assigned' => 'Asset has been assigned',
     'asset-unassigned' => 'Asset has been unassigned',
     'asset-reassigned' => 'Asset has been reassigned',
