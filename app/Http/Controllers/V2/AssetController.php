@@ -155,11 +155,12 @@ class AssetController extends Controller
             if (Arr::get($asset, 'assignee_email_address') !== null) {
                 $assigneeEmail = Arr::get($asset, 'assignee_email_address');
 
-                $existingUser = $this->userRepository->first('email', $assigneeEmail);
+                $existingUser = $this->userRepository->first(UserConstant::EMAIL, $assigneeEmail);
+                
+                $userCompanyIds = $existingUser->companyIds;
+                $userCompanyIds = $userCompanyIds?->toArray();
 
-                $existingUserCompanyId = $existingUser?->company?->id;
-
-                if($existingUserCompanyId && ($existingUserCompanyId != $company->id)) {
+                if(count($userCompanyIds) > 0 && !in_array($company->id, $userCompanyIds)) {
                     $rejectedAssets->push([
                         'assignee_email' => $assigneeEmail,
                         'asset_serial_number' => Arr::get($asset, 'serial_number'),
