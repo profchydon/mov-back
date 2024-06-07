@@ -156,18 +156,20 @@ class AssetController extends Controller
                 $assigneeEmail = Arr::get($asset, 'assignee_email_address');
 
                 $existingUser = $this->userRepository->first(UserConstant::EMAIL, $assigneeEmail);
-                
-                $userCompanyIds = $existingUser->companyIds;
-                $userCompanyIds = $userCompanyIds?->toArray();
 
-                if(count($userCompanyIds) > 0 && !in_array($company->id, $userCompanyIds)) {
-                    $rejectedAssets->push([
-                        'assignee_email' => $assigneeEmail,
-                        'asset_serial_number' => Arr::get($asset, 'serial_number'),
-                        'assignee_first_name' => Arr::get($asset, 'assignee_first_name'),
-                        'assignee_last_name' => Arr::get($asset, 'assignee_last_name')
-                    ]);
-                    return;
+                if($existingUser) {
+                    $userCompanyIds = $existingUser->companyIds;
+                    $userCompanyIds = $userCompanyIds?->toArray();
+    
+                    if(count($userCompanyIds) > 0 && !in_array($company->id, $userCompanyIds)) {
+                        $rejectedAssets->push([
+                            'assignee_email' => $assigneeEmail,
+                            'asset_serial_number' => Arr::get($asset, 'serial_number'),
+                            'assignee_first_name' => Arr::get($asset, 'assignee_first_name'),
+                            'assignee_last_name' => Arr::get($asset, 'assignee_last_name')
+                        ]);
+                        return;
+                    }
                 }
 
                 $role = $this->roleRepository->first('name', RoleTypes::BASIC->value);
