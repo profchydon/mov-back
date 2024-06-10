@@ -7,12 +7,12 @@ use App\Domains\Constant\UserConstant;
 use App\Domains\Enum\User\UserStageEnum;
 use App\Domains\Enum\User\UserStatusEnum;
 use App\Events\User\UserCreatedEvent;
-use App\Events\UserDeactivatedEvent;
 use App\Traits\GetsTableName;
 use App\Traits\QueryFormatter;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Crypt;
@@ -71,9 +71,16 @@ class User extends Authenticatable
         return $token;
     }
 
-    public function userCompanies()
+    // this should be revised. why should a user be able to belong to several companies?
+    // this is messing with users who are employees and should not belong to more than one company.
+    public function userCompanies(): HasMany
     {
         return $this->hasMany(UserCompany::class, UserConstant::USER_ID);
+    }
+
+    public function companyIds()
+    {
+        return $this->hasMany(UserCompany::class, UserConstant::USER_ID)->select(["company_id"]);
     }
 
     public function office()

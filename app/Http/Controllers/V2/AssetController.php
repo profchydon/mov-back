@@ -126,7 +126,9 @@ class AssetController extends Controller
             ));
         }
 
-        $assets = collect($request->assets)->transform(function ($asset) use ($company, $user) {
+        $rejectedAssets = collect();
+
+        $assets = collect($request->assets)->transform(function ($asset) use ($company, $user, $rejectedAssets) {
             $dto = new CreateAssetDTO();
             $dto->setTenantId($company->tenant_id)
                 ->setCompanyId($company->id)
@@ -151,11 +153,35 @@ class AssetController extends Controller
             }
 
             if (Arr::get($asset, 'assignee_email_address') !== null) {
+                $assigneeEmail = Arr::get($asset, 'assignee_email_address');
+
+                $existingUser = $this->userRepository->first(UserConstant::EMAIL, $assigneeEmail);
+
+                if($existingUser) {
+                    $userCompanyIds = $existingUser->companyIds;
+                    $companyIds = [];
+
+                    foreach($userCompanyIds as $companyId) {
+                        array_push($companyIds, $companyId->company_id);
+                    }
+    
+                    if(count($userCompanyIds) > 0 && !in_array($company->id, $companyIds)) {
+                        $rejectedAssets->push([
+                            'assignee_email' => $assigneeEmail,
+                            'asset_serial_number' => Arr::get($asset, 'serial_number'),
+                            'assignee_first_name' => Arr::get($asset, 'assignee_first_name'),
+                            'assignee_last_name' => Arr::get($asset, 'assignee_last_name'),
+                            'company_id' => $company->id,
+                            'company_ids' => $companyIds
+                        ]);
+                        return;
+                    }
+                }
 
                 $role = $this->roleRepository->first('name', RoleTypes::BASIC->value);
 
                 $newUser = $this->userRepository->updateOrCreate([
-                    UserConstant::EMAIL => Arr::get($asset, 'assignee_email_address'),
+                    UserConstant::EMAIL => $assigneeEmail,
                 ],
                 [
                     UserConstant::COMPANY_ID => $company->id,
@@ -181,6 +207,10 @@ class AssetController extends Controller
 
             return $this->assetRepository->create($dto->toArray());
         });
+
+        if($rejectedAssets->count() > 0) {
+            return $this->error(Response::HTTP_BAD_REQUEST, __("{$rejectedAssets->count()} assets cannot be assigned because assignee belongs to a different company. Kindly assign manually."), $rejectedAssets);
+        }
 
         return $this->response(Response::HTTP_ACCEPTED, __("{$assets->count()} assets created"), $assets);
     }
