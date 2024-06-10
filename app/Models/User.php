@@ -80,7 +80,7 @@ class User extends Authenticatable
 
     public function companyIds()
     {
-        return $this->hasMany(UserCompany::class, UserConstant::USER_ID)->select(["company_id"]);
+        return $this->hasMany(UserCompany::class, UserConstant::USER_ID)->value('company_id');
     }
 
     public function office()
