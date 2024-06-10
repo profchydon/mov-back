@@ -166,7 +166,9 @@ class AssetController extends Controller
                             'assignee_email' => $assigneeEmail,
                             'asset_serial_number' => Arr::get($asset, 'serial_number'),
                             'assignee_first_name' => Arr::get($asset, 'assignee_first_name'),
-                            'assignee_last_name' => Arr::get($asset, 'assignee_last_name')
+                            'assignee_last_name' => Arr::get($asset, 'assignee_last_name'),
+                            'company_id' => $company->id,
+                            'company_ids' => $userCompanyIds
                         ]);
                         return;
                     }
