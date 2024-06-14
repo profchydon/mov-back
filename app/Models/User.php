@@ -39,6 +39,12 @@ class User extends Authenticatable
         UserConstant::SSO_ID,
     ];
 
+    protected static $searchable = [
+        'first_name',
+        'last_name',
+        'email'
+    ];
+
 
     protected $casts = [
         'email_verified_at' => 'datetime',
