@@ -94,7 +94,7 @@ trait QueryFormatter
                 $table = with(new static)->getTable();
 
                 if (count($criterionComponents) === 1 || $table == $criterionComponents[count($criterionComponents) - 2]) {
-                    $q->orWhere($criterion, 'like', $search . '%');
+                    $q->orWhere($criterion, 'ilike', $search . '%'); // uses PostgreSQL' "iLike". Might not work for other flavours.
 
                     return;
                 }
