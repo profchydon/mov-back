@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V2;
 use App\Common\JWTHandler;
 use App\Domains\Constant\UserConstant;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ResendOTPRequest;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -19,6 +20,19 @@ class AuthController extends Controller
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
     ) {
+    }
+
+    public function login(ResendOTPRequest $request)
+    {
+        $user = $this->userRepository->first(UserConstant::EMAIL, $request->email);
+
+        if (!$user) {
+            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.email-not-found'));
+        }
+
+        return $this->response(Response::HTTP_OK, __('messages.login-successful'), [
+            'user' => $user,
+        ]);
     }
 
     public function authorization(Request $request)

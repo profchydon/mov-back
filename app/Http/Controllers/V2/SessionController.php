@@ -24,6 +24,19 @@ class SessionController extends Controller
     ) {
     }
 
+    public function login(Request $request)
+    {
+        $user = $this->userRepository->first(UserConstant::EMAIL, $request->email);
+
+        if (!$user) {
+            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.email-not-found'));
+        }
+
+        $response = $this->issueCoreAuthToken($user->sso_id);
+
+        return $this->response(Response::HTTP_OK, __('messages.authenticated'), $response);
+    }
+
     public function authorization(Request $request)
     {
         $clientId = getenv('SSO_CLIENT_ID');

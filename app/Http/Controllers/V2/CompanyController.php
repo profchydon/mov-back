@@ -69,25 +69,25 @@ class CompanyController extends Controller
             throw_if($userExist, UserAlreadyExistException::class);
 
             //Create Company on SSO
-            $createSSOCompany = $this->ssoService->createSSOCompany($request->getSSODTO());
+            // $createSSOCompany = $this->ssoService->createSSOCompany($request->getSSODTO());
 
-            if ($createSSOCompany->status() !== Response::HTTP_CREATED) {
-                return $this->error(Response::HTTP_BAD_REQUEST, $createSSOCompany->json()['message']);
-            }
+            // if ($createSSOCompany->status() !== Response::HTTP_CREATED) {
+            //     return $this->error(Response::HTTP_BAD_REQUEST, $createSSOCompany->json()['message']);
+            // }
 
             try {
-                $dbData = DB::transaction(function () use ($request, $createSSOCompany) {
+                $dbData = DB::transaction(function () use ($request) {
                     $tenant = $this->tenantRepository->create($request->getTenantDTO()->toArray());
 
-                    $ssoData = $createSSOCompany->json()['data'];
+                    // $ssoData = $createSSOCompany->json()['data'];
                     $companyInvitationCode = Str::random(32);
 
                     $companyDto = $request->getCompanyDTO()
                         ->setTenantId($tenant->id)
-                        ->setSsoId($ssoData['company_id'])
+                        ->setSsoId((string) Str::uuid())
                         ->setInvitationCode($companyInvitationCode);
 
-                    $userDto = $request->getUserDTO()->setTenantId($tenant->id)->setSsoId($ssoData['user_id']);
+                    $userDto = $request->getUserDTO()->setTenantId($tenant->id)->setSsoId((string) Str::uuid());
 
                     $company = $this->companyRepository->create($companyDto->toArray());
                     $user = $this->userRepository->create($userDto->toArray());
@@ -173,11 +173,11 @@ class CompanyController extends Controller
 
         $dto = $request->getDTO();
 
-        $resp = $this->ssoService->updateCompany($dto, $company->sso_id);
+        // $resp = $this->ssoService->updateCompany($dto, $company->sso_id);
 
-        if ($resp->status() != Response::HTTP_OK) {
-            return $this->error(Response::HTTP_BAD_REQUEST, $resp->json()['message']);
-        }
+        // if ($resp->status() != Response::HTTP_OK) {
+        //     return $this->error(Response::HTTP_BAD_REQUEST, $resp->json()['message']);
+        // }
 
         $company->update($dto->toArray());
         if ($user->stage == UserStageEnum::COMPANY_DETAILS->value) {

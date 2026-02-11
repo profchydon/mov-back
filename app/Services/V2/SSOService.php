@@ -12,7 +12,9 @@ use App\Repositories\Contracts\OTPRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Contracts\SSOServiceInterface;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OTPMail;
+use Carbon\Carbon;
 
 class SSOService implements SSOServiceInterface
 {
@@ -38,30 +40,28 @@ class SSOService implements SSOServiceInterface
 
     public function createEmailOTP(string $email)
     {
-        $url = sprintf('%s/api/v1/otp', env('SSO_URL'));
+        $user = $this->userRepository->firstWithRelation(UserConstant::EMAIL, $email, ['otp']);
 
-        $data = [
-            'type' => 'email',
-            'info' => $email,
-        ];
-
-        $resp = Http::acceptJson()->post($url, $data);
-
-        if ($resp->status() == Response::HTTP_CREATED) {
-            $user = $this->userRepository->firstWithRelation(UserConstant::EMAIL, $email, ['otp']);
-
-            $respData = $resp->json()['data'];
-            if ($user->otp) {
-                $user->otp->delete();
-            }
-
-            $this->otpRepository->create([
-                'sso_id' => $respData['id'],
-                'user_id' => $user->id,
-            ]);
+        if (!$user) {
+            return null;
         }
 
-        return $resp;
+        // generate a 4-digit OTP to match validation rules
+        $otpCode = str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+
+        if ($user->otp) {
+            $user->otp->delete();
+        }
+
+        $this->otpRepository->create([
+            'sso_id' => $otpCode,
+            'user_id' => $user->id,
+        ]);
+
+        // Send OTP email using local template
+        Mail::to($user->email)->send(new OTPMail($user, $otpCode));
+
+        return Response::HTTP_CREATED;
     }
 
     public function verifyOTP(VerifyOTPDTO $dto)
@@ -72,23 +72,24 @@ class SSOService implements SSOServiceInterface
             return false;
         }
 
-        $url = sprintf('%s/api/v1/otp/%s/verify', env('SSO_URL'), $user->otp->sso_id);
-
-        $data = ['provided_otp' => $dto->getOTP()];
-
-        $resp = Http::acceptJson()->put($url, $data);
-
-        if ($resp->status() == Response::HTTP_OK) {
+        // OTP expired after 10 minutes
+        $createdAt = Carbon::parse($user->otp->created_at);
+        if ($createdAt->lt(Carbon::now()->subMinutes(10))) {
             $user->otp->delete();
-
-            $user->update([
-                UserConstant::STAGE => UserStageEnum::COMPANY_DETAILS->value,
-            ]);
-
-            return true;
-        } else {
             return false;
         }
+
+        if ($dto->getOTP() !== $user->otp->sso_id) {
+            return false;
+        }
+
+        $user->otp->delete();
+
+        $user->update([
+            UserConstant::STAGE => UserStageEnum::COMPANY_DETAILS->value,
+        ]);
+
+        return true;
     }
 
     public function updateCompany(AddCompanyDetailsDTO $dto, string $ssoCompanyId)
