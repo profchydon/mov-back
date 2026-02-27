@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\V2;
 
 use App\Common\JWTHandler;
+use App\Common\SerializePermission;
 use App\Domains\Constant\UserConstant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ResendOTPRequest;
+use App\Http\Resources\Company\CompanyResource;
+use App\Http\Resources\User\UserResource;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -30,9 +33,27 @@ class AuthController extends Controller
             return $this->error(Response::HTTP_BAD_REQUEST, __('messages.email-not-found'));
         }
 
-        return $this->response(Response::HTTP_OK, __('messages.login-successful'), [
-            'user' => $user,
+        $userRoles = $user->roles()->with('permissions')->get();
+        $userCompany = $user->userCompanies()->with('company')->first();
+
+        if (!$userCompany) {
+            return $this->error(Response::HTTP_BAD_REQUEST, __('messages.user-not-linked-to-company'));
+        }
+
+        $serializePermission = new SerializePermission($userRoles);
+
+        $user->update([
+            UserConstant::LAST_LOGIN => now(),
         ]);
+
+        $data = [
+            'user' => new UserResource($user),
+            'company' => new CompanyResource($userCompany->company),
+            'permissions' => $serializePermission->stringifyPermission(),
+            'auth_token' => $user->createToken('auth_token')->plainTextToken,
+        ];
+
+        return $this->response(Response::HTTP_OK, __('messages.login-successful'), $data);
     }
 
     public function authorization(Request $request)

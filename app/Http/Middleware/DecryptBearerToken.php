@@ -16,7 +16,15 @@ class DecryptBearerToken
             if (empty($request->bearerToken())) {
                 throw new \Exception('No bearer token provided');
             }
-            $decryptedToken = Crypt::decryptString($request->bearerToken());
+
+            $token = $request->bearerToken();
+
+            if (! config('app.encrypt_enabled')) {
+                $request->headers->set('Authorization', "Bearer {$token}");
+                return $next($request);
+            }
+
+            $decryptedToken = Crypt::decryptString($token);
             $request->headers->set('Authorization', "Bearer {$decryptedToken}");
 
             return $next($request);

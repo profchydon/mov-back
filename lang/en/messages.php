@@ -19,6 +19,7 @@ return [
     'email-exist' => 'Email address exist already',
     'error-encountered' => 'Error encountered',
     'email-not-found' => 'No account found with the email',
+    'user-not-linked-to-company' => 'User account is not linked to a company',
     'otp-resent' => 'The OTP has been resent to your email',
     'otp-validated' => 'The OTP is valid',
     'otp-invalid' => 'The OTP is not valid',

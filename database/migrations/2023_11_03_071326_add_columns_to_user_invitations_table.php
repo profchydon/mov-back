@@ -31,12 +31,12 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('user_invitations', function (Blueprint $table) {
-            $table->dropColumn(UserInvitationConstant::NAME);
-            $table->dropColumn(UserInvitationConstant::JOB_TITLE);
-            $table->dropColumn(UserInvitationConstant::EMPLOYMENT_TYPE);
-            $table->dropColumn(UserInvitationConstant::OFFICE_ID);
-            $table->dropColumn(UserInvitationConstant::DEPARTMENT_ID);
-            $table->dropColumn(UserInvitationConstant::TEAM_ID);
+            // $table->dropColumn(UserInvitationConstant::NAME);
+            // $table->dropColumn(UserInvitationConstant::JOB_TITLE);
+            // $table->dropColumn(UserInvitationConstant::EMPLOYMENT_TYPE);
+            // $table->dropColumn(UserInvitationConstant::OFFICE_ID);
+            // $table->dropColumn(UserInvitationConstant::DEPARTMENT_ID);
+            // $table->dropColumn(UserInvitationConstant::TEAM_ID);
         });
     }
 };

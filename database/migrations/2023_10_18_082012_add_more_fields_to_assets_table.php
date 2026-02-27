@@ -26,8 +26,8 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->dropColumn(AssetConstant::ACQUISITION_TYPE);
-            $table->dropColumn(AssetConstant::VENDOR_ID);
+            // $table->dropColumn(AssetConstant::ACQUISITION_TYPE);
+            // $table->dropColumn(AssetConstant::VENDOR_ID);
         });
     }
 };

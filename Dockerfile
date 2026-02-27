@@ -10,9 +10,9 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 
 # Install php extensions
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions mbstring pdo_mysql zip exif pcntl gd memcached pdo pdo_pgsql
+    install-php-extensions mbstring pdo_mysql zip exif pcntl gd memcached redis pdo pdo_pgsql
 
-# Install dependencies
+# Install dependencies (mysql-client for create-user.sh script)
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -28,7 +28,8 @@ RUN apt-get update && apt-get install -y \
     lua-zlib-dev \
     libmemcached-dev \
     nginx \
-    nano
+    nano \
+    default-mysql-client
 
 # Install supervisor
 RUN apt-get install -y supervisor
@@ -65,4 +66,4 @@ RUN composer install --ignore-platform-reqs
 RUN chmod +x /var/www/docker/run.sh
 
 EXPOSE 80
-ENTRYPOINT ["/var/www/docker/run.sh"]
+ENTRYPOINT ["sh", "/var/www/docker/run.sh"]

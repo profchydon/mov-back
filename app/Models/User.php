@@ -72,7 +72,9 @@ class User extends Authenticatable
     {
         $token = $this->createBaseToken($name, $abilities, $expiresAt);
 
-        $token->plainTextToken = Crypt::encryptString($token->plainTextToken);
+        if (config('app.encrypt_enabled')) {
+            $token->plainTextToken = Crypt::encryptString($token->plainTextToken);
+        }
 
         return $token;
     }

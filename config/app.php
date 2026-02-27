@@ -129,6 +129,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | API Payload Encryption
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, request payloads and bearer tokens are encrypted. Set to
+    | false for local development to simplify debugging.
+    |
+    */
+
+    'encrypt_enabled' => env('ENCRYPT_ENABLED', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Maintenance Mode Driver
     |--------------------------------------------------------------------------
     |

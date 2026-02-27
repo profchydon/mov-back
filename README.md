@@ -56,3 +56,18 @@ Run database migrations and seeders
 sail artisan migrate:fresh --seed
 ```
 
+### Create a fully onboarded company + admin user (CLI, not sign up)
+Creates tenant, company, user, user_company, and user_role so the user can log in and access the dashboard:
+
+```bash
+# From project root (requires htpasswd + mysql client)
+./scripts/create-user.sh admin@example.com "YourPassword (Use your instance ID)" "MyCompany" "Admin" "User"
+
+# With environment variables (e.g. on EC2)
+EMAIL=admin@example.com PASSWORD=secret COMPANY_NAME="Acme" ./scripts/create-user.sh
+```
+
+Usage: `./scripts/create-user.sh <email> <password> [company_name] [first_name] [last_name]`
+
+Requires: `htpasswd` (apache2-utils), `mysql` client. Loads DB config from `.env`. Run `php artisan db:seed` first so the Super Administrator role exists.
+
