@@ -7,6 +7,7 @@
 #
 # Usage: ./scripts/create-user.sh <email> <password> [company_name] [first_name] [last_name]
 # Or:    EMAIL=admin@example.com PASSWORD=secret ./scripts/create-user.sh
+# Debug: DEBUG=1 DB_HOST=mysql ./scripts/create-user.sh ...  (shows mysql errors)
 #
 # Database config - edit the defaults below to match your backend (or override via env vars):
 DB_HOST="${DB_HOST:-127.0.0.1}"
@@ -74,8 +75,18 @@ COMPANY_SSO_ID=$(gen_uuid)
 # Generate invitation code (32 chars)
 INVITATION_CODE=$(openssl rand -hex 16 2>/dev/null || cat /dev/urandom 2>/dev/null | tr -dc 'a-zA-Z0-9' | head -c 32)
 
+# MySQL helper (MYSQL_PWD avoids shell escaping issues with -p)
+# Use DEBUG=1 to see connection errors
+run_mysql() {
+  if [ "${DEBUG:-0}" = "1" ]; then
+    MYSQL_PWD="$DB_PASSWORD" mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" "$DB_DATABASE" -N -e "$1"
+  else
+    MYSQL_PWD="$DB_PASSWORD" mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" "$DB_DATABASE" -N -e "$1" 2>/dev/null || true
+  fi
+}
+
 # Get Super Administrator role id (must exist from seeding)
-ROLE_ID=$(mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" "$DB_DATABASE" -N -e "SELECT id FROM roles WHERE name='Super Administrator' LIMIT 1" 2>/dev/null || true)
+ROLE_ID=$(run_mysql "SELECT id FROM roles WHERE name='Super Administrator' LIMIT 1")
 
 if [ -z "$ROLE_ID" ]; then
   echo "Error: Role 'Super Administrator' not found. Run: php artisan db:seed --class=RoleSeeder"
@@ -83,10 +94,10 @@ if [ -z "$ROLE_ID" ]; then
 fi
 
 # Get Basic plan id (must exist from seeding)
-PLAN_ID=$(mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" "$DB_DATABASE" -N -e "SELECT id FROM plans WHERE name='Basic' LIMIT 1" 2>/dev/null || true)
+PLAN_ID=$(run_mysql "SELECT id FROM plans WHERE name='Basic' LIMIT 1")
 
 if [ -z "$PLAN_ID" ]; then
-  PLAN_ID=$(mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" "$DB_DATABASE" -N -e "SELECT id FROM plans LIMIT 1" 2>/dev/null || true)
+  PLAN_ID=$(run_mysql "SELECT id FROM plans LIMIT 1")
 fi
 
 if [ -z "$PLAN_ID" ]; then
@@ -95,8 +106,8 @@ if [ -z "$PLAN_ID" ]; then
 fi
 
 # Check if user or company already exists
-USER_EXISTS=$(mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" "$DB_DATABASE" -N -e "SELECT 1 FROM users WHERE email='${EMAIL//\'/\\\'}' LIMIT 1" 2>/dev/null || true)
-COMPANY_EXISTS=$(mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" "$DB_DATABASE" -N -e "SELECT 1 FROM companies WHERE email='${EMAIL//\'/\\\'}' LIMIT 1" 2>/dev/null || true)
+USER_EXISTS=$(run_mysql "SELECT 1 FROM users WHERE email='${EMAIL//\'/\\\'}' LIMIT 1")
+COMPANY_EXISTS=$(run_mysql "SELECT 1 FROM companies WHERE email='${EMAIL//\'/\\\'}' LIMIT 1")
 
 if [ -n "$USER_EXISTS" ]; then
   echo "Error: User with email $EMAIL already exists."
@@ -115,7 +126,7 @@ FIRST_NAME_ESC="${FIRST_NAME//\'/\\\'}"
 LAST_NAME_ESC="${LAST_NAME//\'/\\\'}"
 INVITATION_CODE_ESC="${INVITATION_CODE//\'/\\\'}"
 
-mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" "$DB_DATABASE" -e "
+MYSQL_PWD="$DB_PASSWORD" mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" "$DB_DATABASE" -e "
 START TRANSACTION;
 
 INSERT INTO tenants (id, name, email, status, created_at, updated_at)
