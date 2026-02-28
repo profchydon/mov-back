@@ -34,6 +34,9 @@ RUN apt-get update && apt-get install -y \
 # Install supervisor
 RUN apt-get install -y supervisor
 
+RUN mkdir -p /etc/mysql/conf.d && \
+    echo -e "[client]\nssl-verify-server-cert=FALSE" > /etc/mysql/conf.d/disable-ssl-verify.cnf
+
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
